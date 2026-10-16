@@ -5,7 +5,7 @@ import { t } from '../i18n/index.js';
  */
 export function renderRestaurantCard(restaurant) {
   return `
-    <article class="bg-white rounded-2xl overflow-hidden border border-[#E5D9C5] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col card-hover-lift group">
+    <article class="restaurant-card bg-white rounded-2xl overflow-hidden border border-[#E5D9C5] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col card-hover-lift group">
       <!-- Image Header with Year Badge -->
       <div class="relative aspect-16/9 bg-[#302018]/10 overflow-hidden">
         <img src="${restaurant.image}" 

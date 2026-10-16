@@ -1187,6 +1187,852 @@ export const recipes = [
     },
     relatedRecipeIds: ['lumpia-semarang', 'mendoan-banyumas', 'soto-kudus'],
     legendaryRestaurantIds: ['tahu-gimbal-pak-edy-semarang', 'toko-oen-semarang']
+  },
+
+  // 11. Gudeg Komplit Khas Jawa Tengah
+  {
+    id: 'gudeg-komplit',
+    slug: 'gudeg-komplit',
+    name: 'Gudeg Komplit Khas Jawa Tengah',
+    javaneseName: 'Gudeg Nangka Kendhi',
+    regionId: 'surakarta',
+    regionName: 'Surakarta (Solo)',
+    mealType: 'Makan Utama / Tradisional',
+    cookingDuration: '90 Menit',
+    prepTime: '30 Menit',
+    cookTime: '60 Menit',
+    baseServings: 4,
+    difficulty: 'Sedang',
+    difficultyLevel: 'Menengah',
+    flavorProfiles: ['manis', 'gurih', 'kaya-rempah'],
+    budgetCategory: 'Menengah',
+    estimatedCost: 'Rp 55.000 – Rp 75.000',
+    image: '/assets/images/recipes/nasi-liwet.jpg',
+    intro: 'Gudeg adalah mahakarya kuliner berbahan nangka muda yang diungkep perlahan bersama santan, gula kelapa asli, daun jati, dan rempah harum. Disajikan lengkap bersama areh santan gurih, telur bebek pindang, tahu bacem, dan sambal goreng krecek pedas.',
+    history: 'Gudeg berakar dari abad ke-16 saat pembabatan Hutan Mentaok untuk Kerajaan Mataram Islam. Karena melimpahnya pohon nangka muda dan kelapa, para prajurit memasaknya bersamaan di dalam kuali tanah liat besar dengan api kayu bakar perlahan (hanggudeg).',
+    culturalBackground: 'Di Solo dan berbagai penjuru Jawa Tengah, gudeg basah digemari karena kuah areh santannya yang melimpah dan tidak terlalu manis pekat, memberikan perpaduan rasa gurih manis yang seimbang dan nikmat disantap kapan saja.',
+    interestingFacts: [
+      'Warna cokelat kemerahan alami pada gudeg tradisional berasal dari daun jati muda (godhong jati) yang diletakkan di dasar kuali tanah liat.',
+      'Proses memasak perlahan (slow cooking) membuat serat nangka muda empuk lumer seperti daging tanpa hancur.',
+      'Areh kental santan gurih di bagian atas menjadi penyeimbang sempurna rasa manis legit nangka muda.'
+    ],
+    regionalVariations: 'Versi Jawa Tengah dan Solo lebih berkarakter basah (gudeg basah) dengan kuah santan gurih encer dan sambal goreng tolo, berbeda dari gudeg kering Yogyakarta yang dimasak hingga cairan menyusut pekat.',
+    equipment: ['Kuali tanah liat (kendhi) atau panci tebal', 'Cobek batu & ulekan', 'Spatula kayu', 'Sendok sayur'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Utama Gudeg',
+        items: [
+          { name: 'Nangka muda (gori), cacah kasar', amount: 800, unit: 'gram', notes: 'Pilih nangka muda padat tanpa biji besar' },
+          { name: 'Santan kelapa kental murni', amount: 800, unit: 'ml', notes: 'Perasan pertama kelapa tua' },
+          { name: 'Air kelapa murni', amount: 500, unit: 'ml', notes: 'Membantu mempercepat empuk dan memberi manis alami' },
+          { name: 'Telur bebek, rebus dan kupas', amount: 4, unit: 'butir', notes: 'Bisa diganti telur ayam' },
+          { name: 'Gula merah kelapa sisir halus', amount: 150, unit: 'gram', notes: 'Gula kelapa asli warna cokelat gelap' },
+          { name: 'Daun jati muda', amount: 4, unit: 'lembar', notes: 'Pewarna merah kecokelatan alami' },
+          { name: 'Daun salam segar', amount: 5, unit: 'lembar', notes: 'Aroma harum khas' },
+          { name: 'Lengkuas tua, memarkan', amount: 5, unit: 'cm', notes: 'Cuci bersih memarkan' }
+        ]
+      },
+      {
+        name: 'Bumbu Halus (Ulek)',
+        items: [
+          { name: 'Bawang merah lokal', amount: 10, unit: 'butir', notes: 'Kupas' },
+          { name: 'Bawang putih', amount: 6, unit: 'siung', notes: 'Kupas' },
+          { name: 'Kemiri sangrai', amount: 6, unit: 'butir', notes: 'Sangrai hingga harum berminyak' },
+          { name: 'Ketumbar sangrai', amount: 1.5, unit: 'sdm', notes: 'Ulek halus' },
+          { name: 'Garam laut', amount: 2, unit: 'sdt', notes: 'Sesuaikan selera' }
+        ]
+      }
+    ],
+    instructions: [
+      {
+        stepNumber: 1,
+        title: 'Menata Daun Jati & Nangka di Kuali',
+        instruction: 'Alasi dasar panci atau kendhi tanah liat dengan lembaran daun jati muda. Masukkan potongan nangka muda cacah, telur rebus kupas, lengkuas memar, dan daun salam segar.',
+        timerMinutes: 10,
+        tip: 'Daun jati di dasar kendhi juga mencegah nangka gosong saat diungkep lama.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Mencampur Bumbu & Santan',
+        instruction: 'Larutkan bumbu halus bersama gula kelapa sisir, air kelapa, dan santan. Tuang ke dalam panci hingga seluruh nangka dan telur terendam rata.',
+        timerMinutes: 10,
+        tip: 'Gunakan gula kelapa tua berkualitas untuk aroma wangi karamel yang sedap.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Mengungkep Api Kecil (Slow Cooking)',
+        instruction: 'Tutup panci rapat-rapat. Masak di atas api kecil sedang selama 60 hingga 75 menit hingga air menyusut, nangka empuk lembut, dan telur berubah warna cokelat eksotis.',
+        timerMinutes: 60,
+        tip: 'Jangan sering diaduk agar potongan nangka muda tidak hancur menjadi bubur.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Penyajian dengan Areh Gurih & Krecek',
+        instruction: 'Sajikan gudeg hangat di atas piring beralas daun pisang. Beri siraman kuah areh santan kental, sambal goreng krecek pedas, dan telur pindang potong dua.',
+        timerMinutes: 10,
+        tip: 'Gudeg justru semakin lezat jika diinapkan semalam karena bumbu rempahnya semakin meresap ke serat terdalam.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan air kelapa asli saat merebus nangka untuk memperkaya rasa manis gurih tanpa rasa enek.',
+      'Gunakan api lilin kecil saat cairan mulai menyusut agar dasar kendhi tidak berkerak gosong.'
+    ],
+    commonMistakes: [
+      'Menggunakan nangka yang terlalu matang: rasa akan manis asam dan tekstur terlalu lembek.',
+      'Memakai santan instan tanpa air kelapa: rasa kuah kurang dalam dan mudah basi.'
+    ],
+    substitutions: [
+      { ingredient: 'Daun Jati', substitute: 'Bisa diganti kulit bawang merah atau seduhan teh pekat untuk rona cokelat' },
+      { ingredient: 'Telur Bebek', substitute: 'Telur ayam kampung rebus' }
+    ],
+    servingSuggestions: 'Sangat nikmat disajikan bersama nasi liwet hangat, opor ayam kampung, dan sambal krecek pedas.',
+    nutrition: {
+      calories: '420 kkal',
+      protein: '18 g',
+      carbs: '48 g',
+      fat: '16 g',
+      note: 'Per porsi komplit dengan telur pindang dan kuah areh.'
+    },
+    relatedRecipeIds: ['nasi-liwet-solo', 'tempe-bacem', 'selat-solo'],
+    legendaryRestaurantIds: ['wongso-lemu-solo', 'toko-oen-semarang']
+  },
+
+  // 12. Nasi Gandul Asli Pati
+  {
+    id: 'nasi-gandul-pati',
+    slug: 'nasi-gandul-pati',
+    name: 'Nasi Gandul Asli Pati',
+    javaneseName: 'Sego Gandul Pati',
+    regionId: 'kudus',
+    regionName: 'Pati',
+    mealType: 'Makan Utama',
+    cookingDuration: '60 Menit',
+    prepTime: '20 Menit',
+    cookTime: '40 Menit',
+    baseServings: 4,
+    difficulty: 'Sedang',
+    difficultyLevel: 'Menengah',
+    flavorProfiles: ['gurih', 'manis', 'kaya-rempah'],
+    budgetCategory: 'Menengah',
+    estimatedCost: 'Rp 50.000 – Rp 70.000',
+    image: '/assets/images/recipes/soto-kudus.jpg',
+    intro: 'Nasi Gandul adalah kuliner legendaris khas Desa Gajahmati, Pati. Nasi hangat beralas daun pisang disiram kuah merah kecokelatan gurih manis santan berempah, disajikan bersama irisan daging sapi empuk, lidah, atau babat bacem.',
+    history: 'Dinamakan Gandul karena para penjual aslinya memikul dua bakul kuali di kanan-kiri yang bergelantungan (nggandul) menyusuri jalanan kota Pati menjajakan kuah kaldu rempah hangat.',
+    culturalBackground: 'Tradisi makan nasi gandul menggunakan sendok dari daun pisang yang dilipat dua (disebut suru), memberikan aroma wangi khas yang menyatu dengan kehangatan kuah santan kaya rempah.',
+    interestingFacts: [
+      'Desa Gajahmati di Pati diakui sebagai desa asal muasal terciptanya racikan bumbu nasi gandul sejak awal abad ke-20.',
+      'Kuah nasi gandul memiliki warna merah kecokelatan berkat pemakaian cabai merah, gula jawa, terasi udang, dan santan segar.',
+      'Lauk pelengkap wajib adalah tempe goreng kering garing yang sangat renyah dan telur asin masir.'
+    ],
+    regionalVariations: 'Di pesisir Pati selatan sering ditambahkan irisan lidah sapi empuk dan paru bacem goreng kering.',
+    equipment: ['Panci sup besar', 'Cobek batu & ulekan', 'Pisau daging tajam', 'Piring anyaman bambu'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Daging & Kuah',
+        items: [
+          { name: 'Daging sapi has luar / sengkel', amount: 500, unit: 'gram', notes: 'Potong dadu 3 cm' },
+          { name: 'Santan kelapa segar sedang', amount: 1200, unit: 'ml', notes: 'Dari 1 butir kelapa parut' },
+          { name: 'Kecap manis lokal Pati / Semarang', amount: 3, unit: 'sdm', notes: 'Kecap kental manis gurih' },
+          { name: 'Gula merah kelapa', amount: 2, unit: 'sdm', notes: 'Sisir halus' },
+          { name: 'Serai, memarkan', amount: 2, unit: 'batang', notes: 'Simpul' },
+          { name: 'Daun salam segar', amount: 3, unit: 'lembar', notes: 'Robek tepi' },
+          { name: 'Lengkuas, memarkan', amount: 3, unit: 'cm', notes: 'Cuci bersih' }
+        ]
+      },
+      {
+        name: 'Bumbu Halus (Ulek)',
+        items: [
+          { name: 'Bawang merah', amount: 8, unit: 'butir', notes: 'Kupas' },
+          { name: 'Bawang putih', amount: 5, unit: 'siung', notes: 'Kupas' },
+          { name: 'Cabai merah keriting', amount: 4, unit: 'buah', notes: 'Buang biji jika tak suka pedas' },
+          { name: 'Kemiri sangrai', amount: 4, unit: 'butir', notes: 'Sangrai harum' },
+          { name: 'Ketumbar sangrai', amount: 1, unit: 'sdt', notes: 'Haluskan' },
+          { name: 'Jintan sangrai', amount: 0.25, unit: 'sdt', notes: 'Aroma khas' },
+          { name: 'Terasi bakar', amount: 0.5, unit: 'sdt', notes: 'Kunci gurih nasi gandul' },
+          { name: 'Kencur', amount: 1.5, unit: 'cm', notes: 'Segar' },
+          { name: 'Garam', amount: 2, unit: 'sdt', notes: 'Secukupnya' }
+        ]
+      }
+    ],
+    instructions: [
+      {
+        stepNumber: 1,
+        title: 'Merebus Daging & Membuat Kaldu',
+        instruction: 'Rebus daging sapi dalam air mendidih bersama daun salam dan serai hingga empuk. Angkat daging, tiriskan lalu potong-potong melebar tipis. Sisihkan kaldu daging.',
+        timerMinutes: 25,
+        tip: 'Potong daging berlawanan arah serat agar teksturnya empuk saat digigit.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Menumis Bumbu Halus Harum',
+        instruction: 'Tumis bumbu halus bersama lengkuas dan daun salam hingga harum matang dan minyak kemerahan keluar. Masukkan potongan daging sapi, aduk rata hingga terselimuti bumbu.',
+        timerMinutes: 8,
+        tip: 'Pastikan bumbu benar-benar tanak agar kuah tidak berbau langu.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Memasak Kuah Santan Gandul',
+        instruction: 'Tuang santan kelapa dan sisa kaldu daging ke dalam tumisan. Bumbui dengan kecap manis dan gula kelapa. Masak dengan api sedang sambil sesekali diaduk perlahan agar santan tidak pecah.',
+        timerMinutes: 20,
+        tip: 'Gunakan api sedang cenderung kecil agar santan menyatu sempurna dengan kaldu daging.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Penyajian dengan Daun Pisang & Suru',
+        instruction: 'Alasi piring dengan selembar daun pisang segar. Tata nasi putih hangat di tengahnya, letakkan irisan daging sapi empuk, lalu siram dengan kuah gandul panas melimpah. Sajikan dengan tempe goreng renyah.',
+        timerMinutes: 7,
+        tip: 'Gunakan daun pisang klutuk atau kepok yang layu hangat agar aromanya semerbak harum.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan kecap manis tradisional yang memiliki rasa kedelai hitam pekat tanpa pengawet.',
+      'Sajikan kuah dalam keadaan mendidih panas agar saat disiram ke nasi hangat aroma daun pisang langsung menguar.'
+    ],
+    commonMistakes: [
+      'Membiarkan santan mendidih kencang tanpa diaduk hingga pecah dan berbusa kasar.',
+      'Terlalu banyak kecap sehingga warna kuah menjadi hitam legam alih-alih merah kecokelatan khas Pati.'
+    ],
+    substitutions: [
+      { ingredient: 'Daging Has', substitute: 'Bisa dipadukan dengan babat atau lidah sapi rebus' }
+    ],
+    servingSuggestions: 'Sangat mantap dinikmati dengan tempe kering renyah, perkedel kentang, dan telur puyuh bacem.',
+    nutrition: {
+      calories: '460 kkal',
+      protein: '26 g',
+      carbs: '50 g',
+      fat: '17 g',
+      note: 'Per porsi komplit dengan daging dan kuah santan.'
+    },
+    relatedRecipeIds: ['soto-kudus', 'garang-asem-kudus', 'selat-solo'],
+    legendaryRestaurantIds: ['sari-rasa-kudus', 'toko-oen-semarang']
+  },
+
+  // 13. Mangut Lele Asap Kuah Pedas
+  {
+    id: 'mangut-lele-asap',
+    slug: 'mangut-lele-asap',
+    name: 'Mangut Lele Asap Santan Pedas',
+    javaneseName: 'Mangut Iwak Lele Asap',
+    regionId: 'magelang',
+    regionName: 'Magelang & Klaten',
+    mealType: 'Makan Utama',
+    cookingDuration: '45 Menit',
+    prepTime: '15 Menit',
+    cookTime: '30 Menit',
+    baseServings: 4,
+    difficulty: 'Sedang',
+    difficultyLevel: 'Menengah',
+    flavorProfiles: ['pedas', 'gurih', 'segar'],
+    budgetCategory: 'Menengah',
+    estimatedCost: 'Rp 40.000 – Rp 58.000',
+    image: '/assets/images/recipes/garang-asem.jpg',
+    intro: 'Mangut Lele memadukan aroma sangit lele asap tradisional dengan kuah santan kuning pedas menyengat. Diperkaya belimbing wuluh segar, cabai rawit utuh, kencur aromatik, dan daun kemangi harum yang menggugah selera makan.',
+    history: 'Tradisi mangut lele asap berkembang pesat di sepanjang aliran Kali Progo dan perbatasan Magelang-Yogyakarta. Pengasapan menggunakan kayu pohon kelapa dan sabut membuat daging lele padat kenyal dan tidak mudah hancur saat digodok santan.',
+    culturalBackground: 'Bagi masyarakat pedesaan Jawa Tengah, mangut adalah lauk istimewa di musim penghujan. Sengatan kuah kencur pedas berpadu gurih santan memberikan kehangatan tubuh yang menyegarkan.',
+    interestingFacts: [
+      'Pengasapan lele memakan waktu 4-6 jam hingga kulitnya kering keemasan dan kadar air berkurang drastis.',
+      'Rempah kencur segar dan daun jeruk purut adalah bumbu mutlak yang membedakan mangut dari sayur santan biasa.',
+      'Cabai rawit sengaja dimasukkan utuh agar tingkat kepedasan dapat disesuaikan penikmatnya dengan dipencet di piring.'
+    ],
+    regionalVariations: 'Di daerah pesisir pantura mangut sering menggunakan ikan pari asap (ikan pe), sedangkan di pedalaman Jawa Tengah lele asap menjadi primadona utama.',
+    equipment: ['Wajan cekung tebal', 'Cobek batu & ulekan', 'Spatula kayu'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Utama Ikan & Kuah',
+        items: [
+          { name: 'Ikan lele asap matang', amount: 4, unit: 'ekor', notes: 'Pilih lele asap beraroma sedap tanpa bau tengik' },
+          { name: 'Santan kelapa murni', amount: 750, unit: 'ml', notes: 'Kekentalan sedang' },
+          { name: 'Cabai rawit merah utuh', amount: 15, unit: 'buah', notes: 'Biarkan utuh bertangkai pendek' },
+          { name: 'Belimbing wuluh, belah 2', amount: 4, unit: 'buah', notes: 'Beri rasa asam segar pemecah santan' },
+          { name: 'Tomat hijau, potong 4', amount: 2, unit: 'buah', notes: 'Segar renyah' },
+          { name: 'Daun kemangi segar', amount: 1, unit: 'ikat', notes: 'Petik daunnya' },
+          { name: 'Daun salam & daun jeruk', amount: 3, unit: 'lembar', notes: 'Robek uratnya' },
+          { name: 'Lengkuas memarkan', amount: 3, unit: 'cm', notes: 'Cuci bersih' }
+        ]
+      },
+      {
+        name: 'Bumbu Halus (Ulek)',
+        items: [
+          { name: 'Bawang merah lokal', amount: 7, unit: 'butir', notes: 'Kupas' },
+          { name: 'Bawang putih', amount: 4, unit: 'siung', notes: 'Kupas' },
+          { name: 'Kencur segar', amount: 3, unit: 'cm', notes: 'Aroma mutlak mangut' },
+          { name: 'Kunyit bakar', amount: 2.5, unit: 'cm', notes: 'Warna kuning cantik' },
+          { name: 'Kemiri sangrai', amount: 4, unit: 'butir', notes: 'Haluskan' },
+          { name: 'Cabai merah keriting', amount: 5, unit: 'buah', notes: 'Haluskan' },
+          { name: 'Gula merah & garam', amount: 1.5, unit: 'sdt', notes: 'Sesuaikan rasa' }
+        ]
+      }
+    ],
+    instructions: [
+      {
+        stepNumber: 1,
+        title: 'Menumis Bumbu Halus Rempah',
+        instruction: 'Panaskan 2 sdm minyak di wajan. Tumis bumbu halus bersama daun salam, daun jeruk, dan lengkuas hingga harum semerbak dan matang berminyak.',
+        timerMinutes: 8,
+        tip: 'Aroma kencur dan daun jeruk harus menguar matang sebelum santan dituangkan.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Menuang Santan & Mematangkan Kuah',
+        instruction: 'Tuang santan kelapa sedang secara bertahap sambil diaduk perlahan searah agar santan tidak pecah. Masukkan gula merah dan garam. Masak hingga santan mulai mendidih perlahan.',
+        timerMinutes: 12,
+        tip: 'Jaga api tetap sedang dan aduk teratur hingga santan mulai menyatu dengan bumbu kuning.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Memasukkan Lele Asap & Cabai Rawit',
+        instruction: 'Masukkan lele asap, cabai rawit merah utuh, belimbing wuluh, dan irisan tomat hijau. Masak dengan api kecil selama 10 menit agar sari ikan asap meresap ke dalam kuah santan.',
+        timerMinutes: 10,
+        tip: 'Jangan membolak-balik lele asap secara kasar agar kepalanya tidak patah terpisah.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Menambahkan Kemangi Segar',
+        instruction: 'Sesaat sebelum diangkat, masukkan segenggam daun kemangi segar. Aduk perlahan hingga kemangi layu harum, lalu matikan api kompor.',
+        timerMinutes: 2,
+        tip: 'Kemangi dimasukkan di detik terakhir agar warnanya tetap hijau segar dan wanginya tidak hilang.'
+      }
+    ],
+    cookingTips: [
+      'Cuci lele asap dengan air hangat mengalir sebentar untuk membersihkan debu abu pembakaran sebelum dimasak.',
+      'Jika kuah terasa terlalu pekat, tambahkan sedikit kaldu hangat atau santan encer.'
+    ],
+    commonMistakes: [
+      'Mengaduk terlalu kencang sehingga daging lele hancur berserakan di kuah.',
+      'Kurang kencur: mangut akan kehilangan identitas rasa khas Jawa Tengah.'
+    ],
+    substitutions: [
+      { ingredient: 'Lele Asap', substitute: 'Bisa menggunakan ikan pari asap (ikan pe) atau ikan tongkol asap' }
+    ],
+    servingSuggestions: 'Sangat nikmat disantap bersama nasi putih hangat pulen dan lalapan mentimun renyah.',
+    nutrition: {
+      calories: '380 kkal',
+      protein: '28 g',
+      carbs: '12 g',
+      fat: '24 g',
+      note: 'Per porsi lele asap komplit kuah santan.'
+    },
+    relatedRecipeIds: ['garang-asem-kudus', 'mendoan-banyumas', 'nasi-megono-pekalongan'],
+    legendaryRestaurantIds: ['kupat-tahu-pojok-magelang', 'mendoan-echo-purwokerto']
+  },
+
+  // 14. Mie Ongklok Khas Wonosobo
+  {
+    id: 'mie-ongklok-wonosobo',
+    slug: 'mie-ongklok-wonosobo',
+    name: 'Mie Ongklok Asli Wonosobo',
+    javaneseName: 'Bakmi Ongklok Dieng',
+    regionId: 'wonosobo',
+    regionName: 'Wonosobo',
+    mealType: 'Makan Utama / Hangat',
+    cookingDuration: '30 Menit',
+    prepTime: '15 Menit',
+    cookTime: '15 Menit',
+    baseServings: 4,
+    difficulty: 'Mudah',
+    difficultyLevel: 'Mudah',
+    flavorProfiles: ['manis', 'gurih', 'segar'],
+    budgetCategory: 'Sangat Terjangkau',
+    estimatedCost: 'Rp 28.000 – Rp 42.000',
+    image: '/assets/images/recipes/tahu-gimbal.jpg',
+    intro: 'Mie Ongklok adalah sajian mi khas pegunungan Dieng, Wonosobo. Mi kuning kenyal dan irisan kol segar direbus menggunakan keranjang bambu kecil (ongklok), lalu diguyur kuah kental gurih manis berbahan kaldu ebi, gula jawa, dan tepung kanji bertabur kucai harum.',
+    history: 'Diciptakan oleh juru masak lokal Wonosobo pada pertengahan abad ke-20 untuk menghangatkan tubuh masyarakat di tengah sejuknya udara pegunungan Dieng. Teknik mencelup mi dengan keranjang bambu di dalam air mendidih menghasilkan bunyi khas "ongklok-ongklok".',
+    culturalBackground: 'Menyantap mie ongklok di Wonosobo belum lengkap tanpa sate sapi bumbu kacang manis dan tempe kemul renyah bertabur daun kucai yang digoreng dadakan di samping gerobak.',
+    interestingFacts: [
+      'Alat keranjang bambu berongga tempat merebus mi dan sayuran disebut ongklok, yang menjadi nama sajian ini.',
+      'Kuah kentalnya yang mengilat dibuat dari larutan tepung kanji (tapioka) dengan kaldu ebi kering sangrai dan gula jawa.',
+      'Daun kucai lokal Wonosobo beraroma lebih tajam manis dibandingkan kucai dataran rendah.'
+    ],
+    regionalVariations: 'Di dataran tinggi Dieng kuahnya cenderung lebih manis legit dan ditambahkan cabai rawit gerus mentah.',
+    equipment: ['Panci perebus mie', 'Keranjang saringan mie / ongklok', 'Cobek batu', 'Panci kuah kental'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Mi & Sayuran',
+        items: [
+          { name: 'Mi basah kuning kenyal', amount: 400, unit: 'gram', notes: 'Bisa mi telur basah berkualitas' },
+          { name: 'Kol segar, iris kasar', amount: 150, unit: 'gram', notes: 'Cuci bersih' },
+          { name: 'Daun kucai segar, potong 2 cm', amount: 1, unit: 'ikat', notes: 'Ciri khas aroma Wonosobo' },
+          { name: 'Bawang merah goreng', amount: 3, unit: 'sdm', notes: 'Taburan harum' }
+        ]
+      },
+      {
+        name: 'Bahan Kuah Kental Gurih Manis',
+        items: [
+          { name: 'Air kaldu sapi / ayam', amount: 800, unit: 'ml', notes: 'Kaldu gurih alami' },
+          { name: 'Ebi kering, rendam lalu sangrai', amount: 2, unit: 'sdm', notes: 'Haluskan bersama bumbu' },
+          { name: 'Tepung kanji / tapioka', amount: 3.5, unit: 'sdm', notes: 'Larutkan dengan 100 ml air dingin' },
+          { name: 'Gula merah kelapa sisir', amount: 2.5, unit: 'sdm', notes: 'Gula jawa asli' },
+          { name: 'Kecap manis kental', amount: 2, unit: 'sdm', notes: 'Beri warna cokelat mengilat' },
+          { name: 'Bawang putih', amount: 5, unit: 'siung', notes: 'Haluskan' },
+          { name: 'Bawang merah', amount: 4, unit: 'butir', notes: 'Haluskan' },
+          { name: 'Merica butiran', amount: 0.5, unit: 'sdt', notes: 'Haluskan' },
+          { name: 'Garam', amount: 1.5, unit: 'sdt', notes: 'Secukupnya' }
+        ]
+      }
+    ],
+    instructions: [
+      {
+        stepNumber: 1,
+        title: 'Membuat Kuah Kental Ebi Gurih',
+        instruction: 'Tumis bumbu halus dan ebi sangrai hingga harum matang. Tuang air kaldu, gula merah, kecap manis, dan garam. Masak hingga mendidih dan gula larut sempurna.',
+        timerMinutes: 8,
+        tip: 'Ebi harus disangrai harum agar kuah tidak berbau amis.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Mengentalkan Kuah dengan Kanji',
+        instruction: 'Kecilkan api kompor. Tuang larutan tepung kanji sambil terus diaduk cepat hingga kuah meletup-letup kental, mengilap, dan tidak menggumpal.',
+        timerMinutes: 5,
+        tip: 'Aduk terus tanpa henti saat menuang kanji agar kuah licin merata.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Merebus Mi & Kol dengan Saringan',
+        instruction: 'Didihkan air bersih di panci terpisah. Masukkan mi basah dan potongan kol ke dalam saringan/ongklok. Celup-celupkan ke dalam air mendidih selama 1-2 menit hingga layu kenyal. Angkat dan tiriskan.',
+        timerMinutes: 3,
+        tip: 'Jangan rebus terlalu lama agar kol tetap renyah segar saat dikunyah.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Penyajian Hangat Bertabur Kucai',
+        instruction: 'Tata mi dan kol rebus di dalam mangkuk. Siram kuah kental panas melimpah di atasnya. Taburi irisan kucai segar dan bawang goreng. Santap hangat bersama sate sapi manis.',
+        timerMinutes: 2,
+        tip: 'Sajikan selagi kuah masih sangat panas mengepul.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan tepung kanji asli (bukan maizena) agar kekentalannya kenyal lentur dan bening mengilat.',
+      'Sate daging sapi bumbu kacang manis adalah teman duet mutlak mie ongklok.'
+    ],
+    commonMistakes: [
+      'Kuah terlalu encer seperti bakso biasa: kuah ongklok seharusnya kental membungkus untaian mi.',
+      'Mengganti daun kucai dengan seledri: aroma khas Wonosobo akan hilang.'
+    ],
+    substitutions: [
+      { ingredient: 'Ebi Kering', substitute: 'Bisa diganti terasi udang sangrai kualitas super' }
+    ],
+    servingSuggestions: 'Sangat nikmat disantap di udara sejuk ditemani tempe kemul renyah dan sate sapi bumbu kecap manis.',
+    nutrition: {
+      calories: '350 kkal',
+      protein: '14 g',
+      carbs: '60 g',
+      fat: '7 g',
+      note: 'Per porsi tanpa lauk sate pendamping.'
+    },
+    relatedRecipeIds: ['tahu-gimbal-semarang', 'mendoan-banyumas', 'soto-kudus'],
+    legendaryRestaurantIds: ['kupat-tahu-pojok-magelang', 'mendoan-echo-purwokerto']
+  },
+
+  // 15. Tengkleng Kambing Khas Pasar Klewer Solo
+  {
+    id: 'tengkleng-kambing-solo',
+    slug: 'tengkleng-kambing-solo',
+    name: 'Tengkleng Kambing Pasar Klewer',
+    javaneseName: 'Tengkleng Wedhus Solo',
+    regionId: 'surakarta',
+    regionName: 'Surakarta (Solo)',
+    mealType: 'Makan Utama',
+    cookingDuration: '75 Menit',
+    prepTime: '20 Menit',
+    cookTime: '55 Menit',
+    baseServings: 4,
+    difficulty: 'Sedang',
+    difficultyLevel: 'Menengah',
+    flavorProfiles: ['gurih', 'pedas', 'kaya-rempah'],
+    budgetCategory: 'Istimewa',
+    estimatedCost: 'Rp 65.000 – Rp 90.000',
+    image: '/assets/images/recipes/sate-buntel.jpg',
+    intro: 'Tengkleng Solo adalah olahan tulang, iga, dan jeroan kambing yang dimasak dalam kuah kuning encer kaya rempah tanpa santan kental. Beraroma wangi serai, kapulaga, cengkih, dan cabai rawit utuh yang memberikan kehangatan segar tanpa membuat enek.',
+    history: 'Di era kolonial dan keraton Surakarta, bagian daging kambing terbaik dinikmati oleh bangsawan Belanda dan priyayi keraton. Para abdi dalem dan rakyat jelata mengolah tulang berbalut sedikit daging sisa dengan rebusan bumbu rempah melimpah, melahirkan hidangan tengkleng yang melegenda.',
+    culturalBackground: 'Keasyikan menyantap tengkleng terletak pada sensasi menyesap sari sumsum gurih dari rongga tulang dan menggigit daging kenyal yang menempel di sela iga kambing hangat.',
+    interestingFacts: [
+      'Berbeda dari gule kambing yang bersantan kental pekat, kuah tengkleng Solo asli encer bening kekuningan sehingga terasa ringan dan menyegarkan.',
+      'Pasar Klewer dan kawasan Pasar Kliwon Solo adalah sentra lahirnya legenda pedagang tengkleng pikulan sejak puluhan tahun silam.',
+      'Kambing yang digunakan umumnya kambing muda agar aromanya harum dan daging tulang lekas empuk lembut.'
+    ],
+    regionalVariations: 'Terdapat variasi tengkleng rica-rica yang dimasak kembali dengan sedikit kuah dan kecap pedas cabai rawit melimpah.',
+    equipment: ['Panci presto atau panci sup besar bertutup tebal', 'Cobek batu & ulekan', 'Sutil kayu'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Tulang Kambing & Kuah',
+        items: [
+          { name: 'Tulang iga & kaki kambing muda berbalut daging', amount: 800, unit: 'gram', notes: 'Potong kecil-kecil' },
+          { name: 'Air bersih untuk kaldu', amount: 1800, unit: 'ml', notes: 'Rebusan pertama dibuang' },
+          { name: 'Cabai rawit merah utuh', amount: 15, unit: 'buah', notes: 'Beri sengatan pedas segar' },
+          { name: 'Serai, memarkan', amount: 3, unit: 'batang', notes: 'Ambil putihnya' },
+          { name: 'Daun salam segar', amount: 4, unit: 'lembar', notes: 'Cuci bersih' },
+          { name: 'Daun jeruk purut', amount: 5, unit: 'lembar', notes: 'Robek tulangnya' },
+          { name: 'Kayu manis', amount: 3, unit: 'cm', notes: 'Aroma wangi' },
+          { name: 'Cengkih utuh', amount: 4, unit: 'butir', notes: 'Hangat aromatik' },
+          { name: 'Kapulaga putih', amount: 3, unit: 'butir', notes: 'Memarkan' },
+          { name: 'Lengkuas, memarkan', amount: 4, unit: 'cm', notes: 'Cuci' }
+        ]
+      },
+      {
+        name: 'Bumbu Halus (Ulek)',
+        items: [
+          { name: 'Bawang merah lokal', amount: 10, unit: 'butir', notes: 'Kupas' },
+          { name: 'Bawang putih', amount: 6, unit: 'siung', notes: 'Kupas' },
+          { name: 'Kunyit bakar', amount: 3, unit: 'cm', notes: 'Warna kuning cantik' },
+          { name: 'Jahe segar', amount: 3, unit: 'cm', notes: 'Hangat peredam bau perengus' },
+          { name: 'Kemiri sangrai', amount: 5, unit: 'butir', notes: 'Sangrai harum' },
+          { name: 'Ketumbar sangrai', amount: 1, unit: 'sdm', notes: 'Ulek' },
+          { name: 'Merica butiran', amount: 1, unit: 'sdt', notes: 'Ulek' },
+          { name: 'Pala bubuk', amount: 0.25, unit: 'sdt', notes: 'Aroma wangi' },
+          { name: 'Garam & gula kelapa', amount: 2, unit: 'sdt', notes: 'Sesuaikan rasa' }
+        ]
+      }
+    ],
+    instructions: [
+      {
+        stepNumber: 1,
+        title: 'Merebus & Membersihkan Tulang Kambing',
+        instruction: 'Rebus potongan tulang kambing dalam air mendidih selama 10 menit. Buang air rebusan pertama dan busanya untuk menghilangkan bau perengus kotor. Tiriskan tulang.',
+        timerMinutes: 15,
+        tip: 'Membuang air rebusan pertama adalah rahasia kuah tengkleng yang jernih dan harum sedap.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Menumis Bumbu Halus Rempah',
+        instruction: 'Tumis bumbu halus bersama serai, daun salam, daun jeruk, lengkuas, kayu manis, cengkih, dan kapulaga hingga harum matang dan wangi rempahnya keluar semerbak.',
+        timerMinutes: 8,
+        tip: 'Pastikan bumbu matang benar agar tidak meninggalkan sisa rasa pahit.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Mengungkep Tulang dalam Kuah Rempah',
+        instruction: 'Masukkan tulang kambing ke dalam tumisan bumbu, aduk rata 3 menit. Tuang air bersih hangat. Masak dengan api kecil bertutup selama 45-50 menit hingga daging di sela tulang empuk dan kaldu gurih meresap.',
+        timerMinutes: 45,
+        tip: 'Gunakan api kecil agar sari sumsum tulang keluar perlahan memperkaya kuah kaldu.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Memasukkan Cabai Rawit & Penyajian',
+        instruction: 'Masukkan cabai rawit merah utuh, masak 5 menit lagi hingga cabai layu sedikit. Cicipi dan koreksi rasa garam dan gula. Angkat dan sajikan panas-panas dengan taburan bawang goreng.',
+        timerMinutes: 7,
+        tip: 'Nikmati selagi kuah masih sangat panas bersama sepiring nasi putih hangat.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan tulang kambing muda dari bagian iga dan punggung yang masih memiliki lapisan daging lembut.',
+      'Sajikan bersama perasan jeruk nipis segar untuk kesegaran ekstra di akhir santapan.'
+    ],
+    commonMistakes: [
+      'Menambahkan santan kental: tengkleng asli Solo berkuah encer ringan tanpa santan berat.',
+      'Tidak membuang air rebusan awal tulang: kuah akan keruh dan berbau perengus tajam.'
+    ],
+    substitutions: [
+      { ingredient: 'Tulang Kambing', substitute: 'Bisa diganti iga sapi muda potong pendek' }
+    ],
+    servingSuggestions: 'Sangat nikmat dinikmati bersama nasi putih pulen, emping melinjo renyah, dan kecap manis rawit potong.',
+    nutrition: {
+      calories: '410 kkal',
+      protein: '32 g',
+      carbs: '8 g',
+      fat: '28 g',
+      note: 'Per porsi mangkuk saji tengkleng tulang kambing.'
+    },
+    relatedRecipeIds: ['sate-buntel-solo', 'selat-solo', 'nasi-liwet-solo'],
+    legendaryRestaurantIds: ['pak-manto-solo', 'wongso-lemu-solo']
+  },
+
+  // 16. Wingko Babat Asli Semarang
+  {
+    id: 'wingko-babat-semarang',
+    slug: 'wingko-babat-semarang',
+    name: 'Wingko Babat Asli Semarang',
+    javaneseName: 'Wingko Kelapa Panggang',
+    regionId: 'semarang',
+    regionName: 'Semarang',
+    mealType: 'Camilan / Kudapan',
+    cookingDuration: '40 Menit',
+    prepTime: '15 Menit',
+    cookTime: '25 Menit',
+    baseServings: 6,
+    difficulty: 'Mudah',
+    difficultyLevel: 'Mudah',
+    flavorProfiles: ['manis', 'gurih'],
+    budgetCategory: 'Sangat Terjangkau',
+    estimatedCost: 'Rp 22.000 – Rp 35.000',
+    image: '/assets/images/recipes/lumpia-semarang.jpg',
+    intro: 'Wingko Babat adalah kudapan panggang legendaris berbahan parutan kelapa muda setengah tua, tepung ketan putih pilihan, santan, dan gula pasir. Dipanggang di atas wajan datar hingga permukaannya kecokelatan harum berkaramel legit dengan tekstur kenyal empuk menggoda selera.',
+    history: 'Meski berasal dari kota Babat di perbatasan Jawa Timur, wingko mencapai puncak ketenaran dan kejayaan ikoniknya di Stasiun Tawang Semarang sejak tahun 1940-an melalui toko Wingko Babat Cap Kereta Api yang legendaris.',
+    culturalBackground: 'Wingko Babat adalah oleh-oleh wajib kebanggaan Semarang yang melambangkan kehangatan persaudaraan dan kelembutan tradisi dapur pesisir Jawa Tengah.',
+    interestingFacts: [
+      'Kunci kelezatan wingko babat terletak pada kelapa yang diparut memanjang (bukan parut halus santan) agar tekstur gigitannya gurih kenyal.',
+      'Aroma harum khas wingko berasal dari karamelisasi gula dan minyak kelapa alami saat bersentuhan dengan wajan panggang panas.',
+      'Dapat bertahan hingga 4-5 hari dalam suhu ruang tanpa bahan pengawet apa pun.'
+    ],
+    regionalVariations: 'Selain rasa kelapa gurih orisinal, kini berkembang variasi rasa nangka, cokelat, dan durian lokal.',
+    equipment: ['Wajan teflon datar atau wajan gerabah', 'Mangkuk adonan besar', 'Spatula pipih'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Adonan Wingko',
+        items: [
+          { name: 'Kelapa setengah tua, kupas kulit ari lalu parut kasar', amount: 300, unit: 'gram', notes: 'Gunakan kelapa segar bukan kelapa kering' },
+          { name: 'Tepung ketan putih berkualitas', amount: 250, unit: 'gram', notes: 'Ayak bersih' },
+          { name: 'Gula pasir putih', amount: 180, unit: 'gram', notes: 'Sesuaikan tingkat manis' },
+          { name: 'Santan kelapa hangat', amount: 150, unit: 'ml', notes: 'Dari perasan kelapa murni' },
+          { name: 'Margarin leleh', amount: 2, unit: 'sdm', notes: 'Menambah kelembutan adonan' },
+          { name: 'Garam halus', amount: 0.5, unit: 'sdt', notes: 'Pengangkat rasa gurih kelapa' },
+          { name: 'Vanili bubuk', amount: 0.25, unit: 'sdt', notes: 'Aroma wangi lembut' }
+        ]
+      }
+    ],
+    instructions: [
+      {
+        stepNumber: 1,
+        title: 'Mencampur Bahan Kering & Kelapa',
+        instruction: 'Dalam mangkuk besar, campurkan kelapa parut kasar, tepung ketan putih, gula pasir, garam, dan vanili. Aduk menggunakan tangan bersih atau spatula hingga butiran gula mulai menyatu dengan kelapa.',
+        timerMinutes: 8,
+        tip: 'Remas perlahan dengan ujung jari agar minyak kelapa alami keluar melembutkan tepung ketan.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Menuang Santan & Margarin Leleh',
+        instruction: 'Tuang santan hangat dan margarin leleh sedikit demi sedikit sambil diuleni lembut hingga adonan menyatu lembap dan bisa dibentuk padat tanpa terlalu encer.',
+        timerMinutes: 7,
+        tip: 'Jangan membuat adonan terlalu basah berair agar wingko tidak lembek saat dipanggang.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Membentuk & Memanggang Wingko',
+        instruction: 'Panaskan wajan datar beroles tipis margarin dengan api sangat kecil. Ambil 2 sdm adonan, bulatkan lalu pipihkan setebal 1.5 cm di atas wajan. Tutup wajan selama 6-8 menit.',
+        timerMinutes: 10,
+        tip: 'Gunakan api lilin sangat kecil agar bagian dalam matang tanak tanpa membuat kulit luar gosong pahit.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Membalik & Mematangkan Kedua Sisi',
+        instruction: 'Balik wingko perlahan saat bagian bawah sudah berwarna kecokelatan keemasan beraroma karamel. Panggang sisi baliknya selama 5-7 menit hingga matang sempurna. Angkat dan dinginkan di atas rak kawat.',
+        timerMinutes: 8,
+        tip: 'Tekstur wingko akan semakin kenyal legit setelah uap panasnya mereda.'
+      }
+    ],
+    cookingTips: [
+      'Pilih kelapa yang pas setengah tua (bisa untuk urap); jika terlalu tua tekstur akan keras berserat kasar.',
+      'Tutup wajan saat memanggang untuk menciptakan efek oven mini yang mematangkan ketan hingga ke bagian inti.'
+    ],
+    commonMistakes: [
+      'Memanggang dengan api terlalu besar: bagian luar cepat gosong sementara ketan di dalam masih mentah bertepung.',
+      'Memakai tepung ketan apek: akan merusak aroma harum alami kelapa panggang.'
+    ],
+    substitutions: [
+      { ingredient: 'Santan Segar', substitute: 'Bisa diganti air kelapa muda hangat untuk rasa lebih legit' }
+    ],
+    servingSuggestions: 'Sangat nikmat disajikan sebagai teman minum Teh Nasgitel (Panas Legi Kentel) atau Kopi Tubruk hangat.',
+    nutrition: {
+      calories: '220 kkal',
+      protein: '3 g',
+      carbs: '32 g',
+      fat: '9 g',
+      note: 'Per buah potongan wingko babat ukuran sedang.'
+    },
+    relatedRecipeIds: ['lumpia-semarang', 'tahu-gimbal-semarang', 'mendoan-banyumas'],
+    legendaryRestaurantIds: ['toko-oen-semarang', 'lumpia-gang-lombok-semarang']
+  },
+
+  // 17. Getuk Trio Lembut Magelang
+  {
+    id: 'getuk-trio-magelang',
+    slug: 'getuk-trio-magelang',
+    name: 'Getuk Trio Lembut Magelang',
+    javaneseName: 'Getuk Lindri Telung Rupa',
+    regionId: 'magelang',
+    regionName: 'Magelang',
+    mealType: 'Camilan Tradisional',
+    cookingDuration: '35 Menit',
+    prepTime: '15 Menit',
+    cookTime: '20 Menit',
+    baseServings: 6,
+    difficulty: 'Mudah',
+    difficultyLevel: 'Mudah',
+    flavorProfiles: ['manis', 'gurih'],
+    budgetCategory: 'Sangat Terjangkau',
+    estimatedCost: 'Rp 18.000 – Rp 28.000',
+    image: '/assets/images/recipes/tempe-bacem.jpg',
+    intro: 'Getuk Trio Magelang diolah dari singkong pilihan yang dikukus pulen merekah lalu ditumbuk halus bersama gula dan sedikit mentega. Tiga lapis warna alami (cokelat gula jawa, merah muda, dan putih krim) menyajikan kelembutan manis bersahabat bertabur kelapa parut kukus gurih.',
+    history: 'Diciptakan oleh masyarakat Magelang pada era penjajahan Jepang ketika beras sulit didapat dan singkong menjadi makanan pokok pengganti. Masyarakat berkreasi menumbuk singkong kukus dengan bumbu gula kelapa hingga lahirlah getuk yang lembut dan lezat.',
+    culturalBackground: 'Getuk adalah simbol kesahajaan dan kreativitas masyarakat Jawa dalam mengolah hasil bumi sederhana menjadi sajian istimewa berkelas perjamuan.',
+    interestingFacts: [
+      'Singkong yang cocok untuk getuk adalah varietas singkong mentega kuning yang empuk merekah (mempur) saat dikukus.',
+      'Trio merujuk pada tiga warna khas lapisannya: putih vanila, cokelat gula kelapa, dan merah muda beraroma manis lembut.',
+      'Kelapa parut pelengkap harus dikukus dengan sedikit garam agar tidak cepat basi dan menambah kontras gurih.'
+    ],
+    regionalVariations: 'Di pedesaan Magelang dan Banyumas getuk sering digoreng renyah berkulit garing (getuk goreng Sokaraja).',
+    equipment: ['Kukusan dandang', 'Alat penumbuk singkong / cobek kayu besar', 'Loyang cetakan persegi'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Utama Getuk',
+        items: [
+          { name: 'Singkong kualitas bagus, kupas potong-potong', amount: 800, unit: 'gram', notes: 'Pilih singkong mentega empuk' },
+          { name: 'Gula pasir putih', amount: 100, unit: 'gram', notes: 'Untuk lapisan putih & merah muda' },
+          { name: 'Gula merah kelapa sisir', amount: 60, unit: 'gram', notes: 'Untuk lapisan cokelat alami' },
+          { name: 'Mentega / margarin kualitas bagus', amount: 2, unit: 'sdm', notes: 'Memberi rasa gurih wangi dan tekstur licin' },
+          { name: 'Garam halus', amount: 0.5, unit: 'sdt', notes: 'Secukupnya' },
+          { name: 'Pewarna merah muda alami', amount: 2, unit: 'tetes', notes: 'Opsional sari bit atau pasta frambozen' }
+        ]
+      },
+      {
+        name: 'Bahan Taburan Gurih',
+        items: [
+          { name: 'Kelapa setengah tua parut memanjang', amount: 150, unit: 'gram', notes: 'Kukus bersama sejumput garam dan daun pandan' }
+        ]
+      }
+    ],
+    instructions: [
+      {
+        stepNumber: 1,
+        title: 'Mengukus Singkong Hingga Merekah',
+        instruction: 'Kukus potongan singkong bersih dalam dandang panas selama 20-25 menit hingga benar-benar empuk merekah (mempur). Angkat dan buang serat keras di bagian tengahnya selagi masih panas mengepul.',
+        timerMinutes: 20,
+        tip: 'Tumbuk singkong saat masih panas membara agar teksturnya bisa lumat halus tanpa butiran kasar bergerindil.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Menumbuk Singkong & Membagi Adonan',
+        instruction: 'Tumbuk singkong bersama mentega dan garam hingga lembut kenyal. Bagi adonan menjadi 3 bagian sama rata: 1 bagian campur gula merah sisir (cokelat), 1 bagian campur gula pasir (putih), 1 bagian campur gula pasir dan tetesan merah muda.',
+        timerMinutes: 10,
+        tip: 'Uleni masing-masing bagian hingga warna dan rasa manisnya tercampur merata.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Melapis & Memadatkan di Loyang',
+        instruction: 'Siapkan loyang beralas plastik bersih. Tata adonan cokelat di dasar, ratakan dan padatkan. Susun adonan putih di tengah, lalu timpa dengan adonan merah muda di bagian paling atas. Tekan-tekan padat dan rapi.',
+        timerMinutes: 8,
+        tip: 'Gunakan penekan datar agar batas antarwarna terlihat cantik tegas saat dipotong.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Memotong & Menyajikan dengan Kelapa',
+        instruction: 'Keluarkan getuk dari loyang. Potong-potong persegi panjang rapi menggunakan pisau beralas plastik. Sajikan di atas piring bersama taburan kelapa parut kukus wangi pandan.',
+        timerMinutes: 5,
+        tip: 'Bungkus pisau dengan selembar plastik agar potongan getuk tidak menempel lengket.'
+      }
+    ],
+    cookingTips: [
+      'Kukus kelapa parut selama 10 menit bersama sehelai daun pandan agar tahan seharian tanpa menjadi asam basi.',
+      'Gunakan singkong segar yang baru dicabut maksimal 24 jam agar hasil getuk manis pulen tidak pahit.'
+    ],
+    commonMistakes: [
+      'Menumbuk singkong yang sudah mendingin: adonan akan bantat berbutir keras dan tidak bisa lumat halus.',
+      'Memakai singkong yang berurat kayu keras: tekstur getuk menjadi berserat kasar.'
+    ],
+    substitutions: [
+      { ingredient: 'Gula Merah', substitute: 'Bisa dipadukan bubuk cokelat kakao asli untuk variasi rasa' }
+    ],
+    servingSuggestions: 'Sangat nikmat disantap di pagi atau sore hari ditemani secangkir Kopi Robusta Temanggung hangat.',
+    nutrition: {
+      calories: '180 kkal',
+      protein: '2 g',
+      carbs: '38 g',
+      fat: '4 g',
+      note: 'Per potong getuk trio bersama taburan kelapa gurih.'
+    },
+    relatedRecipeIds: ['mendoan-banyumas', 'tempe-bacem', 'garang-asem-kudus'],
+    legendaryRestaurantIds: ['kupat-tahu-pojok-magelang', 'mendoan-echo-purwokerto']
+  },
+
+  // 18. Serabi Notosuman Tradisional Solo
+  {
+    id: 'serabi-notosuman-solo',
+    slug: 'serabi-notosuman-solo',
+    name: 'Serabi Notosuman Tradisional Solo',
+    javaneseName: 'Srabi Notosuman Kinca Areh',
+    regionId: 'surakarta',
+    regionName: 'Surakarta (Solo)',
+    mealType: 'Camilan Tradisional',
+    cookingDuration: '35 Menit',
+    prepTime: '15 Menit',
+    cookTime: '20 Menit',
+    baseServings: 6,
+    difficulty: 'Sedang',
+    difficultyLevel: 'Menengah',
+    flavorProfiles: ['manis', 'gurih'],
+    budgetCategory: 'Sangat Terjangkau',
+    estimatedCost: 'Rp 25.000 – Rp 38.000',
+    image: '/assets/images/recipes/mendoan.jpg',
+    intro: 'Serabi Notosuman adalah kue dadar beras khas Solo yang dimasak di atas wajan tanah liat kecil bertutup. Bagian tengahnya begitu lembut lumer berlumur areh santan kental manis, sementara tepiannya tipis garing renyah kecokelatan digulung rapi dalam selembar daun pisang segar.',
+    history: 'Diciptakan pertama kali oleh pasangan Hoo Gek Hok dan Tan Giok Lan pada tahun 1923 di Jalan Notosuman (kini Jalan Moh. Yamin), Solo. Resep turun-temurun ini mempertahankan teknik memanggang di atas wajan tanah liat berbahan bakar arang kayu.',
+    culturalBackground: 'Bagi masyarakat Solo, serabi notosuman adalah suguhan kehormatan saat menjamu tamu kerabat dan hantaran pengantin dalam tradisi Jawa klasik.',
+    interestingFacts: [
+      'Serabi Notosuman tidak menggunakan kuah kinca cair terpisah; santan areh kental langsung disendokkan ke atas adonan saat setengah matang di wajan.',
+      'Ciri khas penyajiannya adalah digulung dalam daun pisang yang harum tanpa perekat plastik.',
+      'Wajan tanah liat tradisional memberikan panas merata dan aroma asap pembakaran yang tidak bisa ditiru wajan logam modern.'
+    ],
+    regionalVariations: 'Selain rasa putih polos orisinal, varian cokelat meises menjadi favorit anak muda sejak era 1970-an.',
+    equipment: ['Wajan tanah liat kecil bertutup (atau wajan cekung kecil anti lengket)', 'Mangkuk adonan', 'Kuas minyak daun pisang', 'Sendok sayur'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Adonan Serabi',
+        items: [
+          { name: 'Tepung beras putih berkualitas', amount: 200, unit: 'gram', notes: 'Pilih tepung beras baru yang wangi' },
+          { name: 'Santan kelapa hangat', amount: 500, unit: 'ml', notes: 'Dari perasan kelapa murni' },
+          { name: 'Gula pasir', amount: 60, unit: 'gram', notes: 'Beri manis lembut di adonan' },
+          { name: 'Ragi instan', amount: 0.5, unit: 'sdt', notes: 'Membantu pembentukan rongga lembut' },
+          { name: 'Garam halus', amount: 0.5, unit: 'sdt', notes: 'Pengangkat rasa gurih' },
+          { name: 'Daun pandan wangi', amount: 2, unit: 'lembar', notes: 'Rebus bersama santan' }
+        ]
+      },
+      {
+        name: 'Bahan Areh Gurih Kental (Topping)',
+        items: [
+          { name: 'Santan kental perasan pertama', amount: 150, unit: 'ml', notes: 'Masak dengan sedikit garam hingga kental berminyak' },
+          { name: 'Gula pasir', amount: 1.5, unit: 'sdm', notes: 'Larutkan di areh' },
+          { name: 'Garam', amount: 0.25, unit: 'sdt', notes: 'Rasa gurih mantap' }
+        ]
+      }
+    ],
+    instructions: [
+      {
+        stepNumber: 1,
+        title: 'Membuat Adonan Serabi Beras',
+        instruction: 'Dalam mangkuk, campur tepung beras, ragi instan, gula pasir, dan garam. Tuang santan hangat perlahan sambil dikeplok-keplok dengan telapak tangan selama 10 menit agar udara terperangkap. Diamkan adonan selama 45 menit hingga berbuih ringan.',
+        timerMinutes: 15,
+        tip: 'Mengeplok adonan adalah kunci terbentuknya pori-pori sarang semut yang lembut lumer.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Memasak Areh Santan Kental',
+        instruction: 'Rebus santan kental bersama garam dan gula di atas api kecil sambil diaduk perlahan hingga mengental berminyak (areh). Angkat dan sisihkan untuk topping.',
+        timerMinutes: 8,
+        tip: 'Jaga api tetap kecil agar santan areh tidak gosong berkerak cokelat tua.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Memanggang Serabi di Wajan',
+        instruction: 'Panaskan wajan tanah liat kecil beroles tipis minyak. Tuang satu sendok sayur adonan serabi. Tekan bagian tengahnya dengan punggung sendok sayur ke arah tepi agar terbentuk renda tipis di pinggirnya. Tutup wajan selama 2 menit.',
+        timerMinutes: 4,
+        tip: 'Gerakan memutar sendok sayur menciptakan pinggiran tipis renyah (kerak serabi) yang ikonik.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Menuang Areh & Menggulung Serabi',
+        instruction: 'Buka tutup wajan saat permukaan serabi mulai berpori. Tuang 1 sdm santan areh kental di tengahnya. Tutup kembali hingga matang tanak. Angkat, letakkan di atas selembar daun pisang, lalu gulung rapi selagi hangat.',
+        timerMinutes: 4,
+        tip: 'Santap hangat agar bagian tengahnya terasa lumer meledak di lidah.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan wajan tanah liat yang sudah di-seasoning dengan minyak kelapa agar adonan serabi tidak lengket.',
+      'Daun pisang pembungkus harus diolesi sedikit minyak agar serabi tidak menempel saat dibuka.'
+    ],
+    commonMistakes: [
+      'Menuang adonan saat wajan belum cukup panas: serabi akan bantat tanpa renda tipis di pinggirannya.',
+      'Areh santan terlalu encer sehingga hanyut ke pinggiran alih-alih menggenang manis di bagian tengah.'
+    ],
+    substitutions: [
+      { ingredient: 'Wajan Tanah Liat', substitute: 'Bisa menggunakan wajan teflon cekung kecil berdiameter 14 cm' }
+    ],
+    servingSuggestions: 'Sangat nikmat disajikan hangat ditemani secangkir Teh Melati Solo yang wangi sepet legit.',
+    nutrition: {
+      calories: '160 kkal',
+      protein: '3 g',
+      carbs: '24 g',
+      fat: '6 g',
+      note: 'Per buah serabi notosuman gulung daun pisang.'
+    },
+    relatedRecipeIds: ['nasi-liwet-solo', 'selat-solo', 'sate-buntel-solo'],
+    legendaryRestaurantIds: ['wongso-lemu-solo', 'pak-manto-solo']
   }
 ];
-

@@ -28,16 +28,13 @@
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
-/* Base Body & Layered Javanese Ambient Background */
+/* Base Body & Layered Central Javanese Heritage Ambient Background */
 body {
   background-color: #FAF6EF;
   background-image: 
-    radial-gradient(circle at 12% 18%, rgba(196, 154, 88, 0.07) 0%, transparent 40%),
-    radial-gradient(circle at 88% 82%, rgba(184, 92, 56, 0.05) 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, rgba(242, 232, 216, 0.5) 0%, transparent 70%),
-    linear-gradient(rgba(200, 180, 155, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200, 180, 155, 0.12) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+    radial-gradient(circle at 10% 12%, rgba(196, 154, 88, 0.09) 0%, transparent 45%),
+    radial-gradient(circle at 90% 85%, rgba(184, 92, 56, 0.07) 0%, transparent 50%),
+    radial-gradient(circle at 50% 40%, rgba(242, 232, 216, 0.5) 0%, transparent 75%);
   background-attachment: fixed;
   color: #302018;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;

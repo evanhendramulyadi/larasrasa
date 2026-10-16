@@ -341,31 +341,44 @@ function renderFormView(currentLang) {
           </div>
 
           <!-- Ingredients Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 max-h-96 overflow-y-auto p-1">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 max-h-[32rem] overflow-y-auto p-1.5 custom-scrollbar">
             ${filteredIngredients.map(item => {
               const isSelected = formState.selectedIngredientIds.includes(item.id);
+              const imgSrc = item.image || `/assets/images/ingredients/${item.id}.jpg`;
               return `
                 <button 
                   type="button" 
                   data-ingredient-id="${item.id}"
-                  class="ingredient-select-card p-3 rounded-2xl border text-left flex flex-col justify-between transition-all duration-200 ${
+                  class="ingredient-select-card group p-2 rounded-2xl border text-left flex flex-col justify-between transition-all duration-200 relative overflow-hidden ${
                     isSelected 
-                      ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38] shadow-xs ring-2 ring-[#B85C38]' 
-                      : 'bg-[#FAF6EF]/60 hover:bg-[#FAF6EF] text-[#302018] border-[#E5D9C5] hover:border-[#C49A58]'
+                      ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38] shadow-md ring-2 ring-[#B85C38]' 
+                      : 'bg-white hover:bg-[#FAF6EF] text-[#302018] border-[#E5D9C5] hover:border-[#C49A58] shadow-2xs'
                   }"
                 >
-                  <div class="flex items-center justify-between w-full">
-                    <span class="text-xl">${item.icon || '🌿'}</span>
-                    <span class="w-4 h-4 rounded-full border flex items-center justify-center text-[10px] ${
-                      isSelected ? 'bg-[#B85C38] border-white text-white' : 'border-[#C49A58]/50 text-transparent'
-                    }">✓</span>
+                  <div class="relative w-full h-24 rounded-xl overflow-hidden bg-[#FAF6EF] border border-[#E5D9C5]/60 mb-2">
+                    <img 
+                      src="${imgSrc}" 
+                      alt="${escapeHtml(item.nameId)}" 
+                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
+                      onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                    />
+                    <div class="hidden w-full h-full flex items-center justify-center text-2xl bg-[#E5D9C5]/40">
+                      ${item.icon || '🌿'}
+                    </div>
+                    <div class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold shadow-xs transition-colors ${
+                      isSelected ? 'bg-[#B85C38] border-white text-white' : 'bg-white/80 border-[#C49A58]/50 text-transparent'
+                    }">✓</div>
+                    <div class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded-md bg-[#302018]/75 backdrop-blur-xs text-[10px] text-white flex items-center gap-1">
+                      <span>${item.icon || '🌿'}</span>
+                    </div>
                   </div>
-                  <div class="mt-2">
-                    <div class="text-xs font-bold leading-snug line-clamp-2">
+                  <div class="px-1 flex-1 flex flex-col justify-between">
+                    <div class="text-xs font-bold leading-tight line-clamp-2">
                       ${isEn ? (item.nameEn || item.nameId) : item.nameId}
                     </div>
                     ${item.flavorNote ? `
-                      <span class="text-[9px] ${isSelected ? 'text-[#C49A58]' : 'text-[#777B52]'} line-clamp-1 mt-0.5 block">
+                      <span class="text-[9px] ${isSelected ? 'text-[#C49A58]' : 'text-[#777B52]'} line-clamp-1 mt-1 block">
                         ${item.flavorNote}
                       </span>
                     ` : ''}

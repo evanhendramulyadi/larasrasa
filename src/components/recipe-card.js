@@ -36,7 +36,7 @@ export function renderRecipeCard(recipe) {
       role="link"
       tabindex="0"
       aria-label="${recipe.name} (${recipe.regionName})"
-      class="recipe-card-item group bg-white rounded-2xl overflow-hidden border border-[#E5D9C5] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col card-hover-lift cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#B85C38]"
+      class="recipe-card recipe-card-item group bg-white rounded-2xl overflow-hidden border border-[#E5D9C5] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col card-hover-lift cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#B85C38]"
     >
       <!-- Card Image Header -->
       <a href="#/resep/${recipe.slug}" class="recipe-card-link relative block overflow-hidden aspect-4/3 bg-[#302018]/10" aria-label="${recipe.name}">

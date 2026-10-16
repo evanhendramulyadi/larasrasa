@@ -8,7 +8,7 @@ import { i18n, t } from '../i18n/index.js';
  */
 
 let mapInstance = null;
-let geoJsonLayer = null;
+let regionMarkers = {};
 let activeRegionId = 'semarang';
 
 export async function renderFlavorMapPage() {
@@ -70,19 +70,13 @@ export async function renderFlavorMapPage() {
           <!-- Leaflet Container -->
           <div id="central-java-map" class="w-full h-[460px] sm:h-[540px] rounded-2xl overflow-hidden z-10 bg-[#F2E8D8]/40"></div>
 
-          <!-- Map Legend -->
+          <!-- Map Legend & Interaction Helper -->
           <div class="pt-4 px-2 flex flex-wrap items-center justify-between gap-3 text-xs text-[#654332]">
-            <div class="flex items-center gap-4">
-              <span class="flex items-center gap-1.5">
-                <span class="w-3.5 h-3.5 rounded-sm bg-[#B85C38]/40 border border-[#B85C38]"></span>
-                ${t('map.legendRegion')}
-              </span>
-              <span class="flex items-center gap-1.5">
-                <span class="w-3 h-3 rounded-full bg-[#B85C38] border border-white shadow-xs"></span>
-                ${t('map.legendCenter')}
-              </span>
+            <div class="flex items-center gap-2">
+              <span class="w-3.5 h-3.5 rounded-full bg-[#B85C38] border-2 border-white shadow-xs"></span>
+              <span class="font-bold text-[#302018]">${t('map.legendCenter')}</span>
             </div>
-            <span class="italic text-[10px] text-[#654332]/70">${t('map.tileAttribution')}</span>
+            <span class="text-[11px] italic text-[#654332]/80">${t('map.mapInstruction')}</span>
           </div>
         </div>
 
@@ -258,40 +252,8 @@ export async function initFlavorMapInteractions() {
       if (mapInstance) mapInstance.invalidateSize();
     }, 500);
 
-  // Load Central Java GeoJSON
-  try {
-    const geoData = await regionService.getGeoJson();
-
-    function styleFeature(feature) {
-      const isSelected = feature.properties.id === activeRegionId;
-      return {
-        fillColor: feature.properties.color || '#B85C38',
-        weight: isSelected ? 3 : 1.5,
-        opacity: 1,
-        color: isSelected ? '#302018' : '#B85C38',
-        dashArray: isSelected ? '' : '3',
-        fillOpacity: isSelected ? 0.65 : 0.35
-      };
-    }
-
-    function highlightFeature(e) {
-      const layer = e.target;
-      layer.setStyle({
-        weight: 3,
-        color: '#302018',
-        dashArray: '',
-        fillOpacity: 0.7
-      });
-      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-      }
-    }
-
-    function resetHighlight(e) {
-      if (geoJsonLayer) {
-        geoJsonLayer.resetStyle(e.target);
-      }
-    }
+    // Clean location points (markers) for Central Java culinary capitals
+    regionMarkers = {};
 
     function selectRegion(regionId) {
       activeRegionId = regionId;
@@ -303,7 +265,7 @@ export async function initFlavorMapInteractions() {
           panel.innerHTML = renderRegionDetailContent(reg);
         }
 
-        // Update pills
+        // Update selector pill states
         document.querySelectorAll('.region-pill').forEach(btn => {
           const pillId = btn.getAttribute('data-region-pill');
           if (pillId === regionId) {
@@ -313,63 +275,60 @@ export async function initFlavorMapInteractions() {
           }
         });
 
-        // Re-style geojson
-        if (geoJsonLayer) {
-          geoJsonLayer.eachLayer(l => {
-            geoJsonLayer.resetStyle(l);
-          });
+        // Pan map gently and open marker popup
+        if (mapInstance && typeof mapInstance.panTo === 'function') {
+          mapInstance.panTo([reg.lat, reg.lng], { animate: true, duration: 0.8 });
         }
-
-        // Pan map gently
-        mapInstance.panTo([reg.lat, reg.lng], { animate: true, duration: 0.8 });
+        if (regionMarkers[regionId]) {
+          regionMarkers[regionId].openPopup();
+        }
       }
     }
 
-    geoJsonLayer = L.geoJSON(geoData, {
-      style: styleFeature,
-      onEachFeature: (feature, layer) => {
-        layer.on({
-          mouseover: highlightFeature,
-          mouseout: resetHighlight,
-          click: () => selectRegion(feature.properties.id)
-        });
-
-        // Rich Tooltip
-        layer.bindTooltip(`
-          <div class="text-xs font-sans">
-            <strong class="text-[#302018]">${feature.properties.name}</strong><br/>
-            <span class="text-[#B85C38] font-medium">${feature.properties.flavorProfile}</span>
-          </div>
-        `, { sticky: true, className: 'leaflet-tooltip-laras' });
-      }
-    }).addTo(mapInstance);
-
-    // Add Custom City Center Pins with refined terracotta styling
+    // Populate Location Markers without any polygon or boundary layers
     regions.forEach(reg => {
       const pinIcon = L.divIcon({
-        className: 'custom-city-pin',
+        className: 'flavor-city-pin',
         html: `
-          <div style="background-color: #B85C38; border: 2px solid #FAF6EF; color: #FAF6EF; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
-            ●
+          <div style="background-color: #B85C38; border: 2.5px solid #FAF6EF; color: #FAF6EF; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; box-shadow: 0 3px 8px rgba(0,0,0,0.3); transition: transform 0.2s ease;">
+            📍
           </div>
         `,
-        iconSize: [22, 22],
-        iconAnchor: [11, 11]
+        iconSize: [28, 28],
+        iconAnchor: [14, 14]
       });
 
-      const marker = L.marker([reg.lat, reg.lng], { icon: pinIcon }).addTo(mapInstance);
-      marker.on('click', () => selectRegion(reg.id));
+      const marker = L.marker([reg.lat, reg.lng], { 
+        icon: pinIcon,
+        title: reg.name
+      }).addTo(mapInstance);
+
       marker.bindPopup(`
-        <div class="p-1 text-center font-sans">
-          <strong class="text-sm font-bold text-[#302018] font-editorial-serif">${reg.name}</strong>
-          <p class="text-xs text-[#B85C38] font-semibold mt-0.5">${reg.signatureDishes.slice(0, 2).join(', ')}</p>
+        <div class="p-2 text-center font-sans max-w-[200px]">
+          <span class="text-[10px] uppercase font-bold text-[#B85C38] tracking-wider">${reg.type}</span>
+          <h3 class="text-sm font-bold text-[#302018] font-editorial-serif my-0.5">${reg.name}</h3>
+          <p class="text-xs text-[#654332] italic mb-1.5">"${reg.tagline}"</p>
+          <div class="text-[11px] text-[#302018] border-t border-[#F2E8D8] pt-1.5 font-medium">
+            ${reg.signatureDishes.slice(0, 2).join(' &bull; ')}
+          </div>
         </div>
-      `);
+      `, {
+        className: 'flavor-map-popup'
+      });
+
+      marker.on('click', () => {
+        selectRegion(reg.id);
+      });
+
+      regionMarkers[reg.id] = marker;
     });
 
-  } catch (err) {
-    console.error('Gagal menginisialisasi GeoJSON:', err);
-  }
+    // Open active region popup if already selected
+    if (regionMarkers[activeRegionId]) {
+      setTimeout(() => {
+        if (regionMarkers[activeRegionId]) regionMarkers[activeRegionId].openPopup();
+      }, 600);
+    }
 } catch (mapErr) {
   console.warn('Leaflet map initialization warning:', mapErr);
   if (mapElement) {
@@ -400,7 +359,10 @@ export async function initFlavorMapInteractions() {
           btn.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#B85C38] text-white shadow-sm';
 
           if (mapInstance && typeof mapInstance.flyTo === 'function') {
-            mapInstance.flyTo([reg.lat, reg.lng], 11, { duration: 1.2 });
+            mapInstance.flyTo([reg.lat, reg.lng], 10, { duration: 1.0 });
+          }
+          if (regionMarkers[regId]) {
+            regionMarkers[regId].openPopup();
           }
         }
       }

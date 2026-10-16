@@ -462,6 +462,329 @@ export const recipeTranslationsEn = {
       { ingredient: 'Black Petis Dip', substitute: 'Rich sweet-savory tamarind soy sauce with crushed garlic' }
     ],
     nutritionNote: 'Estimated nutrition per complete plate with tofu, fritters, and petis sauce.'
+  },
+  'gudeg-komplit': {
+    name: 'Gudeg Komplit (Central Javanese Jackfruit Stew)',
+    mealType: 'Main Course / Special Heritage',
+    difficulty: 'Hard',
+    difficultyLevel: 'Advanced Traditional',
+    intro: 'Gudeg Komplit is an epic slow-simmered traditional Javanese stew made from young jackfruit (gori) infused with teak leaves (daun jati), pure coconut milk, and fragrant coconut sugar for over 6 hours in clay pots until it develops a deep mahogany gloss.',
+    history: 'Recorded in the 19th-century Serat Centhini and dating back to the foundation of the Mataram Kingdom in the late 16th century, Gudeg was invented by workers clearing the dense Mentaok forest, cooking wild jackfruit in large cauldrons with palm sugar and coconut milk.',
+    culturalBackground: 'Gudeg represents patience, refinement, and perseverance in Javanese life—symbolizing how unyielding raw fruit transforms into sweet, melt-in-the-mouth comfort through enduring gentle heat.',
+    interestingFacts: [
+      'Authentic Central Javanese gudeg uses fresh teak leaves (daun jati) placed at the bottom of the pot to impart a natural reddish mahogany hue.',
+      'Always served with spicy cattle-skin stew (sambal krecek) and dense coconut curds (areh) for savory-sweet balance.'
+    ],
+    regionalVariations: 'Solo gudeg tends to be wetter and slightly milder than deep dry Yogyakarta gudeg.',
+    equipment: ['Heavy earthenware pot or slow cooker', 'Wooden spoon', 'Stone mortar'],
+    ingredientGroups: [
+      {
+        name: 'Jackfruit & Braising Aromatics',
+        items: [
+          { name: 'Young jackfruit (gori), cut into chunks', amount: 1000, unit: 'grams', notes: 'Peeled and cored' },
+          { name: 'Pure coconut milk', amount: 1200, unit: 'ml', notes: 'Freshly pressed' },
+          { name: 'Dark coconut palm sugar (gula Jawa)', amount: 250, unit: 'grams', notes: 'Finely grated' },
+          { name: 'Indonesian bay leaves (daun salam)', amount: 6, unit: 'leaves', notes: 'Gently bruised' },
+          { name: 'Greater galangal (lengkuas), bruised', amount: 5, unit: 'cm', notes: 'Washed' },
+          { name: 'Fresh young teak leaves', amount: 4, unit: 'leaves', notes: 'For traditional natural mahogany color' }
+        ]
+      }
+    ],
+    steps: [
+      { stepNumber: 1, title: 'Arranging the Pot', instruction: 'Line the base of a heavy clay pot with teak leaves. Layer in the young jackfruit chunks, bruised galangal, bay leaves, and palm sugar.' },
+      { stepNumber: 2, title: 'Slow Braising', instruction: 'Pour in the coconut milk and ground spice paste. Cover and simmer gently on low heat for 5-6 hours until jackfruit is deeply caramelized and liquid is absorbed.' },
+      { stepNumber: 3, title: 'Serving Komplit', instruction: 'Plate alongside braised chicken, hard-boiled eggs, spicy krecek cow skin, and a spoonful of rich white coconut areh curds.' }
+    ],
+    servingAdvice: 'Best rested overnight before serving; the flavors deepen significantly by the second day.',
+    chefTips: 'Cook on low heat so the coconut milk gently caramelizes without scorching the bottom.',
+    commonMistakes: [
+      { mistake: 'Boiling on high flame', solution: 'Gudeg requires low, patient simmering (simmer, never boil) to achieve the signature tenderness.' }
+    ],
+    substitutions: [
+      { ingredient: 'Teak Leaves', substitute: 'Black tea leaves or red shallot peels for natural amber coloring' }
+    ],
+    nutritionNote: 'Estimated nutrition per serving with jackfruit, egg, and sambal krecek.'
+  },
+  'nasi-gandul-pati': {
+    name: 'Nasi Gandul Pati (Spiced Beef Coconut Broth)',
+    mealType: 'Main Course / Dinner',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Nasi Gandul is the revered culinary gem of Pati, featuring tender braised beef shank and offal bathed in a reddish-brown spiced coconut broth with toasted coriander and kencur, served over warm rice on fresh banana leaves and eaten traditionally with a suru (folded banana leaf spoon).',
+    history: 'Originated in Gajahmati village, Pati. The name "Gandul" (dangling/hanging) comes from itinerant vendors carrying wooden shoulder poles where the broth cauldron dangled rhythmically as they walked through village lanes.',
+    culturalBackground: 'Eating with a folded banana leaf spoon (suru) prevents burning the lips and enhances the herbaceous aroma of the hot spiced broth.',
+    interestingFacts: [
+      'Authentic vendors slice braised beef briskly with kitchen scissors directly onto the rice at order time.',
+      'Accompanied by sweet-glazed crispy beef lung (paru goreng) and golden quail eggs.'
+    ],
+    regionalVariations: 'Pati vendors offer a choice of cuts including beef shank, tripe, liver, and brain.',
+    equipment: ['Clay soup pot', 'Kitchen cutting shears', 'Banana leaves'],
+    ingredientGroups: [
+      {
+        name: 'Beef & Aromatic Broth',
+        items: [
+          { name: 'Beef shank & brisket', amount: 600, unit: 'grams', notes: 'Tender cuts' },
+          { name: 'Coconut milk', amount: 1000, unit: 'ml', notes: 'Medium richness' },
+          { name: 'Palm sugar & sweet soy sauce', amount: 3, unit: 'tbsp', notes: 'For rich mahogany broth' },
+          { name: 'Lemongrass, bay leaves, & kencur', amount: 1, unit: 'batch', notes: 'Aromatic herbs' }
+        ]
+      }
+    ],
+    steps: [
+      { stepNumber: 1, title: 'Simmering Beef', instruction: 'Boil beef with aromatics until half-tender, then cut into bite-sized pieces.' },
+      { stepNumber: 2, title: 'Spicing the Broth', instruction: 'Sauté ground spices until fragrant, stir into the simmering broth with coconut milk and sweet soy sauce until glossy and savory.' },
+      { stepNumber: 3, title: 'Banana Leaf Plating', instruction: 'Line plate with banana leaf, mound hot rice, arrange beef cuts, and ladle piping hot broth over top.' }
+    ],
+    servingAdvice: 'Serve piping hot with crispy fried shallots, chili sambal, and a banana leaf spoon.',
+    chefTips: 'Simmer the beef on very low heat so that every fiber absorbs the aromatic kencur notes.',
+    commonMistakes: [
+      { mistake: 'Over-boiling coconut milk', solution: 'Stir regularly to prevent curdling until the broth turns silky smooth.' }
+    ],
+    substitutions: [
+      { ingredient: 'Beef Shank', substitute: 'Tender beef chuck or oxtail' }
+    ],
+    nutritionNote: 'Estimated nutrition per serving of rice with beef and spiced coconut broth.'
+  },
+  'mangut-lele-asap': {
+    name: 'Mangut Lele Asap (Smoked Catfish in Spicy Coconut Gravy)',
+    mealType: 'Main Course / Lunch',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Mangut Lele Asap features freshwater catfish gently smoked over coconut husks for hours until firm and fragrant, then simmered in a golden turmeric coconut broth loaded with whole fiery bird’s eye chilies and aromatic galangal.',
+    history: 'A culinary staple along the banks of the Progo and Serang rivers, where freshwater fish smoking was developed as a natural preservation technique before electric refrigeration.',
+    culturalBackground: 'The smoky aroma infused into the spicy turmeric broth creates a signature rustic flavor celebrated in rural Javanese river settlements.',
+    interestingFacts: [
+      'Smoking over smoldering coconut shells firms the delicate catfish meat so it does not disintegrate in simmering broth.',
+      'Whole bird’s eye chilies are left intact to allow diners to pop them according to personal spice tolerance.'
+    ],
+    regionalVariations: 'Magelang and Bantul versions feature generous petai (stink beans) and sour green tomatoes.',
+    equipment: ['Traditional smoker or grill', 'Deep wok'],
+    ingredientGroups: [
+      {
+        name: 'Smoked Catfish & Broth',
+        items: [
+          { name: 'Smoked catfish (lele asap)', amount: 4, unit: 'whole', notes: 'Firm and aromatic' },
+          { name: 'Rich coconut milk', amount: 800, unit: 'ml', notes: 'From grated coconut' },
+          { name: 'Whole red bird’s eye chilies', amount: 15, unit: 'pieces', notes: 'Fresh' },
+          { name: 'Turmeric, ginger, galangal, candlenuts', amount: 1, unit: 'paste', notes: 'Finely ground' }
+        ]
+      }
+    ],
+    steps: [
+      { stepNumber: 1, title: 'Sautéing Spice Paste', instruction: 'Fry ground turmeric, candlenut, and garlic paste in coconut oil until fragrant.' },
+      { stepNumber: 2, title: 'Simmering Broth', instruction: 'Add coconut milk, lemongrass, and bay leaves. Bring to a gentle simmer.' },
+      { stepNumber: 3, title: 'Adding Fish', instruction: 'Carefully slide in the smoked catfish and whole chilies. Simmer for 15 minutes to let smoke infuse the broth.' }
+    ],
+    servingAdvice: 'Serve with warm steamed rice, raw vegetable lalapan, and hot jasmine tea.',
+    chefTips: 'Do not stir violently once the catfish is added to keep the fish whole and beautiful.',
+    commonMistakes: [
+      { mistake: 'Using unsmoked fresh catfish', solution: 'Smoked catfish is essential; raw catfish lacks the smoky aroma and becomes soggy.' }
+    ],
+    substitutions: [
+      { ingredient: 'Smoked Catfish', substitute: 'Smoked mackerel, smoked stingray (pari), or grilled firm tofu' }
+    ],
+    nutritionNote: 'Estimated nutrition per serving of 1 smoked fish with spicy coconut gravy.'
+  },
+  'mie-ongklok-wonosobo': {
+    name: 'Mie Ongklok Wonosobo (Highland Starch-Gravy Noodles)',
+    mealType: 'Main Course / Highland Warmth',
+    difficulty: 'Easy',
+    difficultyLevel: 'Beginner Friendly',
+    intro: 'Mie Ongklok is the comforting noodle soul of the misty Dieng mountains in Wonosobo. Yellow egg noodles and fresh cabbage are repeatedly dipped and blanched in a woven bamboo basket (ongklok), then smothered in a thick golden cassava starch and dried shrimp gravy with sweet beef satay.',
+    history: 'Created in Wonosobo in the early 20th century by Pak Minto, designed specifically to nourish mountain farmers and pilgrims enduring the biting Dieng highland cold.',
+    culturalBackground: 'The term "ongklok" mimics the sound and motion of shaking noodles in boiling broth inside the woven bamboo basket.',
+    interestingFacts: [
+      'The signature velvety gravy is thickened with natural cassava starch (pati singkong) and flavored with ground dried shrimp (ebi) and brown sugar.',
+      'Always served with sweet-marinated beef satay (sate sapi) and crispy tempe kemul.'
+    ],
+    regionalVariations: 'Some shops add sliced mountain chives (kucai) for fresh herbal pungency.',
+    equipment: ['Slotted bamboo ladle (ongklok)', 'Noodle boiling cauldron'],
+    ingredientGroups: [
+      {
+        name: 'Noodles & Golden Gravy',
+        items: [
+          { name: 'Fresh yellow egg noodles', amount: 400, unit: 'grams', notes: 'Blanched' },
+          { name: 'Shredded fresh cabbage & chives', amount: 200, unit: 'grams', notes: 'Crisp' },
+          { name: 'Cassava starch (pati singkong)', amount: 4, unit: 'tbsp', notes: 'Slurry' },
+          { name: 'Dried shrimp (ebi), roasted & ground', amount: 2, unit: 'tbsp', notes: 'Fragrant umami' },
+          { name: 'Brown palm sugar & sweet soy sauce', amount: 3, unit: 'tbsp', notes: 'Seasoning' }
+        ]
+      }
+    ],
+    steps: [
+      { stepNumber: 1, title: 'Ongklok Blanching', instruction: 'Place noodles and cabbage in the bamboo basket and plunge into boiling water repeatedly until tender.' },
+      { stepNumber: 2, title: 'Cooking Gravy', instruction: 'Simmer broth with ground ebi, garlic, and seasonings, then whisk in starch slurry until glossy and thick.' },
+      { stepNumber: 3, title: 'Assembling', instruction: 'Transfer blanched noodles to a bowl, pour thick gravy generously over top, and serve with sweet beef satay.' }
+    ],
+    servingAdvice: 'Eat immediately while steaming hot alongside hot tempe kemul fritters.',
+    chefTips: 'Whisk the starch slurry vigorously while pouring to guarantee a silky smooth, lump-free gravy.',
+    commonMistakes: [
+      { mistake: 'Over-boiling cabbage', solution: 'Keep cabbage slightly crisp to provide textural contrast against the velvety gravy.' }
+    ],
+    substitutions: [
+      { ingredient: 'Cassava Starch', substitute: 'Tapioca starch or potato starch' }
+    ],
+    nutritionNote: 'Estimated nutrition per bowl of noodles with savory starch gravy.'
+  },
+  'tengkleng-kambing-solo': {
+    name: 'Tengkleng Solo (Klewer Market Lamb Bone Broth)',
+    mealType: 'Main Course / Lunch & Dinner',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Tengkleng Solo is a legendary aromatic bone broth made from simmered lamb ribs, spine, and knuckles cooked with turmeric, lemongrass, and light coconut milk. Tender meat clinging to marrow bones is savored directly with hands and teeth.',
+    history: 'Born during the colonial era around the Royal Surakarta Palaces, when aristocrats enjoyed prime cuts while market laborers received bone remnants. Culinary genius turned discarded bones into this revered, spice-infused delicacy.',
+    culturalBackground: 'The joy of tengkleng lies in "ngrikiti"—chewing every savory morsel of meat and sucking flavorful marrow straight from the bone.',
+    interestingFacts: [
+      'The light, fragrant broth has lower fat than heavy gulai, scented prominently with galangal and cloves.',
+      'Traditionally served on banana leaf pincuk plates in historic Klewer Market.'
+    ],
+    regionalVariations: 'Pasar Klewer offers "tengkleng basah" (soup) and "tengkleng rica" (stir-fried with fiery chilies and sweet soy sauce).',
+    equipment: ['Heavy soup pot', 'Bone cleaver'],
+    ingredientGroups: [
+      {
+        name: 'Lamb Bones & Broth',
+        items: [
+          { name: 'Lamb bones (ribs, joints, marrow)', amount: 1000, unit: 'grams', notes: 'Chopped into chunks' },
+          { name: 'Thin coconut milk', amount: 1500, unit: 'ml', notes: 'Light and fragrant' },
+          { name: 'Whole green bird’s eye chilies', amount: 15, unit: 'pieces', notes: 'Intact' },
+          { name: 'Cloves, cinnamon, cardamom, lemongrass', amount: 1, unit: 'batch', notes: 'Warm spices' }
+        ]
+      }
+    ],
+    steps: [
+      { stepNumber: 1, title: 'Parboiling Bones', instruction: 'Boil lamb bones for 10 minutes to purge impurities, discard water, and rinse clean.' },
+      { stepNumber: 2, title: 'Simmering Spices', instruction: 'Sauté aromatic turmeric and candlenut paste with whole warm spices. Pour in thin coconut milk.' },
+      { stepNumber: 3, title: 'Slow Cooking', instruction: 'Simmer bones gently for 2 hours until tender meat releases easily from the joints.' }
+    ],
+    servingAdvice: 'Serve with steamed rice, fresh lime wedges, and whole chilies.',
+    chefTips: 'Simmer bones slowly with charred ginger to eliminate any unwanted gaminess.',
+    commonMistakes: [
+      { mistake: 'Discarding bone marrow', solution: 'Marrow bones enrich the broth with incredible natural gelatin and savory depth.' }
+    ],
+    substitutions: [
+      { ingredient: 'Lamb Bones', substitute: 'Beef ribs, veal marrow bones, or oxtail' }
+    ],
+    nutritionNote: 'Estimated nutrition per hearty bowl of spiced lamb bone broth.'
+  },
+  'wingko-babat-semarang': {
+    name: 'Wingko Babat Semarang (Toasted Sticky Rice Coconut Cake)',
+    mealType: 'Snack / Traditional Pastry',
+    difficulty: 'Easy',
+    difficultyLevel: 'Beginner Friendly',
+    intro: 'Wingko Babat is a beloved toasted round coconut cake made from fine glutinous rice flour, fresh young grated coconut, and fragrant coconut sugar, grilled until both surfaces develop golden caramelized crusts while the interior stays wonderfully chewy and moist.',
+    history: 'Brought to Semarang from the town of Babat in East Java in 1944 by Mrs. Mulyono, who sold warm fresh cakes to travelers at Semarang Tawang railway station, turning it into the city’s premier culinary souvenir.',
+    culturalBackground: 'The fragrance of toasted coconut wrapped in paper parcels evokes nostalgic memories of railway journeys across Java.',
+    interestingFacts: [
+      'Authentic wingko must use half-mature coconut (kelapa setengah tua) to achieve juicy richness without greasy excess.',
+      'Traditionally baked in round cast-iron pans over glowing coconut husks.'
+    ],
+    regionalVariations: 'Modern varieties feature natural additions like jackfruit chunks, chocolate, and aromatic durian.',
+    equipment: ['Cast-iron pan or griddle', 'Mixing bowl'],
+    ingredientGroups: [
+      {
+        name: 'Dough & Coconut',
+        items: [
+          { name: 'White glutinous rice flour (tepung ketan)', amount: 250, unit: 'grams', notes: 'Fine quality' },
+          { name: 'Fresh young coconut, peeled and grated', amount: 300, unit: 'grams', notes: 'Juicy and sweet' },
+          { name: 'Granulated sugar & vanilla', amount: 150, unit: 'grams', notes: 'Sweetener' },
+          { name: 'Fresh coconut water', amount: 100, unit: 'ml', notes: 'To bind dough' }
+        ]
+      }
+    ],
+    steps: [
+      { stepNumber: 1, title: 'Kneading Dough', instruction: 'Mix glutinous rice flour, grated coconut, sugar, and salt by hand, adding coconut water gradually until a soft, pliable dough forms.' },
+      { stepNumber: 2, title: 'Shaping', instruction: 'Divide dough into flat round discs or small cakes.' },
+      { stepNumber: 3, title: 'Toasting', instruction: 'Grill in a lightly greased cast-iron pan over medium-low heat until both sides are speckled golden brown and fragrant.' }
+    ],
+    servingAdvice: 'Enjoy warm with hot Javanese black coffee or fragrant jasmine tea.',
+    chefTips: 'Do not overmix; gentle kneading retains the natural bounce and fluffiness of the coconut.',
+    commonMistakes: [
+      { mistake: 'Using desiccated dried coconut', solution: 'Freshly grated young coconut is indispensable for genuine chewiness and moisture.' }
+    ],
+    substitutions: [
+      { ingredient: 'Fresh Grated Coconut', substitute: 'Frozen grated coconut thawed at room temperature' }
+    ],
+    nutritionNote: 'Estimated nutrition per 2 round toasted coconut cakes.'
+  },
+  'getuk-trio-magelang': {
+    name: 'Getuk Trio Magelang (Tri-Color Pounded Cassava Cake)',
+    mealType: 'Snack / Heritage Sweet',
+    difficulty: 'Easy',
+    difficultyLevel: 'Beginner Friendly',
+    intro: 'Getuk Trio Magelang is a velvety heritage delicacy crafted from freshly harvested steamed cassava, stone-pounded with sugar until silky and smooth, then pressed into elegant three-color layers (natural cream, pandan green, and chocolate/palm sugar brown).',
+    history: 'Created during the Japanese occupation in Magelang when rice was scarce, local women mastered the art of elevating humble backyard cassava into regal, melt-in-the-mouth teatime pastries.',
+    culturalBackground: 'The triad of colors symbolizes harmony between nature, earth, and human craftsmanship in Javanese philosophy.',
+    interestingFacts: [
+      'Only yellow butter cassava (singkong mentega) grown on volcanic volcanic slopes is chosen for its low fiber and creamy sweetness.',
+      'Traditionally served with freshly steamed grated coconut tossed with sea salt.'
+    ],
+    regionalVariations: 'Magelang also produces getuk lindri, passed through noodle presses into delicate ribbed rolls.',
+    equipment: ['Heavy stone mortar or meat grinder', 'Cake square press'],
+    ingredientGroups: [
+      {
+        name: 'Cassava & Flavors',
+        items: [
+          { name: 'Yellow butter cassava, peeled', amount: 1000, unit: 'grams', notes: 'Steamed until tender' },
+          { name: 'Pure cane sugar & margarine', amount: 200, unit: 'grams', notes: 'For velvety finish' },
+          { name: 'Pandan paste & cocoa/palm sugar', amount: 1, unit: 'tsp', notes: 'For natural colors' },
+          { name: 'Fresh grated coconut with a pinch of salt', amount: 200, unit: 'grams', notes: 'Steamed garnish' }
+        ]
+      }
+    ],
+    steps: [
+      { stepNumber: 1, title: 'Steaming & Pounding', instruction: 'Steam cassava until fork-tender. While piping hot, remove center fibrous veins and pound with sugar and margarine until completely smooth.' },
+      { stepNumber: 2, title: 'Dividing & Tinting', instruction: 'Divide smooth mash into three portions: leave one natural, tint one with pandan green, and one with cocoa or palm sugar.' },
+      { stepNumber: 3, title: 'Pressing & Slicing', instruction: 'Layer the three colors inside a lined mould, press firmly, and slice cleanly with a greased knife. Serve with salted grated coconut.' }
+    ],
+    servingAdvice: 'Best consumed fresh on the day made with hot unsweetened green tea.',
+    chefTips: 'Always pound the cassava while it is still steaming hot; cool cassava becomes gummy and resists smooth mashing.',
+    commonMistakes: [
+      { mistake: 'Pounding cold cassava', solution: 'Keep steamed cassava in the warm steamer until ready to pound immediately.' }
+    ],
+    substitutions: [
+      { ingredient: 'Butter Cassava', substitute: 'Yellow sweet potato or frozen peeled cassava' }
+    ],
+    nutritionNote: 'Estimated nutrition per 2 slices of layered cassava cake.'
+  },
+  'serabi-notosuman-solo': {
+    name: 'Serabi Notosuman Solo (Traditional Rolled Coconut Pancakes)',
+    mealType: 'Breakfast / Teatime Delicacy',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Serabi Notosuman is the legendary royal pancake of Surakarta, baked individually in tiny seasoned terracotta clay pots over charcoal embers. Featuring paper-thin, crispy lace borders with a delightfully molten, sweet coconut cream center, rolled gently inside banana leaves.',
+    history: 'Founded in 1923 by Hoo Gjok Hok and Tan Giok Lan on Jalan Notosuman (now Jalan Moh. Yamin), Solo. Passed down through four generations, its secret recipe remains an enduring monument of Solo confectionery.',
+    culturalBackground: 'The ritual of rolling warm serabi in banana leaves locks in the fragrant steam and imparts the earthy scent of nature.',
+    interestingFacts: [
+      'Baked in dozens of small unglazed terracotta pots (wajan tanah liat) resting over charcoal braziers.',
+      'Two traditional varieties exist: Original Polos (white with coconut cream) and Cokelat (scattered with chocolate sprinkles).'
+    ],
+    regionalVariations: 'Unlike West Javanese surabi eaten drenched in liquid palm kinca sauce, Serabi Notosuman has its rich sweet coconut areh baked directly inside the pancake.',
+    equipment: ['Small seasoned clay pots or mini cast-iron skillets', 'Banana leaves'],
+    ingredientGroups: [
+      {
+        name: 'Rice Batter & Rich Coconut Center',
+        items: [
+          { name: 'Fresh rice flour', amount: 250, unit: 'grams', notes: 'Stone-milled' },
+          { name: 'First-press thick coconut cream', amount: 500, unit: 'ml', notes: 'Boiled with pandan' },
+          { name: 'Granulated sugar & sea salt', amount: 80, unit: 'grams', notes: 'Seasoning' },
+          { name: 'Yeast & warm coconut water', amount: 1, unit: 'tsp', notes: 'Natural leavening' }
+        ]
+      }
+    ],
+    steps: [
+      { stepNumber: 1, title: 'Fermenting Batter', instruction: 'Mix rice flour with coconut water, yeast, and sugar. Rest for 1 hour until frothy and bubbly.' },
+      { stepNumber: 2, title: 'Clay Pot Baking', instruction: 'Heat clay pot over medium embers. Pour a ladle of batter, swirl to create thin crispy lace borders.' },
+      { stepNumber: 3, title: 'Molten Center & Rolling', instruction: 'Spoon a tablespoon of thick cooked coconut cream into the center. Cover with lid until edges are golden. Roll inside banana leaves while warm.' }
+    ],
+    servingAdvice: 'Eat warm by hand directly from the rolled banana leaf wrapper.',
+    chefTips: 'Season your clay pot with candle-nut oil before baking to achieve non-stick golden release.',
+    commonMistakes: [
+      { mistake: 'Baking on high heat', solution: 'Charcoal embers must be gentle so the center melts while the edges crisp without burning.' }
+    ],
+    substitutions: [
+      { ingredient: 'Clay Pot', substitute: 'Mini non-stick blini pan or cast-iron skillet' }
+    ],
+    nutritionNote: 'Estimated nutrition per 2 rolled coconut pancakes.'
   }
 };
 

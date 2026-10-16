@@ -63,26 +63,19 @@ export const recommendationService = {
         matchReasons.push(`Proses ungkep lambat (${recipe.cookingDuration}) menghasilkan bumbu meresap sempurna`);
       }
 
-      // 3. Kecocokan Tingkat Kesulitan (Bobot: 15 poin)
-      if (preferences.difficulty) {
-        if (preferences.difficulty === 'mudah' && (recipe.difficulty === 'Mudah' || recipe.difficulty === 'Sangat Mudah')) {
+      // 3. Kecocokan Alokasi Anggaran Belanja (Bobot: 30 poin)
+      if (preferences.budget) {
+        if (preferences.budget === 'hemat' && (recipe.budgetCategory === 'Sangat Terjangkau' || recipe.budgetCategory === 'Terjangkau')) {
+          score += 30;
+          matchReasons.push('Bahan-bahan ekonomis berbasis kedelai dan bumbu pasar harian');
+        } else if (preferences.budget === 'menengah' && (recipe.budgetCategory === 'Terjangkau' || recipe.budgetCategory === 'Menengah')) {
+          score += 30;
+          matchReasons.push('Anggaran bersahabat untuk sajian lauk utama keluarga harian');
+        } else if (preferences.budget === 'istimewa') {
+          score += 30;
+          matchReasons.push('Kombinasi bahan premium untuk santap khidmat istimewa');
+        } else {
           score += 15;
-          matchReasons.push('Tahapan memasak sangat ramah bagi pemula tanpa teknik rumit');
-        } else if (preferences.difficulty === 'sedang') {
-          score += 15;
-        }
-      }
-
-      // 4. Kecocokan Bahan yang Tersedia di Dapur (Bobot: 20 poin)
-      if (Array.isArray(preferences.availableIngredients) && preferences.availableIngredients.length > 0) {
-        const hasMatchedIngredient = preferences.availableIngredients.some(ing => {
-          return recipe.ingredientGroups.some(g =>
-            g.items.some(i => i.name.toLowerCase().includes(ing.toLowerCase()))
-          );
-        });
-        if (hasMatchedIngredient) {
-          score += 20;
-          matchReasons.push('Dapat memanfaatkan bahan segar yang sudah siap di dapur Anda');
         }
       }
 

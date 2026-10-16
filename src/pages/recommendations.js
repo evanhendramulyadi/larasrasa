@@ -5,16 +5,21 @@ import { t } from '../i18n/index.js';
 
 /**
  * Rekomendasi Untukmu (Personalized Food Finder)
- * 5-Step guided questionnaire with progress bar, robust validation, curated results, and full i18n.
+ * Exactly 4-step guided culinary questionnaire.
+ * Q1: Karakter Rasa (Flavor Profile)
+ * Q2: Durasi Memasak (Available Cooking Time)
+ * Q3: Jumlah Porsi (Servings)
+ * Q4: Alokasi Anggaran (Budget)
  */
 
 let wizardStep = 1;
+const TOTAL_STEPS = 4;
+
 let currentAnswers = {
   flavor: '',
   timeAvailable: 'sedang',
   servings: 4,
-  budget: 'menengah',
-  availableIngredients: []
+  budget: 'menengah'
 };
 let validationError = null;
 let activeResult = null;
@@ -54,8 +59,7 @@ function renderLoadingView() {
 }
 
 function renderWizardView(step) {
-  const totalSteps = 5;
-  const progressPercent = Math.round((step / totalSteps) * 100);
+  const progressPercent = Math.round((step / TOTAL_STEPS) * 100);
 
   return `
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 space-y-8">
@@ -73,10 +77,10 @@ function renderWizardView(step) {
         </p>
       </div>
 
-      <!-- Progress Indicator -->
+      <!-- Progress Indicator (1 of 4 Steps) -->
       <div class="space-y-2">
         <div class="flex items-center justify-between text-xs font-bold text-[#654332]">
-          <span>${t('recommendations.stepOf')} ${step} ${t('recommendations.of')} ${totalSteps}</span>
+          <span>${t('recommendations.stepOf')} ${step} ${t('recommendations.of')} ${TOTAL_STEPS}</span>
           <span>${progressPercent}% ${t('recommendations.completed')}</span>
         </div>
         <div class="w-full h-2 rounded-full bg-[#F2E8D8] overflow-hidden">
@@ -104,13 +108,13 @@ function renderWizardView(step) {
         <!-- Navigation Buttons -->
         <div class="pt-6 border-t border-[#F2E8D8] flex items-center justify-between">
           ${step > 1 ? `
-            <button id="wizard-prev-btn" type="button" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-[#302018] hover:bg-[#F2E8D8] transition-colors">
+            <button id="wizard-prev-btn" type="button" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold text-[#302018] hover:bg-[#F2E8D8] transition-colors cursor-pointer">
               &larr; ${t('recommendations.prevBtn')}
             </button>
           ` : `<div></div>`}
 
-          <button id="wizard-next-btn" type="button" class="inline-flex items-center gap-2 px-7 py-3 rounded-full text-xs font-bold bg-[#302018] hover:bg-[#654332] text-[#FAF6EF] transition-all shadow-sm">
-            <span>${step === totalSteps ? t('recommendations.submitBtn') : t('recommendations.nextBtn')}</span>
+          <button id="wizard-next-btn" type="button" class="inline-flex items-center gap-2 px-7 py-3 rounded-full text-xs font-bold bg-[#302018] hover:bg-[#654332] text-[#FAF6EF] transition-all shadow-sm cursor-pointer">
+            <span>${step === TOTAL_STEPS ? t('recommendations.submitBtn') : t('recommendations.nextBtn')}</span>
             <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -248,7 +252,7 @@ function renderStepContent(step) {
             ${[
               { id: 'hemat', title: 'Hemat & Ekonomis', desc: 'Bahan olahan kedelai lokal (tempe mendoan, tahu gimbal, megono)', est: 'Rp 15.000 – Rp 35.000' },
               { id: 'menengah', title: 'Menengah Sehari-hari', desc: 'Olahan ayam kampung & sayur berkuah (Soto Kudus, Garang Asem, Nasi Liwet)', est: 'Rp 40.000 – Rp 65.000' },
-              { id: 'istimewa', title: 'Sajian Istimewa Ningrat', desc: 'Olahan daging sapi atau kambing berempah (Selat Solo, Sate Buntel)', est: 'Rp 70.000 – Rp 95.000' }
+              { id: 'istimewa', title: 'Sajian Istimewa Ningrat', desc: 'Olahan daging sapi atau kambing berempah (Selat Solo, Sate Buntel, Tengkleng)', est: 'Rp 70.000 – Rp 95.000' }
             ].map(b => {
               const isChecked = currentAnswers.budget === b.id;
               return `
@@ -267,43 +271,6 @@ function renderStepContent(step) {
                   <span class="text-xs font-bold text-[#B85C38] bg-[#F2E8D8] px-2.5 py-1 rounded-md border border-[#C49A58]/20">
                     ${b.est}
                   </span>
-                </label>
-              `;
-            }).join('')}
-          </div>
-        </div>
-      `;
-
-    case 5:
-      return `
-        <div class="space-y-4">
-          <div>
-            <h2 class="font-editorial-serif text-2xl font-bold text-[#302018]">
-              ${t('recommendations.q5Title')}
-            </h2>
-            <p class="text-xs text-[#654332]">${t('recommendations.q5Sub')}</p>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2">
-            ${[
-              { id: 'ayam', label: 'Daging Ayam' },
-              { id: 'tempe', label: 'Tempe / Kedelai' },
-              { id: 'tahu', label: 'Tahu Putih' },
-              { id: 'sapi', label: 'Daging Sapi' },
-              { id: 'kambing', label: 'Daging Kambing' },
-              { id: 'telur', label: 'Telur Ayam' },
-              { id: 'santan', label: 'Kelapa / Santan' },
-              { id: 'rebung', label: 'Rebung / Nangka' },
-              { id: 'sayur', label: 'Labu Siam / Buncis' }
-            ].map(ing => {
-              const isChecked = currentAnswers.availableIngredients.includes(ing.id);
-              return `
-                <label class="wizard-checkbox-card flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all ${
-                  isChecked 
-                    ? 'border-[#B85C38] bg-[#B85C38]/10 font-bold' 
-                    : 'border-[#C49A58]/20 bg-white hover:bg-[#FAF6EF]'
-                }">
-                  <input type="checkbox" name="ingredients" value="${ing.id}" class="rounded text-[#B85C38]" ${isChecked ? 'checked' : ''}/>
-                  <span class="text-xs text-[#302018]">${ing.label}</span>
                 </label>
               `;
             }).join('')}
@@ -453,29 +420,13 @@ export function initRecommendationsInteractions(onRerender) {
     });
   });
 
-  // Checkbox ingredients change
-  document.querySelectorAll('input[name="ingredients"]').forEach(chk => {
-    chk.addEventListener('change', () => {
-      const parent = chk.closest('.wizard-checkbox-card');
-      if (chk.checked) {
-        if (!currentAnswers.availableIngredients.includes(chk.value)) {
-          currentAnswers.availableIngredients.push(chk.value);
-        }
-        parent?.classList.add('border-[#B85C38]', 'bg-[#B85C38]/10', 'font-bold');
-      } else {
-        currentAnswers.availableIngredients = currentAnswers.availableIngredients.filter(v => v !== chk.value);
-        parent?.classList.remove('border-[#B85C38]', 'bg-[#B85C38]/10', 'font-bold');
-      }
-    });
-  });
-
-  // Next Button
+  // Next / Submit Button
   const nextBtn = document.getElementById('wizard-next-btn');
   if (nextBtn) {
     nextBtn.addEventListener('click', async (e) => {
       e.preventDefault();
       
-      // Step 1 Validation
+      // Step 1 Validation (Flavor is required)
       if (wizardStep === 1 && !currentAnswers.flavor) {
         validationError = t('recommendations.validationFlavor');
         if (typeof onRerender === 'function') onRerender();
@@ -494,11 +445,11 @@ export function initRecommendationsInteractions(onRerender) {
         currentAnswers.budget = 'menengah';
       }
 
-      if (wizardStep < 5) {
+      if (wizardStep < TOTAL_STEPS) {
         wizardStep++;
         if (typeof onRerender === 'function') onRerender();
       } else {
-        // Step 5 Submit: generate recommendations
+        // Step 4 Submit: generate recommendations
         isProcessing = true;
         if (typeof onRerender === 'function') onRerender();
 
@@ -539,8 +490,7 @@ export function initRecommendationsInteractions(onRerender) {
         flavor: '',
         timeAvailable: 'sedang',
         servings: 4,
-        budget: 'menengah',
-        availableIngredients: []
+        budget: 'menengah'
       };
       if (typeof onRerender === 'function') onRerender();
     });

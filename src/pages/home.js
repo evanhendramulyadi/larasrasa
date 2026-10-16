@@ -28,10 +28,10 @@ export async function renderHomePage() {
           <img 
             src="/assets/images/hero/javanese-heritage-kitchen.jpg" 
             alt="Dapur Tradisional Jawa Tengah" 
-            class="w-full h-full object-cover object-center opacity-18 filter brightness-[0.96] contrast-[1.04]"
+            class="w-full h-full object-cover object-center sm:object-right opacity-35 sm:opacity-45 filter brightness-[0.98] contrast-[1.08] saturate-[1.12]"
           />
-          <div class="absolute inset-0 bg-gradient-to-r from-[#FAF6EF] via-[#FAF6EF]/94 to-[#FAF6EF]/82"></div>
-          <div class="absolute inset-0 bg-gradient-to-b from-[#FAF6EF]/50 via-transparent to-[#FAF6EF]"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#FAF6EF] via-[#FAF6EF]/90 sm:via-[#FAF6EF]/75 to-[#FAF6EF]/35 lg:to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-[#FAF6EF]/60 via-transparent to-[#FAF6EF]"></div>
         </div>
 
         <!-- Subtle Ambient Warm Glow -->

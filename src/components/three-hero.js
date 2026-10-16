@@ -19,7 +19,7 @@ import { t, i18n } from '../i18n/index.js';
 export class ThreeHeroShowcase {
   constructor(containerElement) {
     this.container = containerElement;
-    this.currentMode = '3d'; // '3d' | 'feast'
+    this.currentMode = 'feast'; // 'feast' (authentic culinary dishes) | '3d' (pottery inspection)
     
     // Three.js instances
     this.scene = null;
@@ -53,7 +53,7 @@ export class ThreeHeroShowcase {
 
     // Render Outer Container Wrapper with Mode Switcher
     this.renderOuterLayout();
-    this.switchMode('3d');
+    this.switchMode('feast');
   }
 
   renderOuterLayout() {
@@ -64,19 +64,19 @@ export class ThreeHeroShowcase {
         <div class="flex items-center justify-between z-20 gap-2 mb-2">
           <!-- Dual-Mode Tabs -->
           <div class="inline-flex p-1 rounded-full bg-[#FAF6EF] border border-[#E5D9C5] shadow-xs text-xs font-bold text-[#654332]">
-            <button type="button" id="hero-tab-3d" class="px-3 py-1 rounded-full transition-all bg-[#302018] text-[#FAF6EF] shadow-xs flex items-center gap-1.5 cursor-pointer">
-              <span>🏺</span>
-              <span>${t('hero.tab3d')}</span>
-            </button>
-            <button type="button" id="hero-tab-feast" class="px-3 py-1 rounded-full transition-all text-[#654332] hover:text-[#B85C38] flex items-center gap-1.5 cursor-pointer">
+            <button type="button" id="hero-tab-feast" class="px-3 py-1 rounded-full transition-all bg-[#B85C38] text-white shadow-xs flex items-center gap-1.5 cursor-pointer">
               <span>🍲</span>
               <span>${t('hero.tabFeast')}</span>
+            </button>
+            <button type="button" id="hero-tab-3d" class="px-3 py-1 rounded-full transition-all text-[#654332] hover:text-[#B85C38] flex items-center gap-1.5 cursor-pointer">
+              <span>🏺</span>
+              <span>${t('hero.tab3d')}</span>
             </button>
           </div>
 
           <!-- Dynamic Hint / Action Badge -->
           <div id="hero-showcase-hint" class="text-[11px] font-semibold text-[#654332] bg-white/90 px-2.5 py-1 rounded-full border border-[#E5D9C5] backdrop-blur-xs shadow-2xs hidden sm:block">
-            ${t('hero.canvasHint')}
+            ${t('hero.feastSubtitle')}
           </div>
         </div>
 
@@ -85,8 +85,8 @@ export class ThreeHeroShowcase {
 
         <!-- Footer Caption Bar -->
         <div id="hero-footer-caption" class="z-20 mt-2 flex items-center justify-between text-[11px] text-[#654332] bg-white/95 px-3.5 py-2.5 rounded-xl border border-[#E5D9C5] shadow-xs">
-          <span class="font-bold text-[#302018]" id="hero-caption-title">${t('hero.canvasTitle')}</span>
-          <span class="text-[#777B52]" id="hero-caption-subtitle">${t('hero.canvasSubtitle')}</span>
+          <span class="font-bold text-[#302018]" id="hero-caption-title">${t('hero.feastTitle')}</span>
+          <span class="text-[#777B52]" id="hero-caption-subtitle">${t('hero.feastSubtitle')}</span>
         </div>
 
       </div>
@@ -103,7 +103,6 @@ export class ThreeHeroShowcase {
   }
 
   switchMode(mode) {
-    if (this.currentMode === mode && this.scene) return;
     this.currentMode = mode;
 
     const btn3d = this.container.querySelector('#hero-tab-3d');
