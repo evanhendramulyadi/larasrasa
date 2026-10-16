@@ -1,1 +1,161 @@
 @import "tailwindcss";
+
+@theme {
+  --color-warm-ivory: #FAF6EF;
+  --color-soft-cream: #F2E8D8;
+  --color-deep-espresso: #302018;
+  --color-rich-cocoa: #654332;
+  --color-terracotta: #B85C38;
+  --color-terracotta-hover: #A04A27;
+  --color-muted-olive: #777B52;
+  --color-antique-gold: #C49A58;
+  --color-antique-gold-hover: #D4AA6A;
+  --color-clean-white: #FFFFFF;
+
+  --color-javanese-900: #1F140F;
+  --color-javanese-800: #302018;
+  --color-javanese-700: #654332;
+  --color-javanese-600: #855C47;
+  --color-javanese-500: #B85C38;
+  --color-golden-spice: #C49A58;
+  --color-warm-mustard: #D4AA6A;
+  --color-cream-bg: #FAF6EF;
+  --color-cream-light: #FFFFFF;
+  --color-sand-beige: #F2E8D8;
+  --color-charcoal: #231812;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+/* Base Body & Layered Javanese Ambient Background */
+body {
+  background-color: #FAF6EF;
+  background-image: 
+    radial-gradient(circle at 12% 18%, rgba(196, 154, 88, 0.07) 0%, transparent 40%),
+    radial-gradient(circle at 88% 82%, rgba(184, 92, 56, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(242, 232, 216, 0.5) 0%, transparent 70%),
+    linear-gradient(rgba(200, 180, 155, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 180, 155, 0.12) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+  background-attachment: fixed;
+  color: #302018;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF6EF;
+}
+::-webkit-scrollbar-thumb {
+  background: #654332;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #302018;
+}
+
+/* Editorial Typography */
+.font-editorial-serif {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-editorial-sans {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+}
+
+/* Javanese Texture Backgrounds */
+.bg-javanese-texture {
+  background-color: #302018;
+  background-image: radial-gradient(#654332 0.75px, transparent 0.75px), radial-gradient(#654332 0.75px, #302018 0.75px);
+  background-size: 28px 28px;
+  background-position: 0 0, 14px 14px;
+}
+
+.bg-ivory-texture {
+  background-color: #FAF6EF;
+  background-image: radial-gradient(#E8DFC8 0.5px, transparent 0.5px);
+  background-size: 20px 20px;
+}
+
+/* Leaflet Customizations for LarasRasa */
+.leaflet-popup-content-wrapper {
+  background: #FFFFFF !important;
+  color: #302018 !important;
+  border-radius: 14px !important;
+  border: 1px solid #E5D9C5 !important;
+  box-shadow: 0 12px 30px -6px rgba(48, 32, 24, 0.18) !important;
+  padding: 4px !important;
+}
+
+.leaflet-popup-tip {
+  background: #FFFFFF !important;
+}
+
+.leaflet-container {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
+  border-radius: 20px;
+  background: #F2E8D8 !important;
+}
+
+/* Card Hover Elevation */
+.card-hover-lift {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
+}
+.card-hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px -8px rgba(48, 32, 24, 0.12);
+  border-color: #C49A58;
+}
+
+/* 3D Canvas Container */
+.webgl-canvas-container {
+  touch-action: pan-y;
+  user-select: none;
+}
+
+/* Culinary Showcase Hotspots */
+.culinary-hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 20;
+}
+.culinary-hotspot-pin {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #B85C38;
+  border: 2px solid #FAF6EF;
+  color: #FAF6EF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 4px 14px rgba(48, 32, 24, 0.4);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, box-shadow 0.2s;
+}
+.culinary-hotspot:hover .culinary-hotspot-pin,
+.culinary-hotspot.active .culinary-hotspot-pin {
+  transform: scale(1.18);
+  background-color: #C49A58;
+  box-shadow: 0 6px 18px rgba(196, 154, 88, 0.5);
+}
+.culinary-hotspot-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background-color: rgba(184, 92, 56, 0.45);
+  animation: hotspot-pulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+  pointer-events: none;
+}
+@keyframes hotspot-pulse {
+  0% { transform: scale(0.8); opacity: 0.85; }
+  100% { transform: scale(2.4); opacity: 0; }
+}

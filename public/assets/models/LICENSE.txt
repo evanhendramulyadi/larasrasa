@@ -1,0 +1,15 @@
+3D Assets Attribution & Licenses
+=================================
+
+1. Earthenware Clay Pot (Kuali Gerabah Tradisional)
+   - Asset: Ceramic Pot (1K PBR GLTF)
+   - Source: Poly Haven (https://polyhaven.com/a/ceramic_pot)
+   - Author: Aron Łyczek
+   - License: CC0 (Public Domain - https://creativecommons.org/publicdomain/zero/1.0/)
+
+2. Carved Wooden Plate (Piring Kayu Jati Ukir Tradisional)
+   - Asset: Carved Wooden Plate (1K PBR GLTF)
+   - Source: Poly Haven (https://polyhaven.com/a/carved_wooden_plate)
+   - Author: Poly Haven
+   - License: CC0 (Public Domain - https://creativecommons.org/publicdomain/zero/1.0/)
+

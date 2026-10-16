@@ -1,13 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + JS</title>
+    <title>LarasRasa — Menjelajah Warisan Rasa & Resep Otentik Jawa Tengah</title>
+    <meta name="description" content="LarasRasa adalah panduan kuliner kurasi premium yang mengulas resep otentik, peta rasa geografis, eksplorasi rempah, dan restoran legendaris Jawa Tengah." />
+    
+    <!-- Google Fonts: Playfair Display (Serif Editorial) & Plus Jakarta Sans (Sans-serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   </head>
-  <body>
-    <div id="app"></div>
+  <body class="bg-[#FAF6EF] text-[#302018] font-sans antialiased selection:bg-[#B85C38] selection:text-white">
+    <div id="app" class="min-h-screen flex flex-col"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

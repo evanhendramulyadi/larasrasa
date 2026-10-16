@@ -1,0 +1,282 @@
+{
+  "type": "FeatureCollection",
+  "name": "Jawa_Tengah_Regencies_Cities",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "semarang",
+        "name": "Kota Semarang",
+        "type": "Kota",
+        "capital": "Semarang",
+        "flavorProfile": "Manis Gurih Bersaus Rebung",
+        "signatureDish": "Lumpia Semarang, Tahu Gimbal",
+        "color": "#C58A2B"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [110.320, -6.950],
+            [110.370, -6.940],
+            [110.430, -6.945],
+            [110.485, -6.960],
+            [110.510, -7.010],
+            [110.470, -7.060],
+            [110.420, -7.090],
+            [110.350, -7.070],
+            [110.315, -7.010],
+            [110.320, -6.950]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "surakarta",
+        "name": "Kota Surakarta (Solo)",
+        "type": "Kota",
+        "capital": "Surakarta",
+        "flavorProfile": "Gurih Santan Areh & Manis Ningrat",
+        "signatureDish": "Nasi Liwet Solo, Selat Solo, Sate Buntel",
+        "color": "#6B4226",
+        "note": "Kota otonom Jawa Tengah, berbeda secara administratif dari DIY Yogyakarta"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [110.785, -7.540],
+            [110.835, -7.535],
+            [110.865, -7.560],
+            [110.860, -7.595],
+            [110.825, -7.615],
+            [110.780, -7.590],
+            [110.770, -7.560],
+            [110.785, -7.540]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "kudus",
+        "name": "Kabupaten Kudus",
+        "type": "Kabupaten",
+        "capital": "Kudus",
+        "flavorProfile": "Segar Bening Kencur & Asam Belimbing",
+        "signatureDish": "Soto Kudus, Garang Asem Kudus",
+        "color": "#D9A441"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [110.770, -6.720],
+            [110.860, -6.700],
+            [110.920, -6.760],
+            [110.940, -6.830],
+            [110.890, -6.910],
+            [110.810, -6.900],
+            [110.780, -6.830],
+            [110.770, -6.720]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "banyumas",
+        "name": "Kabupaten Banyumas",
+        "type": "Kabupaten",
+        "capital": "Purwokerto",
+        "flavorProfile": "Gurih Kedelai Basah & Sambal Kecap Rawit",
+        "signatureDish": "Tempe Mendoan, Sroto Sokaraja",
+        "color": "#4A2C1A"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [109.120, -7.310],
+            [109.280, -7.290],
+            [109.390, -7.360],
+            [109.430, -7.490],
+            [109.380, -7.620],
+            [109.210, -7.650],
+            [109.080, -7.560],
+            [109.090, -7.420],
+            [109.120, -7.310]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "pekalongan",
+        "name": "Kota & Kab Pekalongan",
+        "type": "Kota & Kabupaten",
+        "capital": "Pekalongan",
+        "flavorProfile": "Aromatik Bunga Kecombrang & Tauco",
+        "signatureDish": "Nasi Megono, Tauto Pekalongan",
+        "color": "#656E52"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [109.560, -6.850],
+            [109.730, -6.870],
+            [109.760, -7.020],
+            [109.680, -7.180],
+            [109.550, -7.150],
+            [109.500, -7.010],
+            [109.560, -6.850]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "magelang",
+        "name": "Kota & Kab Magelang",
+        "type": "Kota & Kabupaten",
+        "capital": "Magelang",
+        "flavorProfile": "Segar Bawang Putih & Saus Kacang Encer",
+        "signatureDish": "Kupat Tahu Magelang, Mangut Beong",
+        "color": "#8C5832"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [110.120, -7.380],
+            [110.290, -7.360],
+            [110.370, -7.490],
+            [110.340, -7.630],
+            [110.180, -7.650],
+            [110.080, -7.520],
+            [110.120, -7.380]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "tegal",
+        "name": "Kota & Kab Tegal",
+        "type": "Kota & Kabupaten",
+        "capital": "Tegal & Slawi",
+        "flavorProfile": "Gurih Daging Muda & Teh Melati Poci",
+        "signatureDish": "Sate Batibul, Kupat Glabed, Tahu Aci",
+        "color": "#C58A2B"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [109.060, -6.840],
+            [109.210, -6.860],
+            [109.250, -7.020],
+            [109.190, -7.210],
+            [109.050, -7.170],
+            [109.010, -6.990],
+            [109.060, -6.840]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "wonosobo",
+        "name": "Kabupaten Wonosobo",
+        "type": "Kabupaten",
+        "capital": "Wonosobo",
+        "flavorProfile": "Kuah Kental Ebi Hangat & Tempe Kemul",
+        "signatureDish": "Mie Ongklok, Tempe Kemul Dieng",
+        "color": "#656E52"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [109.840, -7.190],
+            [110.010, -7.220],
+            [110.050, -7.420],
+            [109.960, -7.560],
+            [109.810, -7.520],
+            [109.770, -7.340],
+            [109.840, -7.190]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "brebes",
+        "name": "Kabupaten Brebes",
+        "type": "Kabupaten",
+        "capital": "Brebes",
+        "flavorProfile": "Aroma Bawang Merah Goreng & Telur Asin Masir",
+        "signatureDish": "Telur Asin Asap, Sate Blengong",
+        "color": "#9E3852"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [108.820, -6.780],
+            [109.060, -6.840],
+            [109.010, -6.990],
+            [109.050, -7.170],
+            [108.850, -7.320],
+            [108.720, -7.180],
+            [108.760, -6.960],
+            [108.820, -6.780]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "id": "jepara",
+        "name": "Kabupaten Jepara",
+        "type": "Kabupaten",
+        "capital": "Jepara",
+        "flavorProfile": "Segar Ikan Serani & Horok-horok Kenyal",
+        "signatureDish": "Pindang Serani, Horok-horok",
+        "color": "#B27344"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [110.580, -6.580],
+            [110.740, -6.440],
+            [110.920, -6.520],
+            [110.860, -6.700],
+            [110.770, -6.720],
+            [110.640, -6.780],
+            [110.580, -6.580]
+          ]
+        ]
+      }
+    }
+  ]
+}
+
