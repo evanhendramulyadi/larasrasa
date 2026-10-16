@@ -987,6 +987,36 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Pink flower petals are finely sliced and steamed together with young jackfruit and grated coconut.',
     culturalWisdom: 'Torch ginger is the non-negotiable identity of Pekalongan Megono. Without it, the dish would simply be ordinary urap.',
     substitutes: 'Finely minced lemongrass and kaffir lime zest.'
+  },
+  'cengkeh': {
+    name: 'Javanese Whole Cloves',
+    categoryName: 'Toasted Seeds & Dry Spices',
+    role: 'Imparts an intense sweet-spicy warmth, soothing the chest and adding noble depth to simmering meat stocks.',
+    aromaProfile: 'Deeply aromatic, sharply sweet with warm woody eugenol nuances and lingering fragrance.',
+    flavorNote: 'Pungent, sweet-spicy with a gentle, numbing floral warmth on the tongue.',
+    preparationMethod: 'Dropped whole into simmering mutton broths, sweet soy beef stews (semur), or royal spiced fruit compotes.',
+    culturalWisdom: 'The Spice Islands captivated global explorers largely through cloves. In Central Java, cloves were revered for elevating aristocratic broths and royal herbal infusions.',
+    substitutes: 'Star anise or whole allspice berries.'
+  },
+  'kayu-manis': {
+    name: 'Javanese Sweet Cinnamon',
+    categoryName: 'Essential Aromatic Spice',
+    role: 'Imparts a warm, gentle woody sweetness that softens braised beef broths, stews, and herbal teas.',
+    aromaProfile: 'Sweet, comforting woody fragrance that calms the senses and stimulates the appetite.',
+    flavorNote: 'Naturally sweet and woody with subtle warm spice notes.',
+    preparationMethod: 'Quills are simmered whole in braising broths so their essential oils extract slowly and gracefully.',
+    culturalWisdom: 'Cinnamon symbolizes sweetness of character and the refined etiquette of Surakarta royal dining.',
+    substitutes: 'High-grade pure ground cinnamon quill powder.'
+  },
+  'pala': {
+    name: 'Whole Nutmeg & Mace (Fuli)',
+    categoryName: 'Toasted Seeds & Dry Spices',
+    role: 'Imparts classic European-Javanese warm aristocratic spice fragrance to Selat Solo and rich beef gravies.',
+    aromaProfile: 'Warm, woody, sweet musky aroma that is unmistakably nostalgic.',
+    flavorNote: 'Warm and gentle, nutty, sweet, and comforting.',
+    preparationMethod: 'Freshly grated with a fine nutmeg grater directly over simmering pots moments before serving.',
+    culturalWisdom: 'The touch of freshly grated nutmeg is the enduring signature of royal Javanese-Dutch culinary heritage in Solo and Magelang.',
+    substitutes: 'Fresh ground nutmeg powder or a pinch of green cardamom.'
   }
 };
 

@@ -236,6 +236,57 @@ export const spices = [
     modelColor: '#D85C74',
     accentColor: '#D85C74',
     image: '/assets/images/ingredients/kecombrang.jpg'
+  },
+  {
+    id: 'cengkeh',
+    name: 'Cengkeh Jawa',
+    latinName: 'Syzygium aromaticum',
+    category: 'biji',
+    categoryName: 'Biji-bijian & Rempah Kering',
+    role: 'Pemberi aroma hangat manis pedas yang intens, melegakan pernapasan dan memperdalam kaldu daging.',
+    aromaProfile: 'Sangat aromatik, manis tajam beraroma kayu eugenol yang hangat dan harum semerbak.',
+    flavorNote: 'Manis pedas tajam, memberi efek kebas hangat yang menyegarkan di lidah.',
+    preparationMethod: 'Dimasukkan utuh ke dalam rebusan kuah kaldu daging kambing, semur, atau setup buah tradisional Jawa.',
+    iconicDishes: ['Tengkleng Solo', 'Semur Daging Sapi', 'Setup Jambu / Nanas', 'Wedang Rempah'],
+    culturalWisdom: 'Kepulauan rempah Nusantara memikat dunia salah satunya karena cengkeh. Di tanah Jawa, cengkeh dimuliakan sebagai penjaga kehangatan kaldu bangsawan dan wedangan keraton.',
+    substitutes: 'Bunga lawang atau allspice bubuk.',
+    modelColor: '#5C241C',
+    accentColor: '#8C382A',
+    image: '/assets/images/ingredients/cengkeh.jpg'
+  },
+  {
+    id: 'kayu-manis',
+    name: 'Kayu Manis Jawa',
+    latinName: 'Cinnamomum burmannii',
+    category: 'aromatik',
+    categoryName: 'Bumbu Aromatik Utama',
+    role: 'Pemberi sentuhan wangi manis kayu yang lembut dan anggun pada kuah semur, gulai, dan wedangan.',
+    aromaProfile: 'Manis semerbak, wangi kayu aromatik yang menenangkan hati dan menggugah selera makan.',
+    flavorNote: 'Manis hangat bersahaja dengan sedikit getir pedas halus.',
+    preparationMethod: 'Kulit kayu manis disematkan utuh saat proses menumis bumbu atau merebus kuah agar minyak atsirinya meresap lambat.',
+    iconicDishes: ['Selat Solo', 'Semur Lidah Jawa', 'Tengkleng Solo', 'Wedang Ronde'],
+    culturalWisdom: 'Kayu manis melambangkan kemanisan budi pekerti dan keanggunan tata krama jamuan keraton Surakarta.',
+    substitutes: 'Kayu manis bubuk murni kualitas tinggi.',
+    modelColor: '#8C4D26',
+    accentColor: '#B26633',
+    image: '/assets/images/ingredients/kayu-manis.jpg'
+  },
+  {
+    id: 'pala',
+    name: 'Biji Pala & Fuli',
+    latinName: 'Myristica fragrans',
+    category: 'biji',
+    categoryName: 'Biji-bijian & Rempah Kering',
+    role: 'Pemberi aroma rempah klasik Eropa-Jawa yang hangat memikat pada kuah kaldu selat dan semur.',
+    aromaProfile: 'Aroma woody, hangat pedas, dan berkarakter musky manis yang sangat khas.',
+    flavorNote: 'Hangat menyengat lembut, gurih manis aromatik.',
+    preparationMethod: 'Diparut halus segar menggunakan parutan pala langsung di atas panci mendidih sebelum api dimatikan.',
+    iconicDishes: ['Selat Solo', 'Sup Buntut Jawa', 'Semur Sapi', 'Asem-asem Daging'],
+    culturalWisdom: 'Sentuhan parutan biji pala adalah jejak silang budaya kuliner ningrat Jawa dengan tradisi kuliner Indis di Solo dan Magelang.',
+    substitutes: 'Bubuk pala murni atau sedikit kapulaga.',
+    modelColor: '#4A2810',
+    accentColor: '#7A441E',
+    image: '/assets/images/ingredients/pala.jpg'
   }
 ];
 

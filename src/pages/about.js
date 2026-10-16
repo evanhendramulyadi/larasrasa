@@ -31,7 +31,7 @@ export async function renderAboutPage() {
       colorBg: 'bg-[#B85C38]',
       colorText: 'text-[#FAF6EF]',
       badgeBorder: 'border-[#B85C38]',
-      skills: ['Vanilla JS (ESM)', 'Tailwind CSS', 'Three.js 3D', 'Canvas 2D Engine']
+      skills: ['Vanilla JS (ESM)', 'Tailwind CSS', 'Visual Art Direction', 'Canvas 2D Engine']
     },
     {
       id: 'dev3',

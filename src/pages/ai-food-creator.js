@@ -125,22 +125,31 @@ function renderFormView(currentLang) {
   return `
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       
-      <!-- Studio Header -->
-      <div class="text-center space-y-3 max-w-3xl mx-auto">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F2E8D8] border border-[#C49A58]/30 shadow-xs">
-          <span class="w-2 h-2 rounded-full bg-[#B85C38] animate-ping"></span>
-          <span class="text-xs font-bold text-[#302018] uppercase tracking-wider">
-            ${isEn ? 'LarasRasa AI Culinary Studio' : 'Studio Eksperimen Kuliner AI LarasRasa'}
-          </span>
+      <!-- Studio Header with Traditional Javanese Kitchen Backdrop -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#C49A58]/35 shadow-xl bg-[#302018] text-[#FAF6EF]">
+        <img 
+          src="/assets/images/hero/javanese-kitchen-master.jpg" 
+          alt="Pawon Dapur Jawa Tengah" 
+          class="absolute inset-0 w-full h-full object-cover opacity-25 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#302018] via-[#302018]/85 to-[#302018]/90 pointer-events-none"></div>
+        
+        <div class="relative z-10 space-y-3 max-w-2xl mx-auto">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-[#B85C38] animate-ping"></span>
+            <span class="text-xs font-bold text-[#C49A58] uppercase tracking-wider">
+              ${isEn ? 'LarasRasa AI Culinary Studio' : 'Studio Eksperimen Kuliner AI LarasRasa'}
+            </span>
+          </div>
+          <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white leading-tight">
+            ${isEn ? 'Create Your Original Central Javanese Recipe' : 'Ciptakan Resep & Poster Kuliner Jawa Tengah Anda'}
+          </h1>
+          <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+            ${isEn
+              ? 'Input your culinary vision, select authentic regional ingredients, and let the AI generate a complete traditional recipe with an official high-resolution poster credited in your name.'
+              : 'Pilih bahan favorit, atur karakter rasa khas Jawa Tengah, dan biarkan AI menyusun takaran presisi, panduan masak, serta poster resmi bertuliskan nama Anda.'}
+          </p>
         </div>
-        <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-[#302018] leading-tight">
-          ${isEn ? 'Create Your Original Central Javanese Recipe' : 'Ciptakan Resep & Poster Kuliner Jawa Tengah Anda'}
-        </h1>
-        <p class="text-sm sm:text-base text-[#654332] leading-relaxed">
-          ${isEn
-            ? 'Input your culinary vision, select authentic regional ingredients, and let the AI generate a complete traditional recipe with an official high-resolution poster credited in your name.'
-            : 'Pilih bahan favorit, atur karakter rasa khas Jawa Tengah, dan biarkan AI menyusun takaran presisi, panduan masak, serta poster resmi bertuliskan nama Anda.'}
-        </p>
       </div>
 
       <!-- Validation Banner -->
@@ -377,9 +386,9 @@ function renderFormView(currentLang) {
                     <div class="text-xs font-bold leading-tight line-clamp-2">
                       ${isEn ? (item.nameEn || item.nameId) : item.nameId}
                     </div>
-                    ${item.flavorNote ? `
+                    ${(item.flavorNote || item.description) ? `
                       <span class="text-[9px] ${isSelected ? 'text-[#C49A58]' : 'text-[#777B52]'} line-clamp-1 mt-1 block">
-                        ${item.flavorNote}
+                        ${item.flavorNote || item.description}
                       </span>
                     ` : ''}
                   </div>

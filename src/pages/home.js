@@ -26,46 +26,46 @@ export async function renderHomePage() {
         <!-- Authentic Heritage Kitchen Atmospheric Backdrop -->
         <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <img 
-            src="/assets/images/hero/javanese-heritage-kitchen.jpg" 
-            alt="Dapur Tradisional Jawa Tengah" 
-            class="w-full h-full object-cover object-center sm:object-right opacity-35 sm:opacity-45 filter brightness-[0.98] contrast-[1.08] saturate-[1.12]"
+            src="/assets/images/hero/javanese-kitchen-master.jpg" 
+            alt="Dapur Tradisional Pawon Jawa Tengah" 
+            class="w-full h-full object-cover object-center lg:object-right opacity-45 sm:opacity-55 filter brightness-[0.98] contrast-[1.08] saturate-[1.12] transition-transform duration-1000 scale-102"
           />
-          <div class="absolute inset-0 bg-gradient-to-r from-[#FAF6EF] via-[#FAF6EF]/90 sm:via-[#FAF6EF]/75 to-[#FAF6EF]/35 lg:to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#FAF6EF] via-[#FAF6EF]/90 sm:via-[#FAF6EF]/80 to-[#FAF6EF]/40 lg:to-transparent"></div>
           <div class="absolute inset-0 bg-gradient-to-b from-[#FAF6EF]/60 via-transparent to-[#FAF6EF]"></div>
         </div>
 
         <!-- Subtle Ambient Warm Glow -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#C49A58]/12 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#C49A58]/15 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
             <!-- Left Editorial Text -->
-            <div class="lg:col-span-6 space-y-6 text-center lg:text-left z-10">
-              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#F2E8D8] border border-[#E5D9C5] text-xs font-semibold text-[#654332] uppercase tracking-wider">
+            <div class="lg:col-span-6 space-y-5 sm:space-y-6 text-center lg:text-left z-10">
+              <div class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#F2E8D8] border border-[#E5D9C5] text-[10px] sm:text-xs font-semibold text-[#654332] uppercase tracking-wider shadow-2xs">
                 <span class="w-2 h-2 rounded-full bg-[#B85C38] animate-pulse"></span>
-                ${t('hero.badge')}
+                <span>${t('hero.badge')}</span>
               </div>
 
-              <h1 class="font-editorial-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#302018] leading-[1.12]">
+              <h1 class="font-editorial-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#302018] leading-[1.14] break-words">
                 ${t('hero.titleStart')} <span class="italic text-[#B85C38]">${t('hero.titleAccent')}</span> ${t('hero.titleEnd')}
               </h1>
 
-              <p class="text-base sm:text-lg text-[#654332] font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              <p class="text-sm sm:text-lg text-[#654332] font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 ${t('hero.description')}
               </p>
 
               <!-- Hero Actions -->
-              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1 sm:pt-2">
                 <a href="#/resep" 
-                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full text-sm font-bold bg-[#B85C38] hover:bg-[#A04A27] text-white transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5">
+                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#B85C38] hover:bg-[#A04A27] text-white transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
                   <span>${t('hero.ctaPrimary')}</span>
                   <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
                 </a>
                 <a href="#/rekomendasi" 
-                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-sm font-bold bg-white hover:bg-[#F2E8D8] text-[#302018] transition-all border border-[#E5D9C5] shadow-xs">
+                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold bg-white hover:bg-[#F2E8D8] text-[#302018] transition-all border border-[#E5D9C5] shadow-xs cursor-pointer">
                   <svg class="w-4 h-4 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
                   </svg>
@@ -74,15 +74,15 @@ export async function renderHomePage() {
               </div>
 
               <!-- Cultural Quotation Pill -->
-              <div class="pt-3 flex items-center justify-center lg:justify-start gap-3 text-xs text-[#777B52]">
+              <div class="pt-2 sm:pt-3 flex items-center justify-center lg:justify-start gap-3 text-xs text-[#777B52]">
                 <span class="inline-block w-8 h-px bg-[#C49A58]"></span>
-                <span class="italic font-editorial-serif">${t('hero.culturalPill')}</span>
+                <span class="italic font-editorial-serif text-[11px] sm:text-xs">${t('hero.culturalPill')}</span>
               </div>
             </div>
 
             <!-- Right Interactive Centerpiece Showcase -->
-            <div class="lg:col-span-6 relative flex items-center justify-center">
-              <div id="hero-3d-canvas" class="w-full max-w-[500px] h-[450px] sm:h-[490px]"></div>
+            <div class="lg:col-span-6 relative flex items-center justify-center w-full">
+              <div id="hero-3d-canvas" class="w-full max-w-[500px] min-h-[400px] sm:min-h-[470px]"></div>
             </div>
 
           </div>
@@ -230,24 +230,30 @@ export async function renderHomePage() {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
           ${sampleSpices.map(s => `
-            <div class="bg-white p-5 rounded-2xl border border-[#E5D9C5] shadow-xs hover:border-[#B85C38] transition-all card-hover-lift flex flex-col justify-between">
+            <div class="group bg-white p-4 rounded-2xl border border-[#E5D9C5] shadow-xs hover:border-[#B85C38] transition-all card-hover-lift flex flex-col justify-between">
               <div>
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center mb-3 font-bold text-xs" style="background-color: ${s.modelColor}18; color: ${s.modelColor};">
-                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                  </svg>
+                <div class="relative w-full h-32 rounded-xl overflow-hidden mb-3 bg-[#FAF6EF] border border-[#E5D9C5]/60">
+                  <img src="${s.image}" 
+                       alt="${s.name}" 
+                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                       loading="lazy"
+                       onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+                  <span class="absolute bottom-1.5 left-2 px-2 py-0.5 rounded-md bg-[#302018]/85 text-[9px] font-bold text-[#FAF6EF] backdrop-blur-xs">
+                    ${s.categoryName}
+                  </span>
                 </div>
-                <h3 class="font-editorial-serif text-base font-bold text-[#302018] mb-1">
+                <h3 class="font-editorial-serif text-base font-bold text-[#302018] group-hover:text-[#B85C38] transition-colors mb-0.5">
                   ${s.name}
                 </h3>
-                <p class="text-[10px] italic text-[#777B52] mb-2 font-mono">
+                <p class="text-[10px] italic text-[#777B52] mb-1.5 font-mono">
                   ${s.latinName}
                 </p>
-                <p class="text-xs text-[#654332]/90 line-clamp-3 leading-relaxed">
+                <p class="text-xs text-[#654332]/90 line-clamp-2 leading-relaxed">
                   ${s.role}
                 </p>
               </div>
-              <div class="pt-4 border-t border-[#E5D9C5] mt-3">
+              <div class="pt-3 border-t border-[#E5D9C5] mt-3">
                 <a href="#/jelajah-rempah" class="text-xs font-bold text-[#B85C38] hover:text-[#302018] transition-colors flex items-center justify-between">
                   <span>${t('spicesSection.inspectBtn')}</span>
                   <span>&rarr;</span>

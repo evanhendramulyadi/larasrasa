@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+:root {
   --color-warm-ivory: #FAF6EF;
   --color-soft-cream: #F2E8D8;
   --color-deep-espresso: #302018;
@@ -26,6 +26,11 @@
 
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 /* Base Body & Layered Central Javanese Heritage Ambient Background */

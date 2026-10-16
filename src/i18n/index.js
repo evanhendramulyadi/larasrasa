@@ -7,7 +7,13 @@ class I18nManager {
   constructor() {
     let saved = null;
     try {
-      if (typeof localStorage !== 'undefined') {
+      if (typeof window !== 'undefined' && window.location && window.location.search) {
+        const urlLang = new URLSearchParams(window.location.search).get('lang');
+        if (urlLang === 'en' || urlLang === 'id') {
+          saved = urlLang;
+        }
+      }
+      if (!saved && typeof localStorage !== 'undefined') {
         saved = localStorage.getItem('larasrasa_lang');
       }
     } catch (_) {}

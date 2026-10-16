@@ -40,6 +40,7 @@ export async function renderRecipeDetailPage(slug) {
     const allR = await restaurantService.getRestaurants();
     relevantRestaurants = allR.filter(r => recipe.legendaryRestaurantIds.includes(r.id));
   }
+  const cookingSteps = recipe.steps || recipe.instructions || [];
 
   return `
     <article class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
@@ -234,7 +235,7 @@ export async function renderRecipeDetailPage(slug) {
         </div>
 
         <div class="space-y-4">
-          ${recipe.steps.map((step, idx) => `
+          ${cookingSteps.map((step, idx) => `
             <div class="step-card bg-white p-6 rounded-3xl border border-[#E5D9C5] shadow-xs transition-all duration-200" id="step-card-${idx}">
               <div class="flex items-start gap-4">
                 <!-- Step Checkbox -->
