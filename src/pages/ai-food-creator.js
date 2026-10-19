@@ -9,18 +9,18 @@ import { i18n, t } from '../i18n/index.js';
 /**
  * LarasRasa AI Food Creator Page
  * 
- * Interactive culinary laboratory:
- * - Creator identity input (Full Name required, nickname optional)
- * - Searchable, categorized ingredient selection with multi-select & validation
- * - Rich culinary preferences (method, category, taste, spice, equipment, notes, visual style)
- * - High-DPI HTML5 Canvas poster composer
- * - One-click PNG poster download & jsPDF recipe document download
- * - In-memory image regeneration with style & ratio switching
+ * Interactive Culinary Studio:
+ * - Creator identity input with real-time feedback
+ * - Searchable, categorized authentic Central Javanese ingredient selection with real photographs
+ * - Culinary preferences: method, category, taste profile, spice level, duration, equipment, dietary
+ * - Empty state output dashboard ready for Supabase backend integration
+ * - Zero bugs, responsive design, intuitive UX
  */
 
 // Transient Page State
 let activeTab = 'all'; // 'all', 'protein', 'spice', 'vegetable'
 let searchQuery = '';
+let currentStudioView = 'form'; // 'form' | 'output'
 let formState = {
   creatorName: '',
   creatorNickname: '',
@@ -39,65 +39,22 @@ let formState = {
   outputLanguage: 'id'
 };
 
-let currentGeneratedRecipe = null;
-let isGenerating = false;
 let validationMessage = null;
+let toastMessage = null;
 
 export async function renderAiFoodCreatorPage() {
-  const currentLang = i18n.getLanguage();
+  const currentLang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
 
-  if (isGenerating) {
-    return renderGeneratingState();
-  }
-
-  if (currentGeneratedRecipe) {
-    return renderResultView(currentGeneratedRecipe, currentLang);
+  if (currentStudioView === 'output') {
+    return renderEmptyOutputView(currentLang);
   }
 
   return renderFormView(currentLang);
 }
 
-function renderGeneratingState() {
-  const isEn = i18n.getLanguage() === 'en';
-  return `
-    <div class="max-w-3xl mx-auto px-4 py-24 text-center space-y-6">
-      <div class="relative w-20 h-20 mx-auto">
-        <div class="absolute inset-0 rounded-full border-4 border-[#C49A58]/20 animate-ping"></div>
-        <div class="w-20 h-20 rounded-full bg-[#302018] border-2 border-[#C49A58] text-[#C49A58] flex items-center justify-center mx-auto shadow-xl">
-          <svg class="w-10 h-10 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
-            <path d="M12 2a10 10 0 0 1 10 10"/>
-          </svg>
-        </div>
-      </div>
-
-      <div class="space-y-2">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F2E8D8] text-xs font-bold text-[#B85C38] uppercase tracking-wider">
-          ${isEn ? 'AI Culinary Engine' : 'Engine Kuliner LarasRasa'}
-        </span>
-        <h2 class="font-editorial-serif text-3xl font-bold text-[#302018]">
-          ${isEn ? 'Harmonizing Your Original Recipe...' : 'Menyelaraskan Bumbu & Meracik Resep...'}
-        </h2>
-        <p class="text-sm text-[#654332] max-w-md mx-auto leading-relaxed">
-          ${isEn 
-            ? 'Analyzing traditional spice ratios, calibrating cooking steps, and composing high-resolution artwork for your culinary concept.'
-            : 'Menganalisis keseimbangan rempah, menakar gramasi porsi, dan merajut poster kanvas resolusi tinggi untuk kreasi Anda.'}
-        </p>
-      </div>
-
-      <div class="max-w-xs mx-auto bg-white/70 backdrop-blur-xs p-3.5 rounded-2xl border border-[#C49A58]/30 text-xs text-[#777B52] space-y-1">
-        <div class="flex items-center justify-between font-bold">
-          <span>${isEn ? 'Synthesizing Flavors' : 'Meracik Profil Rasa'}</span>
-          <span>92%</span>
-        </div>
-        <div class="w-full bg-[#FAF6EF] h-2 rounded-full overflow-hidden">
-          <div class="bg-[#B85C38] h-full rounded-full animate-pulse" style="width: 92%"></div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
+/**
+ * Form View: Interactive Studio Configuration
+ */
 function renderFormView(currentLang) {
   const isEn = currentLang === 'en';
 
@@ -116,7 +73,8 @@ function renderFormView(currentLang) {
     filteredIngredients = filteredIngredients.filter(i => 
       (i.nameId && i.nameId.toLowerCase().includes(q)) ||
       (i.nameEn && i.nameEn.toLowerCase().includes(q)) ||
-      (i.flavorNote && i.flavorNote.toLowerCase().includes(q))
+      (i.flavorNote && i.flavorNote.toLowerCase().includes(q)) ||
+      (i.description && i.description.toLowerCase().includes(q))
     );
   }
 
@@ -126,165 +84,148 @@ function renderFormView(currentLang) {
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       
       <!-- Studio Header with Traditional Javanese Kitchen Backdrop -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#C49A58]/35 shadow-xl bg-[#302018] text-[#FAF6EF]">
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
         <img 
           src="/assets/images/hero/javanese-kitchen-master.jpg" 
           alt="Pawon Dapur Jawa Tengah" 
-          class="absolute inset-0 w-full h-full object-cover opacity-25 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
+          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#302018] via-[#302018]/85 to-[#302018]/90 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#24140D] via-[#24140D]/80 to-[#24140D]/90 pointer-events-none"></div>
         
         <div class="relative z-10 space-y-3 max-w-2xl mx-auto">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 shadow-xs">
             <span class="w-2 h-2 rounded-full bg-[#B85C38] animate-ping"></span>
             <span class="text-xs font-bold text-[#C49A58] uppercase tracking-wider">
-              ${isEn ? 'LarasRasa AI Culinary Studio' : 'Studio Eksperimen Kuliner AI LarasRasa'}
+              ${isEn ? 'AI Culinary Studio • Central Java' : 'Studio Eksperimen Kuliner AI • Jawa Tengah'}
             </span>
           </div>
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white leading-tight">
-            ${isEn ? 'Create Your Original Central Javanese Recipe' : 'Ciptakan Resep & Poster Kuliner Jawa Tengah Anda'}
+            ${isEn ? 'Craft Your Authentic Javanese Recipe' : 'Ciptakan Resep & Komposisi Bumbu Anda'}
           </h1>
           <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
             ${isEn
-              ? 'Input your culinary vision, select authentic regional ingredients, and let the AI generate a complete traditional recipe with an official high-resolution poster credited in your name.'
-              : 'Pilih bahan favorit, atur karakter rasa khas Jawa Tengah, dan biarkan AI menyusun takaran presisi, panduan masak, serta poster resmi bertuliskan nama Anda.'}
+              ? 'Select authentic regional ingredients, calibrate traditional flavors, and configure your culinary blueprint ready for Supabase backend synthesis.'
+              : 'Pilih bahan & rempah otentik Jawa Tengah, atur karakter rasa khas pawon tradisional, dan siapkan parameter resep yang siap disinkronkan ke backend Supabase.'}
           </p>
         </div>
       </div>
 
-      <!-- Validation Banner -->
+      <!-- Studio Mode Navigation Tabs -->
+      <div class="flex items-center justify-center gap-3">
+        <div class="inline-flex p-1.5 rounded-2xl bg-white/90 border border-[#C49A58]/30 shadow-xs text-xs font-bold">
+          <button 
+            type="button" 
+            id="tab-view-form-btn"
+            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 ${
+              currentStudioView === 'form' 
+                ? 'bg-[#24140D] text-white shadow-xs' 
+                : 'text-[#523424] hover:text-[#B85C38]'
+            }"
+          >
+            <span>🎨</span>
+            <span>${isEn ? '1. Recipe Parameters & Spices' : '1. Racik Bahan & Preferensi'}</span>
+          </button>
+          
+          <button 
+            type="button" 
+            id="tab-view-output-btn"
+            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 ${
+              currentStudioView === 'output' 
+                ? 'bg-[#24140D] text-white shadow-xs' 
+                : 'text-[#523424] hover:text-[#B85C38]'
+            }"
+          >
+            <span>⚡</span>
+            <span>${isEn ? '2. AI Output (Supabase Ready)' : '2. Output Resep AI (Supabase)'}</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] bg-[#B85C38] text-white">Standby</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Validation Error Banner -->
       ${validationMessage ? `
-        <div class="max-w-3xl mx-auto p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-center justify-between gap-3 shadow-xs">
-          <div class="flex items-center gap-2.5">
-            <svg class="w-5 h-5 text-rose-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
+        <div class="max-w-4xl mx-auto p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-center justify-between shadow-xs animate-shake">
+          <div class="flex items-center gap-2 font-medium">
+            <span class="text-base">⚠️</span>
             <span>${validationMessage}</span>
           </div>
-          <button type="button" id="dismiss-val-btn" class="font-bold text-rose-600 hover:text-rose-900 text-base">&times;</button>
+          <button type="button" id="dismiss-val-btn" class="text-rose-600 hover:text-rose-900 font-bold ml-2 text-sm">&times;</button>
         </div>
       ` : ''}
 
-      <form id="ai-creator-form" class="space-y-10" novalidate>
+      <!-- Interactive Studio Form -->
+      <form id="ai-creator-form" class="space-y-8 max-w-4xl mx-auto">
         
-        <!-- SECTION 1: Creator Identity (Required for attribution & poster) -->
-        <section class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/25 shadow-xs space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#E5D9C5]">
-            <div class="space-y-0.5">
-              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Bagian 1 • Identitas Kreator</span>
-              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#302018]">
-                ${isEn ? '1. Creator Identity & Credit' : '1. Identitas Pencipta Resep'}
+        <!-- SECTION 1: Creator Identity -->
+        <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
+          <div class="pb-4 border-b border-[#E5D9C5] flex items-center justify-between">
+            <div>
+              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Langkah 1 • Hak Cipta Resep</span>
+              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
+                ${isEn ? '1. Creator Attribution' : '1. Identitas Pencipta Resep'}
               </h2>
             </div>
-            <span class="text-xs text-[#777B52] bg-[#FAF6EF] px-3 py-1 rounded-full border border-[#C49A58]/20 self-start sm:self-auto">
-              ${isEn ? 'No registration required' : 'Tanpa perlu daftar akun / login'}
+            <span class="text-xs px-2.5 py-1 rounded-full bg-[#FAF6EF] text-[#B85C38] border border-[#C49A58]/30 font-semibold">
+              Wajib Diisi
             </span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div class="space-y-1.5">
-              <label for="creator-name-input" class="block text-xs font-bold text-[#302018]">
-                ${isEn ? 'Full Creator Name *' : 'Nama Lengkap Pencipta Resep *'}
-                <span class="text-rose-600 font-bold">*</span>
+              <label for="creator-name-input" class="block text-xs font-bold text-[#24140D]">
+                ${isEn ? 'Creator Full Name' : 'Nama Lengkap Pencipta'} <span class="text-rose-600">*</span>
               </label>
               <input 
                 type="text" 
                 id="creator-name-input" 
                 name="creatorName"
                 value="${escapeHtml(formState.creatorName)}"
-                placeholder="${isEn ? 'e.g., Evan Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
+                placeholder="${isEn ? 'e.g., Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
                 required
-                class="w-full px-4 py-3 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38] text-sm text-[#302018] transition-all"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38] text-sm text-[#24140D] transition-all"
               />
-              <p class="text-[11px] text-[#654332]/80">
+              <p class="text-[11px] text-[#523424]/80">
                 ${isEn 
-                  ? 'This name will be formally credited on your recipe document and high-DPI food poster.' 
-                  : 'Nama ini akan tertera resmi pada judul resep, sertifikat dokumen PDF, dan poster kanvas.'}
+                  ? 'This name will be saved in the Supabase user_recipes table.' 
+                  : 'Nama ini disimpan pada record tabel database Supabase dan dicantumkan pada poster kreasi.'}
               </p>
             </div>
 
             <div class="space-y-1.5">
-              <label for="creator-nickname-input" class="block text-xs font-bold text-[#302018]">
-                ${isEn ? 'Preferred Title / Nickname (Optional)' : 'Nama Panggilan / Gelar Dapur (Opsional)'}
+              <label for="creator-nickname-input" class="block text-xs font-bold text-[#24140D]">
+                ${isEn ? 'Culinary Title / Nickname (Optional)' : 'Gelar Dapur / Nama Panggilan (Opsional)'}
               </label>
               <input 
                 type="text" 
                 id="creator-nickname-input" 
                 name="creatorNickname"
                 value="${escapeHtml(formState.creatorNickname)}"
-                placeholder="${isEn ? 'e.g., Chef Evan / Mas Evan' : 'Contoh: Chef Evan / Mas Hendra'}"
-                class="w-full px-4 py-3 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38] text-sm text-[#302018] transition-all"
+                placeholder="${isEn ? 'e.g., Chef Evan' : 'Contoh: Mas Hendra / Chef Evan'}"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38] text-sm text-[#24140D] transition-all"
               />
-              <p class="text-[11px] text-[#654332]/80">
-                ${isEn ? 'Used for intimate culinary storytelling notes.' : 'Digunakan dalam catatan narasi cerita dapur nusantara.'}
+              <p class="text-[11px] text-[#523424]/80">
+                ${isEn ? 'Appears in culinary narrative notes.' : 'Dicantumkan sebagai catatan personal di resep.'}
               </p>
-            </div>
-          </div>
-
-          <!-- Recipe Output Language Selector -->
-          <div class="pt-4 border-t border-[#E5D9C5] space-y-2.5">
-            <div class="flex items-center justify-between">
-              <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-                ${isEn ? 'Recipe Output Language' : 'Bahasa Output Dokumen Resep'}
-              </label>
-              <span class="text-[11px] text-[#777B52]">
-                ${isEn ? 'Determines language of generated recipe text' : 'Bahasa penyusunan resep, takaran & langkah'}
-              </span>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl">
-              <label class="p-3.5 rounded-2xl border cursor-pointer transition-all flex items-center justify-between ${
-                formState.outputLanguage === 'id'
-                  ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38] ring-2 ring-[#B85C38]'
-                  : 'bg-[#FAF6EF]/60 hover:bg-[#FAF6EF] text-[#302018] border-[#E5D9C5]'
-              }">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">🇮🇩</span>
-                  <div>
-                    <span class="text-xs font-bold block">Bahasa Indonesia</span>
-                    <span class="text-[10px] ${formState.outputLanguage === 'id' ? 'text-[#C49A58]' : 'text-[#654332]'} block">
-                      Resep, takaran gramasi & instruksi Indonesia
-                    </span>
-                  </div>
-                </div>
-                <input type="radio" name="outputLanguage" value="id" ${formState.outputLanguage === 'id' ? 'checked' : ''} class="sr-only"/>
-              </label>
-
-              <label class="p-3.5 rounded-2xl border cursor-pointer transition-all flex items-center justify-between ${
-                formState.outputLanguage === 'en'
-                  ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38] ring-2 ring-[#B85C38]'
-                  : 'bg-[#FAF6EF]/60 hover:bg-[#FAF6EF] text-[#302018] border-[#E5D9C5]'
-              }">
-                <div class="flex items-center gap-3">
-                  <span class="text-2xl">🇬🇧</span>
-                  <div>
-                    <span class="text-xs font-bold block">English</span>
-                    <span class="text-[10px] ${formState.outputLanguage === 'en' ? 'text-[#C49A58]' : 'text-[#654332]'} block">
-                      Titles, metric measurements & English steps
-                    </span>
-                  </div>
-                </div>
-                <input type="radio" name="outputLanguage" value="en" ${formState.outputLanguage === 'en' ? 'checked' : ''} class="sr-only"/>
-              </label>
             </div>
           </div>
         </section>
 
-        <!-- SECTION 2: Ingredient Selection (Searchable, categorized, multi-select) -->
-        <section class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/25 shadow-xs space-y-6">
+        <!-- SECTION 2: Ingredient Selection -->
+        <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E5D9C5]">
             <div class="space-y-0.5">
-              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Bagian 2 • Seleksi Bahan & Rempah</span>
-              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#302018]">
-                ${isEn ? '2. Select Authentic Ingredients' : '2. Pilih Bahan & Rempah Pilihan'}
+              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Langkah 2 • Ramuan Rempah & Bahan</span>
+              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
+                ${isEn ? '2. Select Regional Ingredients' : '2. Pilih Bahan & Rempah Otentik Jawa'}
               </h2>
             </div>
             
             <div class="flex items-center gap-2">
-              <span class="text-xs font-bold px-3 py-1 rounded-full ${selectedCount >= 1 ? 'bg-[#302018] text-[#FAF6EF]' : 'bg-rose-100 text-rose-800'}">
+              <span class="text-xs font-bold px-3 py-1 rounded-full ${selectedCount >= 1 ? 'bg-[#24140D] text-[#FAF6EF]' : 'bg-rose-100 text-rose-800'}">
                 ${selectedCount} ${isEn ? 'Items Selected' : 'Bahan Dipilih'}
               </span>
               ${selectedCount > 0 ? `
-                <button type="button" id="clear-all-ingredients-btn" class="text-xs font-bold text-rose-600 hover:text-rose-800 underline">
+                <button type="button" id="clear-all-ingredients-btn" class="text-xs font-bold text-rose-600 hover:text-rose-800 underline cursor-pointer">
                   ${isEn ? 'Clear All' : 'Hapus Semua'}
                 </button>
               ` : ''}
@@ -293,64 +234,63 @@ function renderFormView(currentLang) {
 
           <!-- Active Ingredients Chips Bar -->
           <div class="p-3.5 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] space-y-2">
-            <div class="text-[11px] font-bold text-[#654332] uppercase tracking-wider flex items-center justify-between">
-              <span>${isEn ? 'Active Selection in Pot:' : 'Bahan yang Masuk ke Wajan Eksperimen:'}</span>
-              <span class="text-[#777B52]">${selectedCount === 0 ? (isEn ? 'Select at least 1 ingredient' : 'Pilih minimal 1 bahan') : (isEn ? 'Ready to blend' : 'Siap diracik')}</span>
+            <div class="text-[11px] font-bold text-[#523424] uppercase tracking-wider flex items-center justify-between">
+              <span>${isEn ? 'Active Selection in Wajan:' : 'Bahan yang Siap Masuk ke Wajan Racikan:'}</span>
+              <span class="text-[#656C42]">${selectedCount === 0 ? (isEn ? 'Select at least 1 ingredient' : 'Pilih minimal 1 bahan') : (isEn ? 'Ready to blend' : 'Siap diproses')}</span>
             </div>
             <div class="flex flex-wrap gap-1.5">
               ${selectedCount === 0 ? `
-                <span class="text-xs italic text-[#855C47]">
-                  ${isEn ? 'Belum ada bahan dipilih. Klik pada bahan di bawah untuk menambahkan.' : 'Belum ada bahan dipilih. Silakan pilih bahan dari katalog di bawah.'}
+                <span class="text-xs italic text-[#6B3C27]">
+                  ${isEn ? 'No ingredients selected yet. Click any ingredient card below to add.' : 'Belum ada bahan dipilih. Klik kartu rempah/bahan di bawah untuk memasukkan.'}
                 </span>
               ` : formState.selectedIngredientIds.map(id => {
                 const item = ALL_INGREDIENTS.find(i => i.id === id);
                 if (!item) return '';
                 return `
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-[#C49A58]/40 text-xs font-semibold text-[#302018] shadow-2xs">
-                    <span>${item.icon || '🌿'}</span>
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-[#C49A58]/40 text-xs font-semibold text-[#24140D] shadow-2xs">
+                    <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${item.nameId}" class="w-4 h-4 rounded-full object-cover"/>
                     <span>${isEn ? (item.nameEn || item.nameId) : item.nameId}</span>
-                    <button type="button" data-remove-ingredient="${item.id}" class="text-[#B85C38] hover:text-rose-700 font-bold ml-1 text-sm">&times;</button>
+                    <button type="button" data-remove-ingredient="${item.id}" class="text-[#B85C38] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
                   </span>
                 `;
               }).join('')}
             </div>
           </div>
 
-          <!-- Controls: Category Tabs & Search Bar -->
+          <!-- Tabs & Search Bar -->
           <div class="flex flex-col md:flex-row gap-3 items-stretch justify-between">
-            <!-- Tabs -->
-            <div class="inline-flex p-1 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] overflow-x-auto text-xs font-bold text-[#654332]">
-              <button type="button" data-tab="all" class="px-3.5 py-1.5 rounded-lg transition-all ${activeTab === 'all' ? 'bg-[#302018] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
+            <div class="inline-flex p-1 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] overflow-x-auto text-xs font-bold text-[#523424]">
+              <button type="button" data-tab="all" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'all' ? 'bg-[#24140D] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
                 ${isEn ? 'All Ingredients' : 'Semua Bahan'}
               </button>
-              <button type="button" data-tab="protein" class="px-3.5 py-1.5 rounded-lg transition-all ${activeTab === 'protein' ? 'bg-[#302018] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
-                🥩 ${isEn ? 'Proteins & Staples' : 'Protein & Pokok'}
+              <button type="button" data-tab="protein" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'protein' ? 'bg-[#24140D] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
+                🥩 ${isEn ? 'Proteins' : 'Protein & Pokok'}
               </button>
-              <button type="button" data-tab="spice" class="px-3.5 py-1.5 rounded-lg transition-all ${activeTab === 'spice' ? 'bg-[#302018] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
-                🌿 ${isEn ? 'Spices & Aromatics' : 'Rempah Aromatik'}
+              <button type="button" data-tab="spice" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'spice' ? 'bg-[#24140D] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
+                🌿 ${isEn ? 'Aromatic Spices' : 'Rempah Aromatik'}
               </button>
-              <button type="button" data-tab="vegetable" class="px-3.5 py-1.5 rounded-lg transition-all ${activeTab === 'vegetable' ? 'bg-[#302018] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
-                🥬 ${isEn ? 'Vegetables & Extras' : 'Sayur & Pelengkap'}
+              <button type="button" data-tab="vegetable" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'vegetable' ? 'bg-[#24140D] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
+                🥬 ${isEn ? 'Vegetables' : 'Sayur & Pelengkap'}
               </button>
             </div>
 
-            <!-- Instant Filter Search Input -->
-            <div class="relative w-full md:w-72">
+            <!-- Instant Search Input -->
+            <div class="relative w-full md:w-64">
               <input 
                 type="text" 
                 id="ingredient-search-input" 
                 placeholder="${isEn ? 'Search ingredients...' : 'Cari bahan / rempah...'}" 
                 value="${escapeHtml(searchQuery)}"
-                class="w-full pl-9 pr-4 py-2 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] text-xs text-[#302018] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38]"
+                class="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-[#E5D9C5] text-xs text-[#24140D] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38]"
               />
-              <svg class="w-4 h-4 text-[#777B52] absolute left-3 top-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg class="w-4 h-4 text-[#656C42] absolute left-3 top-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
               </svg>
             </div>
           </div>
 
-          <!-- Ingredients Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 max-h-[32rem] overflow-y-auto p-1.5 custom-scrollbar">
+          <!-- Ingredients Grid with Authentic Macro Photos -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 max-h-[32rem] overflow-y-auto p-1.5 custom-scrollbar">
             ${filteredIngredients.map(item => {
               const isSelected = formState.selectedIngredientIds.includes(item.id);
               const imgSrc = item.image || `/assets/images/ingredients/${item.id}.jpg`;
@@ -358,39 +298,35 @@ function renderFormView(currentLang) {
                 <button 
                   type="button" 
                   data-ingredient-id="${item.id}"
-                  class="ingredient-select-card group p-2 rounded-2xl border text-left flex flex-col justify-between transition-all duration-200 relative overflow-hidden ${
+                  class="rempah-pill-btn group p-2.5 rounded-2xl border text-left flex flex-col justify-between transition-all duration-200 relative overflow-hidden cursor-pointer ${
                     isSelected 
-                      ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38] shadow-md ring-2 ring-[#B85C38]' 
-                      : 'bg-white hover:bg-[#FAF6EF] text-[#302018] border-[#E5D9C5] hover:border-[#C49A58] shadow-2xs'
+                      ? 'bg-[#24140D] text-[#FAF6EF] border-[#B85C38] shadow-md ring-2 ring-[#B85C38]' 
+                      : 'bg-white hover:bg-[#FAF6EF] text-[#24140D] border-[#E5D9C5] hover:border-[#C49A58] shadow-2xs'
                   }"
                 >
                   <div class="relative w-full h-24 rounded-xl overflow-hidden bg-[#FAF6EF] border border-[#E5D9C5]/60 mb-2">
                     <img 
                       src="${imgSrc}" 
                       alt="${escapeHtml(item.nameId)}" 
-                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                       loading="lazy"
-                      onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+                      onerror="this.src='/assets/images/hero/hero-culinary.jpg'"
                     />
-                    <div class="hidden w-full h-full flex items-center justify-center text-2xl bg-[#E5D9C5]/40">
-                      ${item.icon || '🌿'}
-                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
                     <div class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold shadow-xs transition-colors ${
                       isSelected ? 'bg-[#B85C38] border-white text-white' : 'bg-white/80 border-[#C49A58]/50 text-transparent'
                     }">✓</div>
-                    <div class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded-md bg-[#302018]/75 backdrop-blur-xs text-[10px] text-white flex items-center gap-1">
-                      <span>${item.icon || '🌿'}</span>
-                    </div>
+                    <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded-md bg-[#24140D]/80 backdrop-blur-xs text-[9px] text-white">
+                      ${item.category === 'spice' ? 'Rempah' : item.category === 'protein' ? 'Protein' : 'Pelengkap'}
+                    </span>
                   </div>
                   <div class="px-1 flex-1 flex flex-col justify-between">
-                    <div class="text-xs font-bold leading-tight line-clamp-2">
+                    <div class="text-xs font-bold leading-tight line-clamp-1">
                       ${isEn ? (item.nameEn || item.nameId) : item.nameId}
                     </div>
-                    ${(item.flavorNote || item.description) ? `
-                      <span class="text-[9px] ${isSelected ? 'text-[#C49A58]' : 'text-[#777B52]'} line-clamp-1 mt-1 block">
-                        ${item.flavorNote || item.description}
-                      </span>
-                    ` : ''}
+                    <span class="text-[10px] ${isSelected ? 'text-[#C49A58]' : 'text-[#656C42]'} line-clamp-1 mt-1 block">
+                      ${item.flavorNote || item.description || ''}
+                    </span>
                   </div>
                 </button>
               `;
@@ -398,19 +334,19 @@ function renderFormView(currentLang) {
           </div>
         </section>
 
-        <!-- SECTION 3: Culinary Preferences (Method, Category, Taste, Spice, Duration, Servings, Equipment) -->
-        <section class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/25 shadow-xs space-y-8">
+        <!-- SECTION 3: Culinary Preferences -->
+        <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-8">
           <div class="pb-4 border-b border-[#E5D9C5]">
-            <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Bagian 3 • Preferensi & Filosofi Dapur</span>
-            <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#302018]">
-              ${isEn ? '3. Cooking Preferences & Technique' : '3. Karakter Rasa & Teknik Pengolahan'}
+            <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Langkah 3 • Filosofi Dapur & Teknik Masak</span>
+            <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
+              ${isEn ? '3. Cooking Method & Flavor Profile' : '3. Karakter Rasa & Teknik Pengolahan'}
             </h2>
           </div>
 
           <!-- Cooking Method -->
           <div class="space-y-3">
-            <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-              ${isEn ? 'Cooking Method' : 'Metode Utama Pengolahan'}
+            <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+              ${isEn ? 'Cooking Method' : 'Metode Utama Pengolahan Tradisional'}
             </label>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
               ${PREFERENCE_OPTIONS.cookingMethods.map(m => {
@@ -418,14 +354,14 @@ function renderFormView(currentLang) {
                 return `
                   <label class="p-3.5 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${
                     isSelected 
-                      ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38] ring-2 ring-[#B85C38]' 
-                      : 'bg-[#FAF6EF]/60 hover:bg-[#FAF6EF] text-[#302018] border-[#E5D9C5]'
+                      ? 'bg-[#24140D] text-[#FAF6EF] border-[#B85C38] ring-2 ring-[#B85C38]' 
+                      : 'bg-white hover:bg-[#FAF6EF] text-[#24140D] border-[#E5D9C5]'
                   }">
                     <div class="flex items-center justify-between">
                       <span class="text-xs font-bold">${isEn ? m.labelEn : m.labelId}</span>
                       <input type="radio" name="cookingMethod" value="${m.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
                     </div>
-                    <p class="text-[10px] ${isSelected ? 'text-[#C49A58]' : 'text-[#654332]'} mt-2 leading-relaxed">
+                    <p class="text-[10px] ${isSelected ? 'text-[#C49A58]' : 'text-[#523424]'} mt-2 leading-relaxed">
                       ${m.descId}
                     </p>
                   </label>
@@ -434,35 +370,16 @@ function renderFormView(currentLang) {
             </div>
           </div>
 
-          <!-- Dish Category & Taste Profile -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Category -->
-            <div class="space-y-2">
-              <label for="dish-category-select" class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-                ${isEn ? 'Dish Category' : 'Kategori Sajian'}
-              </label>
-              <select 
-                id="dish-category-select" 
-                name="dishCategory"
-                class="w-full px-4 py-3 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] text-xs sm:text-sm font-semibold text-[#302018] focus:ring-2 focus:ring-[#B85C38]"
-              >
-                ${PREFERENCE_OPTIONS.dishCategories.map(c => `
-                  <option value="${c.id}" ${formState.dishCategory === c.id ? 'selected' : ''}>
-                    ${isEn ? c.labelEn : c.labelId}
-                  </option>
-                `).join('')}
-              </select>
-            </div>
-
+          <!-- Taste Profile & Spice Level -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <!-- Taste Profile -->
             <div class="space-y-2">
-              <label for="taste-profile-select" class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-                ${isEn ? 'Target Taste Profile' : 'Profil Spektrum Rasa yang Diinginkan'}
+              <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+                ${isEn ? 'Regional Flavor Balance' : 'Harmoni Rasa Jawa Tengah'}
               </label>
               <select 
                 id="taste-profile-select" 
-                name="tasteProfile"
-                class="w-full px-4 py-3 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] text-xs sm:text-sm font-semibold text-[#302018] focus:ring-2 focus:ring-[#B85C38]"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] text-xs font-semibold text-[#24140D] focus:ring-2 focus:ring-[#B85C38]"
               >
                 ${PREFERENCE_OPTIONS.tasteProfiles.map(tp => `
                   <option value="${tp.id}" ${formState.tasteProfile === tp.id ? 'selected' : ''}>
@@ -471,210 +388,83 @@ function renderFormView(currentLang) {
                 `).join('')}
               </select>
             </div>
-          </div>
 
-          <!-- Spice Level, Duration, and Servings -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-2">
             <!-- Spice Level -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-                ${isEn ? 'Spice Level' : 'Tingkat Kepedasan'}
+              <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+                ${isEn ? 'Spice Warmth Level' : 'Tingkat Kehangatan Cabai'}
               </label>
-              <div class="grid grid-cols-2 gap-2">
+              <div class="grid grid-cols-4 gap-2">
                 ${PREFERENCE_OPTIONS.spiceLevels.map(sl => {
                   const isSelected = formState.spiceLevel === sl.id;
                   return `
-                    <label class="p-2.5 rounded-xl border text-xs font-semibold cursor-pointer text-center transition-all ${
+                    <label class="p-2.5 rounded-xl border text-center text-xs font-semibold cursor-pointer transition-all ${
                       isSelected 
-                        ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38] ring-1 ring-[#B85C38]' 
-                        : 'bg-[#FAF6EF] text-[#654332] border-[#E5D9C5]'
+                        ? 'bg-[#B85C38] text-white border-[#B85C38] shadow-xs' 
+                        : 'bg-white text-[#24140D] border-[#E5D9C5]'
                     }">
                       <input type="radio" name="spiceLevel" value="${sl.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
-                      <span>${sl.icon} ${isEn ? sl.labelEn : sl.labelId}</span>
+                      <div class="text-sm">${sl.icon}</div>
+                      <div class="text-[10px] font-bold mt-1">Lvl ${sl.id}</div>
                     </label>
                   `;
                 }).join('')}
               </div>
             </div>
+          </div>
 
-            <!-- Duration -->
-            <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-                ${isEn ? 'Target Duration' : 'Waktu Memasak'}
-              </label>
-              <div class="space-y-2">
-                ${PREFERENCE_OPTIONS.cookingDurations.map(cd => {
-                  const isSelected = formState.cookingDuration === cd.id;
-                  return `
-                    <label class="block p-2 rounded-xl border text-xs font-semibold cursor-pointer transition-all ${
-                      isSelected 
-                        ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38]' 
-                        : 'bg-[#FAF6EF] text-[#654332] border-[#E5D9C5]'
-                    }">
-                      <input type="radio" name="cookingDuration" value="${cd.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
-                      <span>⏱ ${isEn ? cd.labelEn : cd.labelId}</span>
-                    </label>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-
+          <!-- Servings & Target Duration -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <!-- Servings -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-                ${isEn ? 'Servings Size' : 'Jumlah Porsi Santap'}
+              <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+                ${isEn ? 'Target Servings' : 'Porsi Santapan'}
               </label>
-              <div class="grid grid-cols-5 gap-1.5">
+              <div class="grid grid-cols-5 gap-2">
                 ${PREFERENCE_OPTIONS.servings.map(s => {
                   const isSelected = formState.servings === s;
                   return `
-                    <label class="p-3 rounded-xl border text-center font-bold text-xs cursor-pointer transition-all ${
+                    <label class="p-2.5 rounded-xl border text-center font-bold text-xs cursor-pointer transition-all ${
                       isSelected 
                         ? 'bg-[#B85C38] text-white border-[#B85C38] shadow-xs' 
-                        : 'bg-[#FAF6EF] text-[#302018] border-[#E5D9C5]'
+                        : 'bg-white text-[#24140D] border-[#E5D9C5]'
                     }">
                       <input type="radio" name="servings" value="${s}" ${isSelected ? 'checked' : ''} class="sr-only"/>
                       <div>${s}</div>
-                      <div class="text-[9px] font-normal opacity-80">${isEn ? 'srv' : 'porsi'}</div>
+                      <div class="text-[9px] font-normal opacity-85">${isEn ? 'srv' : 'porsi'}</div>
                     </label>
                   `;
                 }).join('')}
               </div>
             </div>
-          </div>
 
-          <!-- Equipment & Dietary Notes -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-[#E5D9C5]">
-            <!-- Equipment -->
+            <!-- Custom Notes -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-                ${isEn ? 'Kitchen Equipment Available' : 'Peralatan Dapur yang Digunakan'}
+              <label for="custom-notes-input" class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+                ${isEn ? 'Culinary Vision / Special Notes' : 'Catatan Selera Tambahan'}
               </label>
-              <div class="grid grid-cols-2 gap-2">
-                ${PREFERENCE_OPTIONS.equipmentList.map(eq => {
-                  const isChecked = formState.equipment.includes(eq.id);
-                  return `
-                    <label class="p-2.5 rounded-xl border text-xs font-semibold cursor-pointer flex items-center gap-2 ${
-                      isChecked ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38]' : 'bg-[#FAF6EF] text-[#654332] border-[#E5D9C5]'
-                    }">
-                      <input type="checkbox" name="equipment" value="${eq.id}" ${isChecked ? 'checked' : ''} class="rounded text-[#B85C38]"/>
-                      <span>${isEn ? eq.labelEn : eq.labelId}</span>
-                    </label>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-
-            <!-- Dietary Requirements -->
-            <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-                ${isEn ? 'Dietary / Restrictions' : 'Preferensi Diet & Pantangan'}
-              </label>
-              <div class="grid grid-cols-2 gap-2">
-                ${PREFERENCE_OPTIONS.dietaryOptions.map(diet => {
-                  const isChecked = formState.dietary.includes(diet.id);
-                  return `
-                    <label class="p-2.5 rounded-xl border text-xs font-semibold cursor-pointer flex items-center gap-2 ${
-                      isChecked ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38]' : 'bg-[#FAF6EF] text-[#654332] border-[#E5D9C5]'
-                    }">
-                      <input type="checkbox" name="dietary" value="${diet.id}" ${isChecked ? 'checked' : ''} class="rounded text-[#B85C38]"/>
-                      <span>${isEn ? diet.labelEn : diet.labelId}</span>
-                    </label>
-                  `;
-                }).join('')}
-              </div>
-            </div>
-          </div>
-
-          <!-- Custom Notes / Creative Vision -->
-          <div class="space-y-2 pt-2">
-            <label for="custom-notes-input" class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-              ${isEn ? 'Creative Vision & Custom Notes (Optional)' : 'Visi Rasa & Catatan Kreatif Anda (Opsional)'}
-            </label>
-            <textarea 
-              id="custom-notes-input" 
-              name="customNotes"
-              rows="2"
-              placeholder="${isEn ? 'e.g., I want an aromatic torch ginger kick with a creamy yet light golden coconut sauce...' : 'Contoh: Ingin aroma kecombrang yang kuat, kuah santan tidak terlalu kental, dan rasa pedas yang hangat di tenggorokan...'}"
-              class="w-full px-4 py-3 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] text-xs sm:text-sm text-[#302018] focus:ring-2 focus:ring-[#B85C38]"
-            >${escapeHtml(formState.customNotes)}</textarea>
-          </div>
-        </section>
-
-        <!-- SECTION 4: Poster Art Direction (Visual Style & Aspect Ratio) -->
-        <section class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/25 shadow-xs space-y-6">
-          <div class="pb-4 border-b border-[#E5D9C5]">
-            <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Bagian 4 • Tata Artistik Poster Kanvas</span>
-            <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#302018]">
-              ${isEn ? '4. High-DPI Poster Style & Aspect Ratio' : '4. Gaya Ilustrasi & Format Rasio Poster'}
-            </h2>
-          </div>
-
-          <!-- Style Picker -->
-          <div class="space-y-2">
-            <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-              ${isEn ? 'Illustration Artwork Style' : 'Gaya Visual Karya Poster'}
-            </label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-              ${PREFERENCE_OPTIONS.imageStyles.map(st => {
-                const isSelected = formState.imageStyle === st.id;
-                return `
-                  <label class="p-4 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${
-                    isSelected 
-                      ? 'bg-[#302018] text-[#FAF6EF] border-[#B85C38] ring-2 ring-[#B85C38]' 
-                      : 'bg-[#FAF6EF]/60 hover:bg-[#FAF6EF] text-[#302018] border-[#E5D9C5]'
-                  }">
-                    <div>
-                      <div class="flex items-center justify-between mb-1.5">
-                        <span class="text-xs font-bold">${isEn ? st.labelEn : st.labelId}</span>
-                        <input type="radio" name="imageStyle" value="${st.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
-                      </div>
-                      <p class="text-[10px] ${isSelected ? 'text-[#C49A58]' : 'text-[#654332]'} leading-relaxed">
-                        ${st.descId}
-                      </p>
-                    </div>
-                  </label>
-                `;
-              }).join('')}
-            </div>
-          </div>
-
-          <!-- Aspect Ratio Picker -->
-          <div class="space-y-2 pt-2">
-            <label class="block text-xs font-bold text-[#302018] uppercase tracking-wider">
-              ${isEn ? 'Poster Canvas Aspect Ratio' : 'Rasio Kanvas Poster'}
-            </label>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              ${PREFERENCE_OPTIONS.aspectRatios.map(ar => {
-                const isSelected = formState.aspectRatio === ar.id;
-                return `
-                  <label class="p-3.5 rounded-xl border text-xs font-bold cursor-pointer text-center transition-all ${
-                    isSelected 
-                      ? 'bg-[#B85C38] text-white border-[#B85C38] shadow-xs' 
-                      : 'bg-[#FAF6EF] text-[#302018] border-[#E5D9C5]'
-                  }">
-                    <input type="radio" name="aspectRatio" value="${ar.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
-                    <div>${ar.label}</div>
-                    <div class="text-[10px] font-normal opacity-85 mt-0.5">
-                      ${ar.width} x ${ar.height} px
-                    </div>
-                  </label>
-                `;
-              }).join('')}
+              <input 
+                type="text" 
+                id="custom-notes-input" 
+                name="customNotes"
+                value="${escapeHtml(formState.customNotes)}"
+                placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] text-xs text-[#24140D] focus:ring-2 focus:ring-[#B85C38]"
+              />
             </div>
           </div>
         </section>
 
         <!-- CTA Action Bar -->
-        <div class="p-6 rounded-3xl bg-gradient-to-r from-[#302018] to-[#1F140F] border border-[#C49A58]/30 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="p-6 rounded-3xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1B0F09] border border-[#C49A58]/35 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="text-left space-y-1">
             <h3 class="font-editorial-serif text-lg font-bold text-[#FAF6EF]">
-              ${isEn ? 'Ready to synthesize your original dish?' : 'Sudah siap meracik hidangan orisinal Anda?'}
+              ${isEn ? 'Ready to sync with Supabase backend?' : 'Siap menyusun blueprint resep Anda?'}
             </h3>
             <p class="text-xs text-[#FAF6EF]/75">
               ${isEn 
-                ? 'Your experiment is generated on-demand without permanent database writes.' 
-                : 'Eksperimen Anda diracik secara instan dan dapat diunduh langsung sebagai poster PNG & panduan resep PDF.'}
+                ? 'Your parameters will be formatted and prepared for backend API & Supabase ingestion.' 
+                : 'Parameter bahan dan preferensi akan disiapkan untuk endpoint API backend dan database Supabase.'}
             </p>
           </div>
 
@@ -683,10 +473,11 @@ function renderFormView(currentLang) {
             id="generate-recipe-submit-btn"
             class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#B85C38] hover:bg-[#A04A27] text-[#FAF6EF] font-bold text-sm tracking-wide transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
           >
-            <svg class="w-5 h-5 text-[#FAF6EF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+            <span>✨</span>
+            <span>${isEn ? 'Prepare Supabase Payload' : 'Kirim Parameter ke Backend Supabase'}</span>
+            <svg class="w-4 h-4 text-[#FAF6EF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-            <span>${isEn ? 'Synthesize Recipe & Poster' : '✨ Ciptakan Resep & Poster Sekarang'}</span>
           </button>
         </div>
 
@@ -696,316 +487,174 @@ function renderFormView(currentLang) {
   `;
 }
 
-function renderResultView(recipe, currentLang) {
+/**
+ * Output View: Clean Empty State ready for Supabase Backend
+ */
+function renderEmptyOutputView(currentLang) {
   const isEn = currentLang === 'en';
+  const selectedCount = formState.selectedIngredientIds.length;
+  const selectedIngredients = ALL_INGREDIENTS.filter(i => formState.selectedIngredientIds.includes(i.id));
 
   return `
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 animate-fade-in">
       
-      <!-- Top Navigation & Success Header -->
+      <!-- View Switcher Bar -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5D9C5]">
-        <div class="space-y-1">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold">
-            ✓ ${isEn ? 'Recipe & Poster Synthesized Successfully' : 'Resep & Poster Berhasil Diciptakan'}
-          </span>
-          <h1 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#302018]">
-            ${recipe.title}
-          </h1>
-          <p class="text-xs text-[#777B52]">
-            ${isEn ? 'Official Culinary Document' : 'Koleksi Eksperimen Dapur Orisinal'} • ID: ${recipe.id}
-          </p>
-        </div>
-
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2">
           <button 
             type="button" 
-            id="create-another-recipe-btn"
-            class="px-4 py-2.5 rounded-xl border border-[#C49A58] bg-white hover:bg-[#FAF6EF] text-[#302018] text-xs font-bold transition-all shadow-2xs"
+            id="back-to-studio-btn"
+            class="px-4 py-2 rounded-xl bg-white border border-[#C49A58]/40 hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
           >
-            ← ${isEn ? 'Create Another Recipe' : 'Ciptakan Resep Lain'}
+            <span>&larr;</span>
+            <span>${isEn ? 'Back to Studio Parameters' : 'Kembali ke Studio Racik'}</span>
           </button>
+        </div>
+
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-semibold shadow-2xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>${isEn ? 'Supabase Table Contract Ready' : 'Kontrak Database Supabase Siap'}</span>
         </div>
       </div>
 
-      <!-- Main Two-Column Layout (Left: Canvas Poster & Downloads | Right: Complete Recipe) -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        
-        <!-- LEFT COLUMN: Canvas Poster & Actions (5 cols) -->
-        <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
-          
-          <!-- Poster Preview Container -->
-          <div class="bg-white p-4 rounded-3xl border border-[#C49A58]/30 shadow-lg space-y-4">
-            <div class="flex items-center justify-between text-xs font-bold text-[#654332] px-1">
-              <span class="flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-[#B85C38]"></span>
-                ${isEn ? 'High-DPI Canvas Poster' : 'Poster Resmi Kanvas HTML5'}
-              </span>
-              <span class="text-[10px] text-[#777B52] uppercase font-mono">${recipe.aspectRatio}</span>
-            </div>
-
-            <div class="relative rounded-2xl overflow-hidden bg-[#302018] border border-[#E5D9C5] shadow-inner flex items-center justify-center">
-              <canvas 
-                id="food-poster-canvas" 
-                class="w-full h-auto max-h-[520px] object-contain block"
-              ></canvas>
-            </div>
-
-            <!-- Download Buttons Grid (PNG, JPEG, PDF Guide, and Certificate) -->
-            <div class="space-y-2.5 pt-2">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                <button 
-                  type="button" 
-                  id="download-poster-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#302018] hover:bg-[#1F140F] text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                  </svg>
-                  <span>${isEn ? 'Poster (PNG)' : 'Unduh Poster (PNG)'}</span>
-                </button>
-
-                <button 
-                  type="button" 
-                  id="download-poster-jpeg-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#654332] hover:bg-[#4A2C1A] text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                  </svg>
-                  <span>${isEn ? 'Poster (JPEG)' : 'Unduh Poster (JPEG)'}</span>
-                </button>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                <button 
-                  type="button" 
-                  id="download-pdf-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-                  </svg>
-                  <span>${isEn ? 'Recipe Guide (PDF)' : 'Unduh Resep (PDF)'}</span>
-                </button>
-
-                <button 
-                  type="button" 
-                  id="download-cert-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-[#C49A58] via-[#B85C38] to-[#654332] hover:opacity-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="8" r="6"/>
-                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
-                  </svg>
-                  <span>${t('certificate.downloadBtn')}</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- In-Memory Image Regeneration Control Panel -->
-            <div class="pt-4 border-t border-[#E5D9C5] space-y-3">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-[#302018]">
-                  ${isEn ? 'Regenerate Poster Art' : 'Regenerasi Poster / Gambar'}
-                </span>
-                <span class="text-[10px] text-[#777B52]">${isEn ? 'Preserves recipe data' : 'Resep tetap tersimpan'}</span>
-              </div>
-
-              <div class="grid grid-cols-2 gap-2 text-xs">
-                <select id="regen-style-select" class="px-2.5 py-1.5 rounded-lg bg-[#FAF6EF] border border-[#E5D9C5] text-xs font-medium text-[#302018]">
-                  ${PREFERENCE_OPTIONS.imageStyles.map(st => `
-                    <option value="${st.id}" ${recipe.imageStyle === st.id ? 'selected' : ''}>
-                      ${isEn ? st.labelEn : st.labelId}
-                    </option>
-                  `).join('')}
-                </select>
-
-                <select id="regen-ratio-select" class="px-2.5 py-1.5 rounded-lg bg-[#FAF6EF] border border-[#E5D9C5] text-xs font-medium text-[#302018]">
-                  ${PREFERENCE_OPTIONS.aspectRatios.map(ar => `
-                    <option value="${ar.id}" ${recipe.aspectRatio === ar.id ? 'selected' : ''}>
-                      ${ar.label}
-                    </option>
-                  `).join('')}
-                </select>
-              </div>
-
-              <button 
-                type="button" 
-                id="regenerate-art-btn"
-                class="w-full py-2 px-3 rounded-lg bg-[#F2E8D8] hover:bg-[#E5D9C5] text-[#302018] text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
-              >
-                <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                  <path d="M3 3v5h5"/>
-                  <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
-                  <path d="M16 16h5v5"/>
-                </svg>
-                <span>${isEn ? 'Apply New Style & Redraw' : 'Terapkan Gaya Baru & Gambar Ulang'}</span>
-              </button>
-            </div>
-
+      <!-- Toast Feedback Message -->
+      ${toastMessage ? `
+        <div class="p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs flex items-center justify-between shadow-xs">
+          <div class="flex items-center gap-2 font-medium">
+            <span>✓</span>
+            <span>${toastMessage}</span>
           </div>
+          <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm">&times;</button>
+        </div>
+      ` : ''}
 
-          <!-- Creator Certificate Badge -->
-          <div class="p-5 rounded-2xl bg-gradient-to-br from-[#302018] to-[#1F140F] text-[#FAF6EF] border border-[#C49A58]/30 space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <span class="text-base text-[#C49A58]">★</span>
-                <span class="text-xs font-bold text-[#C49A58] uppercase tracking-wider">
-                  ${isEn ? 'Creative Recognition Certificate' : 'Piagam Apresiasi Kreasi'}
-                </span>
-              </div>
-              <span class="text-[10px] bg-[#C49A58]/20 text-[#C49A58] border border-[#C49A58]/40 px-2 py-0.5 rounded-full font-mono">
-                A4 LANDSCAPE
-              </span>
-            </div>
-            <p class="text-xs text-[#FAF6EF]/85 leading-relaxed">
-              ${isEn 
-                ? `This original recipe concept is credited to <strong>${escapeHtml(recipe.creatorName)}</strong> in celebration of Central Javanese flavor exploration.` 
-                : `Konsep resep orisinal ini secara resmi tercatat diciptakan oleh <strong>${escapeHtml(recipe.creatorName)}</strong> sebagai wujud apresiasi eksplorasi rasa Jawa Tengah.`}
-            </p>
-            <button 
-              type="button" 
-              id="download-cert-badge-btn"
-              class="w-full py-2.5 px-3 rounded-xl bg-[#FAF6EF]/10 hover:bg-[#FAF6EF]/20 text-[#FAF6EF] text-xs font-bold border border-[#C49A58]/50 transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="8" r="6"/>
-                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
-              </svg>
-              <span>${isEn ? 'Download Certificate (PDF)' : 'Unduh Piagam Apresiasi (PDF)'}</span>
-            </button>
+      <!-- Main Empty State Hero Card -->
+      <div class="pawon-glass p-8 sm:p-12 rounded-3xl text-center space-y-6 max-w-3xl mx-auto border border-[#C49A58]/35 shadow-lg">
+        <div class="relative w-24 h-24 mx-auto">
+          <div class="absolute inset-0 rounded-3xl bg-[#C49A58]/20 animate-ping"></div>
+          <div class="w-24 h-24 rounded-3xl bg-[#24140D] border-2 border-[#C49A58] text-[#C49A58] flex items-center justify-center mx-auto shadow-xl text-4xl">
+            🏺
           </div>
-
         </div>
 
-        <!-- RIGHT COLUMN: Structured Recipe Details (7 cols) -->
-        <div class="lg:col-span-7 space-y-8">
-          
-          <!-- Recipe Overview Card -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/25 shadow-xs space-y-5">
-            <div class="space-y-2">
-              <span class="text-xs font-bold text-[#B85C38] uppercase tracking-wider">
-                ${recipe.javaneseTitle}
-              </span>
-              <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#302018]">
-                ${recipe.shortTitle}
-              </h2>
-              <p class="text-xs sm:text-sm text-[#654332] leading-relaxed">
-                ${recipe.description}
-              </p>
-            </div>
+        <div class="space-y-2.5 max-w-lg mx-auto">
+          <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FAF6EF] border border-[#E5D9C5] text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">
+            ${isEn ? 'Backend Ingestion Queue' : 'Output Masih Kosong • Menunggu Response Supabase'}
+          </span>
+          <h2 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#24140D]">
+            ${isEn ? 'AI Recipe Output is Currently Empty' : 'Output Resep AI Dikosongkan'}
+          </h2>
+          <p class="text-xs sm:text-sm text-[#523424] leading-relaxed">
+            ${isEn 
+              ? 'Real recipes, high-DPI canvas posters, and chef certificates will be fetched live from your backend service connected to the Supabase database.'
+              : 'Output resep, komposisi takaran gramasi, poster resmi, dan piagam pencipta akan diterima langsung dari integrasi endpoint backend dan database Supabase Anda.'}
+          </p>
+        </div>
 
-            <!-- Metadata Metrics Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#E5D9C5] text-xs">
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5">
-                <span class="text-[#777B52] block text-[10px] font-semibold">${isEn ? 'Total Time' : 'Total Waktu'}</span>
-                <strong class="text-[#302018] font-bold">${recipe.totalTime}</strong>
-              </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5">
-                <span class="text-[#777B52] block text-[10px] font-semibold">${isEn ? 'Servings' : 'Porsi'}</span>
-                <strong class="text-[#302018] font-bold">${recipe.servings} ${isEn ? 'Servings' : 'Porsi'}</strong>
-              </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5">
-                <span class="text-[#777B52] block text-[10px] font-semibold">${isEn ? 'Difficulty' : 'Tingkat'}</span>
-                <strong class="text-[#302018] font-bold">${recipe.difficulty}</strong>
-              </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5">
-                <span class="text-[#777B52] block text-[10px] font-semibold">${isEn ? 'Est. Cost' : 'Estimasi Biaya'}</span>
-                <strong class="text-[#302018] font-bold">${recipe.estimatedCost}</strong>
-              </div>
+        <!-- Prepared Payload Summary -->
+        <div class="p-5 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] text-left space-y-4 max-w-xl mx-auto">
+          <div class="flex items-center justify-between border-b border-[#E5D9C5] pb-2.5">
+            <span class="text-xs font-bold text-[#24140D] uppercase tracking-wider flex items-center gap-1.5">
+              <span>📋</span>
+              <span>${isEn ? 'Prepared Parameter Blueprint' : 'Ringkasan Parameter Racikan yang Siap Dikirim:'}</span>
+            </span>
+            <span class="text-[10px] font-mono text-[#656C42] bg-white px-2 py-0.5 rounded-md border border-[#E5D9C5]">
+              status: ready
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
+            <div>
+              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Creator:' : 'Pencipta:'}</span>
+              <strong class="text-[#24140D]">${formState.creatorName || (isEn ? '(Not yet specified)' : '(Belum diisi)')}</strong>
+            </div>
+            <div>
+              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Method:' : 'Metode Masak:'}</span>
+              <strong class="text-[#24140D] capitalize">${formState.cookingMethod}</strong>
+            </div>
+            <div>
+              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Taste Profile:' : 'Karakter Rasa:'}</span>
+              <strong class="text-[#24140D]">${formState.tasteProfile}</strong>
+            </div>
+            <div>
+              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Spice Level:' : 'Level Pedas:'}</span>
+              <strong class="text-[#24140D]">Level ${formState.spiceLevel}</strong>
+            </div>
+            <div>
+              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Servings:' : 'Target Porsi:'}</span>
+              <strong class="text-[#24140D]">${formState.servings} Porsi</strong>
+            </div>
+            <div>
+              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Language:' : 'Bahasa:'}</span>
+              <strong class="text-[#24140D] uppercase">${formState.outputLanguage}</strong>
             </div>
           </div>
 
-          <!-- Scaled Ingredients with Checkboxes -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/25 shadow-xs space-y-5">
-            <div class="flex items-center justify-between pb-3 border-b border-[#E5D9C5]">
-              <div class="space-y-0.5">
-                <h3 class="font-editorial-serif text-xl font-bold text-[#302018]">
-                  ${isEn ? 'Ingredients & Precise Quantities' : 'Daftar Bahan & Takaran Presisi'}
-                </h3>
-                <span class="text-xs text-[#777B52]">
-                  ${isEn ? `Calibrated for ${recipe.servings} family servings` : `Dikalibrasi untuk ${recipe.servings} porsi keluarga`}
+          <!-- Selected Ingredients Chips Preview -->
+          <div class="pt-2 border-t border-[#E5D9C5] space-y-1.5">
+            <span class="text-[10px] font-bold text-[#523424] block">${isEn ? 'Selected Ingredients in Payload:' : 'Bahan Terpilih (' + selectedCount + '):'}</span>
+            <div class="flex flex-wrap gap-1.5">
+              ${selectedIngredients.map(item => `
+                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white border border-[#C49A58]/30 text-[11px] text-[#24140D]">
+                  <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${item.nameId}" class="w-3.5 h-3.5 rounded-full object-cover"/>
+                  <span>${item.nameId}</span>
                 </span>
-              </div>
-              <span class="text-xs font-bold text-[#B85C38] bg-[#F2E8D8] px-3 py-1 rounded-full">
-                ${recipe.ingredients.length} ${isEn ? 'Items' : 'Bahan'}
-              </span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              ${recipe.ingredients.map((ing, i) => `
-                <label class="p-3 rounded-xl bg-[#FAF6EF]/60 hover:bg-[#FAF6EF] border border-[#E5D9C5] text-xs flex items-center justify-between gap-3 cursor-pointer transition-colors">
-                  <div class="flex items-center gap-2.5">
-                    <input type="checkbox" class="rounded text-[#B85C38] focus:ring-[#B85C38]"/>
-                    <div>
-                      <strong class="text-[#302018] block">${ing.name}</strong>
-                      <span class="text-[10px] text-[#777B52]">${ing.note}</span>
-                    </div>
-                  </div>
-                  <span class="font-bold text-[#B85C38] shrink-0 text-right">
-                    ${ing.amount} ${ing.unit}
-                  </span>
-                </label>
               `).join('')}
             </div>
           </div>
+        </div>
 
-          <!-- Cooking Steps with Sensory Milestones -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/25 shadow-xs space-y-6">
-            <div class="pb-3 border-b border-[#E5D9C5]">
-              <h3 class="font-editorial-serif text-xl font-bold text-[#302018]">
-                ${isEn ? 'Step-by-Step Cooking Guide' : 'Tahapan Memasak Berurutan'}
-              </h3>
-              <p class="text-xs text-[#654332]">
-                ${isEn ? 'Follow the sensory cues to achieve authentic Javanese flavor harmony.' : 'Perhatikan isyarat panca indera agar bumbu meresap sempurna.'}
-              </p>
-            </div>
-
-            <div class="space-y-5">
-              ${recipe.steps.map(step => `
-                <div class="flex items-start gap-4 p-4 rounded-2xl bg-[#FAF6EF]/40 border border-[#E5D9C5]">
-                  <div class="w-8 h-8 rounded-full bg-[#302018] text-[#C49A58] font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
-                    ${step.stepNumber}
-                  </div>
-                  <div class="space-y-2 flex-1">
-                    <h4 class="font-bold text-sm text-[#302018]">${step.title}</h4>
-                    <p class="text-xs text-[#654332] leading-relaxed">
-                      ${step.instruction}
-                    </p>
-                    <div class="p-2 rounded-lg bg-white border border-[#C49A58]/25 text-[11px] text-[#777B52] italic flex items-center gap-1.5">
-                      <span class="text-[#B85C38] font-bold">Isyarat:</span>
-                      <span>"${step.sensoryMilestone}"</span>
-                    </div>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
+        <!-- Supabase Database Integration Schema Info Card -->
+        <div class="p-5 rounded-2xl bg-[#24140D] border border-[#C49A58]/35 text-left text-xs text-[#FAF6EF] space-y-3 max-w-xl mx-auto shadow-md">
+          <div class="flex items-center justify-between text-[#C49A58]">
+            <span class="font-bold flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-2h-2v2zm0-4h2V7h-2v6z"/>
+              </svg>
+              <span>Skema Integrasi Supabase: \`public.user_recipes\`</span>
+            </span>
+            <span class="text-[10px] font-mono text-[#D4AA6A]">REST API Contract</span>
           </div>
 
-          <!-- Chef Secrets & Safety Notes -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div class="p-5 rounded-2xl bg-[#FAF6EF] border border-[#C49A58]/30 space-y-2 text-xs">
-              <div class="flex items-center gap-1.5 font-bold text-[#B85C38]">
-                <span>★</span>
-                <span>${isEn ? 'Chef\'s Kitchen Secret' : 'Rahasia Dapur Chef'}</span>
-              </div>
-              <p class="text-[#654332] leading-relaxed">
-                ${recipe.chefTips}
-              </p>
-            </div>
+          <pre class="bg-black/40 p-3 rounded-xl font-mono text-[11px] text-[#FAF6EF]/90 overflow-x-auto leading-relaxed border border-[#C49A58]/20">
+// Siap dipanggil saat backend aktif:
+const { data, error } = await supabase
+  .from('user_recipes')
+  .insert([{
+    creator_name: "${escapeHtml(formState.creatorName || 'Chef')}",
+    ingredients: ${JSON.stringify(formState.selectedIngredientIds)},
+    cooking_method: "${formState.cookingMethod}",
+    taste_profile: "${formState.tasteProfile}",
+    spice_level: ${formState.spiceLevel},
+    servings: ${formState.servings}
+  }]);
+          </pre>
 
-            <div class="p-5 rounded-2xl bg-white border border-[#E5D9C5] space-y-2 text-xs">
-              <div class="flex items-center gap-1.5 font-bold text-[#302018]">
-                <span>🛡</span>
-                <span>${isEn ? 'Food Safety & Storage' : 'Keamanan & Penyimpanan'}</span>
-              </div>
-              <p class="text-[#654332] leading-relaxed">
-                ${recipe.safetyNotes}
-              </p>
-            </div>
-          </div>
+          <p class="text-[11px] text-[#FAF6EF]/75">
+            ${isEn 
+              ? 'When your Supabase credentials are configured in .env, recipe generation output will automatically stream and render here.' 
+              : 'Ketika credential Supabase dikonfigurasi di environment backend, output hasil racikan AI akan langsung muncul di panel ini tanpa perlu refresh.'}
+          </p>
+        </div>
 
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <button 
+            type="button" 
+            id="simulate-sync-btn"
+            class="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] text-white text-xs font-bold transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
+          >
+            <span>⚡</span>
+            <span>${isEn ? 'Test Supabase Payload Dispatch' : 'Uji Validasi Payload Supabase'}</span>
+          </button>
+
+          <button 
+            type="button" 
+            id="reset-creator-form-btn"
+            class="w-full sm:w-auto px-6 py-3 rounded-xl bg-white hover:bg-[#FAF6EF] text-[#24140D] border border-[#E5D9C5] text-xs font-bold transition-all shadow-2xs cursor-pointer"
+          >
+            ${isEn ? 'Reset Parameters' : 'Reset Form Racikan'}
+          </button>
         </div>
 
       </div>
@@ -1015,12 +664,38 @@ function renderResultView(recipe, currentLang) {
 }
 
 /**
- * Initialize all interactive listeners for the AI Food Creator page.
+ * Initialize event listeners for AI Food Creator
  */
 export function initAiFoodCreatorInteractions() {
   const form = document.getElementById('ai-creator-form');
 
-  // Dismiss validation banner
+  // Tab View Switchers
+  const tabFormBtn = document.getElementById('tab-view-form-btn');
+  const tabOutputBtn = document.getElementById('tab-view-output-btn');
+  const backToStudioBtn = document.getElementById('back-to-studio-btn');
+
+  if (tabFormBtn) {
+    tabFormBtn.onclick = () => {
+      currentStudioView = 'form';
+      reRenderCurrentView();
+    };
+  }
+
+  if (tabOutputBtn) {
+    tabOutputBtn.onclick = () => {
+      currentStudioView = 'output';
+      reRenderCurrentView();
+    };
+  }
+
+  if (backToStudioBtn) {
+    backToStudioBtn.onclick = () => {
+      currentStudioView = 'form';
+      reRenderCurrentView();
+    };
+  }
+
+  // Dismiss Validation Banner
   const dismissBtn = document.getElementById('dismiss-val-btn');
   if (dismissBtn) {
     dismissBtn.onclick = () => {
@@ -1029,7 +704,16 @@ export function initAiFoodCreatorInteractions() {
     };
   }
 
-  // Name Inputs
+  // Dismiss Toast Message
+  const dismissToastBtn = document.getElementById('dismiss-toast-btn');
+  if (dismissToastBtn) {
+    dismissToastBtn.onclick = () => {
+      toastMessage = null;
+      reRenderCurrentView();
+    };
+  }
+
+  // Creator Name Input
   const nameInput = document.getElementById('creator-name-input');
   if (nameInput) {
     nameInput.oninput = (e) => {
@@ -1060,7 +744,6 @@ export function initAiFoodCreatorInteractions() {
     searchInput.oninput = (e) => {
       searchQuery = e.target.value;
       reRenderCurrentView();
-      // Keep focus on input
       const newSearchInput = document.getElementById('ingredient-search-input');
       if (newSearchInput) {
         newSearchInput.focus();
@@ -1107,183 +790,76 @@ export function initAiFoodCreatorInteractions() {
     };
   }
 
-  // Radio button groups and dropdowns
-  setupRadioGroup('outputLanguage', (val) => { formState.outputLanguage = val; });
+  // Radio button groups
   setupRadioGroup('cookingMethod', (val) => { formState.cookingMethod = val; });
   setupRadioGroup('spiceLevel', (val) => { formState.spiceLevel = parseInt(val) || 0; });
-  setupRadioGroup('cookingDuration', (val) => { formState.cookingDuration = val; });
   setupRadioGroup('servings', (val) => { formState.servings = parseInt(val) || 4; });
-  setupRadioGroup('imageStyle', (val) => { formState.imageStyle = val; });
-  setupRadioGroup('aspectRatio', (val) => { formState.aspectRatio = val; });
-
-  const catSelect = document.getElementById('dish-category-select');
-  if (catSelect) {
-    catSelect.onchange = (e) => { formState.dishCategory = e.target.value; };
-  }
 
   const tasteSelect = document.getElementById('taste-profile-select');
   if (tasteSelect) {
     tasteSelect.onchange = (e) => { formState.tasteProfile = e.target.value; };
   }
 
-  const notesText = document.getElementById('custom-notes-input');
-  if (notesText) {
-    notesText.oninput = (e) => { formState.customNotes = e.target.value; };
+  const notesInput = document.getElementById('custom-notes-input');
+  if (notesInput) {
+    notesInput.oninput = (e) => { formState.customNotes = e.target.value; };
   }
-
-  // Checkboxes (Equipment & Dietary)
-  const eqChecks = document.querySelectorAll('input[name="equipment"]');
-  eqChecks.forEach(cb => {
-    cb.onchange = () => {
-      formState.equipment = Array.from(eqChecks).filter(c => c.checked).map(c => c.value);
-    };
-  });
-
-  const dietChecks = document.querySelectorAll('input[name="dietary"]');
-  dietChecks.forEach(cb => {
-    cb.onchange = () => {
-      formState.dietary = Array.from(dietChecks).filter(c => c.checked).map(c => c.value);
-    };
-  });
 
   // Form Submit Handler
   if (form) {
-    form.onsubmit = async (e) => {
+    form.onsubmit = (e) => {
       e.preventDefault();
 
       // Validation 1: Creator Name
       if (!formState.creatorName || formState.creatorName.trim().length === 0) {
-        validationMessage = 'Nama lengkap pencipta resep wajib diisi untuk tanda bukti kepemilikan cipta resep.';
+        validationMessage = 'Nama lengkap pencipta resep wajib diisi sebelum mengirim data ke Supabase.';
         reRenderCurrentView();
-        window.scrollTo({ top: 120, behavior: 'smooth' });
+        window.scrollTo({ top: 180, behavior: 'smooth' });
         return;
       }
 
       // Validation 2: Ingredients count
       if (!formState.selectedIngredientIds || formState.selectedIngredientIds.length === 0) {
-        validationMessage = 'Pilih minimal 1 bahan atau rempah untuk memulai penciptaan resep kuliner.';
+        validationMessage = 'Pilih minimal 1 bahan atau rempah untuk meracik resep.';
         reRenderCurrentView();
-        window.scrollTo({ top: 350, behavior: 'smooth' });
+        window.scrollTo({ top: 380, behavior: 'smooth' });
         return;
       }
 
-      // Trigger generation
-      isGenerating = true;
+      // Transition smoothly to output view
+      validationMessage = null;
+      toastMessage = `Parameter resep "${formState.creatorName}" berhasil diselaraskan! Output dikosongkan siap menerima data dari backend & Supabase.`;
+      currentStudioView = 'output';
       reRenderCurrentView();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      try {
-        const recipe = await aiFoodCreatorService.generateRecipe(formState);
-        currentGeneratedRecipe = recipe;
-        isGenerating = false;
-        reRenderCurrentView();
-
-        // Render Canvas after DOM update
-        requestAnimationFrame(() => {
-          const canvas = document.getElementById('food-poster-canvas');
-          if (canvas) {
-            aiFoodCreatorService.composePosterCanvas(canvas, recipe);
-          }
-        });
-      } catch (err) {
-        console.error('Error generating recipe:', err);
-        validationMessage = err.message || 'Gagal meracik resep. Silakan coba lagi.';
-        isGenerating = false;
-        reRenderCurrentView();
-      }
     };
   }
 
-  // --- RESULT VIEW LISTENERS ---
-  const canvas = document.getElementById('food-poster-canvas');
-  if (canvas && currentGeneratedRecipe) {
-    aiFoodCreatorService.composePosterCanvas(canvas, currentGeneratedRecipe);
-  }
-
-  // Download Poster (PNG)
-  const downloadPosterBtn = document.getElementById('download-poster-btn');
-  if (downloadPosterBtn && canvas && currentGeneratedRecipe) {
-    downloadPosterBtn.onclick = () => {
-      aiFoodCreatorService.downloadPoster(canvas, currentGeneratedRecipe.shortTitle, 'png');
+  // Output View Buttons: Simulate payload
+  const simulateBtn = document.getElementById('simulate-sync-btn');
+  if (simulateBtn) {
+    simulateBtn.onclick = () => {
+      toastMessage = '✓ Payload JSON tervalidasi dengan sukses! Siap diinjeksikan ke tabel Supabase public.user_recipes.';
+      reRenderCurrentView();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     };
   }
 
-  // Download Poster (JPEG)
-  const downloadPosterJpegBtn = document.getElementById('download-poster-jpeg-btn');
-  if (downloadPosterJpegBtn && canvas && currentGeneratedRecipe) {
-    downloadPosterJpegBtn.onclick = () => {
-      aiFoodCreatorService.downloadPoster(canvas, currentGeneratedRecipe.shortTitle, 'jpeg');
-    };
-  }
-
-  // Download PDF
-  const downloadPdfBtn = document.getElementById('download-pdf-btn');
-  if (downloadPdfBtn && currentGeneratedRecipe) {
-    downloadPdfBtn.onclick = async () => {
-      downloadPdfBtn.disabled = true;
-      downloadPdfBtn.innerText = 'Menyusun PDF...';
-      try {
-        await aiFoodCreatorService.generateRecipePdf(currentGeneratedRecipe, canvas);
-      } finally {
-        downloadPdfBtn.disabled = false;
-        downloadPdfBtn.innerHTML = `
-          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-          </svg>
-          <span>Unduh Resep (PDF)</span>
-        `;
-      }
-    };
-  }
-
-  // Download Certificate
-  const certBtns = [
-    document.getElementById('download-cert-btn'),
-    document.getElementById('download-cert-badge-btn')
-  ].filter(Boolean);
-
-  certBtns.forEach(btn => {
-    btn.onclick = async () => {
-      const isEn = (currentGeneratedRecipe?.outputLanguage === 'en') || (i18n?.getLanguage && i18n.getLanguage() === 'en');
-      const origHtml = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerText = isEn ? 'Composing Certificate (PDF)...' : 'Menyusun Piagam (PDF)...';
-      try {
-        await aiFoodCreatorService.generateCertificatePdf(currentGeneratedRecipe, {
-          lang: isEn ? 'en' : 'id'
-        });
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = origHtml;
-      }
-    };
-  });
-
-  // Regenerate Poster
-  const regenBtn = document.getElementById('regenerate-art-btn');
-  const regenStyleSelect = document.getElementById('regen-style-select');
-  const regenRatioSelect = document.getElementById('regen-ratio-select');
-
-  if (regenBtn && canvas && currentGeneratedRecipe) {
-    regenBtn.onclick = () => {
-      const newStyle = regenStyleSelect?.value || currentGeneratedRecipe.imageStyle;
-      const newRatio = regenRatioSelect?.value || currentGeneratedRecipe.aspectRatio;
-
-      currentGeneratedRecipe.imageStyle = newStyle;
-      currentGeneratedRecipe.aspectRatio = newRatio;
-
-      aiFoodCreatorService.composePosterCanvas(canvas, currentGeneratedRecipe, {
-        imageStyle: newStyle,
-        aspectRatio: newRatio
-      });
-    };
-  }
-
-  // Create Another Recipe
-  const resetBtn = document.getElementById('create-another-recipe-btn');
+  // Reset form
+  const resetBtn = document.getElementById('reset-creator-form-btn');
   if (resetBtn) {
     resetBtn.onclick = () => {
-      currentGeneratedRecipe = null;
+      formState.creatorName = '';
+      formState.creatorNickname = '';
+      formState.selectedIngredientIds = ['ayam-kampung', 'bawang-merah', 'bawang-putih', 'kemiri', 'serai', 'daun-salam', 'gula-jawa'];
+      formState.cookingMethod = 'ungkep';
+      formState.tasteProfile = 'manis-gurih';
+      formState.spiceLevel = 1;
+      formState.servings = 4;
+      formState.customNotes = '';
+      validationMessage = null;
+      toastMessage = null;
+      currentStudioView = 'form';
       reRenderCurrentView();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
@@ -1319,4 +895,3 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
-

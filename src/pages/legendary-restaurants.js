@@ -26,20 +26,29 @@ export async function renderLegendaryRestaurantsPage() {
   return `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       
-      <!-- Page Header -->
-      <div class="space-y-3 pb-6 border-b border-[#C49A58]/20">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F2E8D8] text-xs font-semibold text-[#B85C38] uppercase tracking-wider">
-          <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
-          ${t('restaurantsSection.badge')}
+      <!-- Page Header with Javanese Heritage Backdrop -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
+        <img 
+          src="/assets/images/hero/javanese-kitchen-master.jpg" 
+          alt="Restoran Legendaris Jawa Tengah" 
+          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#24140D] via-[#24140D]/85 to-transparent pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-3 max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
+            <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            ${t('restaurantsSection.badge')}
+          </div>
+          <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
+            ${t('restaurantsSection.title')}
+          </h1>
+          <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+            ${t('restaurantsSection.description')}
+          </p>
         </div>
-        <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-[#302018] tracking-tight">
-          ${t('restaurantsSection.title')}
-        </h1>
-        <p class="text-sm sm:text-base text-[#654332] max-w-2xl leading-relaxed">
-          ${t('restaurantsSection.description')}
-        </p>
       </div>
 
       <!-- Discovery & Filters Toolbar -->

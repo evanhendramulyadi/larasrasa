@@ -2,20 +2,22 @@
 
 :root {
   --color-warm-ivory: #FAF6EF;
-  --color-soft-cream: #F2E8D8;
-  --color-deep-espresso: #302018;
-  --color-rich-cocoa: #654332;
+  --color-soft-cream: #F5EDE0;
+  --color-deep-espresso: #24140D;
+  --color-rich-cocoa: #523424;
   --color-terracotta: #B85C38;
   --color-terracotta-hover: #A04A27;
-  --color-muted-olive: #777B52;
+  --color-terracotta-light: #FDF3ED;
+  --color-muted-olive: #656C42;
   --color-antique-gold: #C49A58;
   --color-antique-gold-hover: #D4AA6A;
+  --color-antique-gold-light: #FBF4E8;
   --color-clean-white: #FFFFFF;
 
-  --color-javanese-900: #1F140F;
-  --color-javanese-800: #302018;
-  --color-javanese-700: #654332;
-  --color-javanese-600: #855C47;
+  --color-javanese-900: #1B0F09;
+  --color-javanese-800: #2C1810;
+  --color-javanese-700: #462719;
+  --color-javanese-600: #6B3C27;
   --color-javanese-500: #B85C38;
   --color-golden-spice: #C49A58;
   --color-warm-mustard: #D4AA6A;
@@ -33,33 +35,34 @@ html, body {
   max-width: 100%;
 }
 
-/* Base Body & Layered Central Javanese Heritage Ambient Background */
+/* Base Body with Authentic Central Javanese Pawon / Kitchen Atmospheric Backdrop */
 body {
   background-color: #FAF6EF;
   background-image: 
-    radial-gradient(circle at 10% 12%, rgba(196, 154, 88, 0.09) 0%, transparent 45%),
-    radial-gradient(circle at 90% 85%, rgba(184, 92, 56, 0.07) 0%, transparent 50%),
-    radial-gradient(circle at 50% 40%, rgba(242, 232, 216, 0.5) 0%, transparent 75%);
+    linear-gradient(135deg, rgba(250, 246, 239, 0.94) 0%, rgba(245, 237, 224, 0.91) 40%, rgba(242, 232, 216, 0.95) 100%),
+    url('/assets/images/backgrounds/javanese-kitchen-ambience.jpg');
   background-attachment: fixed;
-  color: #302018;
+  background-size: cover;
+  background-position: center;
+  color: #24140D;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar with Warm Teak Styling */
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: #FAF6EF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #654332;
+  background: #C49A58;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #302018;
+  background: #B85C38;
 }
 
 /* Editorial Typography */
@@ -160,4 +163,38 @@ body {
 @keyframes hotspot-pulse {
   0% { transform: scale(0.8); opacity: 0.85; }
   100% { transform: scale(2.4); opacity: 0; }
+}
+
+/* Authentic Javanese Heritage Panel & Glassmorphism */
+.pawon-glass {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(196, 154, 88, 0.32);
+  box-shadow: 0 10px 30px -5px rgba(36, 20, 13, 0.08);
+}
+
+.pawon-glass-dark {
+  background: rgba(36, 20, 13, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(196, 154, 88, 0.35);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.35);
+}
+
+.pawon-glow {
+  box-shadow: 0 0 35px -5px rgba(184, 92, 56, 0.25);
+}
+
+.amber-glow {
+  box-shadow: 0 0 25px rgba(196, 154, 88, 0.3);
+}
+
+/* Custom rempah button active styling */
+.rempah-pill-btn {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.rempah-pill-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(184, 92, 56, 0.2);
 }

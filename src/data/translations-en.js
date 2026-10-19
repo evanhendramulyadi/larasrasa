@@ -785,6 +785,126 @@ export const recipeTranslationsEn = {
       { ingredient: 'Clay Pot', substitute: 'Mini non-stick blini pan or cast-iron skillet' }
     ],
     nutritionNote: 'Estimated nutrition per 2 rolled coconut pancakes.'
+  },
+  'bakmi-jawa-godhog': {
+    name: 'Bakmi Jawa Godhog (Charcoal Braised Javanese Noodles)',
+    mealType: 'Dinner / Comfort Broth',
+    difficulty: 'Easy',
+    difficultyLevel: 'Beginner Friendly',
+    intro: 'Bakmi Jawa Godhog is an iconic noodle soup simmered individually over glowing teak charcoal braziers. Chewy yellow egg noodles swimming in a rich, velvety chicken-and-duck-egg broth, loaded with tender free-range chicken shreds, crisp cabbage, and fried shallots.',
+    history: 'Rooted in the rural villages of Gunungkidul and Yogyakarta/Surakarta, cooking over natural charcoal braziers (anglo) infuses each portion with an irresistible smoky aroma that modern stoves cannot replicate.',
+    culturalBackground: 'Gathering around roadside bakmi carts on cool Javanese evenings is a treasured community ritual accompanied by the rhythmic clanking of iron ladles.',
+    interestingFacts: [
+      'Each serving is prepared individually in small steel woks to guarantee searing heat and silky egg emulsion.',
+      'Fresh duck eggs are whipped into the boiling broth, giving it an opulent golden cloud texture without coconut milk.',
+      'Crispy wheat cakes (kekian) are traditionally folded in for satisfying chewiness.'
+    ],
+    regionalVariations: 'Gunungkidul and Solo variants feature deep golden broth with roasted candlenuts, while coastal Semarang variants often include wild prawns.',
+    equipment: ['Charcoal brazier / steel wok', 'Stone mortar & pestle', 'Bamboo hand fan', 'Classic enamel bowl with banana leaf'],
+    chefTips: 'Use broth made from mature free-range chicken bones for maximum natural collagen and rich savoriness.',
+    commonMistakes: [
+      { mistake: 'Overboiling the noodles', solution: 'Add noodles in the final 3 minutes so they stay pleasantly chewy (al dente).' }
+    ],
+    substitutions: [
+      { ingredient: 'Duck Egg', substitute: '2 farm-fresh large chicken eggs' }
+    ],
+    nutritionNote: 'Estimated per full dinner bowl with shredded chicken and duck egg.'
+  },
+  'timlo-solo': {
+    name: 'Timlo Solo Komplit (Royal Chicken Consommé & Crispy Rolls)',
+    mealType: 'Lunch / Evening Broth',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Timlo Solo is a crystal-clear, deeply aromatic chicken consommé from Surakarta’s Pasar Gede. Loaded with sliced crispy rolled chicken sausage (sosis Solo), marbled braised duck egg, tender free-range chicken shreds, gizzards, and wood-ear mushrooms in fragrant garlic-nutmeg broth.',
+    history: 'A royal Sino-Javanese fusion born in early 20th-century Solo, inspired by traditional Chinese "Kimlo" soup and refined for palace aristocrats with local sosis Solo and pindang braised eggs.',
+    culturalBackground: 'Synonymous with Solo’s Pasar Gede historic market, symbolizing refined palates and comfort dining.',
+    interestingFacts: [
+      'Contains zero coconut milk; its depth is achieved purely through slow-simmered mature chicken bones and golden fried garlic.',
+      'Sosis Solo is pan-fried to crisp perfection before being sliced into the steaming broth.',
+      'Always enjoyed with a dash of lime juice and sweet bird’s eye chili soy dip.'
+    ],
+    regionalVariations: 'Palace variations feature omelette rolls and dried lily blossoms, whereas Pasar Gede warungs emphasize crispy sosis Solo and braised gizzards.',
+    equipment: ['Stockpot', 'Frying pan', 'Stone mortar', 'Ceramic soup bowls'],
+    chefTips: 'Simmer on the lowest flame without covering completely to keep the chicken broth crystal-clear.',
+    commonMistakes: [
+      { mistake: 'Boiling on rolling high flame', solution: 'Violent boiling clouds the broth with foam.' }
+    ],
+    substitutions: [
+      { ingredient: 'Sosis Solo', substitute: 'Crispy spring rolls or rolled chicken omelette' }
+    ],
+    nutritionNote: 'Estimated per complete bowl with braised egg and sosis Solo.'
+  },
+  'kupat-tahu-magelang': {
+    name: 'Kupat Tahu Magelang (Tofu & Rice Cake with Sweet Kencur Broth)',
+    mealType: 'Breakfast / Casual Lunch',
+    difficulty: 'Easy',
+    difficultyLevel: 'Beginner Friendly',
+    intro: 'Kupat Tahu Magelang is a legendary dish from the foot of Mount Tidar, featuring tender warm fried white tofu, crispy vegetable fritters (bakwan), soft rice cakes (kupat), fresh short bean sprouts, and crisp cabbage bathed in a warm, sweet palm sugar garlic broth infused with aromatic kencur.',
+    history: 'Served in the historic square of Magelang since the pre-independence 1940s. Distinct from West Javanese thick peanut sauces, Magelang kupat tahu highlights light sweet brown coconut sugar broth boiled with tamarind, bay leaves, and freshly ground kencur.',
+    culturalBackground: 'Celebrated as the culinary soul of Magelang and the Borobudur valley.',
+    interestingFacts: [
+      'The key crunch comes from chopped warm vegetable fritters (bakwan) layered between the tofu and ketupat.',
+      'Each portion has its garlic, kencur, and chilies ground fresh to order directly onto the serving plate.',
+      'Soft silken Magelang tofu is flash-fried so the exterior is crisp while the center remains meltingly moist.'
+    ],
+    regionalVariations: 'Kupat Tahu Pojok and Blabak feature slightly different roasts of crushed peanuts in the final dressing.',
+    equipment: ['Frying skillet', 'Stone mortar & pestle', 'Banana leaf-lined plate'],
+    chefTips: 'Grind the kencur and raw garlic fresh right on the plate for the most vibrant, punchy aroma.',
+    commonMistakes: [
+      { mistake: 'Over-frying the tofu', solution: 'Tofu should remain tender and juicy inside to absorb the spiced broth.' }
+    ],
+    substitutions: [
+      { ingredient: 'Ketupat', substitute: 'Lontong or warm steamed rice cakes' }
+    ],
+    nutritionNote: 'Estimated per complete serving with fritters and ketupat.'
+  },
+  'sate-ambal-kebumen': {
+    name: 'Sate Ambal Kebumen (Grilled Chicken Satay with Spiced Tempeh Sauce)',
+    mealType: 'Dinner / Signature Satay',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Sate Ambal is a unique coastal chicken satay from southern Kebumen. Its glory lies in the velvety, golden dipping sauce made from steamed fermented tempeh mashed silky-smooth with nutmeg, roasted coriander, and coconut palm sugar.',
+    history: 'Created by coastal fishing families along Kebumen’s southern beaches in the early 1900s, turning abundant local soybean tempeh into a luscious savoury cream that coats char-grilled chicken skewers.',
+    culturalBackground: 'Grilled over dry coconut shells along the historic Deandels beach highway.',
+    interestingFacts: [
+      'Free-range chicken is marinated for hours in sweet coriander marinade before touching the charcoal.',
+      'The tempeh sauce is naturally creamy, nutty, and velvety without peanuts.',
+      'Served with compressed rice cakes and fresh shallot slices.'
+    ],
+    regionalVariations: 'Some roadside stalls add steamed bird’s eye chilies directly into the tempeh puree for an extra kick.',
+    equipment: ['Coconut shell charcoal grill', 'Bamboo skewers', 'Stone mortar', 'Steamer'],
+    chefTips: 'Puree the steamed tempeh while still hot with warm coconut milk for the smoothest emulsion.',
+    commonMistakes: [
+      { mistake: 'Using un-steamed raw tempeh', solution: 'Raw tempeh produces an unappealing bitter, grassy taste; steaming is mandatory.' }
+    ],
+    substitutions: [
+      { ingredient: 'Chicken', substitute: 'Juicy chicken thighs or firm duck breast' }
+    ],
+    nutritionNote: 'Estimated per 10 skewers with velvety tempeh sauce.'
+  },
+  'swike-purwodadi': {
+    name: 'Swike Purwodadi (Fragrant Tauco & Ginger Braised Delicacy)',
+    mealType: 'Lunch / Warming Dinner',
+    difficulty: 'Easy',
+    difficultyLevel: 'Beginner Friendly',
+    intro: 'Swike Purwodadi is a legendary Chinese-Javanese heritage stew from Grobogan. Tender drumsticks simmered in a dark, umami-rich broth loaded with sweet fermented yellow soybean paste (tauco), crushed fiery ginger, crispy fried garlic, and a bright splash of fresh calamansi lime.',
+    history: 'Emanating from Purwodadi along the northern Pantura trade artery since the 19th century. Hokkien settlers named it "Swikee" (water chicken), while Javanese cooks elevated it with locally fermented Grobogan tauco.',
+    culturalBackground: 'Purwodadi is known across Indonesia as the capital of tauco-infused braises, cherished by travelers seeking warmth.',
+    interestingFacts: [
+      'Grobogan tauco has distinct whole soft beans with balanced sweetness and natural umami.',
+      'Crushed garlic is used twice: sautéed in the broth and deep-fried as a crunchy golden garnish.',
+      'A halal variation using tender free-range chicken drumettes is widely popular.'
+    ],
+    regionalVariations: 'Also served as garlic butter stir-fry, crispy batter-fried, or fiery rica-rica.',
+    equipment: ['Soup wok', 'Mortar & pestle', 'Vintage ceramic bowls'],
+    chefTips: 'Sauté the fermented tauco in hot oil before adding broth to unlock sweet nutty caramel notes.',
+    commonMistakes: [
+      { mistake: 'Adding too much salt early', solution: 'Fermented tauco already contains salt; always season at the end.' }
+    ],
+    substitutions: [
+      { ingredient: 'Frog Legs', substitute: 'Free-range chicken drumettes or wings' }
+    ],
+    nutritionNote: 'Estimated per warming bowl with broth and fried garlic.'
   }
 };
 

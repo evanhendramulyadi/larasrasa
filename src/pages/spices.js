@@ -54,31 +54,40 @@ export async function renderSpicesPage() {
   return `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       
-      <!-- Page Header -->
-      <div class="space-y-3 pb-6 border-b border-[#C49A58]/20">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F2E8D8] text-xs font-semibold text-[#B85C38] uppercase tracking-wider">
-          <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-          </svg>
-          ${t('spicesSection.badge') || 'Eksplorasi Bumbu Warisan'}
+      <!-- Page Header with Javanese Kitchen Pawon Backdrop -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
+        <img 
+          src="/assets/images/hero/javanese-kitchen-master.jpg" 
+          alt="Pawon Rempah Jawa Tengah" 
+          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#24140D] via-[#24140D]/85 to-transparent pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-3 max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
+            <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            ${t('spicesSection.badge') || 'Eksplorasi Bumbu Warisan'}
+          </div>
+          <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
+            ${t('spicesSection.title') || 'Pusaka Rempah Jawa Tengah'}
+          </h1>
+          <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+            ${t('spicesSection.description') || 'Menyingkap rahasia bumbu dasar, aromatik purba, dan rimpang penyegar yang menjadi ruh di balik kelezatan masakan tradisional Jawa Tengah.'}
+          </p>
         </div>
-        <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-[#302018] tracking-tight">
-          ${t('spicesSection.title') || 'Pusaka Rempah Jawa Tengah'}
-        </h1>
-        <p class="text-sm sm:text-base text-[#654332] max-w-2xl leading-relaxed">
-          ${t('spicesSection.description') || 'Menyingkap rahasia bumbu dasar, aromatik purba, dan rimpang penyegar yang menjadi ruh di balik kelezatan masakan tradisional Jawa Tengah.'}
-        </p>
       </div>
 
       <!-- Category Filter Pills -->
-      <div class="flex flex-wrap items-center gap-2 pb-2">
+      <div class="flex flex-wrap items-center gap-2.5 pb-2">
         ${categories.map(c => `
           <button type="button" 
                   data-spice-category="${c.id}"
-                  class="spice-cat-btn px-4 py-2 rounded-full text-xs font-semibold transition-all ${
+                  class="spice-cat-btn rempah-pill-btn px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
                     c.id === activeCategory
-                      ? 'bg-[#B85C38] text-white shadow-sm ring-1 ring-[#B85C38]'
-                      : 'bg-white text-[#302018] border border-[#C49A58]/30 hover:bg-[#F2E8D8]'
+                      ? 'bg-[#B85C38] text-white shadow-md ring-2 ring-[#B85C38]'
+                      : 'bg-white/90 text-[#24140D] border border-[#C49A58]/35 hover:bg-[#F2E8D8]'
                   }">
             ${c.label}
           </button>
@@ -89,13 +98,13 @@ export async function renderSpicesPage() {
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- Left: Curated Spotlight Exhibition Card -->
-        <div class="lg:col-span-5 bg-white rounded-3xl border border-[#C49A58]/25 p-6 shadow-sm sticky top-28 space-y-5">
-          <div class="flex items-center justify-between border-b border-[#F2E8D8] pb-3">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#302018] text-[#C49A58]">
+        <div class="lg:col-span-5 pawon-glass rounded-3xl border border-[#C49A58]/30 p-6 shadow-md sticky top-28 space-y-5">
+          <div class="flex items-center justify-between border-b border-[#E5D9C5] pb-3">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#24140D] text-[#C49A58]">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C49A58] animate-pulse"></span>
               ${isEn ? 'Curated Spice Spotlight' : 'Sorotan Utama Rempah'}
             </span>
-            <span class="text-[11px] text-[#654332]/80 italic">
+            <span class="text-[11px] text-[#523424]/80 italic">
               ${isEn ? 'Macro Culinary Exhibition' : 'Eksibisi Makro Kuliner'}
             </span>
           </div>
@@ -108,9 +117,9 @@ export async function renderSpicesPage() {
 
         <!-- Right: Spices Selection Grid -->
         <div class="lg:col-span-7 space-y-4">
-          <div class="text-xs text-[#654332] flex items-center justify-between pb-1">
+          <div class="text-xs text-[#523424] flex items-center justify-between pb-1 font-semibold">
             <span>${t('spicesSection.selectHint') || 'Pilih rempah untuk menelaah khasiat dan filosofinya'}</span>
-            <span><strong class="text-[#302018]">${filteredSpices.length}</strong> ${t('spicesSection.availableCount') || 'Rempah Tersedia'}</span>
+            <span><strong class="text-[#24140D]">${filteredSpices.length}</strong> ${t('spicesSection.availableCount') || 'Rempah Tersedia'}</span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="spice-cards-container">
@@ -130,46 +139,48 @@ function renderSpiceCard(s, isSelected) {
 
   return `
     <div data-spice-id="${s.id}" 
-         class="spice-card group p-3.5 rounded-2xl bg-white border cursor-pointer transition-all duration-200 card-hover-lift flex flex-col justify-between ${
-           isSelected ? 'border-[#B85C38] shadow-md ring-2 ring-[#B85C38]/40' : 'border-[#C49A58]/20 hover:border-[#B85C38]/50 shadow-2xs'
+         class="spice-card rempah-pill-btn group p-3.5 rounded-2xl bg-white border cursor-pointer transition-all duration-200 card-hover-lift flex flex-col justify-between ${
+           isSelected 
+             ? 'border-[#B85C38] shadow-lg ring-2 ring-[#B85C38]/50 bg-[#FAF6EF]' 
+             : 'border-[#C49A58]/25 hover:border-[#B85C38]/60 shadow-2xs'
          }">
       <div class="space-y-2.5">
-        <!-- Photo Container -->
-        <div class="relative w-full h-36 rounded-xl overflow-hidden bg-[#FAF6EF] border border-[#E5D9C5]/60">
+        <!-- Photo Container with Real Macro Spice -->
+        <div class="relative w-full h-40 rounded-xl overflow-hidden bg-[#FAF6EF] border border-[#E5D9C5]/60 shadow-inner">
           <img 
             src="${imgSrc}" 
             alt="${s.name}" 
-            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
             loading="lazy"
             onerror="this.src='/assets/images/hero/hero-culinary.jpg'"
           />
-          <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-          <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded-md bg-[#302018]/80 backdrop-blur-xs text-[10px] font-bold text-[#FAF6EF]">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
+          <span class="absolute bottom-2 left-2 px-2.5 py-0.5 rounded-md bg-[#24140D]/85 backdrop-blur-xs text-[10px] font-bold text-[#FAF6EF] border border-[#C49A58]/30">
             ${s.categoryName}
           </span>
-          <span class="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-xs shadow-xs" style="background-color: ${s.modelColor || '#C49A58'}; color: #FFF;">
-            ●
+          <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs border border-white/50" style="background-color: ${s.modelColor || '#C49A58'}; color: #FFF;">
+            ${isSelected ? '✓ Terpilih' : '●'}
           </span>
         </div>
 
         <div>
-          <h3 class="font-editorial-serif text-lg font-bold text-[#302018] group-hover:text-[#B85C38] transition-colors">
+          <h3 class="font-editorial-serif text-lg font-bold text-[#24140D] group-hover:text-[#B85C38] transition-colors leading-snug">
             ${s.name}
           </h3>
-          <p class="text-[11px] font-mono text-[#777B52] italic">
+          <p class="text-[11px] font-mono text-[#656C42] italic mt-0.5">
             ${s.latinName}
           </p>
-          <p class="text-xs text-[#654332] line-clamp-2 leading-relaxed mt-1">
+          <p class="text-xs text-[#523424] line-clamp-2 leading-relaxed mt-1.5">
             ${s.role}
           </p>
         </div>
       </div>
 
-      <div class="pt-3 border-t border-[#F2E8D8] mt-3 flex items-center justify-between text-xs">
-        <span class="text-[11px] font-bold text-[#B85C38]">
-          ${isSelected ? (isEn ? 'Currently Inspected' : 'Sedang Ditelaah') : (isEn ? 'Inspect Spice' : 'Telaah Rempah')}
+      <div class="pt-3 border-t border-[#E5D9C5] mt-3 flex items-center justify-between text-xs">
+        <span class="text-[11px] font-bold ${isSelected ? 'text-[#B85C38]' : 'text-[#656C42] group-hover:text-[#B85C38]'}">
+          ${isSelected ? (isEn ? 'Currently Inspected' : 'Sedang Ditelaah') : (isEn ? 'Inspect Spice' : 'Telaah Profil Rempah')}
         </span>
-        <span class="text-[#654332]/60 group-hover:text-[#B85C38] transition-colors">&rarr;</span>
+        <span class="text-[#523424]/60 group-hover:text-[#B85C38] transition-transform group-hover:translate-x-1">&rarr;</span>
       </div>
     </div>
   `;

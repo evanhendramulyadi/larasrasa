@@ -18,38 +18,47 @@ export async function renderFlavorMapPage() {
   return `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       
-      <!-- Page Header -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-[#C49A58]/20">
-        <div class="space-y-3">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F2E8D8] text-xs font-semibold text-[#B85C38] uppercase tracking-wider">
-            <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
-              <line x1="9" x2="9" y1="3" y2="18"/>
-              <line x1="15" x2="15" y1="6" y2="21"/>
-            </svg>
-            ${t('map.badge')}
-          </div>
-          <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-[#302018] tracking-tight">
-            ${t('map.title')}
-          </h1>
-          <p class="text-sm sm:text-base text-[#654332] max-w-2xl leading-relaxed">
-            ${t('map.desc')}
-          </p>
-        </div>
+      <!-- Page Header with Javanese Heritage Backdrop -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
+        <img 
+          src="/assets/images/backgrounds/javanese-kitchen-ambience.jpg" 
+          alt="Peta Rasa Kuliner Jawa Tengah" 
+          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-[#24140D] via-[#24140D]/85 to-transparent pointer-events-none"></div>
 
-        <!-- Quick Region Selector Pills -->
-        <div class="flex flex-wrap gap-1.5 max-w-md md:justify-end">
-          ${regions.map(r => `
-            <button type="button" 
-                    data-region-pill="${r.id}"
-                    class="region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                      r.id === activeRegionId 
-                        ? 'bg-[#B85C38] text-white shadow-sm' 
-                        : 'bg-white text-[#302018] border border-[#C49A58]/30 hover:bg-[#F2E8D8]'
-                    }">
-              ${r.name.replace('Kota ', '').replace('Kabupaten ', '')}
-            </button>
-          `).join('')}
+        <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div class="space-y-3 max-w-2xl">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
+              <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+                <line x1="9" x2="9" y1="3" y2="18"/>
+                <line x1="15" x2="15" y1="6" y2="21"/>
+              </svg>
+              ${t('map.badge')}
+            </div>
+            <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
+              ${t('map.title')}
+            </h1>
+            <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+              ${t('map.desc')}
+            </p>
+          </div>
+
+          <!-- Quick Region Selector Pills -->
+          <div class="flex flex-wrap gap-1.5 max-w-md md:justify-end">
+            ${regions.map(r => `
+              <button type="button" 
+                      data-region-pill="${r.id}"
+                      class="region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                        r.id === activeRegionId 
+                          ? 'bg-[#B85C38] text-white shadow-sm ring-2 ring-[#C49A58]/50' 
+                          : 'bg-white/10 text-[#FAF6EF] border border-[#C49A58]/40 hover:bg-[#B85C38]/40 backdrop-blur-xs'
+                      }">
+                ${r.name.replace('Kota ', '').replace('Kabupaten ', '')}
+              </button>
+            `).join('')}
+          </div>
         </div>
       </div>
 
@@ -269,9 +278,9 @@ export async function initFlavorMapInteractions() {
         document.querySelectorAll('.region-pill').forEach(btn => {
           const pillId = btn.getAttribute('data-region-pill');
           if (pillId === regionId) {
-            btn.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#B85C38] text-white shadow-sm';
+            btn.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer bg-[#B85C38] text-white shadow-sm ring-2 ring-[#C49A58]/50';
           } else {
-            btn.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all bg-white text-[#302018] border border-[#C49A58]/30 hover:bg-[#F2E8D8]';
+            btn.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer bg-white/10 text-[#FAF6EF] border border-[#C49A58]/40 hover:bg-[#B85C38]/40 backdrop-blur-xs';
           }
         });
 

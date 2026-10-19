@@ -64,17 +64,26 @@ function renderWizardView(step) {
   return `
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 space-y-8">
       
-      <!-- Wizard Header -->
-      <div class="text-center space-y-2">
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F2E8D8] text-xs font-semibold text-[#B85C38] uppercase tracking-wider">
-          ${t('recommendations.badge')}
-        </span>
-        <h1 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#302018]">
-          ${t('recommendations.title')}
-        </h1>
-        <p class="text-xs sm:text-sm text-[#654332]">
-          ${t('recommendations.subtitle')}
-        </p>
+      <!-- Wizard Header with Javanese Heritage Backdrop -->
+      <div class="relative overflow-hidden rounded-3xl p-8 text-center max-w-3xl mx-auto border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
+        <img 
+          src="/assets/images/hero/javanese-kitchen-master.jpg" 
+          alt="Pawon Jawa Tengah LarasRasa" 
+          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#24140D] via-[#24140D]/80 to-[#24140D]/90 pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF6EF]/10 text-xs font-bold text-[#C49A58] uppercase tracking-wider border border-[#C49A58]/40">
+            ${t('recommendations.badge')}
+          </span>
+          <h1 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-white">
+            ${t('recommendations.title')}
+          </h1>
+          <p class="text-xs sm:text-sm text-[#FAF6EF]/85">
+            ${t('recommendations.subtitle')}
+          </p>
+        </div>
       </div>
 
       <!-- Progress Indicator (1 of 4 Steps) -->
@@ -89,7 +98,7 @@ function renderWizardView(step) {
       </div>
 
       <!-- Step Card Container -->
-      <div class="bg-white p-6 sm:p-10 rounded-3xl border border-[#C49A58]/20 shadow-sm space-y-8">
+      <div class="pawon-glass p-6 sm:p-10 rounded-3xl border border-[#C49A58]/30 shadow-md space-y-8">
         
         <!-- Inline Validation Alert (if any) -->
         ${validationError ? `

@@ -2034,5 +2034,572 @@ export const recipes = [
     },
     relatedRecipeIds: ['nasi-liwet-solo', 'selat-solo', 'sate-buntel-solo'],
     legendaryRestaurantIds: ['wongso-lemu-solo', 'pak-manto-solo']
+  },
+  {
+    id: 'bakmi-jawa-godhog',
+    slug: 'bakmi-jawa-godhog',
+    name: 'Bakmi Jawa Godhog Asli Anglo Arang',
+    javaneseName: 'Bakmi Jawi Godhog Arang',
+    regionId: 'surakarta',
+    regionName: 'Surakarta & Mataraman',
+    mealType: 'Makan Malam / Santap Hangat',
+    cookingDuration: '35 Menit',
+    prepTime: '15 Menit',
+    cookTime: '20 Menit',
+    baseServings: 2,
+    difficulty: 'Mudah',
+    difficultyLevel: 'Pemula',
+    flavorProfiles: ['gurih', 'kaya-rempah', 'hangat'],
+    budgetCategory: 'Ekonomis',
+    estimatedCost: 'Rp 25.000 – Rp 40.000',
+    image: '/assets/images/recipes/bakmi-jawa.jpg',
+    intro: 'Bakmi Jawa Godhog adalah sajian mi kuning kenyal berkuah kaldu ayam kampung kental yang dimasak satu per satu di atas tungku anglo arang menyala. Dipadukan dengan kocokan telur bebek gurih, suwiran ayam kampung, irisan kol renyah, dan taburan bawang merah goreng renyah.',
+    history: 'Lahir dari tradisi kuliner pedesaan Gunungkidul dan Mataraman yang kemudian menyebar ke seantero Surakarta, Jogja, hingga Semarang. Penggunaan tungku arang kayu jati dan wajan baja cekung kecil bukan sekadar nostalgia, melainkan teknik vital untuk menghasilkan aroma asap arang (smoky wok-hei) yang tidak bisa ditiru kompor gas modern.',
+    culturalBackground: 'Dalam tradisi malam Jawa Tengah, menyantap bakmi godhog panas mengepul adalah ritual silaturahmi saat udara malam mulai mendingin. Bunyi kipas bambu mengipasi anglo arang menjadi orkestra khas warung bakmi Jawa tempo doeloe.',
+    interestingFacts: [
+      'Wajib dimasak satu porsi demi satu porsi (satu wajan per sajian) agar panas kuah dan kematangan telur bebek merata sempurna.',
+      'Kocokan telur bebek yang dimasukkan saat kuah mendidih menciptakan emulsi kuah yang creamy kental tanpa tambahan santan.',
+      'Kekian terigu kenyal sering ditambahkan sebagai pelengkap khas ala bakmi Jawa Solo.'
+    ],
+    regionalVariations: 'Versi Semarang sering menambahkan kekian udang dan kuah sedikit lebih bening, sedangkan versi Solo dan Gunungkidul menonjolkan kuah kuning pekat dari kemiri bakar dan kaldu ayam kampung tua.',
+    equipment: ['Tungku anglo arang atau wajan baja cekung', 'Cobek batu & ulekan', 'Kipas bambu tradisional', 'Piring seng enamel beralas daun pisang'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Utama Mi & Isian',
+        items: [
+          { name: 'Mi basah kuning kenyal', amount: 250, unit: 'gram', notes: 'Bilas air hangat sebentar' },
+          { name: 'Bihun beras seduh', amount: 50, unit: 'gram', notes: 'Pelengkap campur khas' },
+          { name: 'Daging ayam kampung rebus, suwir', amount: 150, unit: 'gram', notes: 'Gunakan ayam kampung agar gurih' },
+          { name: 'Telur bebek segar', amount: 2, unit: 'butir', notes: 'Kocok lepas' },
+          { name: 'Kol segar, iris kasar', amount: 100, unit: 'gram', notes: 'Cuci bersih tiriskan' },
+          { name: 'Tomat merah, potong kasar', amount: 1, unit: 'buah', notes: 'Penyegar rasa' },
+          { name: 'Daun bawang & seledri, iris 1 cm', amount: 2, unit: 'batang', notes: 'Aroma segar' },
+          { name: 'Kaldu ayam kampung asli', amount: 600, unit: 'ml', notes: 'Rebusan tulang ayam kampung' }
+        ]
+      },
+      {
+        name: 'Bumbu Halus (Ulek)',
+        items: [
+          { name: 'Bawang putih', amount: 6, unit: 'siung', notes: 'Kunci gurih kaldu' },
+          { name: 'Kemiri sangrai', amount: 4, unit: 'butir', notes: 'Pengental alami' },
+          { name: 'Merica butiran sangrai', amount: 1, unit: 'sdt', notes: 'Ulek halus' },
+          { name: 'Ebi kering sangrai', amount: 1, unit: 'sdm', notes: 'Pemberi aroma umami khas' },
+          { name: 'Garam & gula pasir', amount: 1, unit: 'sdt', notes: 'Penyeimbang rasa' }
+        ]
+      },
+      {
+        name: 'Bumbu Kuah & Taburan',
+        items: [
+          { name: 'Kecap manis tradisional', amount: 1, unit: 'sdm', notes: 'Sentuhan manis tipis' },
+          { name: 'Minyak kelapa untuk menumis', amount: 2, unit: 'sdm', notes: 'Lebih wangi dari minyak sawit' },
+          { name: 'Bawang merah goreng renyah', amount: 2, unit: 'sdm', notes: 'Taburan wajib' },
+          { name: 'Cabai rawit hijau utuh', amount: 10, unit: 'buah', notes: 'Camilan pedas pendamping' }
+        ]
+      }
+    ],
+    steps: [
+      {
+        stepNumber: 1,
+        title: 'Menumis Bumbu Halus Beraroma Asap',
+        instruction: 'Panaskan minyak kelapa di atas wajan baja panas. Masukkan bumbu halus (bawang putih, kemiri, merica, ebi). Tumis cepat dengan api besar hingga bumbu harum semerbak kekuningan.',
+        timerMinutes: 3,
+        tip: 'Jaga bumbu jangan sampai gosong agar kuah tidak pahit.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Memasak Telur Bebek & Mengentalkan Kuah',
+        instruction: 'Sisihkan bumbu ke pinggir wajan, masukkan kocokan telur bebek. Aduk orak-arik cepat hingga setengah matang, lalu tuang 600 ml kaldu ayam kampung mendidih. Biarkan kaldu mendidih hebat hingga mengemulsi dengan telur menjadi kuah kuning keruh berbusa harum.',
+        timerMinutes: 4,
+        tip: 'Api besar saat menuang kaldu membuat telur pecah halus menyatu dengan kuah kaldu.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Memasukkan Mi, Sayuran, & Suwiran Ayam',
+        instruction: 'Masukkan suwiran ayam kampung, mi kuning, bihun, irisan kol, tomat, dan kecap manis tipis. Masak selama 3-4 menit hingga mi lembut menyerap kuah dan kol layu renyah.',
+        timerMinutes: 4,
+        tip: 'Jangan masak terlalu lama agar mi tidak lembek dan kol tetap renyah.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Penyajian Panas Mengepul Berdaun Pisang',
+        instruction: 'Tuang bakmi beserta kuah kentalnya ke atas piring beralas daun pisang. Beri irisan daun bawang, seledri, dan taburan bawang merah goreng melimpah. Sajikan segera bersama cabai rawit hijau dan acar mentimun.',
+        timerMinutes: 2,
+        tip: 'Nikmati selagi kuah masih mendidih panas agar sensasi gurih rempahnya maksimal.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan kaldu dari ayam kampung tua (petelur/afkir) yang direbus lambat karena kandungan kolagen dan lemaknya menghasilkan kaldu paling gurih.',
+      'Telur bebek memberikan warna kuah lebih keemasan dan rasa yang jauh lebih gurih dibandingkan telur ayam negeri.'
+    ],
+    commonMistakes: [
+      'Memasak mi terlalu lama di awal sehingga menjadi benyek seperti bubur saat kuah mendidih.',
+      'Menggunakan api kompor terlalu kecil sehingga gagal mengekstrak aroma wok-hei gurih.'
+    ],
+    substitutions: [
+      { ingredient: 'Telur Bebek', substitute: 'Bisa diganti 2 butir telur ayam kampung' },
+      { ingredient: 'Ebi Kering', substitute: 'Bisa diganti sedikit terasi bakar kualitas tinggi' }
+    ],
+    servingSuggestions: 'Sangat nikmat disantap bersama teh nasgitel (panas, legi, kentel) khas Solo atau wedang jahe geprek.',
+    nutrition: {
+      calories: '480 kkal',
+      protein: '24 g',
+      carbs: '58 g',
+      fat: '16 g',
+      note: 'Per porsi makan lengkap dengan ayam kampung dan telur bebek.'
+    },
+    relatedRecipeIds: ['mie-ongklok-wonosobo', 'selat-solo', 'soto-kudus'],
+    legendaryRestaurantIds: ['pak-manto-solo', 'wongso-lemu-solo']
+  },
+  {
+    id: 'timlo-solo',
+    slug: 'timlo-solo',
+    name: 'Timlo Solo Komplit Sosis Solo & Telur Pindang',
+    javaneseName: 'Timlo Komplit Surakarta',
+    regionId: 'surakarta',
+    regionName: 'Surakarta (Solo)',
+    mealType: 'Makan Siang / Santap Malam',
+    cookingDuration: '45 Menit',
+    prepTime: '20 Menit',
+    cookTime: '25 Menit',
+    baseServings: 4,
+    difficulty: 'Sedang',
+    difficultyLevel: 'Menengah',
+    flavorProfiles: ['segar', 'gurih', 'hangat'],
+    budgetCategory: 'Menengah',
+    estimatedCost: 'Rp 40.000 – Rp 60.000',
+    image: '/assets/images/recipes/timlo-solo.jpg',
+    intro: 'Timlo Solo adalah sup bening gurih khas Pasar Gede Surakarta yang kaya akan isian sosis Solo goreng renyah potong, telur bebek pindang cokelat, suwiran ayam kampung, ati ampela ungkep, dan jamur kuping lembut disiram kaldu panas beraroma bawang putih dan pala.',
+    history: 'Timlo merupakan hasil akulturasi kuliner Tionghoa dan tradisi dapur keraton Solo sejak awal abad ke-20. Terinspirasi dari hidangan "Kimlo" sup jamur sedap malam peranakan yang kemudian diadaptasi warga Solo dengan mengganti isian menjadi sosis Solo (dadar gulung isi ayam cincang) dan telur pindang berbumbu rempah manis.',
+    culturalBackground: 'Di kota Solo, warung Timlo di sekitar Pasar Gede dan Jl. Urip Sumoharjo telah menjadi destinasi sarapan dan makan malam wajib yang melambangkan kehalusan cita rasa kota bengawan.',
+    interestingFacts: [
+      'Sosis Solo yang digunakan pada Timlo adalah sosis basah yang digoreng garing lalu dipotong serong.',
+      'Kuah Timlo tidak memakai santan sama sekali; kelezatannya murni dari kaldu ayam kampung rebusan lambat dan tumisan bawang putih cincang banyak.',
+      'Sangat nikmat disajikan dengan perasan jeruk nipis dan cocolan sambal kecap rawit pedas manis.'
+    ],
+    regionalVariations: 'Versi Keraton menyajikan Timlo dengan irisan telur dadar gulung dan kembang tahu, sedangkan versi Pasar Gede mengandalkan sosis Solo goreng dan ati ampela bacem.',
+    equipment: ['Panci kaldu', 'Wajan penggorengan', 'Cobek batu & ulekan', 'Mangkuk keramik porselen'],
+    ingredientGroups: [
+      {
+        name: 'Kaldu Bening Ayam Kampung',
+        items: [
+          { name: 'Daging ayam kampung', amount: 400, unit: 'gram', notes: 'Rebus untuk kaldu dan suwiran' },
+          { name: 'Air bersih', amount: 1500, unit: 'ml', notes: 'Air rebusan kaldu' },
+          { name: 'Bawang putih cincang halus', amount: 8, unit: 'siung', notes: 'Goreng hingga harum keemasan' },
+          { name: 'Pala bubuk', amount: 0.5, unit: 'sdt', notes: 'Aroma rempah hangat keraton' },
+          { name: 'Merica bubuk putih', amount: 1, unit: 'sdt', notes: 'Kehangatan rasa' },
+          { name: 'Garam & gula pasir', amount: 1.5, unit: 'sdt', notes: 'Sesuaikan selera' },
+          { name: 'Daun seledri simpul', amount: 2, unit: 'batang', notes: 'Pewangi kaldu' }
+        ]
+      },
+      {
+        name: 'Isian Sosis Solo & Telur Pindang',
+        items: [
+          { name: 'Sosis Solo goreng, potong serong', amount: 6, unit: 'buah', notes: 'Dadar telur isi ayam cincang' },
+          { name: 'Telur bebek pindang cokelat', amount: 4, unit: 'butir', notes: 'Rebus kecap lalu belah dua' },
+          { name: 'Ati ampela ayam, ungkep lalu potong', amount: 3, unit: 'pasang', notes: 'Bumbu ungkep bacem' },
+          { name: 'Jamur kuping, seduh lalu iris', amount: 50, unit: 'gram', notes: 'Tekstur kenyal segar' },
+          { name: 'Soun beras seduh', amount: 50, unit: 'gram', notes: 'Tiriskan' }
+        ]
+      },
+      {
+        name: 'Bahan Pelengkap & Sambal',
+        items: [
+          { name: 'Bawang merah goreng renyah', amount: 3, unit: 'sdm', notes: 'Taburan' },
+          { name: 'Jeruk nipis', amount: 2, unit: 'buah', notes: 'Potong juring' },
+          { name: 'Kecap manis & rawit ulek', amount: 3, unit: 'sdm', notes: 'Sambal kecap pendamping' }
+        ]
+      }
+    ],
+    steps: [
+      {
+        stepNumber: 1,
+        title: 'Membuat Kaldu Bening Ayam Kampung',
+        instruction: 'Rebus ayam kampung dalam 1500 ml air bersama seledri simpul dengan api kecil hingga ayam empuk dan keluar kaldu bening jernih. Sendok dan buang buih keruh di permukaan air.',
+        timerMinutes: 25,
+        tip: 'Jaga api tetap kecil (simmer) agar kaldu tetap jernih seperti cermin.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Menumis Bumbu Bawang Putih & Pala',
+        instruction: 'Tumis bawang putih cincang hingga harum kekuningan dan renyah. Masukkan ke dalam panci kaldu bersama pala bubuk, merica, garam, dan gula. Aduk rata dan koreksi rasa.',
+        timerMinutes: 5,
+        tip: 'Bawang putih cincang goreng adalah kunci keharuman kuah Timlo Solo.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Menyiapkan Suwiran & Isian Komplit',
+        instruction: 'Angkat ayam kampung dari kaldu, suwir-suwir dagingnya. Goreng sosis Solo hingga kulit luarnya renyah keemasan lalu potong serong 1,5 cm. Rebus sebentar jamur kuping dan soun.',
+        timerMinutes: 8,
+        tip: 'Pastikan potongan sosis Solo renyah di luar namun juicy lembut di dalam.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Menata & Menyiram Kuah Timlo',
+        instruction: 'Dalam mangkuk, tata soun, jamur kuping, suwiran ayam, potongan sosis Solo, ati ampela, dan belahan telur pindang. Siram kuah kaldu bening mendidih. Taburi bawang merah goreng melimpah. Sajikan dengan sambal kecap dan perasan jeruk nipis.',
+        timerMinutes: 4,
+        tip: 'Sajikan segera saat kuah masih panas membara.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan sosis Solo isi ayam kampung asli berbumbu bawang putih dan santan agar cita rasa otentik terjaga.',
+      'Telur pindang yang direbus perlahan dengan daun jambu biji, kulit bawang merah, dan kecap manis akan memberikan warna marmer cokelat yang cantik dan aroma khas.'
+    ],
+    commonMistakes: [
+      'Membiarkan kaldu mendidih dengan api besar yang membuat kuah menjadi keruh berbusa.',
+      'Memasukkan sosis Solo langsung ke panci kuah sehingga kulit dadarnya menjadi lembek sebelum disajikan.'
+    ],
+    substitutions: [
+      { ingredient: 'Sosis Solo', substitute: 'Bisa diganti martabak telur mini atau dadar gulung ayam' }
+    ],
+    servingSuggestions: 'Sangat cocok dinikmati dengan nasi putih hangat yang disajikan terpisah atau dicampur langsung (timlo campur).',
+    nutrition: {
+      calories: '420 kkal',
+      protein: '32 g',
+      carbs: '28 g',
+      fat: '18 g',
+      note: 'Per porsi mangkuk komplit dengan telur pindang dan sosis Solo.'
+    },
+    relatedRecipeIds: ['selat-solo', 'nasi-liwet-solo', 'soto-kudus'],
+    legendaryRestaurantIds: ['selat-mbak-lies', 'wongso-lemu-solo']
+  },
+  {
+    id: 'kupat-tahu-magelang',
+    slug: 'kupat-tahu-magelang',
+    name: 'Kupat Tahu Magelang Bumbu Kacang Kencur',
+    javaneseName: 'Kupat Tahu Magelang',
+    regionId: 'magelang',
+    regionName: 'Magelang',
+    mealType: 'Sarapan / Makan Siang',
+    cookingDuration: '30 Menit',
+    prepTime: '15 Menit',
+    cookTime: '15 Menit',
+    baseServings: 4,
+    difficulty: 'Mudah',
+    difficultyLevel: 'Pemula',
+    flavorProfiles: ['manis', 'gurih', 'segar'],
+    budgetCategory: 'Ekonomis',
+    estimatedCost: 'Rp 20.000 – Rp 35.000',
+    image: '/assets/images/recipes/kupat-tahu.jpg',
+    intro: 'Kupat Tahu Magelang adalah hidangan legendaris lereng Gunung Tidar yang memadukan potongan ketupat pulen, tahu putih goreng hangat berkulit tipis, irisan bakwan sayur renyah, kecambah pendek, dan kol segar yang disiram kuah gula jawa kecap kental encer beraroma kencur dan bawang putih.',
+    history: 'Telah hadir sejak era kolonial awal abad ke-20 di sekitar alun-alun kota Magelang. Berbeda dari kupat tahu daerah Sunda yang memakai saus kacang kental seperti bumbu sate, Kupat Tahu Magelang menonjolkan kuah cokelat encer manis gurih berbasis rebusan gula kelapa murni, asam jawa, dan ulekan kencur segar.',
+    culturalBackground: 'Menjadi kuliner kebanggaan warga Magelang yang melambangkan kebersahajaan agraris lereng Merapi dan Merbabu dengan kesegaran sayuran lokal.',
+    interestingFacts: [
+      'Ciri khas pembeda utama Kupat Tahu Magelang adalah adanya irisan bakwan sayur renyah di antara tahu dan ketupat.',
+      'Kuah gula jawa dibuat dari rebusan gula kelapa asli bersama daun salam, lengkuas, dan asam jawa yang didiamkan semalaman agar saripatinya matang meresap.',
+      'Tahu yang digunakan harus tahu sutra putih Magelang yang digoreng mendadak saat dipesan.'
+    ],
+    regionalVariations: 'Di Magelang sendiri terdapat Kupat Tahu Pojok dan Kupat Tahu Blabak yang memiliki racikan kuah sedikit berbeda pada kepekatan kacang sangrai kasarnya.',
+    equipment: ['Wajan penggorengan', 'Cobek batu & ulekan', 'Piring ceper beralas daun pisang'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Isian Kupat & Sayur',
+        items: [
+          { name: 'Ketupat matang pulen', amount: 4, unit: 'buah', notes: 'Potong dadu 2 cm' },
+          { name: 'Tahu putih sutra lembut', amount: 4, unit: 'kotak', notes: 'Goreng setengah matang, potong-potong' },
+          { name: 'Bakwan sayur goreng renyah', amount: 4, unit: 'buah', notes: 'Potong-potong' },
+          { name: 'Tauge / kecambah pendek seduh', amount: 100, unit: 'gram', notes: 'Tiriskan' },
+          { name: 'Kol segar, iris halus', amount: 100, unit: 'gram', notes: 'Cuci bersih tiriskan' },
+          { name: 'Daun seledri cincang', amount: 3, unit: 'batang', notes: 'Taburan segar' },
+          { name: 'Bawang merah goreng', amount: 3, unit: 'sdm', notes: 'Taburan gurih' }
+        ]
+      },
+      {
+        name: 'Bumbu Kuah Gula Jawa Kencur',
+        items: [
+          { name: 'Gula merah kelapa murni', amount: 200, unit: 'gram', notes: 'Sisir halus' },
+          { name: 'Air bersih', amount: 500, unit: 'ml', notes: 'Rebusan kuah' },
+          { name: 'Kecap manis lokal', amount: 3, unit: 'sdm', notes: 'Pewarna dan rasa' },
+          { name: 'Asam jawa', amount: 1, unit: 'sdm', notes: 'Larutkan dengan air hangat' },
+          { name: 'Daun salam & lengkuas memar', amount: 2, unit: 'lembar', notes: 'Rebus bersama gula' },
+          { name: 'Garam laut', amount: 1, unit: 'sdt', notes: 'Penyeimbang manis' }
+        ]
+      },
+      {
+        name: 'Bumbu Halus Ulek Mendadak (Per Porsi)',
+        items: [
+          { name: 'Bawang putih', amount: 1, unit: 'siung', notes: 'Ulek mentah di piring' },
+          { name: 'Kencur segar', amount: 1, unit: 'cm', notes: 'Aroma khas Magelang' },
+          { name: 'Kacang tanah goreng sangrai', amount: 1.5, unit: 'sdm', notes: 'Ulek kasar' },
+          { name: 'Cabai rawit merah', amount: 3, unit: 'buah', notes: 'Sesuaikan level pedas' }
+        ]
+      }
+    ],
+    steps: [
+      {
+        stepNumber: 1,
+        title: 'Memasak Kuah Gula Jawa Rempah',
+        instruction: 'Rebus air, gula merah sisir, kecap manis, larutan asam jawa, daun salam, lengkuas, dan garam dengan api sedang hingga gula larut sempurna dan kuah harum mendidih. Saring dan dinginkan kuah.',
+        timerMinutes: 12,
+        tip: 'Menyaring kuah memastikan tidak ada kotoran gula merah alami yang terbawa.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Menggoreng Tahu & Bakwan Hangat',
+        instruction: 'Goreng tahu putih hingga berkulit tipis kuning keemasan namun bagian dalamnya tetap lembut basah. Potong-potong dadu selagi hangat bersama potongan bakwan sayur renyah.',
+        timerMinutes: 8,
+        tip: 'Tahu yang digoreng mendadak hangat akan langsung menyerap kuah gula jawa dengan cepat.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Mengulek Bumbu Segar di Piring',
+        instruction: 'Di atas piring atau cobek, ulek mentah bawang putih, kencur, cabai rawit sesuai selera pedas, dan kacang tanah goreng hingga halus-kasar.',
+        timerMinutes: 3,
+        tip: 'Mengulek bumbu mentah langsung per porsi menjaga aroma kencur dan bawang putih tetap menyengat sedap.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Meracik & Menyiram Sajian',
+        instruction: 'Tata potongan ketupat, tahu goreng hangat, potongan bakwan, tauge seduh, dan irisan kol di atas bumbu ulek. Siram kuah gula jawa rempah melimpah. Taburi seledri cincang dan bawang goreng. Sajikan dengan kerupuk merah putih.',
+        timerMinutes: 3,
+        tip: 'Kupat tahu siap disantap dengan sensasi rasa manis, asam, gurih, dan pedas semilir kencur.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan kacang tanah yang digoreng dengan kulit arinya agar aroma kuah kacang terasa lebih gurih earthy.',
+      'Kuah gula jawa bisa disimpan di kulkas hingga seminggu; hangatkan sebentar sebelum disiramkan.'
+    ],
+    commonMistakes: [
+      'Tahu digoreng terlalu kering/kopong sehingga kehilangan kelembutan sutranya.',
+      'Kencur terlalu banyak sehingga rasa kuah menjadi getir mendominasi.'
+    ],
+    substitutions: [
+      { ingredient: 'Ketupat', substitute: 'Bisa diganti lontong beras pulen' }
+    ],
+    servingSuggestions: 'Sangat nikmat disandingkan dengan Es Kacang Merah segar atau Teh Manis Hangat Melati.',
+    nutrition: {
+      calories: '390 kkal',
+      protein: '14 g',
+      carbs: '62 g',
+      fat: '11 g',
+      note: 'Per porsi komplit dengan bakwan dan ketupat.'
+    },
+    relatedRecipeIds: ['tahu-gimbal-semarang', 'mendoan-banyumas', 'soto-kudus'],
+    legendaryRestaurantIds: ['kupat-tahu-pojok']
+  },
+  {
+    id: 'sate-ambal-kebumen',
+    slug: 'sate-ambal-kebumen',
+    name: 'Sate Ayam Ambal Bumbu Tempe Kedelai',
+    javaneseName: 'Sate Ambal Pesisir Kidul',
+    regionId: 'banyumas',
+    regionName: 'Kebumen & Banyumas Kidul',
+    mealType: 'Makan Utama / Santap Sore',
+    cookingDuration: '45 Menit',
+    prepTime: '25 Menit',
+    cookTime: '20 Menit',
+    baseServings: 4,
+    difficulty: 'Sedang',
+    difficultyLevel: 'Menengah',
+    flavorProfiles: ['gurih', 'manis', 'kaya-rempah'],
+    budgetCategory: 'Menengah',
+    estimatedCost: 'Rp 45.000 – Rp 65.000',
+    image: '/assets/images/recipes/sate-ambal.jpg',
+    intro: 'Sate Ambal adalah sate ayam istimewa dari pesisir Ambal Kebumen yang terkenal karena bumbu cocolannya yang unik: bukan bumbu kacang atau kecap biasa, melainkan bumbu tempe kedelai kukus yang diulek halus lembut bersama rempah pala, ketumbar sangrai, dan gula kelapa alami.',
+    history: 'Diciptakan oleh masyarakat pesisir selatan Kebumen sejak awal dekade 1900-an. Memanfaatkan melimpahnya kedelai lokal dan tempe bungkus daun, para juru masak Ambal memadukan tempe rebus yang dihaluskan dengan bumbu gulai manis gurih sebagai saus pembungkus daging ayam kampung bakar.',
+    culturalBackground: 'Tradisi memanggang sate di pesisir Ambal menggunakan batok kelapa kering memberikan aroma asap manis yang khas menyatu dengan lembutnya saus tempe.',
+    interestingFacts: [
+      'Daging ayam kampung dimarinasi selama 2 jam dengan bumbu rempah sebelum ditusuk dan dibakar di atas arang.',
+      'Saus tempenya memiliki tekstur velvety kental laksana krim nabati dengan aroma ketumbar dan pala yang harum.',
+      'Selalu dinikmati dengan ketupat atau lontong daun pisang yang kenyal gurih.'
+    ],
+    regionalVariations: 'Beberapa penjual di jalur pantai selatan (Deandels) menambahkan sedikit cabai rawit kukus ke dalam bumbu tempe untuk variasi pedas nendang.',
+    equipment: ['Panggangan sate arang batok', 'Tusuk sate bambu', 'Cobek batu & ulekan', 'Panci pengukus'],
+    ingredientGroups: [
+      {
+        name: 'Daging Ayam & Bumbu Marinasi',
+        items: [
+          { name: 'Daging fillet ayam kampung / dada', amount: 500, unit: 'gram', notes: 'Potong dadu 1.5 cm' },
+          { name: 'Bawang putih', amount: 5, unit: 'siung', notes: 'Haluskan' },
+          { name: 'Ketumbar sangrai', amount: 1.5, unit: 'sdm', notes: 'Ulek halus' },
+          { name: 'Gula merah kelapa', amount: 2, unit: 'sdm', notes: 'Sisir halus' },
+          { name: 'Kecap manis', amount: 2, unit: 'sdm', notes: 'Untuk celupan bakar' },
+          { name: 'Garam & minyak kelapa', amount: 1, unit: 'sdm', notes: 'Marinasi' }
+        ]
+      },
+      {
+        name: 'Saus Bumbu Tempe Kedelai Ikonik',
+        items: [
+          { name: 'Tempe kedelai murni kualitas bagus', amount: 150, unit: 'gram', notes: 'Kukus hingga matang matang' },
+          { name: 'Bawang merah', amount: 6, unit: 'butir', notes: 'Goreng utuh sebentar' },
+          { name: 'Bawang putih', amount: 4, unit: 'siung', notes: 'Goreng utuh sebentar' },
+          { name: 'Pala bubuk', amount: 0.5, unit: 'sdt', notes: 'Aroma hangat khas' },
+          { name: 'Ketumbar sangrai', amount: 1, unit: 'sdt', notes: 'Ulek halus' },
+          { name: 'Gula kelapa murni', amount: 2, unit: 'sdm', notes: 'Rasa manis legit' },
+          { name: 'Santan encer matang', amount: 200, unit: 'ml', notes: 'Untuk melarutkan tempe' },
+          { name: 'Garam & merica', amount: 1, unit: 'sdt', notes: 'Penyeimbang rasa' }
+        ]
+      },
+      {
+        name: 'Pelengkap Penyajian',
+        items: [
+          { name: 'Ketupat / lontong beras', amount: 4, unit: 'buah', notes: 'Potong-potong' },
+          { name: 'Bawang merah iris mentah', amount: 4, unit: 'butir', notes: 'Penyegar saus' },
+          { name: 'Cabai rawit merah iris', amount: 8, unit: 'buah', notes: 'Taburan pedas' }
+        ]
+      }
+    ],
+    steps: [
+      {
+        stepNumber: 1,
+        title: 'Marinasi Daging Ayam',
+        instruction: 'Campur potongan daging ayam dengan bumbu marinasi (bawang putih halus, ketumbar sangrai, gula merah, kecap manis, garam, minyak kelapa). Remas perlahan dan diamkan di kulkas selama minimal 30 menit agar bumbu meresap ke serat daging.',
+        timerMinutes: 30,
+        tip: 'Marinasi yang cukup membuat daging ayam tetap empuk dan tidak kering saat dibakar.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Mengolah Saus Tempe Kedelai Halus',
+        instruction: 'Kukus tempe kedelai hingga empuk matang (sekitar 10 menit). Di cobek, ulek tempe kukus selagi hangat bersama bawang merah goreng, bawang putih goreng, ketumbar sangrai, pala bubuk, gula merah, dan garam hingga sangat lembut lumat. Tuang santan encer hangat sedikit demi sedikit sambil diaduk hingga tekstur saus kental seperti bubur halus.',
+        timerMinutes: 12,
+        tip: 'Ulek tempe selagi panas agar mudah hancur dan menghasilkan tekstur saus krim yang lembut tanpa butiran kasar.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Membakar Sate di Atas Arang Batok',
+        instruction: 'Tusuk potongan daging ayam ke tusuk sate bambu (3-4 potong per tusuk). Bakar di atas bara arang batok kelapa sambil diolesi sisa minyak marinasi dan kecap manis hingga matang kecokelatan beraroma karamel asap.',
+        timerMinutes: 10,
+        tip: 'Kipas bara dengan stabil agar daging matang merata tanpa gosong terbakar.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Penyajian Bersiram Bumbu Tempe Ambal',
+        instruction: 'Tata sate ayam bakar hangat di atas piring beralas daun pisang. Siram dengan bumbu tempe kedelai lembut melimpah. Beri irisan bawang merah mentah segar dan cabai rawit iris. Nikmati bersama potongan ketupat hangat.',
+        timerMinutes: 3,
+        tip: 'Perpaduan saus tempe yang gurih lembut dengan daging ayam panggang manis menghasilkan cita rasa surgawi khas pesisir selatan.'
+      }
+    ],
+    cookingTips: [
+      'Gunakan tempe yang baru jadi (belum semangit) agar aroma kedelai terasa manis dan tidak berbau asam.',
+      'Saus tempe yang dimasak sebentar dengan api kecil akan lebih tahan lama dan minyak bumbunya keluar berkilau.'
+    ],
+    commonMistakes: [
+      'Tempe diulek tanpa dikukus terlebih dahulu sehingga saus berbau langu kedelai mentah.',
+      'Api pembakaran terlalu besar membuat bagian luar hangus sementara serat ayam kampung belum matang sempurna.'
+    ],
+    substitutions: [
+      { ingredient: 'Ayam Kampung', substitute: 'Bisa diganti paha ayam fillet negeri yang juicy' }
+    ],
+    servingSuggestions: 'Sangat nikmat dinikmati di tepi sawah atau beranda rumah bersama es kelapa muda gula jawa.',
+    nutrition: {
+      calories: '450 kkal',
+      protein: '36 g',
+      carbs: '30 g',
+      fat: '19 g',
+      note: 'Per porsi 10 tusuk sate ayam lengkap dengan saus tempe kedelai.'
+    },
+    relatedRecipeIds: ['sate-buntel-solo', 'mendoan-banyumas', 'tempe-bacem'],
+    legendaryRestaurantIds: ['mendoan-echo-banyumas', 'pak-manto-solo']
+  },
+  {
+    id: 'swike-purwodadi',
+    slug: 'swike-purwodadi',
+    name: 'Swike Purwodadi Kuah Tauco Jahe Harum',
+    javaneseName: 'Swike Purwodadi Bumbu Tauco',
+    regionId: 'semarang',
+    regionName: 'Grobogan (Purwodadi) & Pantura',
+    mealType: 'Makan Siang / Santap Malam',
+    cookingDuration: '35 Menit',
+    prepTime: '15 Menit',
+    cookTime: '20 Menit',
+    baseServings: 4,
+    difficulty: 'Mudah',
+    difficultyLevel: 'Pemula',
+    flavorProfiles: ['gurih', 'kaya-rempah', 'hangat'],
+    budgetCategory: 'Menengah',
+    estimatedCost: 'Rp 35.000 – Rp 55.000',
+    image: '/assets/images/recipes/swike-purwodadi.jpg',
+    intro: 'Swike Purwodadi adalah kuliner akulturasi peranakan Tionghoa-Jawa legendaris dari Grobogan yang menyajikan paha katak sawah empuk lembut (atau alternatif paha ayam kampung) berkuah cokelat pekat berlimpah tauco kedelai fermentasi gurih, jahe geprek hangat, bawang putih goreng, dan kucuran jeruk nipis segar.',
+    history: 'Berasal dari kota Purwodadi di Kabupaten Grobogan sejak akhir abad ke-19. Nama "Swikee" (水雞) berasal dari dialek Hokkien yang berarti "ayam air". Di tangan peracik lokal Grobogan, bumbu tauco kedelai lokal difermentasi khusus menghasilkan rasa manis-gurih umami yang khas dan melegenda di sepanjang pesisir Pantura.',
+    culturalBackground: 'Kawasan Purwodadi Grobogan hingga kini dikenal luas sebagai ibukota swike Indonesia dengan puluhan warung legendaris keluarga turun-temurun.',
+    interestingFacts: [
+      'Bumbu kunci utamanya adalah tauco manis khas Grobogan yang memiliki butiran kedelai utuh dan rasa fermentasi yang harum legit.',
+      'Bawang putih digunakan dalam jumlah banyak; separuh dimemarkan untuk kuah dan separuh digoreng kering kecokelatan untuk taburan.',
+      'Bagi yang tidak mengonsumsi katak sawah, versi halal "Swike Ayam Kampung" sangat populer dengan bumbu tauco yang persis sama.'
+    ],
+    regionalVariations: 'Selain versi kuah tauco (swike godhog), ada pula variasi swike goreng mentega, swike goreng tepung krispi, dan swike rica-rica pedas.',
+    equipment: ['Wajan sup', 'Cobek batu', 'Mangkuk keramik tradisional'],
+    ingredientGroups: [
+      {
+        name: 'Bahan Utama Paha Daging',
+        items: [
+          { name: 'Paha katak sawah segar bersih (atau paha ayam)', amount: 500, unit: 'gram', notes: 'Cuci bersih dengan air jeruk nipis' },
+          { name: 'Air kaldu / air bersih', amount: 1000, unit: 'ml', notes: 'Untuk kuah rebusan' },
+          { name: 'Jeruk nipis', amount: 2, unit: 'buah', notes: 'Lumuran dan perasan akhir' }
+        ]
+      },
+      {
+        name: 'Bumbu Kuah Tauco & Aromatik',
+        items: [
+          { name: 'Tauco kedelai manis lokal Grobogan', amount: 3, unit: 'sdm', notes: 'Kunci rasa utama swike' },
+          { name: 'Bawang putih', amount: 8, unit: 'siung', notes: 'Cincang kasar dan goreng harum' },
+          { name: 'Jahe segar', amount: 4, unit: 'cm', notes: 'Memarkan' },
+          { name: 'Kecap manis', amount: 2, unit: 'sdm', notes: 'Penyelaras warna kuah cokelat' },
+          { name: 'Merica bubuk putih', amount: 1, unit: 'sdt', notes: 'Kehangatan rasa' },
+          { name: 'Gula merah sisir', amount: 1, unit: 'sdm', notes: 'Gula kelapa' },
+          { name: 'Garam', amount: 0.5, unit: 'sdt', notes: 'Sesuaikan rasa karena tauco sudah gurih' },
+          { name: 'Minyak kelapa untuk menumis', amount: 2, unit: 'sdm', notes: 'Menumis bumbu' }
+        ]
+      },
+      {
+        name: 'Taburan & Pelengkap',
+        items: [
+          { name: 'Bawang putih goreng renyah', amount: 3, unit: 'sdm', notes: 'Taburan khas swike' },
+          { name: 'Daun seledri cincang halus', amount: 2, unit: 'batang', notes: 'Aroma segar' },
+          { name: 'Cabai rawit ulek rebus', amount: 2, unit: 'sdm', notes: 'Sambal pedas' }
+        ]
+      }
+    ],
+    steps: [
+      {
+        stepNumber: 1,
+        title: 'Menumis Bawang Putih & Tauco',
+        instruction: 'Panaskan minyak kelapa di wajan. Tumis bawang putih cincang dan jahe memar hingga harum semerbak kekuningan. Masukkan tauco manis Grobogan, tumis sebentar hingga aroma kedelai fermentasinya merekah harum.',
+        timerMinutes: 4,
+        tip: 'Menumis tauco dengan minyak panas menghilangkan aroma langu dan mengeluarkan karamel alaminya.'
+      },
+      {
+        stepNumber: 2,
+        title: 'Memasak Daging Paha Lembut',
+        instruction: 'Masukkan potongan paha daging yang telah dilumuri perasan jeruk nipis. Aduk rata bersama tumisan tauco hingga berubah warna dan mengencang.',
+        timerMinutes: 4,
+        tip: 'Mengaduk daging bersama bumbu di awal membuat sari bumbu tauco meresap ke dalam pori-pori daging.'
+      },
+      {
+        stepNumber: 3,
+        title: 'Merebus Kuah Kaldu Bumbu',
+        instruction: 'Tuang 1000 ml air bersih. Tambahkan kecap manis, gula merah, merica, dan sedikit garam. Masak dengan api sedang hingga mendidih dan kuah berubah warna cokelat pekat harum. Biarkan mendidih selama 12 menit hingga daging sangat empuk lembut.',
+        timerMinutes: 12,
+        tip: 'Koreksi rasa kuah; harus dominan gurih fermentasi tauco, manis lembut, dan hangat semerbak jahe.'
+      },
+      {
+        stepNumber: 4,
+        title: 'Penyajian Hangat ala Purwodadi',
+        instruction: 'Tuang swike beserta kuah tauco panas ke dalam mangkuk. Taburi bawang putih goreng renyah melimpah dan seledri cincang. Kucuri perasan air jeruk nipis segar dan sajikan segera bersama sambal rawit dan nasi putih hangat.',
+        timerMinutes: 2,
+        tip: 'Perasan jeruk nipis di akhir memecah kepekatan tauco menjadi kuah yang luar biasa segar di tenggorokan.'
+      }
+    ],
+    cookingTips: [
+      'Pilihlah tauco lokal berkadar garam sedang dengan rasa manis fermentasi yang seimbang.',
+      'Bawang putih goreng renyah wajib ditaburkan melimpah untuk memberi tekstur krispi di setiap suapan kuah.'
+    ],
+    commonMistakes: [
+      'Menambahkan terlalu banyak garam di awal sebelum mencicipi tauco yang sudah memiliki rasa asin alami.',
+      'Memasak daging terlalu lama sehingga daging paha hancur ke dalam kuah.'
+    ],
+    substitutions: [
+      { ingredient: 'Paha Katak Sawah', substitute: 'Bisa diganti paha ayam kampung atau sayap ayam' }
+    ],
+    servingSuggestions: 'Sangat nikmat disantap sebagai menu makan malam penyegar tubuh ditemani kerupuk kaleng dan es jeruk peras.',
+    nutrition: {
+      calories: '320 kkal',
+      protein: '28 g',
+      carbs: '18 g',
+      fat: '9 g',
+      note: 'Per porsi sup hangat kaya protein.'
+    },
+    relatedRecipeIds: ['soto-kudus', 'garang-asem-kudus', 'tahu-gimbal-semarang'],
+    legendaryRestaurantIds: ['toko-oen-semarang', 'soto-pak-darno']
   }
 ];
+
