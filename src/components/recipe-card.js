@@ -1,5 +1,5 @@
 import { getDifficultyBadge } from '../utils/formatters.js';
-import { t, i18n } from '../i18n/index.js';
+import { t } from '../i18n/index.js';
 
 /**
  * Upgraded Recipe Card Component
@@ -8,7 +8,7 @@ import { t, i18n } from '../i18n/index.js';
 export function renderRecipeCard(recipe) {
   const diff = getDifficultyBadge(recipe.difficulty);
 
-  const isEn = (i18n?.getLanguage && i18n.getLanguage() === 'en') || (typeof document !== 'undefined' && document.documentElement.lang === 'en');
+  const isEn = typeof document !== 'undefined' && document.documentElement.lang === 'en';
   const flavorLabels = {
     segar: isEn ? 'Fresh' : 'Segar',
     asam: isEn ? 'Tangy' : 'Asam',
@@ -66,7 +66,7 @@ export function renderRecipeCard(recipe) {
               <circle cx="12" cy="12" r="10"/>
               <polyline points="12 6 12 12 16 14"/>
             </svg>
-            ${isEn ? (recipe.cookingDuration || '').replace('Menit', 'Mins').replace('Jam', 'hr') : recipe.cookingDuration}
+            ${recipe.cookingDuration}
           </span>
         </div>
       </a>

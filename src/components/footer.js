@@ -1,61 +1,85 @@
 import { t } from '../i18n/index.js';
 
 /**
- * Simplified & Elegant Footer Component
- * Copyright: Kelompok 2 Website Development
+ * Upgraded Footer Component
  */
 export function renderFooter() {
-  const year = new Date().getFullYear();
-
   return `
-    <footer class="bg-[#24140D] text-[#FAF6EF] border-t-2 border-[#C49A58]/40 mt-auto">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        
-        <!-- Main Footer Row -->
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-[#FAF6EF]/10 text-center md:text-left">
+    <footer class="bg-[#302018] text-[#FAF6EF] border-t-4 border-[#B85C38] mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
           
-          <!-- Brand & Short Identity -->
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-white p-1 border border-[#C49A58]/40 shadow-xs flex items-center justify-center shrink-0">
-              <img src="/assets/images/logo-larasrasa.jpeg" 
-                   alt="LarasRasa Logo" 
-                   class="w-full h-full object-contain rounded-lg" />
-            </div>
-            <div>
-              <span class="font-editorial-serif text-xl font-bold tracking-tight text-white block">
+          <!-- Brand & Philosophy -->
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-xl bg-white p-1 border border-[#C49A58]/40 shadow-xs flex items-center justify-center shrink-0">
+                <img src="/assets/images/logo-larasrasa.jpeg" 
+                     alt="LarasRasa Logo" 
+                     class="w-full h-full object-contain rounded-lg" />
+              </div>
+              <span class="font-editorial-serif text-2xl font-bold tracking-tight text-[#FAF6EF]">
                 Laras<span class="text-[#B85C38]">Rasa</span>
               </span>
-              <span class="text-[10px] text-[#C49A58] uppercase tracking-wider font-semibold block">
-                Warisan Kuliner Jawa Tengah
-              </span>
+            </div>
+            <p class="text-xs text-[#F2E8D8]/85 leading-relaxed">
+              ${t('footer.philosophy')}
+            </p>
+            <div class="pt-2 text-[11px] text-[#C49A58] italic font-editorial-serif">
+              "${t('footer.javaneseMotto')}"
             </div>
           </div>
 
-          <!-- Concise Navigation Links -->
-          <nav class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-semibold text-[#FAF6EF]/85">
-            <a href="#/resep" class="hover:text-[#C49A58] transition-colors">${t('nav.recipes')}</a>
-            <a href="#/peta-rasa" class="hover:text-[#C49A58] transition-colors">${t('nav.flavorMap')}</a>
-            <a href="#/jelajah-rempah" class="hover:text-[#C49A58] transition-colors">${t('nav.spices')}</a>
-            <a href="#/restoran-legendaris" class="hover:text-[#C49A58] transition-colors">${t('nav.restaurants')}</a>
-            <a href="#/rekomendasi" class="hover:text-[#C49A58] transition-colors">${t('nav.recommendations')}</a>
-            <a href="#/ai-food-creator" class="hover:text-[#C49A58] text-[#C49A58] transition-colors font-bold flex items-center gap-1">
-              <span>✨</span>
-              <span>${t('nav.aiFoodCreator')}</span>
-            </a>
-            <a href="#/tentang" class="hover:text-[#C49A58] transition-colors">${t('nav.about')}</a>
-          </nav>
+          <!-- Jelajah Menu -->
+          <div>
+            <h4 class="font-editorial-serif text-sm font-bold text-[#C49A58] mb-4 uppercase tracking-wider">
+              ${t('footer.exploreTitle')}
+            </h4>
+            <ul class="space-y-2.5 text-xs text-[#F2E8D8]/90">
+              <li><a href="#/resep" class="hover:text-white transition-colors flex items-center gap-2"><span>&bull;</span> ${t('nav.recipes')}</a></li>
+              <li><a href="#/peta-rasa" class="hover:text-white transition-colors flex items-center gap-2"><span>&bull;</span> ${t('nav.flavorMap')}</a></li>
+              <li><a href="#/jelajah-rempah" class="hover:text-white transition-colors flex items-center gap-2"><span>&bull;</span> ${t('nav.spices')}</a></li>
+              <li><a href="#/restoran-legendaris" class="hover:text-white transition-colors flex items-center gap-2"><span>&bull;</span> ${t('nav.restaurants')}</a></li>
+              <li><a href="#/rekomendasi" class="hover:text-white transition-colors flex items-center gap-2"><span>&bull;</span> ${t('nav.recommendations')}</a></li>
+              <li><a href="#/ai-food-creator" class="hover:text-white text-[#C49A58] transition-colors flex items-center gap-2 font-bold"><span>✨</span> ${t('nav.aiFoodCreator')}</a></li>
+              <li><a href="#/tentang" class="hover:text-white transition-colors flex items-center gap-2"><span>&bull;</span> ${t('nav.about')}</a></li>
+            </ul>
+          </div>
+
+          <!-- Wilayah Kuliner Terkemuka -->
+          <div>
+            <h4 class="font-editorial-serif text-sm font-bold text-[#C49A58] mb-4 uppercase tracking-wider">
+              ${t('footer.regionsTitle')}
+            </h4>
+            <ul class="space-y-2.5 text-xs text-[#F2E8D8]/90">
+              <li><span class="text-white font-medium">Kota Semarang</span> — Lumpia & Petis Pesisir</li>
+              <li><span class="text-white font-medium">Kota Surakarta (Solo)</span> — Liwet Santan & Selat Ningrat</li>
+              <li><span class="text-white font-medium">Kabupaten Kudus</span> — Soto Bening & Garang Asem</li>
+              <li><span class="text-white font-medium">Kabupaten Banyumas</span> — Tempe Mendoan Kedelai Asli</li>
+              <li><span class="text-white font-medium">Pekalongan & Magelang</span> — Nasi Megono & Kupat Tahu</li>
+            </ul>
+          </div>
+
+          <!-- Integritas & Keterangan Budaya -->
+          <div>
+            <h4 class="font-editorial-serif text-sm font-bold text-[#C49A58] mb-4 uppercase tracking-wider">
+              ${t('footer.commitmentTitle')}
+            </h4>
+            <p class="text-xs text-[#F2E8D8]/85 leading-relaxed mb-3">
+              ${t('footer.commitmentDesc')}
+            </p>
+            <div class="p-3 rounded-xl bg-[#654332]/50 border border-[#C49A58]/20 text-[11px] text-[#F2E8D8]/80">
+              ${t('footer.backendReadyBadge')}
+            </div>
+          </div>
 
         </div>
 
-        <!-- Bottom Copyright Row -->
-        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-[#FAF6EF]/65 gap-3 text-center sm:text-left">
-          <p class="font-medium">
-            &copy; ${year} Kelompok 2 Website Development. All rights reserved.
-          </p>
-          <div class="flex items-center gap-3 text-[11px] text-[#C49A58]">
-            <span>LarasRasa Web Application</span>
-            <span>&bull;</span>
-            <span>Bilingual (ID / EN)</span>
+        <div class="mt-12 pt-8 border-t border-[#654332] flex flex-col sm:flex-row items-center justify-between text-xs text-[#F2E8D8]/60 gap-4">
+          <p>&copy; ${new Date().getFullYear()} ${t('footer.copyright')}</p>
+          <div class="flex items-center space-x-6">
+            <a href="#/tentang" class="hover:text-[#C49A58] transition-colors">${t('nav.about')}</a>
+            <span class="text-[#654332]">&bull;</span>
+            <span class="text-[#F2E8D8]/80 font-medium">${t('common.language')}: ID / EN</span>
           </div>
         </div>
 

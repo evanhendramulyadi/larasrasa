@@ -134,11 +134,14 @@ function renderFormView(currentLang) {
   return `
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       
-      <!-- Studio Header with Traditional Javanese Ambient Motif -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#C49A58]/35 shadow-xl bg-gradient-to-br from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
-        <div class="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#FAF6EF_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+      <!-- Studio Header with Traditional Javanese Kitchen Backdrop -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
+        <img 
+          src="/assets/images/hero/javanese-kitchen-master.jpg" 
+          alt="Pawon Dapur Jawa Tengah" 
+          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-[#24140D] via-[#24140D]/80 to-[#24140D]/90 pointer-events-none"></div>
         
         <div class="relative z-10 space-y-3 max-w-2xl mx-auto">
           <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 shadow-xs">
@@ -187,13 +190,13 @@ function renderFormView(currentLang) {
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
           <div class="pb-4 border-b border-[#E5D9C5] flex items-center justify-between">
             <div>
-              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">${isEn ? 'Step 1 • Recipe Attribution' : 'Langkah 1 • Hak Cipta Resep'}</span>
+              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Langkah 1 • Hak Cipta Resep</span>
               <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
                 ${isEn ? '1. Creator Attribution' : '1. Identitas Pencipta Resep'}
               </h2>
             </div>
             <span class="text-xs px-2.5 py-1 rounded-full bg-[#FAF6EF] text-[#B85C38] border border-[#C49A58]/30 font-semibold">
-              ${isEn ? 'Required' : 'Wajib Diisi'}
+              Wajib Diisi
             </span>
           </div>
 
@@ -241,7 +244,7 @@ function renderFormView(currentLang) {
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E5D9C5]">
             <div class="space-y-0.5">
-              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">${isEn ? 'Step 2 • Regional Ingredients' : 'Langkah 2 • Ramuan Rempah & Bahan'}</span>
+              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Langkah 2 • Ramuan Rempah & Bahan</span>
               <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
                 ${isEn ? '2. Select Regional Ingredients' : '2. Pilih Bahan & Rempah Otentik Jawa'}
               </h2>
@@ -366,7 +369,7 @@ function renderFormView(currentLang) {
         <!-- SECTION 3: Culinary Style & Portions -->
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
           <div class="pb-4 border-b border-[#E5D9C5]">
-            <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">${isEn ? 'Step 3 • Culinary Technique & Servings' : 'Langkah 3 • Teknik Olah & Takaran Bebas'}</span>
+            <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Langkah 3 • Teknik Olah & Takaran Bebas</span>
             <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
               ${isEn ? '3. Culinary Technique & Servings' : '3. Karakter Olahan Pawon & Porsi'}
             </h2>
@@ -391,7 +394,7 @@ function renderFormView(currentLang) {
                       <input type="radio" name="cookingMethod" value="${m.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
                     </div>
                     <p class="text-[10px] ${isSelected ? 'text-[#C49A58]' : 'text-[#523424]'} mt-2 leading-relaxed">
-                      ${isEn ? (m.descEn || m.descId) : m.descId}
+                      ${m.descId}
                     </p>
                   </label>
                 `;
@@ -568,10 +571,11 @@ function renderFormView(currentLang) {
 }
 
 /**
- * Output Template View: Full Final Recipe, Pure Dark Placeholder Image, Working Downloads, Ready for DB mapping
+ * Output Template View: Full Final Recipe, Real Photograph, Working Downloads, Pure Frontend
  */
 function renderResultView(recipe, currentLang) {
   const isEn = currentLang === 'en';
+  const foodImageSrc = recipe.baseImage || '/assets/images/hero/hero-culinary.jpg';
 
   return `
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 animate-fade-in">
@@ -579,19 +583,14 @@ function renderResultView(recipe, currentLang) {
       <!-- Top Navigation & Success Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5D9C5]">
         <div class="space-y-1">
-          <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold shadow-2xs">
-              ✓ ${isEn ? 'Recipe & Poster Blueprint Ready' : 'Resep & Poster Resmi Berhasil Disusun'}
-            </span>
-            <span class="text-[11px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2.5 py-0.5 rounded-md border border-[#E5D9C5]">
-              ${isEn ? '[Default Template]' : '[Template Baku]'}
-            </span>
-          </div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold shadow-2xs">
+            ✓ ${isEn ? 'Recipe & Poster Successfully Created' : 'Resep & Poster Berhasil Diciptakan'}
+          </span>
           <h1 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#24140D]">
-            ${escapeHtml(recipe.title)}
+            ${recipe.title}
           </h1>
           <p class="text-xs text-[#523424]">
-            ${isEn ? 'Culinary Architecture Output' : 'Koleksi Eksperimen Dapur Orisinal'} • ID: <span class="font-mono">${escapeHtml(recipe.id)}</span>
+            ${isEn ? 'Authentic Culinary Creation' : 'Koleksi Eksperimen Dapur Orisinal'} • ID: ${recipe.id}
           </p>
         </div>
 
@@ -602,19 +601,21 @@ function renderResultView(recipe, currentLang) {
             class="px-5 py-2.5 rounded-xl border border-[#C49A58] bg-white hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
           >
             <span>←</span>
-            <span>${isEn ? 'Craft Another Recipe' : 'Ciptakan Resep Lain'}</span>
+            <span>${isEn ? 'Create Another Recipe' : 'Ciptakan Resep Lain'}</span>
           </button>
         </div>
       </div>
 
-      <!-- Live Toast Feedback Notification -->
-      <div id="live-toast-banner" class="p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs flex items-center justify-between shadow-xs ${toastMessage ? '' : 'hidden'}">
-        <div class="flex items-center gap-2 font-medium">
-          <span class="text-sm">✓</span>
-          <span class="toast-text">${toastMessage || ''}</span>
+      <!-- Toast Feedback Message -->
+      ${toastMessage ? `
+        <div class="p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs flex items-center justify-between shadow-xs">
+          <div class="flex items-center gap-2 font-medium">
+            <span>✓</span>
+            <span>${toastMessage}</span>
+          </div>
+          <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm cursor-pointer">&times;</button>
         </div>
-        <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm cursor-pointer hover:text-emerald-950">&times;</button>
-      </div>
+      ` : ''}
 
       <!-- Main Two-Column Layout (Left: Canvas Poster & Working Downloads | Right: Complete Recipe) -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
@@ -635,20 +636,20 @@ function renderResultView(recipe, currentLang) {
             </div>
 
             <!-- Canvas Element for Visual Composition -->
-            <div class="relative rounded-2xl overflow-hidden bg-[#0F0C0A] border border-[#E5D9C5] shadow-inner flex items-center justify-center min-h-[340px]">
+            <div class="relative rounded-2xl overflow-hidden bg-[#24140D] border border-[#E5D9C5] shadow-inner flex items-center justify-center min-h-[340px]">
               <canvas 
                 id="food-poster-canvas" 
                 class="w-full h-auto max-h-[500px] object-contain block"
               ></canvas>
             </div>
 
-            <!-- Complete Working Download Actions (PNG, JPEG, PDF Recipe, Certificate, JSON Schema, Copy Text) -->
+            <!-- Working Download Buttons Grid (PNG, JPEG, PDF Recipe, Certificate) -->
             <div class="space-y-2.5 pt-2">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <button 
                   type="button" 
                   id="download-poster-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#24140D] hover:bg-[#351C12] active:scale-98 text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                  class="w-full px-4 py-3 rounded-xl bg-[#24140D] hover:bg-[#351C12] text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
@@ -659,7 +660,7 @@ function renderResultView(recipe, currentLang) {
                 <button 
                   type="button" 
                   id="download-poster-jpeg-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#523424] hover:bg-[#3E2416] active:scale-98 text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                  class="w-full px-4 py-3 rounded-xl bg-[#523424] hover:bg-[#3E2416] text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
@@ -672,7 +673,7 @@ function renderResultView(recipe, currentLang) {
                 <button 
                   type="button" 
                   id="download-pdf-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] active:scale-98 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                  class="w-full px-4 py-3 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
@@ -683,7 +684,7 @@ function renderResultView(recipe, currentLang) {
                 <button 
                   type="button" 
                   id="download-cert-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-[#C49A58] via-[#B85C38] to-[#523424] hover:opacity-95 active:scale-98 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                  class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-[#C49A58] via-[#B85C38] to-[#523424] hover:opacity-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
                 >
                   <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="8" r="6"/>
@@ -693,28 +694,15 @@ function renderResultView(recipe, currentLang) {
                 </button>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                <!-- JSON Schema Export Button -->
-                <button 
-                  type="button" 
-                  id="download-json-btn"
-                  class="w-full py-2.5 px-3 rounded-xl border border-[#C49A58]/50 bg-[#FAF6EF] hover:bg-[#EAE1D1] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
-                  title="Unduh data terstruktur JSON untuk mapping database"
-                >
-                  <span class="text-xs">💾</span>
-                  <span>${isEn ? 'Schema (JSON)' : 'Unduh Schema (JSON)'}</span>
-                </button>
-
-                <!-- Copy Text Button -->
-                <button 
-                  type="button" 
-                  id="copy-recipe-text-btn"
-                  class="w-full py-2.5 px-3 rounded-xl border border-[#E5D9C5] bg-white hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <span class="text-xs">📋</span>
-                  <span>${isEn ? 'Copy Full Text' : 'Salin Teks Resep'}</span>
-                </button>
-              </div>
+              <!-- Copy Text Button -->
+              <button 
+                type="button" 
+                id="copy-recipe-text-btn"
+                class="w-full py-2.5 px-4 rounded-xl border border-[#E5D9C5] bg-white hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>📋</span>
+                <span>${isEn ? 'Copy Full Recipe Text' : 'Salin Teks Lengkap Resep'}</span>
+              </button>
             </div>
 
             <!-- In-Memory Image Regeneration Control Panel -->
@@ -783,65 +771,60 @@ function renderResultView(recipe, currentLang) {
 
         </div>
 
-        <!-- RIGHT COLUMN: Structured Recipe Details & Solid Dark Placeholder Image (7 cols) -->
+        <!-- RIGHT COLUMN: Structured Recipe Details & Authentic Food Photo (7 cols) -->
         <div class="lg:col-span-7 space-y-8">
           
-          <!-- Dish Visual Banner: Empty Solid Black Box Placeholder (Sesuai Permintaan) -->
-          <div class="relative rounded-3xl overflow-hidden border border-[#C49A58]/35 shadow-lg bg-[#0A0806] aspect-16/9 sm:h-72 flex flex-col items-center justify-center p-6 text-center space-y-3">
-            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-[#C49A58]/35 flex items-center justify-center text-2xl text-[#C49A58] shadow-inner">
-              📷
-            </div>
-            <div class="space-y-1">
-              <span class="text-xs font-mono uppercase tracking-widest text-[#FAF6EF]/80 font-bold block">
-                ${isEn ? '[Dish Visual Placeholder - Solid Dark Area]' : '[Area Placeholder Gambar Hidangan - Kosong Hitam]'}
-              </span>
-              <p class="text-[11px] text-[#FAF6EF]/45 max-w-sm mx-auto leading-relaxed">
-                ${isEn 
-                  ? 'Empty solid black visual area • Default template ready for database image URL binding' 
-                  : 'Area gambar kosong hitam pekat • Format default template siap dihubungkan dengan data gambar'}
+          <!-- Dish Photograph Hero Banner (Ensures Image is Never Empty) -->
+          <div class="relative rounded-3xl overflow-hidden border border-[#C49A58]/35 shadow-lg bg-[#24140D]">
+            <img 
+              src="${foodImageSrc}" 
+              alt="${recipe.title}" 
+              class="w-full h-64 sm:h-80 object-cover"
+              onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg';"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+            
+            <div class="absolute bottom-4 left-6 right-6 text-white space-y-1">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-xs font-semibold text-[#C49A58]">
+                <span>🏷️</span>
+                <span>${recipe.shortTitle}</span>
+              </div>
+              <p class="text-[11px] text-[#FAF6EF]/85">
+                ${isEn ? 'Central Javanese Gastronomy Archive' : 'Khasanah Gastronomi Tradisional Jawa Tengah'}
               </p>
-            </div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#C49A58] font-mono">
-              <span>🏷️</span>
-              <span>${escapeHtml(recipe.shortTitle)}</span>
             </div>
           </div>
 
           <!-- Recipe Overview Card -->
           <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-5">
             <div class="space-y-2">
-              <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2.5 py-0.5 rounded-md border border-[#E5D9C5]">
-                  ${isEn ? '[Recipe Template]' : '[Template Resep]'}
-                </span>
-                <span class="text-xs font-bold text-[#B85C38] uppercase tracking-wider">
-                  ${escapeHtml(recipe.javaneseTitle)}
-                </span>
-              </div>
+              <span class="text-xs font-bold text-[#B85C38] uppercase tracking-wider block">
+                ${recipe.javaneseTitle}
+              </span>
               <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#24140D]">
-                ${escapeHtml(recipe.shortTitle)}
+                ${recipe.shortTitle}
               </h2>
               <p class="text-xs sm:text-sm text-[#523424] leading-relaxed">
-                ${escapeHtml(recipe.description)}
+                ${recipe.description}
               </p>
             </div>
 
-            <!-- Metadata Metrics Grid (Template Fields) -->
+            <!-- Metadata Metrics Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#E5D9C5] text-xs">
               <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Total Time]' : '[Total Waktu]'}</span>
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? 'Total Time' : 'Total Waktu'}</span>
                 <strong class="text-[#24140D] font-bold">${recipe.totalTime}</strong>
               </div>
               <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Servings]' : '[Porsi]'}</span>
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? 'Servings' : 'Porsi'}</span>
                 <strong class="text-[#24140D] font-bold">${recipe.servings} ${isEn ? 'Servings' : 'Porsi'}</strong>
               </div>
               <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Difficulty]' : '[Tingkat]'}</span>
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? 'Difficulty' : 'Tingkat'}</span>
                 <strong class="text-[#24140D] font-bold">${recipe.difficulty}</strong>
               </div>
               <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Est. Cost]' : '[Estimasi Biaya]'}</span>
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? 'Est. Cost' : 'Estimasi Biaya'}</span>
                 <strong class="text-[#B85C38] font-bold">${recipe.estimatedCost}</strong>
               </div>
             </div>
@@ -851,16 +834,11 @@ function renderResultView(recipe, currentLang) {
           <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-5">
             <div class="flex items-center justify-between pb-3 border-b border-[#E5D9C5]">
               <div class="space-y-0.5">
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2 py-0.5 rounded-md border border-[#E5D9C5]">
-                    ${isEn ? '[Ingredients Template]' : '[Template Bahan]'}
-                  </span>
-                  <h3 class="font-editorial-serif text-xl font-bold text-[#24140D]">
-                    ${isEn ? 'Ingredients & Quantities' : 'Daftar Bahan & Takaran'}
-                  </h3>
-                </div>
+                <h3 class="font-editorial-serif text-xl font-bold text-[#24140D]">
+                  ${isEn ? 'Ingredients & Precise Quantities' : 'Daftar Bahan & Takaran Presisi'}
+                </h3>
                 <span class="text-xs text-[#656C42]">
-                  ${isEn ? `Calibrated for ${recipe.servings} servings` : `Dikalibrasi untuk ${recipe.servings} porsi santapan`}
+                  ${isEn ? `Calibrated for ${recipe.servings} family servings` : `Dikalibrasi untuk ${recipe.servings} porsi santapan`}
                 </span>
               </div>
               <span class="text-xs font-bold text-[#B85C38] bg-[#FAF6EF] border border-[#E5D9C5] px-3 py-1 rounded-full">
@@ -874,8 +852,8 @@ function renderResultView(recipe, currentLang) {
                   <div class="flex items-center gap-2.5">
                     <input type="checkbox" class="rounded text-[#B85C38] focus:ring-[#B85C38] cursor-pointer"/>
                     <div>
-                      <strong class="text-[#24140D] block">${escapeHtml(ing.name)}</strong>
-                      <span class="text-[10px] text-[#656C42] italic">${escapeHtml(ing.note || '')}</span>
+                      <strong class="text-[#24140D] block">${ing.name}</strong>
+                      <span class="text-[10px] text-[#656C42] italic">${ing.note || ''}</span>
                     </div>
                   </div>
                   <span class="font-mono text-xs font-bold text-[#B85C38] shrink-0 bg-white px-2 py-0.5 rounded-md border border-[#E5D9C5]">
@@ -890,14 +868,9 @@ function renderResultView(recipe, currentLang) {
           <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-6">
             <div class="flex items-center justify-between pb-3 border-b border-[#E5D9C5]">
               <div class="space-y-0.5">
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2 py-0.5 rounded-md border border-[#E5D9C5]">
-                    ${isEn ? '[Steps Template]' : '[Template Langkah]'}
-                  </span>
-                  <h3 class="font-editorial-serif text-xl font-bold text-[#24140D]">
-                    ${isEn ? 'Cooking Steps & Milestones' : 'Tahapan Memasak Langkah Demi Langkah'}
-                  </h3>
-                </div>
+                <h3 class="font-editorial-serif text-xl font-bold text-[#24140D]">
+                  ${isEn ? 'Cooking Steps & Milestones' : 'Tahapan Memasak Langkah Demi Langkah'}
+                </h3>
                 <span class="text-xs text-[#656C42]">
                   ${isEn ? 'Sequential instructions with sensory cues' : 'Instruksi bertahap dengan tanda kematangan sensorik'}
                 </span>
@@ -915,17 +888,17 @@ function renderResultView(recipe, currentLang) {
                       ${st.stepNumber}
                     </span>
                     <h4 class="font-bold text-sm text-[#24140D]">
-                      ${escapeHtml(st.title)}
+                      ${st.title}
                     </h4>
                   </div>
                   <p class="text-xs text-[#523424] leading-relaxed pl-10">
-                    ${escapeHtml(st.instruction)}
+                    ${st.instruction}
                   </p>
                   ${st.sensoryMilestone ? `
                     <div class="pl-10 pt-1">
                       <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#656C42] bg-white px-2.5 py-1 rounded-lg border border-[#E5D9C5]">
                         <span>👃</span>
-                        <span>${isEn ? 'Sensory Milestone:' : 'Tanda Sensorik:'} ${escapeHtml(st.sensoryMilestone)}</span>
+                        <span>${isEn ? 'Sensory Milestone:' : 'Tanda Sensorik:'} ${st.sensoryMilestone}</span>
                       </span>
                     </div>
                   ` : ''}
@@ -939,20 +912,20 @@ function renderResultView(recipe, currentLang) {
             <div class="p-5 sm:p-6 rounded-3xl bg-[#FAF6EF] border border-[#C49A58]/35 space-y-3">
               <h4 class="font-editorial-serif text-base font-bold text-[#24140D] flex items-center gap-2">
                 <span>💡</span>
-                <span>${isEn ? '[Chef Notes]' : '[Rahasia Dapur Pawon]'}</span>
+                <span>${isEn ? 'Master Chef Secret' : 'Rahasia Dapur Pawon'}</span>
               </h4>
               <p class="text-xs text-[#523424] leading-relaxed">
-                ${escapeHtml(recipe.chefTips)}
+                ${recipe.chefTips}
               </p>
             </div>
 
             <div class="p-5 sm:p-6 rounded-3xl bg-[#FAF6EF] border border-[#C49A58]/35 space-y-3">
               <h4 class="font-editorial-serif text-base font-bold text-[#24140D] flex items-center gap-2">
                 <span>🛡️</span>
-                <span>${isEn ? '[Food Safety & Storage]' : '[Higienitas & Penyimpanan]'}</span>
+                <span>${isEn ? 'Hygiene & Storage' : 'Higienitas & Penyimpanan'}</span>
               </h4>
               <p class="text-xs text-[#523424] leading-relaxed">
-                ${escapeHtml(recipe.safetyNotes)}
+                ${recipe.safetyNotes}
               </p>
             </div>
           </div>
@@ -996,12 +969,7 @@ export function initAiFoodCreatorInteractions() {
   if (dismissToastBtn) {
     dismissToastBtn.onclick = () => {
       toastMessage = null;
-      const banner = document.getElementById('live-toast-banner');
-      if (banner) {
-        banner.classList.add('hidden');
-      } else {
-        reRenderCurrentView();
-      }
+      reRenderCurrentView();
     };
   }
 
@@ -1192,17 +1160,6 @@ export function initAiFoodCreatorInteractions() {
   }
 
   // --- RESULT VIEW LISTENERS ---
-  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
-  const showToast = (msg) => {
-    toastMessage = msg;
-    const banner = document.getElementById('live-toast-banner');
-    if (banner) {
-      const textSpan = banner.querySelector('.toast-text');
-      if (textSpan) textSpan.innerText = msg;
-      banner.classList.remove('hidden');
-    }
-  };
-
   const canvas = document.getElementById('food-poster-canvas');
   if (canvas && currentGeneratedRecipe) {
     aiFoodCreatorService.composePosterCanvas(canvas, currentGeneratedRecipe);
@@ -1212,10 +1169,7 @@ export function initAiFoodCreatorInteractions() {
   const downloadPosterBtn = document.getElementById('download-poster-btn');
   if (downloadPosterBtn && canvas && currentGeneratedRecipe) {
     downloadPosterBtn.onclick = () => {
-      const ok = aiFoodCreatorService.downloadPoster(canvas, currentGeneratedRecipe.shortTitle, 'png');
-      if (ok !== false) {
-        showToast(isEn ? '✓ Poster (PNG) successfully downloaded!' : '✓ Poster (PNG) berhasil diunduh!');
-      }
+      aiFoodCreatorService.downloadPoster(canvas, currentGeneratedRecipe.shortTitle, 'png');
     };
   }
 
@@ -1223,10 +1177,7 @@ export function initAiFoodCreatorInteractions() {
   const downloadPosterJpegBtn = document.getElementById('download-poster-jpeg-btn');
   if (downloadPosterJpegBtn && canvas && currentGeneratedRecipe) {
     downloadPosterJpegBtn.onclick = () => {
-      const ok = aiFoodCreatorService.downloadPoster(canvas, currentGeneratedRecipe.shortTitle, 'jpeg');
-      if (ok !== false) {
-        showToast(isEn ? '✓ Poster (JPEG) successfully downloaded!' : '✓ Poster (JPEG) berhasil diunduh!');
-      }
+      aiFoodCreatorService.downloadPoster(canvas, currentGeneratedRecipe.shortTitle, 'jpeg');
     };
   }
 
@@ -1236,13 +1187,11 @@ export function initAiFoodCreatorInteractions() {
     downloadPdfBtn.onclick = async () => {
       const origHtml = downloadPdfBtn.innerHTML;
       downloadPdfBtn.disabled = true;
-      downloadPdfBtn.innerText = isEn ? 'Generating PDF...' : 'Menyusun Dokumen PDF...';
+      downloadPdfBtn.innerText = 'Menyusun Dokumen PDF...';
       try {
         await aiFoodCreatorService.generateRecipePdf(currentGeneratedRecipe, canvas);
-        showToast(isEn ? '✓ Recipe document (PDF) successfully downloaded!' : '✓ Dokumen resep (PDF) berhasil diunduh!');
       } catch (err) {
         console.error('PDF generation error:', err);
-        showToast(isEn ? 'Failed to download PDF.' : 'Gagal mengunduh PDF.');
       } finally {
         downloadPdfBtn.disabled = false;
         downloadPdfBtn.innerHTML = origHtml;
@@ -1256,29 +1205,16 @@ export function initAiFoodCreatorInteractions() {
     downloadCertBtn.onclick = async () => {
       const origHtml = downloadCertBtn.innerHTML;
       downloadCertBtn.disabled = true;
-      downloadCertBtn.innerText = isEn ? 'Generating Certificate...' : 'Menyusun Piagam (PDF)...';
+      downloadCertBtn.innerText = 'Menyusun Piagam (PDF)...';
       try {
         await aiFoodCreatorService.generateCertificatePdf(currentGeneratedRecipe, {
-          lang: isEn ? 'en' : 'id'
+          lang: i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'en' : 'id'
         });
-        showToast(isEn ? '✓ Creator certificate (PDF) successfully downloaded!' : '✓ Piagam apresiasi (PDF) berhasil diunduh!');
       } catch (err) {
         console.error('Certificate generation error:', err);
-        showToast(isEn ? 'Failed to download certificate.' : 'Gagal mengunduh piagam.');
       } finally {
         downloadCertBtn.disabled = false;
         downloadCertBtn.innerHTML = origHtml;
-      }
-    };
-  }
-
-  // Download JSON Schema Template
-  const downloadJsonBtn = document.getElementById('download-json-btn');
-  if (downloadJsonBtn && currentGeneratedRecipe) {
-    downloadJsonBtn.onclick = () => {
-      const ok = aiFoodCreatorService.downloadRecipeJson(currentGeneratedRecipe);
-      if (ok !== false) {
-        showToast(isEn ? '✓ JSON Schema template successfully downloaded!' : '✓ Schema JSON template resep berhasil diunduh!');
       }
     };
   }
@@ -1288,21 +1224,23 @@ export function initAiFoodCreatorInteractions() {
   if (copyBtn && currentGeneratedRecipe) {
     copyBtn.onclick = async () => {
       const ingredientsText = currentGeneratedRecipe.ingredients
-        .map(i => `• ${i.name}: ${i.amount} ${i.unit}${i.note ? ` (${i.note})` : ''}`)
+        .map(i => `• ${i.name}: ${i.amount} ${i.unit} (${i.note || ''})`)
         .join('\n');
 
       const stepsText = currentGeneratedRecipe.steps
         .map(s => `${s.stepNumber}. ${s.title}\n   ${s.instruction}`)
         .join('\n\n');
 
-      const fullText = `=== LARASRASA TEMPLATE RESEP ===\n${currentGeneratedRecipe.title}\n[Pencipta]: ${currentGeneratedRecipe.creatorName}\n[Porsi]: ${currentGeneratedRecipe.servings} | [Durasi]: ${currentGeneratedRecipe.totalTime}\n\n[DAFTAR BAHAN]\n${ingredientsText}\n\n[LANGKAH MEMASAK]\n${stepsText}\n\n[TIPS DAPUR]\n${currentGeneratedRecipe.chefTips}\n\n[KEAMANAN & PENYIMPANAN]\n${currentGeneratedRecipe.safetyNotes}\n\nDokumen template resmi LarasRasa.`;
+      const fullText = `=== LARASRASA PUSAKA KULINER ===\n${currentGeneratedRecipe.title}\nDiciptakan Oleh: ${currentGeneratedRecipe.creatorName}\nPorsi: ${currentGeneratedRecipe.servings} | Durasi: ${currentGeneratedRecipe.totalTime}\n\n[BAHAN]\n${ingredientsText}\n\n[CARA MEMASAK]\n${stepsText}\n\n[TIPS DAPUR]\n${currentGeneratedRecipe.chefTips}\n\nDokumen resmi LarasRasa.`;
 
       try {
         await navigator.clipboard.writeText(fullText);
-        showToast(isEn ? '✓ Full template recipe text copied to clipboard!' : '✓ Teks lengkap template resep berhasil disalin ke clipboard!');
+        toastMessage = '✓ Teks lengkap resep berhasil disalin ke papan klip!';
+        reRenderCurrentView();
       } catch (err) {
         console.warn('Clipboard write fallback:', err);
-        showToast(isEn ? '✓ Recipe text ready to use!' : '✓ Teks resep siap digunakan!');
+        toastMessage = '✓ Teks resep siap digunakan!';
+        reRenderCurrentView();
       }
     };
   }
@@ -1324,7 +1262,6 @@ export function initAiFoodCreatorInteractions() {
         imageStyle: newStyle,
         aspectRatio: newRatio
       });
-      showToast(isEn ? '✓ Poster art redrawn!' : '✓ Poster berhasil digambar ulang!');
     };
   }
 
