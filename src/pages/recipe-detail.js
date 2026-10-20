@@ -23,7 +23,7 @@ export async function renderRecipeDetailPage(slug) {
     return `
       <div class="max-w-4xl mx-auto px-4 py-20 text-center space-y-4">
         <h2 class="font-editorial-serif text-3xl font-bold text-[#302018]">${isEn ? 'Recipe Not Found' : 'Resep Tidak Ditemukan'}</h2>
-        <p class="text-sm text-[#654332]">${isEn ? 'Sorry, the requested recipe is not available in the LarasRasa archive.' : 'Maaf, resep dengan tautan tersebut tidak tersedia di khasanah LarasRasa.'}</p>
+        <p class="text-sm text-[#654332]">${isEn ? 'Sorry, the requested recipe could not be found.' : 'Maaf, resep dengan tautan tersebut tidak ditemukan.'}</p>
         <a href="#/resep" class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#302018] text-white text-xs font-bold">
           &larr; ${isEn ? 'Back to Recipes' : 'Kembali ke Resep'}
         </a>
@@ -127,7 +127,7 @@ export async function renderRecipeDetailPage(slug) {
         <div class="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent"></div>
         <div class="absolute bottom-4 left-6 right-6 text-white text-xs flex items-center justify-between">
           <span class="bg-black/55 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/20">
-            ${recipe.regionName} — LarasRasa Archive
+            ${recipe.regionName}
           </span>
           <span class="text-[11px] opacity-80 hidden sm:inline">${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Traditional Culinary Heritage' : 'Pusaka Kuliner Tradisional'}</span>
         </div>

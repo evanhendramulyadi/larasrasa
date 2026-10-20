@@ -1,4 +1,4 @@
-import { t } from '../i18n/index.js';
+import { t, i18n } from '../i18n/index.js';
 
 /**
  * Tentang LarasRasa (Brand Philosophy, Cultural Heritage, & Developer Team)
@@ -10,6 +10,7 @@ import { t } from '../i18n/index.js';
  */
 
 export async function renderAboutPage() {
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
   const teamMembers = [
     {
       id: 'dev1',
@@ -60,14 +61,10 @@ export async function renderAboutPage() {
   return `
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
       
-      <!-- Editorial Hero Header with Javanese Heritage Backdrop -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
-        <img 
-          src="/assets/images/hero/javanese-kitchen-master.jpg" 
-          alt="Pawon Jawa Tengah LarasRasa" 
-          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#24140D] via-[#24140D]/80 to-[#24140D]/90 pointer-events-none"></div>
+      <!-- Editorial Hero Header with Javanese Heritage Gradient -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#C49A58]/35 shadow-xl bg-gradient-to-br from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-4 max-w-2xl mx-auto">
           <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF6EF]/10 text-xs font-bold text-[#C49A58] uppercase tracking-wider border border-[#C49A58]/40 shadow-xs">
@@ -97,7 +94,9 @@ export async function renderAboutPage() {
             </p>
           </div>
           <div class="p-3.5 rounded-xl bg-[#FAF6EF] border border-[#C49A58]/15 text-xs text-[#B85C38] italic font-medium">
-            "Keluarga yang rukun berawal dari meja makan yang selaras rasanya."
+            ${i18n?.getLanguage && i18n.getLanguage() === 'en'
+              ? '"A harmonious family begins at a dining table where flavors are in balance."'
+              : '"Keluarga yang rukun berawal dari meja makan yang selaras rasanya."'}
           </div>
         </div>
 
@@ -114,7 +113,9 @@ export async function renderAboutPage() {
             </p>
           </div>
           <div class="p-3.5 rounded-xl bg-[#FAF6EF] border border-[#C49A58]/15 text-xs text-[#B85C38] italic font-medium">
-            "Setiap gigitan adalah jembatan ingatan pada kehangatan tanah leluhur."
+            ${i18n?.getLanguage && i18n.getLanguage() === 'en'
+              ? '"Every bite is a bridge of memory to the warmth of our ancestral land."'
+              : '"Setiap gigitan adalah jembatan ingatan pada kehangatan tanah leluhur."'}
           </div>
         </div>
       </section>
@@ -144,7 +145,9 @@ export async function renderAboutPage() {
                 ${t('about.heritagePillar1Desc')}
               </p>
             </div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52]">Prinsip Keseimbangan Alam</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52]">
+              ${isEn ? 'Natural Balance Principle' : 'Prinsip Keseimbangan Alam'}
+            </span>
           </div>
 
           <div class="p-6 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] space-y-3 flex flex-col justify-between">
@@ -157,7 +160,9 @@ export async function renderAboutPage() {
                 ${t('about.heritagePillar2Desc')}
               </p>
             </div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52]">Teknik Memasak Tradisional</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52]">
+              ${isEn ? 'Traditional Cooking Techniques' : 'Teknik Memasak Tradisional'}
+            </span>
           </div>
 
           <div class="p-6 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] space-y-3 flex flex-col justify-between">
@@ -170,7 +175,9 @@ export async function renderAboutPage() {
                 ${t('about.heritagePillar3Desc')}
               </p>
             </div>
-            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52]">Nilai Sosial Budaya</span>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52]">
+              ${isEn ? 'Socio-Cultural Values' : 'Nilai Sosial Budaya'}
+            </span>
           </div>
         </div>
       </section>
@@ -226,7 +233,7 @@ export async function renderAboutPage() {
 
               <!-- Skills tags -->
               <div class="pt-3 border-t border-[#E5D9C5] space-y-2">
-                <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52] block">Keahlian Utama:</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52] block">${isEn ? 'Core Skills:' : 'Keahlian Utama:'}</span>
                 <div class="flex flex-wrap gap-1">
                   ${dev.skills.map(s => `
                     <span class="text-[9px] font-semibold px-2 py-0.5 rounded-md bg-[#FAF6EF] text-[#302018] border border-[#C49A58]/20">
@@ -280,7 +287,7 @@ export async function renderAboutPage() {
       <!-- Editorial Curation Standards -->
       <section class="bg-white p-8 sm:p-10 rounded-3xl border border-[#C49A58]/20 space-y-6 shadow-sm">
         <div class="space-y-2">
-          <span class="text-xs font-bold uppercase tracking-widest text-[#B85C38]">Standar Editorial</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-[#B85C38]">${isEn ? 'Editorial Standards' : 'Standar Editorial'}</span>
           <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#302018]">
             ${t('about.standardsTitle')}
           </h2>

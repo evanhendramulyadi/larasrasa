@@ -1,7 +1,7 @@
 import { recommendationService } from '../services/recommendationService.js';
 import { flavorProfiles } from '../data/flavorProfiles.js';
 import { renderRecipeCard } from '../components/recipe-card.js';
-import { t } from '../i18n/index.js';
+import { t, i18n } from '../i18n/index.js';
 
 /**
  * Rekomendasi Untukmu (Personalized Food Finder)
@@ -59,19 +59,16 @@ function renderLoadingView() {
 }
 
 function renderWizardView(step) {
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
   const progressPercent = Math.round((step / TOTAL_STEPS) * 100);
 
   return `
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 space-y-8">
       
-      <!-- Wizard Header with Javanese Heritage Backdrop -->
-      <div class="relative overflow-hidden rounded-3xl p-8 text-center max-w-3xl mx-auto border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
-        <img 
-          src="/assets/images/hero/javanese-kitchen-master.jpg" 
-          alt="Pawon Jawa Tengah LarasRasa" 
-          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#24140D] via-[#24140D]/80 to-[#24140D]/90 pointer-events-none"></div>
+      <!-- Wizard Header with Javanese Heritage Gradient -->
+      <div class="relative overflow-hidden rounded-3xl p-8 text-center max-w-3xl mx-auto border border-[#C49A58]/35 shadow-xl bg-gradient-to-br from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-2">
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF6EF]/10 text-xs font-bold text-[#C49A58] uppercase tracking-wider border border-[#C49A58]/40">
@@ -135,10 +132,10 @@ function renderWizardView(step) {
       <div class="p-4 rounded-2xl bg-[#F2E8D8]/70 border border-[#C49A58]/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-2 text-[#302018]">
           <span class="text-base">✨</span>
-          <span>Ingin meracik kreasi resep orisinal Anda sendiri dengan bumbu pilihan?</span>
+          <span>${isEn ? 'Want to synthesize your own original recipe with custom spices?' : 'Ingin meracik kreasi resep orisinal Anda sendiri dengan bumbu pilihan?'}</span>
         </div>
         <a href="#/ai-food-creator" class="px-4 py-2 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] text-white font-bold shrink-0 transition-colors shadow-2xs">
-          Coba AI Food Creator &rarr;
+          ${isEn ? 'Try AI Food Creator &rarr;' : 'Coba AI Food Creator &rarr;'}
         </a>
       </div>
 
@@ -147,6 +144,8 @@ function renderWizardView(step) {
 }
 
 function renderStepContent(step) {
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+
   switch (step) {
     case 1:
       return `
@@ -160,6 +159,8 @@ function renderStepContent(step) {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
             ${flavorProfiles.map(f => {
               const isChecked = currentAnswers.flavor === f.id;
+              const fName = isEn ? (f.nameEn || f.name) : f.name;
+              const fTagline = isEn ? (f.taglineEn || f.tagline) : f.tagline;
               return `
                 <label class="wizard-option-card flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
                   isChecked 
@@ -171,8 +172,8 @@ function renderStepContent(step) {
                     ●
                   </div>
                   <div>
-                    <strong class="block text-sm text-[#302018] font-bold">${f.name}</strong>
-                    <span class="text-xs text-[#654332] leading-snug">${f.tagline}</span>
+                    <strong class="block text-sm text-[#302018] font-bold">${fName}</strong>
+                    <span class="text-xs text-[#654332] leading-snug">${fTagline}</span>
                   </div>
                 </label>
               `;
@@ -192,9 +193,24 @@ function renderStepContent(step) {
           </div>
           <div class="space-y-3 pt-2">
             ${[
-              { id: 'cepat', title: 'Praktis & Kilat', desc: 'Kurang dari 35 menit (seperti mendoan atau tahu gimbal dadakan)', duration: '≤ 35 Menit' },
-              { id: 'sedang', title: 'Waktu Standar', desc: '35 hingga 60 menit (memasak soto kuah kencur atau selat bistik)', duration: '35 – 60 Menit' },
-              { id: 'leluasa', title: 'Leluasa & Khidmat', desc: 'Lebih dari 60 menit (mengungkep liwet santan atau bacem legit)', duration: '> 60 Menit' }
+              { 
+                id: 'cepat', 
+                title: isEn ? 'Quick & Practical' : 'Praktis & Kilat', 
+                desc: isEn ? 'Under 35 mins (such as crispy mendoan or fresh tahu gimbal)' : 'Kurang dari 35 menit (seperti mendoan atau tahu gimbal dadakan)', 
+                duration: isEn ? '≤ 35 Mins' : '≤ 35 Menit' 
+              },
+              { 
+                id: 'sedang', 
+                title: isEn ? 'Standard Timing' : 'Waktu Standar', 
+                desc: isEn ? '35 to 60 mins (cooking fragrant soto or royal beef stew)' : '35 hingga 60 menit (memasak soto kuah kencur atau selat bistik)', 
+                duration: isEn ? '35 – 60 Mins' : '35 – 60 Menit' 
+              },
+              { 
+                id: 'leluasa', 
+                title: isEn ? 'Slow & Patient Simmer' : 'Leluasa & Khidmat', 
+                desc: isEn ? 'Over 60 mins (slow-braising coconut liwet or authentic bacem)' : 'Lebih dari 60 menit (mengungkep liwet santan atau bacem legit)', 
+                duration: isEn ? '> 60 Mins' : '> 60 Menit' 
+              }
             ].map(tim => {
               const isChecked = currentAnswers.timeAvailable === tim.id;
               return `
@@ -240,7 +256,7 @@ function renderStepContent(step) {
                 }">
                   <input type="radio" name="servings" value="${p}" class="sr-only" ${isChecked ? 'checked' : ''}/>
                   <span class="block font-editorial-serif text-3xl font-bold text-[#302018] mb-1">${p}</span>
-                  <span class="text-xs font-semibold uppercase tracking-wider text-[#654332]">Porsi</span>
+                  <span class="text-xs font-semibold uppercase tracking-wider text-[#654332]">${isEn ? 'Servings' : 'Porsi'}</span>
                 </label>
               `;
             }).join('')}
@@ -259,9 +275,24 @@ function renderStepContent(step) {
           </div>
           <div class="space-y-3 pt-2">
             ${[
-              { id: 'hemat', title: 'Hemat & Ekonomis', desc: 'Bahan olahan kedelai lokal (tempe mendoan, tahu gimbal, megono)', est: 'Rp 15.000 – Rp 35.000' },
-              { id: 'menengah', title: 'Menengah Sehari-hari', desc: 'Olahan ayam kampung & sayur berkuah (Soto Kudus, Garang Asem, Nasi Liwet)', est: 'Rp 40.000 – Rp 65.000' },
-              { id: 'istimewa', title: 'Sajian Istimewa Ningrat', desc: 'Olahan daging sapi atau kambing berempah (Selat Solo, Sate Buntel, Tengkleng)', est: 'Rp 70.000 – Rp 95.000' }
+              { 
+                id: 'hemat', 
+                title: isEn ? 'Affordable & Frugal' : 'Hemat & Ekonomis', 
+                desc: isEn ? 'Local soybean creations (tempeh mendoan, tahu gimbal, megono)' : 'Bahan olahan kedelai lokal (tempe mendoan, tahu gimbal, megono)', 
+                est: isEn ? 'IDR 15k – 35k' : 'Rp 15.000 – Rp 35.000' 
+              },
+              { 
+                id: 'menengah', 
+                title: isEn ? 'Everyday Standard' : 'Menengah Sehari-hari', 
+                desc: isEn ? 'Chicken & fresh regional broths (Soto Kudus, Garang Asem, Nasi Liwet)' : 'Olahan ayam kampung & sayur berkuah (Soto Kudus, Garang Asem, Nasi Liwet)', 
+                est: isEn ? 'IDR 40k – 65k' : 'Rp 40.000 – Rp 65.000' 
+              },
+              { 
+                id: 'istimewa', 
+                title: isEn ? 'Royal Feast Selection' : 'Sajian Istimewa Ningrat', 
+                desc: isEn ? 'Spiced beef or braised mutton cuts (Selat Solo, Sate Buntel, Tengkleng)' : 'Olahan daging sapi atau kambing berempah (Selat Solo, Sate Buntel, Tengkleng)', 
+                est: isEn ? 'IDR 70k – 95k' : 'Rp 70.000 – Rp 95.000' 
+              }
             ].map(b => {
               const isChecked = currentAnswers.budget === b.id;
               return `
@@ -293,6 +324,7 @@ function renderStepContent(step) {
 }
 
 function renderResultView(res) {
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
   const p = res.primaryRecommendation;
 
   return `
@@ -327,7 +359,7 @@ function renderResultView(res) {
           <div class="md:col-span-7 space-y-4">
             <div class="space-y-1">
               <span class="text-xs font-bold text-[#B85C38] uppercase tracking-wider">
-                Khas ${p.regionName} &bull; ${p.mealType}
+                ${isEn ? 'Origin: ' : 'Khas '}${p.regionName} &bull; ${p.mealType}
               </span>
               <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#302018]">
                 ${p.name}
@@ -352,10 +384,10 @@ function renderResultView(res) {
             <!-- Meta Quick Badges -->
             <div class="flex flex-wrap items-center gap-3 pt-2 text-xs">
               <span class="px-3 py-1 rounded-lg bg-[#FAF6EF] border border-[#C49A58]/20 font-semibold text-[#302018]">
-                ⏱ Waktu: ${p.cookingDuration}
+                ⏱ ${isEn ? 'Time' : 'Waktu'}: ${p.cookingDuration}
               </span>
               <span class="px-3 py-1 rounded-lg bg-[#FAF6EF] border border-[#C49A58]/20 font-semibold text-[#302018]">
-                👥 ${res.suggestedServings} Porsi
+                👥 ${res.suggestedServings} ${isEn ? 'Servings' : 'Porsi'}
               </span>
               <span class="px-3 py-1 rounded-lg bg-[#FAF6EF] border border-[#C49A58]/20 font-semibold text-[#B85C38]">
                 💰 Est. ${res.estimatedCostForServings}

@@ -1,5 +1,5 @@
 import { getDifficultyBadge } from '../utils/formatters.js';
-import { t } from '../i18n/index.js';
+import { t, i18n } from '../i18n/index.js';
 
 /**
  * Upgraded Recipe Card Component
@@ -8,7 +8,7 @@ import { t } from '../i18n/index.js';
 export function renderRecipeCard(recipe) {
   const diff = getDifficultyBadge(recipe.difficulty);
 
-  const isEn = typeof document !== 'undefined' && document.documentElement.lang === 'en';
+  const isEn = i18n?.getLanguage ? i18n.getLanguage() === 'en' : (typeof document !== 'undefined' && document.documentElement.lang === 'en');
   const flavorLabels = {
     segar: isEn ? 'Fresh' : 'Segar',
     asam: isEn ? 'Tangy' : 'Asam',
@@ -17,6 +17,12 @@ export function renderRecipeCard(recipe) {
     gurih: isEn ? 'Savory' : 'Gurih',
     'kaya-rempah': isEn ? 'Spiced' : 'Rempah'
   };
+
+  // Localize duration
+  let localizedDuration = recipe.cookingDuration || '';
+  if (isEn && localizedDuration) {
+    localizedDuration = localizedDuration.replace(/Menit/gi, 'Mins').replace(/Jam/gi, 'hr');
+  }
 
   const flavorTags = recipe.flavorProfiles.map(f => {
     let colorClass = 'bg-[#F2E8D8] text-[#654332]';
@@ -66,7 +72,7 @@ export function renderRecipeCard(recipe) {
               <circle cx="12" cy="12" r="10"/>
               <polyline points="12 6 12 12 16 14"/>
             </svg>
-            ${recipe.cookingDuration}
+            ${localizedDuration}
           </span>
         </div>
       </a>

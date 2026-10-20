@@ -54,14 +54,10 @@ export async function renderSpicesPage() {
   return `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       
-      <!-- Page Header with Javanese Kitchen Pawon Backdrop -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
-        <img 
-          src="/assets/images/hero/javanese-kitchen-master.jpg" 
-          alt="Pawon Rempah Jawa Tengah" 
-          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
-        />
-        <div class="absolute inset-0 bg-gradient-to-r from-[#24140D] via-[#24140D]/85 to-transparent pointer-events-none"></div>
+      <!-- Page Header with Javanese Heritage Gradient -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-3 max-w-2xl">
           <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
@@ -159,7 +155,7 @@ function renderSpiceCard(s, isSelected) {
             ${s.categoryName}
           </span>
           <span class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[10px] font-bold shadow-xs border border-white/50" style="background-color: ${s.modelColor || '#C49A58'}; color: #FFF;">
-            ${isSelected ? '✓ Terpilih' : '●'}
+            ${isSelected ? (isEn ? '✓ Selected' : '✓ Terpilih') : '●'}
           </span>
         </div>
 
@@ -212,7 +208,7 @@ function renderActiveSpiceDetails(s) {
         <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none"></div>
         <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
           <span class="bg-[#302018]/90 text-[#C49A58] text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider backdrop-blur-xs shadow-xs border border-[#C49A58]/30">
-            ${isEn ? 'Macro Heritage Archive' : 'Arsip Makro Kuliner'}
+            ${isEn ? 'Traditional Spice' : 'Rempah Tradisional'}
           </span>
           <span class="text-[11px] text-[#FAF6EF] font-mono italic">
             ${s.latinName}

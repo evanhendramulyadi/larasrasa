@@ -23,19 +23,9 @@ export async function renderHomePage() {
       
       <!-- HERO SECTION -->
       <section class="relative overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-24 border-b border-[#E5D9C5]">
-        <!-- Authentic Heritage Kitchen Atmospheric Backdrop -->
-        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <img 
-            src="/assets/images/hero/javanese-kitchen-master.jpg" 
-            alt="Dapur Tradisional Pawon Jawa Tengah" 
-            class="w-full h-full object-cover object-center lg:object-right opacity-45 sm:opacity-55 filter brightness-[0.98] contrast-[1.08] saturate-[1.12] transition-transform duration-1000 scale-102"
-          />
-          <div class="absolute inset-0 bg-gradient-to-r from-[#FAF6EF] via-[#FAF6EF]/90 sm:via-[#FAF6EF]/80 to-[#FAF6EF]/40 lg:to-transparent"></div>
-          <div class="absolute inset-0 bg-gradient-to-b from-[#FAF6EF]/60 via-transparent to-[#FAF6EF]"></div>
-        </div>
-
-        <!-- Subtle Ambient Warm Glow -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#C49A58]/15 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Subtle Ambient Warm Glow (Polos Menarik Bercorak) -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#C49A58]/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 right-10 w-[450px] h-[450px] bg-[#B85C38]/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -102,7 +92,10 @@ export async function renderHomePage() {
         </div>
 
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          ${flavorProfiles.map(f => `
+          ${flavorProfiles.map(f => {
+            const fName = isEn ? (f.nameEn || f.name) : f.name;
+            const fTagline = isEn ? (f.taglineEn || f.tagline) : f.tagline;
+            return `
             <a href="#/resep?flavor=${f.id}" 
                class="group p-5 rounded-2xl bg-white border border-[#E5D9C5] hover:border-[#B85C38] text-center transition-all duration-300 card-hover-lift flex flex-col items-center justify-between shadow-2xs">
               <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110" style="background-color: ${f.color}15; color: ${f.color};">
@@ -113,17 +106,18 @@ export async function renderHomePage() {
               </div>
               <div>
                 <h3 class="font-editorial-serif text-base font-bold text-[#302018] group-hover:text-[#B85C38] transition-colors mb-1">
-                  ${f.name}
+                  ${fName}
                 </h3>
                 <p class="text-[11px] text-[#654332] line-clamp-2 leading-tight">
-                  ${f.tagline}
+                  ${fTagline}
                 </p>
               </div>
               <span class="mt-3 text-[10px] font-bold text-[#B85C38] uppercase tracking-wider group-hover:underline">
                 ${t('flavorSection.exploreBtn')} &rarr;
               </span>
             </a>
-          `).join('')}
+          `;
+          }).join('')}
         </div>
       </section>
 
