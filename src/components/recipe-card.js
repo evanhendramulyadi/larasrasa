@@ -42,10 +42,10 @@ export function renderRecipeCard(recipe) {
       role="link"
       tabindex="0"
       aria-label="${recipe.name} (${recipe.regionName})"
-      class="recipe-card recipe-card-item group bg-white rounded-2xl overflow-hidden border border-[#E5D9C5] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col card-hover-lift cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#B85C38]"
+      class="recipe-card recipe-card-item group bg-white rounded-2xl overflow-hidden border border-[#E8DEC8] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col card-hover-lift cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#C84C24]"
     >
       <!-- Card Image Header -->
-      <a href="#/resep/${recipe.slug}" class="recipe-card-link relative block overflow-hidden aspect-4/3 bg-[#302018]/10" aria-label="${recipe.name}">
+      <a href="#/resep/${recipe.slug}" class="recipe-card-link relative block overflow-hidden aspect-4/3 bg-[#140C07]/10" aria-label="${recipe.name}">
         <img src="${recipe.image}" 
              alt="${recipe.name}" 
              loading="lazy"
@@ -56,8 +56,8 @@ export function renderRecipeCard(recipe) {
         
         <!-- Regional Badge -->
         <div class="absolute top-3 left-3">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#302018]/90 text-[#FAF6EF] backdrop-blur-xs border border-[#C49A58]/50 shadow-xs">
-            <svg class="w-3.5 h-3.5 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#140C07]/90 text-[#FAF7F2] backdrop-blur-xs border border-[#D49B42]/50 shadow-xs">
+            <svg class="w-3.5 h-3.5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
@@ -68,7 +68,7 @@ export function renderRecipeCard(recipe) {
         <!-- Duration Badge -->
         <div class="absolute bottom-3 left-3">
           <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium bg-black/75 text-white backdrop-blur-xs">
-            <svg class="w-3.5 h-3.5 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-3.5 h-3.5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/>
               <polyline points="12 6 12 12 16 14"/>
             </svg>
@@ -91,25 +91,25 @@ export function renderRecipeCard(recipe) {
           </div>
 
           <!-- Title -->
-          <h3 class="font-editorial-serif text-lg font-bold text-[#302018] group-hover:text-[#B85C38] transition-colors leading-snug mb-1.5">
+          <h3 class="font-editorial-serif text-lg font-bold text-[#140C07] group-hover:text-[#C84C24] transition-colors leading-snug mb-1.5">
             <a href="#/resep/${recipe.slug}" class="hover:underline">
               ${recipe.name}
             </a>
           </h3>
 
           <!-- Intro excerpt -->
-          <p class="text-xs text-[#654332]/90 line-clamp-2 leading-relaxed">
+          <p class="text-xs text-[#5C3622] line-clamp-2 leading-relaxed">
             ${recipe.intro}
           </p>
         </div>
 
         <!-- Card Footer Action -->
-        <div class="pt-3 border-t border-[#E5D9C5] flex items-center justify-between text-xs">
-          <span class="text-[#777B52] font-semibold text-[11px]">
+        <div class="pt-3 border-t border-[#E8DEC8] flex items-center justify-between text-xs">
+          <span class="text-[#4A5834] font-semibold text-[11px]">
             Est. ${recipe.estimatedCost}
           </span>
           <a href="#/resep/${recipe.slug}" 
-             class="inline-flex items-center gap-1.5 font-bold text-[#302018] group-hover:text-[#B85C38] transition-colors">
+             class="inline-flex items-center gap-1.5 font-bold text-[#140C07] group-hover:text-[#C84C24] transition-colors">
             <span>${t('recipesSection.viewRecipeBtn')}</span>
             <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>

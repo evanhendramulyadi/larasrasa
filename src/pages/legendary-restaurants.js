@@ -16,13 +16,13 @@ export async function renderLegendaryRestaurantsPage() {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       
       <!-- Page Header with Javanese Heritage Gradient -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#D49B42]/35 shadow-xl bg-gradient-to-r from-[#140C07] via-[#22150E] to-[#140C07] text-[#FAF7F2]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-3 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
-            <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="currentColor">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider">
+            <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
             ${t('restaurantsSection.badge')}
@@ -30,14 +30,14 @@ export async function renderLegendaryRestaurantsPage() {
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
             ${t('restaurantsSection.title')}
           </h1>
-          <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+          <p class="text-sm sm:text-base text-[#FAF7F2]/85 leading-relaxed">
             ${t('restaurantsSection.description')}
           </p>
         </div>
       </div>
 
       <!-- Discovery & Filters Toolbar -->
-      <div class="bg-white p-5 rounded-3xl border border-[#C49A58]/20 shadow-xs space-y-4">
+      <div class="bg-white p-5 rounded-3xl border border-[#E8DEC8] shadow-xs space-y-4">
         
         <div class="flex flex-col md:flex-row items-center gap-4">
           <!-- Instant Search -->
@@ -46,8 +46,8 @@ export async function renderLegendaryRestaurantsPage() {
                    id="restaurant-search-input" 
                    value="${currentFilter.search}"
                    placeholder="${t('restaurantsSection.searchPlaceholder')}" 
-                   class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#C49A58]/30 bg-[#FAF6EF] text-xs text-[#302018] placeholder-[#654332]/50 focus:outline-hidden focus:ring-2 focus:ring-[#B85C38] transition-all"/>
-            <svg class="w-4 h-4 text-[#654332] absolute left-3.5 top-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                   class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs text-[#140C07] placeholder-[#5C3622]/50 focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] transition-all"/>
+            <svg class="w-4 h-4 text-[#5C3622] absolute left-3.5 top-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="11" cy="11" r="8"/>
               <path d="m21 21-4.3-4.3"/>
             </svg>
@@ -55,8 +55,8 @@ export async function renderLegendaryRestaurantsPage() {
 
           <!-- City Dropdown -->
           <div class="w-full md:w-auto flex items-center gap-2">
-            <label class="text-xs font-bold uppercase tracking-wider text-[#654332] shrink-0">${t('restaurantsSection.cityFilter')}</label>
-            <select id="restaurant-city-select" class="w-full md:w-auto py-2.5 px-3.5 rounded-xl border border-[#C49A58]/30 bg-[#FAF6EF] text-xs text-[#302018] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38]">
+            <label class="text-xs font-bold uppercase tracking-wider text-[#5C3622] shrink-0">${t('restaurantsSection.cityFilter')}</label>
+            <select id="restaurant-city-select" class="w-full md:w-auto py-2.5 px-3.5 rounded-xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs text-[#140C07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24]">
               <option value="semua">${t('restaurantsSection.allCities')}</option>
               <option value="Semarang" ${currentFilter.city === 'Semarang' ? 'selected' : ''}>Semarang</option>
               <option value="Surakarta" ${currentFilter.city === 'Surakarta' ? 'selected' : ''}>Surakarta (Solo)</option>
@@ -70,13 +70,13 @@ export async function renderLegendaryRestaurantsPage() {
           </div>
 
           <!-- Reset Button -->
-          <button id="restaurant-reset-btn" type="button" class="shrink-0 text-xs font-bold text-[#B85C38] hover:text-[#302018] underline transition-colors cursor-pointer">
+          <button id="restaurant-reset-btn" type="button" class="shrink-0 text-xs font-bold text-[#C84C24] hover:text-[#140C07] underline transition-colors cursor-pointer">
             ${t('common.reset')}
           </button>
         </div>
 
         <!-- Status & Results Count Bar -->
-        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#F2E8D8] text-xs text-[#654332]">
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[#EFE8DA] text-xs text-[#5C3622]">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span id="restaurants-count-label">

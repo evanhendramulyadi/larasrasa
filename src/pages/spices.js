@@ -55,13 +55,13 @@ export async function renderSpicesPage() {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       
       <!-- Page Header with Javanese Heritage Gradient -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#D49B42]/35 shadow-xl bg-gradient-to-r from-[#140C07] via-[#22150E] to-[#140C07] text-[#FAF7F2]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-3 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
-            <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider">
+            <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
             </svg>
             ${t('spicesSection.badge') || 'Eksplorasi Bumbu Warisan'}
@@ -69,7 +69,7 @@ export async function renderSpicesPage() {
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
             ${t('spicesSection.title') || 'Pusaka Rempah Jawa Tengah'}
           </h1>
-          <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+          <p class="text-sm sm:text-base text-[#FAF7F2]/85 leading-relaxed">
             ${t('spicesSection.description') || 'Menyingkap rahasia bumbu dasar, aromatik purba, dan rimpang penyegar yang menjadi ruh di balik kelezatan masakan tradisional Jawa Tengah.'}
           </p>
         </div>

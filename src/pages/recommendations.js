@@ -66,18 +66,18 @@ function renderWizardView(step) {
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 space-y-8">
       
       <!-- Wizard Header with Javanese Heritage Gradient -->
-      <div class="relative overflow-hidden rounded-3xl p-8 text-center max-w-3xl mx-auto border border-[#C49A58]/35 shadow-xl bg-gradient-to-br from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-3xl p-8 text-center max-w-3xl mx-auto border border-[#D49B42]/35 shadow-xl bg-gradient-to-br from-[#140C07] via-[#22150E] to-[#140C07] text-[#FAF7F2]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-2">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF6EF]/10 text-xs font-bold text-[#C49A58] uppercase tracking-wider border border-[#C49A58]/40">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-[#D49B42] uppercase tracking-wider border border-[#D49B42]/40">
             ${t('recommendations.badge')}
           </span>
           <h1 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-white">
             ${t('recommendations.title')}
           </h1>
-          <p class="text-xs sm:text-sm text-[#FAF6EF]/85">
+          <p class="text-xs sm:text-sm text-[#FAF7F2]/85">
             ${t('recommendations.subtitle')}
           </p>
         </div>
@@ -85,17 +85,17 @@ function renderWizardView(step) {
 
       <!-- Progress Indicator (1 of 4 Steps) -->
       <div class="space-y-2">
-        <div class="flex items-center justify-between text-xs font-bold text-[#654332]">
+        <div class="flex items-center justify-between text-xs font-bold text-[#5C3622]">
           <span>${t('recommendations.stepOf')} ${step} ${t('recommendations.of')} ${TOTAL_STEPS}</span>
           <span>${progressPercent}% ${t('recommendations.completed')}</span>
         </div>
-        <div class="w-full h-2 rounded-full bg-[#F2E8D8] overflow-hidden">
-          <div class="h-full bg-[#B85C38] transition-all duration-300" style="width: ${progressPercent}%;"></div>
+        <div class="w-full h-2 rounded-full bg-[#EFE8DA] overflow-hidden">
+          <div class="h-full bg-[#C84C24] transition-all duration-300" style="width: ${progressPercent}%;"></div>
         </div>
       </div>
 
       <!-- Step Card Container -->
-      <div class="pawon-glass p-6 sm:p-10 rounded-3xl border border-[#C49A58]/30 shadow-md space-y-8">
+      <div class="pawon-glass p-6 sm:p-10 rounded-3xl border border-[#D49B42]/30 shadow-md space-y-8">
         
         <!-- Inline Validation Alert (if any) -->
         ${validationError ? `

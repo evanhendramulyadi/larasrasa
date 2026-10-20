@@ -30,41 +30,41 @@ export class ThreeHeroShowcase {
     const isEn = i18n.getLanguage() === 'en';
 
     this.container.innerHTML = `
-      <div class="relative w-full h-full flex flex-col justify-between overflow-hidden rounded-3xl bg-gradient-to-b from-[#FAF6EF] via-white to-[#F2E8D8] border border-[#E5D9C5] shadow-xl p-3 sm:p-4 transition-all duration-300">
+      <div class="relative w-full h-full flex flex-col justify-between overflow-hidden rounded-3xl bg-gradient-to-b from-[#FAF7F2] via-white to-[#EFE8DA] border border-[#E8DEC8] shadow-xl p-3 sm:p-4 transition-all duration-300">
         
         <!-- Header Controls: Mode Selector & Status -->
         <div class="flex items-center justify-between z-20 gap-2 mb-2.5">
           <!-- Dual-Mode Tabs -->
-          <div class="inline-flex p-1 rounded-full bg-[#FAF6EF] border border-[#E5D9C5] shadow-xs text-xs font-bold text-[#654332] max-w-full">
-            <button type="button" id="hero-tab-gudeg" class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#B85C38] text-white shadow-xs flex items-center gap-1 sm:gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
+          <div class="inline-flex p-1 rounded-full bg-[#FAF7F2] border border-[#E8DEC8] shadow-xs text-xs font-bold text-[#5C3622] max-w-full">
+            <button type="button" id="hero-tab-gudeg" class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1 sm:gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
               <span>🏺</span>
               <span class="truncate">${isEn ? 'Pusaka Gerabah' : 'Gudeg Gerabah'}</span>
             </button>
-            <button type="button" id="hero-tab-feast" class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#654332] hover:text-[#B85C38] flex items-center gap-1 sm:gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
+            <button type="button" id="hero-tab-feast" class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1 sm:gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
               <span>🍲</span>
               <span class="truncate">${t('hero.tabFeast')}</span>
             </button>
           </div>
 
           <!-- Dynamic Hint / Action Badge -->
-          <div id="hero-showcase-hint" class="text-[11px] font-semibold text-[#654332] bg-white/90 px-3 py-1 rounded-full border border-[#E5D9C5] backdrop-blur-xs shadow-2xs hidden sm:flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-[#B85C38] animate-pulse"></span>
+          <div id="hero-showcase-hint" class="text-[11px] font-semibold text-[#5C3622] bg-white/90 px-3 py-1 rounded-full border border-[#E8DEC8] backdrop-blur-xs shadow-2xs hidden sm:flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-pulse"></span>
             <span id="hero-hint-text">${isEn ? 'Tap pins to explore dish elements' : 'Sentuh titik untuk menelaah racikan'}</span>
           </div>
         </div>
 
         <!-- Center Viewport Area -->
-        <div id="hero-viewport-area" class="w-full flex-1 relative rounded-2xl overflow-hidden min-h-[300px] sm:min-h-[340px] bg-[#FAF6EF] border border-[#E5D9C5]/50"></div>
+        <div id="hero-viewport-area" class="w-full flex-1 relative rounded-2xl overflow-hidden min-h-[300px] sm:min-h-[340px] bg-[#FAF7F2] border border-[#E8DEC8]/50"></div>
 
         <!-- Footer Caption Bar -->
-        <div id="hero-footer-caption" class="z-20 mt-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-xs text-[#654332] bg-white/95 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-[#E5D9C5] shadow-xs">
+        <div id="hero-footer-caption" class="z-20 mt-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-xs text-[#5C3622] bg-white/95 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-[#E8DEC8] shadow-xs">
           <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-            <span class="w-2 h-2 rounded-full bg-[#C49A58] shrink-0"></span>
-            <span class="font-bold text-[#302018] truncate text-[11px] sm:text-xs" id="hero-caption-title">
+            <span class="w-2 h-2 rounded-full bg-[#D49B42] shrink-0"></span>
+            <span class="font-bold text-[#140C07] truncate text-[11px] sm:text-xs" id="hero-caption-title">
               ${isEn ? 'Gudeg Komplit in Traditional Earthenware' : 'Gudeg Komplit Kendhi Gerabah Kasongan'}
             </span>
           </div>
-          <span class="text-[10px] sm:text-[11px] text-[#777B52] italic font-medium shrink-0" id="hero-caption-subtitle">
+          <span class="text-[10px] sm:text-[11px] text-[#4A5834] italic font-medium shrink-0" id="hero-caption-subtitle">
             ${isEn ? 'Authentic Central Javanese Heritage' : 'Pusaka Dapur Autentik Jawa Tengah'}
           </span>
         </div>
@@ -95,8 +95,8 @@ export class ThreeHeroShowcase {
 
     if (!viewport) return;
 
-    const activeBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#B85C38] text-white shadow-xs flex items-center gap-1 sm:gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
-    const inactiveBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#654332] hover:text-[#B85C38] flex items-center gap-1 sm:gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
+    const activeBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1 sm:gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
+    const inactiveBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1 sm:gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
 
     if (mode === 'gudeg') {
       if (btnGudeg) btnGudeg.className = activeBtnClass;
@@ -177,7 +177,7 @@ export class ThreeHeroShowcase {
     ];
 
     viewport.innerHTML = `
-      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#302018]">
+      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#140C07]">
         <!-- High-res Gudeg Photograph -->
         <img 
           src="/assets/images/hero/pusaka-gerabah-gudeg.jpg" 
@@ -189,8 +189,8 @@ export class ThreeHeroShowcase {
         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/25 pointer-events-none"></div>
 
         <!-- Gerabah & Banana Leaf Heritage Badge -->
-        <div class="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 flex items-center gap-1.5 bg-[#302018]/85 text-[#FAF6EF] px-2.5 sm:px-3 py-1 rounded-full border border-[#C49A58]/40 backdrop-blur-md shadow-md text-[9px] sm:text-[10px] font-bold max-w-[calc(100%-1.5rem)]">
-          <span class="text-[#C49A58] shrink-0">🏺</span>
+        <div class="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 flex items-center gap-1.5 bg-[#140C07]/85 text-[#FAF7F2] px-2.5 sm:px-3 py-1 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-md text-[9px] sm:text-[10px] font-bold max-w-[calc(100%-1.5rem)]">
+          <span class="text-[#D49B42] shrink-0">🏺</span>
           <span class="truncate">${isEn ? 'Plated on Kasongan Earthenware' : 'Disajikan di Gerabah Kasongan'}</span>
         </div>
 
@@ -212,30 +212,30 @@ export class ThreeHeroShowcase {
         <!-- Interactive Popover Card -->
         <div 
           id="gudeg-hotspot-popover" 
-          class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-[#C49A58]/50 shadow-2xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
+          class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-[#D49B42]/50 shadow-2xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
         >
           <div class="flex items-start justify-between gap-2">
             <div>
-              <span id="gudeg-popover-role" class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#B85C38] bg-[#F2E8D8] px-2.5 py-0.5 rounded-md mb-1 border border-[#C49A58]/20">
+              <span id="gudeg-popover-role" class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#EFE8DA] px-2.5 py-0.5 rounded-md mb-1 border border-[#D49B42]/20">
                 Peran Rasa
               </span>
-              <h4 id="gudeg-popover-title" class="font-editorial-serif text-base font-bold text-[#302018] leading-tight">
+              <h4 id="gudeg-popover-title" class="font-editorial-serif text-base font-bold text-[#140C07] leading-tight">
                 Nama Elemen
               </h4>
-              <p id="gudeg-popover-desc" class="text-xs text-[#654332] mt-1.5 leading-relaxed">
+              <p id="gudeg-popover-desc" class="text-xs text-[#5C3622] mt-1.5 leading-relaxed">
                 Deskripsi
               </p>
             </div>
-            <button type="button" id="gudeg-popover-close" class="text-[#654332] hover:text-[#302018] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
+            <button type="button" id="gudeg-popover-close" class="text-[#5C3622] hover:text-[#140C07] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
           </div>
-          <div class="mt-3 pt-2.5 border-t border-[#E5D9C5] flex items-center justify-between">
-            <a href="#/resep/gudeg-komplit" class="text-xs font-bold text-[#B85C38] hover:text-[#A04A27] flex items-center gap-1.5">
+          <div class="mt-3 pt-2.5 border-t border-[#E8DEC8] flex items-center justify-between">
+            <a href="#/resep/gudeg-komplit" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
               <span>${isEn ? 'View Full Gudeg Recipe' : 'Lihat Resep Lengkap Gudeg'}</span>
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-            <span class="text-[10px] text-[#777B52] italic">${isEn ? 'Heritage Earthenware Plating' : 'Peranti Tradisi Gerabah'}</span>
+            <span class="text-[10px] text-[#4A5834] italic">${isEn ? 'Heritage Earthenware Plating' : 'Peranti Tradisi Gerabah'}</span>
           </div>
         </div>
 
@@ -335,7 +335,7 @@ export class ThreeHeroShowcase {
     ];
 
     viewport.innerHTML = `
-      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#302018]">
+      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#140C07]">
         <!-- High-res Feast Photograph -->
         <img 
           src="/assets/images/hero/hero-culinary.jpg" 
@@ -363,30 +363,30 @@ export class ThreeHeroShowcase {
         <!-- Interactive Popover Card -->
         <div 
           id="feast-hotspot-popover" 
-          class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-[#C49A58]/50 shadow-2xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
+          class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-[#D49B42]/50 shadow-2xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
         >
           <div class="flex items-start justify-between gap-2">
             <div>
-              <span id="popover-dish-region" class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#B85C38] bg-[#F2E8D8] px-2.5 py-0.5 rounded-md mb-1 border border-[#C49A58]/20">
+              <span id="popover-dish-region" class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#EFE8DA] px-2.5 py-0.5 rounded-md mb-1 border border-[#D49B42]/20">
                 Wilayah
               </span>
-              <h4 id="popover-dish-title" class="font-editorial-serif text-base font-bold text-[#302018] leading-tight">
+              <h4 id="popover-dish-title" class="font-editorial-serif text-base font-bold text-[#140C07] leading-tight">
                 Nama Hidangan
               </h4>
-              <p id="popover-dish-desc" class="text-xs text-[#654332] mt-1.5 leading-relaxed">
+              <p id="popover-dish-desc" class="text-xs text-[#5C3622] mt-1.5 leading-relaxed">
                 Deskripsi
               </p>
             </div>
-            <button type="button" id="popover-close-btn" class="text-[#654332] hover:text-[#302018] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
+            <button type="button" id="popover-close-btn" class="text-[#5C3622] hover:text-[#140C07] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
           </div>
-          <div class="mt-3 pt-2.5 border-t border-[#E5D9C5] flex items-center justify-between">
-            <a id="popover-dish-link" href="#/resep" class="text-xs font-bold text-[#B85C38] hover:text-[#A04A27] flex items-center gap-1.5">
+          <div class="mt-3 pt-2.5 border-t border-[#E8DEC8] flex items-center justify-between">
+            <a id="popover-dish-link" href="#/resep" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
               <span>${t('recipesSection.viewRecipeBtn')}</span>
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-            <span class="text-[10px] text-[#777B52] italic font-medium">${t('hero.canvasBadge')}</span>
+            <span class="text-[10px] text-[#4A5834] italic font-medium">${t('hero.canvasBadge')}</span>
           </div>
         </div>
 

@@ -66,9 +66,9 @@ function renderGeneratingState(currentLang) {
   return `
     <div class="max-w-3xl mx-auto px-4 py-24 text-center space-y-6 animate-fade-in">
       <div class="relative w-24 h-24 mx-auto">
-        <div class="absolute inset-0 rounded-3xl bg-[#C49A58]/20 animate-ping"></div>
-        <div class="w-24 h-24 rounded-3xl bg-[#24140D] border-2 border-[#C49A58] text-[#C49A58] flex items-center justify-center mx-auto shadow-2xl text-4xl">
-          <svg class="w-12 h-12 text-[#C49A58] animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="absolute inset-0 rounded-3xl bg-[#D49B42]/20 animate-ping"></div>
+        <div class="w-24 h-24 rounded-3xl bg-[#140C07] border-2 border-[#D49B42] text-[#D49B42] flex items-center justify-center mx-auto shadow-2xl text-4xl">
+          <svg class="w-12 h-12 text-[#D49B42] animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
             <path d="M12 2a10 10 0 0 1 10 10"/>
           </svg>
@@ -76,27 +76,27 @@ function renderGeneratingState(currentLang) {
       </div>
 
       <div class="space-y-3">
-        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#FAF6EF] border border-[#C49A58]/40 text-xs font-bold text-[#B85C38] uppercase tracking-wider shadow-2xs">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#FAF7F2] border border-[#D49B42]/40 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-2xs">
           <span>✨</span>
           <span>${isEn ? 'Culinary Synthesis in Progress' : 'Studio Sintesis Rasa LarasRasa'}</span>
         </span>
-        <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#24140D]">
+        <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#140C07]">
           ${isEn ? 'Harmonizing Your Original Recipe...' : 'Menyelaraskan Bumbu & Meracik Resep...'}
         </h2>
-        <p class="text-xs sm:text-sm text-[#523424] max-w-md mx-auto leading-relaxed">
+        <p class="text-xs sm:text-sm text-[#5C3622] max-w-md mx-auto leading-relaxed">
           ${isEn 
             ? 'Analyzing traditional spice ratios, calculating exact gram measurements for your servings, and preparing high-DPI canvas visuals.'
             : 'Menganalisis keseimbangan rempah, menakar gramasi takaran bahan, dan menyusun template resep resmi untuk kreasi Anda.'}
         </p>
       </div>
 
-      <div class="max-w-xs mx-auto pawon-glass p-4 rounded-2xl border border-[#C49A58]/35 text-xs text-[#523424] space-y-2 shadow-sm">
+      <div class="max-w-xs mx-auto pawon-glass p-4 rounded-2xl border border-[#D49B42]/35 text-xs text-[#5C3622] space-y-2 shadow-sm">
         <div class="flex items-center justify-between font-bold">
           <span>${isEn ? 'Balancing Palate Spectrum' : 'Penyelarasan Spektrum Bumbu'}</span>
-          <span class="text-[#B85C38] font-mono">100%</span>
+          <span class="text-[#C84C24] font-mono">100%</span>
         </div>
-        <div class="w-full bg-[#FAF6EF] h-2.5 rounded-full overflow-hidden border border-[#E5D9C5]">
-          <div class="bg-gradient-to-r from-[#C49A58] via-[#B85C38] to-[#656C42] h-full rounded-full animate-pulse" style="width: 100%"></div>
+        <div class="w-full bg-[#FAF7F2] h-2.5 rounded-full overflow-hidden border border-[#E8DEC8]">
+          <div class="bg-gradient-to-r from-[#D49B42] via-[#C84C24] to-[#4A5834] h-full rounded-full animate-pulse" style="width: 100%"></div>
         </div>
       </div>
     </div>
@@ -135,22 +135,22 @@ function renderFormView(currentLang) {
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       
       <!-- Studio Header with Traditional Javanese Ambient Motif -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#C49A58]/35 shadow-xl bg-gradient-to-br from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
-        <div class="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#FAF6EF_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border border-[#D49B42]/35 shadow-xl bg-gradient-to-br from-[#140C07] via-[#351C12] to-[#1A0F0A] text-[#FAF7F2]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#FAF7F2_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none"></div>
         
         <div class="relative z-10 space-y-3 max-w-2xl mx-auto">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 shadow-xs">
-            <span class="w-2 h-2 rounded-full bg-[#B85C38] animate-ping"></span>
-            <span class="text-xs font-bold text-[#C49A58] uppercase tracking-wider">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF7F2]/10 border border-[#D49B42]/40 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-ping"></span>
+            <span class="text-xs font-bold text-[#D49B42] uppercase tracking-wider">
               ${isEn ? 'AI Culinary Studio • Central Java' : 'Studio Eksperimen Kuliner AI • Jawa Tengah'}
             </span>
           </div>
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white leading-tight">
             ${isEn ? 'Craft Your Authentic Javanese Recipe' : 'Ciptakan Resep & Komposisi Bumbu Anda'}
           </h1>
-          <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+          <p class="text-sm sm:text-base text-[#FAF7F2]/85 leading-relaxed">
             ${isEn
               ? 'Select authentic regional ingredients, calibrate traditional flavors, set your custom portions, and generate an official recipe template complete with poster and certificates.'
               : 'Pilih bahan & rempah otentik Jawa Tengah, atur karakter rasa khas pawon tradisional, tentukan porsi bebas sesuai selera, dan hasilkan blueprint resep siap masak beserta poster kanvas resmi.'}
@@ -185,21 +185,21 @@ function renderFormView(currentLang) {
         
         <!-- SECTION 1: Creator Identity -->
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
-          <div class="pb-4 border-b border-[#E5D9C5] flex items-center justify-between">
+          <div class="pb-4 border-b border-[#E8DEC8] flex items-center justify-between">
             <div>
-              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">${isEn ? 'Step 1 • Recipe Attribution' : 'Langkah 1 • Hak Cipta Resep'}</span>
-              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
+              <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider">${isEn ? 'Step 1 • Recipe Attribution' : 'Langkah 1 • Hak Cipta Resep'}</span>
+              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#140C07]">
                 ${isEn ? '1. Creator Attribution' : '1. Identitas Pencipta Resep'}
               </h2>
             </div>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-[#FAF6EF] text-[#B85C38] border border-[#C49A58]/30 font-semibold">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-[#FAF7F2] text-[#C84C24] border border-[#D49B42]/30 font-semibold">
               ${isEn ? 'Required' : 'Wajib Diisi'}
             </span>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div class="space-y-1.5">
-              <label for="creator-name-input" class="block text-xs font-bold text-[#24140D]">
+              <label for="creator-name-input" class="block text-xs font-bold text-[#140C07]">
                 ${isEn ? 'Creator Full Name' : 'Nama Lengkap Pencipta'} <span class="text-rose-600">*</span>
               </label>
               <input 
@@ -209,9 +209,9 @@ function renderFormView(currentLang) {
                 value="${escapeHtml(formState.creatorName)}"
                 placeholder="${isEn ? 'e.g., Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
                 required
-                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38] text-sm text-[#24140D] transition-all"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E8DEC8] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] text-sm text-[#140C07] transition-all"
               />
-              <p class="text-[11px] text-[#523424]/80">
+              <p class="text-[11px] text-[#5C3622]/80">
                 ${isEn 
                   ? 'This name will be credited on the official recipe document and creator certificate.' 
                   : 'Nama ini dicantumkan pada poster kreasi resmi dan piagam apresiasi pencipta resep.'}
@@ -219,7 +219,7 @@ function renderFormView(currentLang) {
             </div>
 
             <div class="space-y-1.5">
-              <label for="creator-nickname-input" class="block text-xs font-bold text-[#24140D]">
+              <label for="creator-nickname-input" class="block text-xs font-bold text-[#140C07]">
                 ${isEn ? 'Culinary Title / Nickname (Optional)' : 'Gelar Dapur / Nama Panggilan (Opsional)'}
               </label>
               <input 
@@ -228,9 +228,9 @@ function renderFormView(currentLang) {
                 name="creatorNickname"
                 value="${escapeHtml(formState.creatorNickname)}"
                 placeholder="${isEn ? 'e.g., Chef Evan' : 'Contoh: Mas Hendra / Chef Evan'}"
-                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38] text-sm text-[#24140D] transition-all"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E8DEC8] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] text-sm text-[#140C07] transition-all"
               />
-              <p class="text-[11px] text-[#523424]/80">
+              <p class="text-[11px] text-[#5C3622]/80">
                 ${isEn ? 'Appears in culinary narrative notes.' : 'Dicantumkan sebagai catatan personal di resep.'}
               </p>
             </div>
@@ -239,16 +239,16 @@ function renderFormView(currentLang) {
 
         <!-- SECTION 2: Ingredient Selection -->
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E5D9C5]">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E8DEC8]">
             <div class="space-y-0.5">
-              <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">${isEn ? 'Step 2 • Regional Ingredients' : 'Langkah 2 • Ramuan Rempah & Bahan'}</span>
-              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
+              <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider">${isEn ? 'Step 2 • Regional Ingredients' : 'Langkah 2 • Ramuan Rempah & Bahan'}</span>
+              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#140C07]">
                 ${isEn ? '2. Select Regional Ingredients' : '2. Pilih Bahan & Rempah Otentik Jawa'}
               </h2>
             </div>
             
             <div class="flex items-center gap-2">
-              <span class="text-xs font-bold px-3 py-1 rounded-full ${selectedCount >= 1 ? 'bg-[#24140D] text-[#FAF6EF]' : 'bg-rose-100 text-rose-800'}">
+              <span class="text-xs font-bold px-3 py-1 rounded-full ${selectedCount >= 1 ? 'bg-[#140C07] text-[#FAF7F2]' : 'bg-rose-100 text-rose-800'}">
                 ${selectedCount} ${isEn ? 'Items Selected' : 'Bahan Dipilih'}
               </span>
               ${selectedCount > 0 ? `
@@ -260,10 +260,10 @@ function renderFormView(currentLang) {
           </div>
 
           <!-- Active Ingredients Chips Bar -->
-          <div class="p-3.5 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] space-y-2">
-            <div class="text-[11px] font-bold text-[#523424] uppercase tracking-wider flex items-center justify-between">
+          <div class="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] space-y-2">
+            <div class="text-[11px] font-bold text-[#5C3622] uppercase tracking-wider flex items-center justify-between">
               <span>${isEn ? 'Active Selection in Wajan:' : 'Bahan yang Siap Masuk ke Wajan Racikan:'}</span>
-              <span class="text-[#656C42]">${selectedCount === 0 ? (isEn ? 'Select at least 1 ingredient' : 'Pilih minimal 1 bahan') : (isEn ? 'Ready to blend' : 'Siap diproses')}</span>
+              <span class="text-[#4A5834]">${selectedCount === 0 ? (isEn ? 'Select at least 1 ingredient' : 'Pilih minimal 1 bahan') : (isEn ? 'Ready to blend' : 'Siap diproses')}</span>
             </div>
             <div class="flex flex-wrap gap-1.5">
               ${selectedCount === 0 ? `
@@ -274,10 +274,10 @@ function renderFormView(currentLang) {
                 const item = ALL_INGREDIENTS.find(i => i.id === id);
                 if (!item) return '';
                 return `
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-[#C49A58]/40 text-xs font-semibold text-[#24140D] shadow-2xs">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-[#D49B42]/40 text-xs font-semibold text-[#140C07] shadow-2xs">
                     <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${item.nameId}" class="w-4 h-4 rounded-full object-cover" onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
                     <span>${isEn ? (item.nameEn || item.nameId) : item.nameId}</span>
-                    <button type="button" data-remove-ingredient="${item.id}" class="text-[#B85C38] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
+                    <button type="button" data-remove-ingredient="${item.id}" class="text-[#C84C24] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
                   </span>
                 `;
               }).join('')}
@@ -286,17 +286,17 @@ function renderFormView(currentLang) {
 
           <!-- Tabs & Search Bar -->
           <div class="flex flex-col md:flex-row gap-3 items-stretch justify-between">
-            <div class="inline-flex p-1 rounded-xl bg-[#FAF6EF] border border-[#E5D9C5] overflow-x-auto text-xs font-bold text-[#523424]">
-              <button type="button" data-tab="all" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'all' ? 'bg-[#24140D] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
+            <div class="inline-flex p-1 rounded-xl bg-[#FAF7F2] border border-[#E8DEC8] overflow-x-auto text-xs font-bold text-[#5C3622]">
+              <button type="button" data-tab="all" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'all' ? 'bg-[#140C07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
                 ${isEn ? 'All Ingredients' : 'Semua Bahan'}
               </button>
-              <button type="button" data-tab="protein" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'protein' ? 'bg-[#24140D] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
+              <button type="button" data-tab="protein" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'protein' ? 'bg-[#140C07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
                 🥩 ${isEn ? 'Proteins' : 'Protein & Pokok'}
               </button>
-              <button type="button" data-tab="spice" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'spice' ? 'bg-[#24140D] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
+              <button type="button" data-tab="spice" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'spice' ? 'bg-[#140C07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
                 🌿 ${isEn ? 'Aromatic Spices' : 'Rempah Aromatik'}
               </button>
-              <button type="button" data-tab="vegetable" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'vegetable' ? 'bg-[#24140D] text-[#FAF6EF] shadow-xs' : 'hover:text-[#B85C38]'}">
+              <button type="button" data-tab="vegetable" class="px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${activeTab === 'vegetable' ? 'bg-[#140C07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
                 🥬 ${isEn ? 'Vegetables' : 'Sayur & Pelengkap'}
               </button>
             </div>
@@ -308,9 +308,9 @@ function renderFormView(currentLang) {
                 id="ingredient-search-input" 
                 placeholder="${isEn ? 'Search ingredients...' : 'Cari bahan / rempah...'}" 
                 value="${escapeHtml(searchQuery)}"
-                class="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-[#E5D9C5] text-xs text-[#24140D] focus:outline-hidden focus:ring-2 focus:ring-[#B85C38]"
+                class="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-[#E8DEC8] text-xs text-[#140C07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24]"
               />
-              <svg class="w-4 h-4 text-[#656C42] absolute left-3 top-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg class="w-4 h-4 text-[#4A5834] absolute left-3 top-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
               </svg>
             </div>
@@ -327,11 +327,11 @@ function renderFormView(currentLang) {
                   data-ingredient-id="${item.id}"
                   class="group relative text-left p-2.5 rounded-2xl border transition-all flex flex-col justify-between cursor-pointer ${
                     isSelected 
-                      ? 'bg-[#24140D] text-white border-[#B85C38] ring-2 ring-[#B85C38] shadow-md' 
-                      : 'bg-white hover:bg-[#FAF6EF] text-[#24140D] border-[#E5D9C5] hover:border-[#C49A58]'
+                      ? 'bg-[#140C07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-md' 
+                      : 'bg-white hover:bg-[#FAF7F2] text-[#140C07] border-[#E8DEC8] hover:border-[#D49B42]'
                   }"
                 >
-                  <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-2 bg-[#FAF6EF] border border-[#E5D9C5]">
+                  <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-2 bg-[#FAF7F2] border border-[#E8DEC8]">
                     <img 
                       src="${imgSrc}" 
                       alt="${item.nameId}" 
@@ -340,20 +340,20 @@ function renderFormView(currentLang) {
                       onerror="this.src='/assets/images/hero/hero-culinary.jpg'"
                     />
                     <span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                      isSelected ? 'bg-[#B85C38] text-white shadow-xs' : 'bg-black/40 text-white backdrop-blur-xs'
+                      isSelected ? 'bg-[#C84C24] text-white shadow-xs' : 'bg-black/40 text-white backdrop-blur-xs'
                     }">
                       ${isSelected ? '✓' : '+'}
                     </span>
                   </div>
 
                   <div class="space-y-0.5">
-                    <span class="text-[10px] font-mono uppercase tracking-wider block ${isSelected ? 'text-[#C49A58]' : 'text-[#656C42]'}">
+                    <span class="text-[10px] font-mono uppercase tracking-wider block ${isSelected ? 'text-[#D49B42]' : 'text-[#4A5834]'}">
                       ${item.category}
                     </span>
                     <strong class="text-xs font-bold block line-clamp-1 leading-snug">
                       ${isEn ? (item.nameEn || item.nameId) : item.nameId}
                     </strong>
-                    <span class="text-[10px] block line-clamp-1 ${isSelected ? 'text-white/70' : 'text-[#523424]/75'}">
+                    <span class="text-[10px] block line-clamp-1 ${isSelected ? 'text-white/70' : 'text-[#5C3622]/75'}">
                       ${item.flavorNote || ''}
                     </span>
                   </div>
@@ -365,16 +365,16 @@ function renderFormView(currentLang) {
 
         <!-- SECTION 3: Culinary Style & Portions -->
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
-          <div class="pb-4 border-b border-[#E5D9C5]">
-            <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">${isEn ? 'Step 3 • Culinary Technique & Servings' : 'Langkah 3 • Teknik Olah & Takaran Bebas'}</span>
-            <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
+          <div class="pb-4 border-b border-[#E8DEC8]">
+            <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider">${isEn ? 'Step 3 • Culinary Technique & Servings' : 'Langkah 3 • Teknik Olah & Takaran Bebas'}</span>
+            <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#140C07]">
               ${isEn ? '3. Culinary Technique & Servings' : '3. Karakter Olahan Pawon & Porsi'}
             </h2>
           </div>
 
           <!-- Cooking Method -->
           <div class="space-y-2">
-            <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+            <label class="block text-xs font-bold text-[#140C07] uppercase tracking-wider">
               ${isEn ? 'Cooking Technique' : 'Metode Memasak Tradisional'}
             </label>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
@@ -383,14 +383,14 @@ function renderFormView(currentLang) {
                 return `
                   <label class="p-3.5 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between ${
                     isSelected 
-                      ? 'bg-[#24140D] text-[#FAF6EF] border-[#B85C38] ring-2 ring-[#B85C38]' 
-                      : 'bg-white hover:bg-[#FAF6EF] text-[#24140D] border-[#E5D9C5]'
+                      ? 'bg-[#140C07] text-[#FAF7F2] border-[#C84C24] ring-2 ring-[#C84C24]' 
+                      : 'bg-white hover:bg-[#FAF7F2] text-[#140C07] border-[#E8DEC8]'
                   }">
                     <div class="flex items-center justify-between">
                       <span class="text-xs font-bold">${isEn ? m.labelEn : m.labelId}</span>
                       <input type="radio" name="cookingMethod" value="${m.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
                     </div>
-                    <p class="text-[10px] ${isSelected ? 'text-[#C49A58]' : 'text-[#523424]'} mt-2 leading-relaxed">
+                    <p class="text-[10px] ${isSelected ? 'text-[#D49B42]' : 'text-[#5C3622]'} mt-2 leading-relaxed">
                       ${m.descId}
                     </p>
                   </label>
@@ -403,12 +403,12 @@ function renderFormView(currentLang) {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <!-- Taste Profile -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+              <label class="block text-xs font-bold text-[#140C07] uppercase tracking-wider">
                 ${isEn ? 'Regional Flavor Balance' : 'Harmoni Rasa Jawa Tengah'}
               </label>
               <select 
                 id="taste-profile-select" 
-                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] text-xs font-semibold text-[#24140D] focus:ring-2 focus:ring-[#B85C38]"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E8DEC8] text-xs font-semibold text-[#140C07] focus:ring-2 focus:ring-[#C84C24]"
               >
                 ${PREFERENCE_OPTIONS.tasteProfiles.map(tp => `
                   <option value="${tp.id}" ${formState.tasteProfile === tp.id ? 'selected' : ''}>
@@ -420,7 +420,7 @@ function renderFormView(currentLang) {
 
             <!-- Spice Level -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+              <label class="block text-xs font-bold text-[#140C07] uppercase tracking-wider">
                 ${isEn ? 'Spice Warmth Level' : 'Tingkat Kehangatan Cabai'}
               </label>
               <div class="grid grid-cols-4 gap-2">
@@ -429,8 +429,8 @@ function renderFormView(currentLang) {
                   return `
                     <label class="p-2.5 rounded-xl border text-center text-xs font-semibold cursor-pointer transition-all ${
                       isSelected 
-                        ? 'bg-[#B85C38] text-white border-[#B85C38] shadow-xs' 
-                        : 'bg-white text-[#24140D] border-[#E5D9C5]'
+                        ? 'bg-[#C84C24] text-white border-[#C84C24] shadow-xs' 
+                        : 'bg-white text-[#140C07] border-[#E8DEC8]'
                     }">
                       <input type="radio" name="spiceLevel" value="${sl.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
                       <div class="text-sm">${sl.icon}</div>
@@ -448,21 +448,21 @@ function renderFormView(currentLang) {
             <!-- Free Custom Servings Input (No restrictive buttons, freely typed with reasonable min-max) -->
             <div class="space-y-2">
               <div class="flex items-center justify-between">
-                <label for="creator-servings-input" class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+                <label for="creator-servings-input" class="block text-xs font-bold text-[#140C07] uppercase tracking-wider">
                   ${isEn ? 'Target Servings (Free Input)' : 'Porsi Santapan (Bebas Masukkan)'}
                 </label>
-                <span class="text-[10px] text-[#B85C38] font-bold">
+                <span class="text-[10px] text-[#C84C24] font-bold">
                   ${isEn ? 'Min 1 – Max 100' : 'Batas: Min. 1 s/d 100 Porsi'}
                 </span>
               </div>
 
               <!-- Interactive Stepper with Direct Input -->
               <div class="flex items-center gap-3">
-                <div class="inline-flex items-center rounded-xl border border-[#E5D9C5] bg-white p-1 shadow-xs">
+                <div class="inline-flex items-center rounded-xl border border-[#E8DEC8] bg-white p-1 shadow-xs">
                   <button 
                     type="button" 
                     id="creator-servings-dec-btn"
-                    class="w-10 h-10 rounded-lg flex items-center justify-center text-[#654332] hover:bg-[#FAF6EF] active:bg-[#E5D9C5] font-bold text-base transition-all cursor-pointer"
+                    class="w-10 h-10 rounded-lg flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] font-bold text-base transition-all cursor-pointer"
                     aria-label="Kurangi porsi"
                   >
                     &minus;
@@ -476,7 +476,7 @@ function renderFormView(currentLang) {
                       min="1" 
                       max="100" 
                       value="${formState.servings || 4}"
-                      class="w-20 text-center font-bold text-base text-[#24140D] bg-transparent outline-none py-1.5 focus:ring-1 focus:ring-[#B85C38] rounded-md"
+                      class="w-20 text-center font-bold text-base text-[#140C07] bg-transparent outline-none py-1.5 focus:ring-1 focus:ring-[#C84C24] rounded-md"
                     />
                     <span class="text-xs font-bold text-[#8C624D] pr-2 pointer-events-none">
                       ${isEn ? 'servings' : 'porsi'}
@@ -486,7 +486,7 @@ function renderFormView(currentLang) {
                   <button 
                     type="button" 
                     id="creator-servings-inc-btn"
-                    class="w-10 h-10 rounded-lg flex items-center justify-center text-[#654332] hover:bg-[#FAF6EF] active:bg-[#E5D9C5] font-bold text-base transition-all cursor-pointer"
+                    class="w-10 h-10 rounded-lg flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] font-bold text-base transition-all cursor-pointer"
                     aria-label="Tambah porsi"
                   >
                     &#43;
@@ -499,8 +499,8 @@ function renderFormView(currentLang) {
                     <button 
                       type="button" 
                       data-creator-quick-porsi="${p}"
-                      class="px-2.5 py-1.5 rounded-lg border border-[#E5D9C5] bg-white hover:bg-[#FAF6EF] text-[#523424] text-xs font-semibold shadow-2xs transition-all cursor-pointer ${
-                        formState.servings === p ? 'border-[#B85C38] text-[#B85C38] font-bold' : ''
+                      class="px-2.5 py-1.5 rounded-lg border border-[#E8DEC8] bg-white hover:bg-[#FAF7F2] text-[#5C3622] text-xs font-semibold shadow-2xs transition-all cursor-pointer ${
+                        formState.servings === p ? 'border-[#C84C24] text-[#C84C24] font-bold' : ''
                       }"
                     >
                       ${p}
@@ -508,7 +508,7 @@ function renderFormView(currentLang) {
                   `).join('')}
                 </div>
               </div>
-              <p class="text-[11px] text-[#523424]/80">
+              <p class="text-[11px] text-[#5C3622]/80">
                 ${isEn 
                   ? 'Feel free to enter any portion count from 1 (single person) up to 100 (traditional feast / hajatan).' 
                   : 'Bebas ketik berapa pun porsi yang Anda inginkan (1 porsi pribadi hingga 100 porsi acara syukuran). Gramasi bahan akan dihitung otomatis.'}
@@ -517,7 +517,7 @@ function renderFormView(currentLang) {
 
             <!-- Custom Notes -->
             <div class="space-y-2">
-              <label for="custom-notes-input" class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+              <label for="custom-notes-input" class="block text-xs font-bold text-[#140C07] uppercase tracking-wider">
                 ${isEn ? 'Culinary Vision / Special Notes' : 'Catatan Selera Tambahan'}
               </label>
               <input 
@@ -526,9 +526,9 @@ function renderFormView(currentLang) {
                 name="customNotes"
                 value="${escapeHtml(formState.customNotes)}"
                 placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
-                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] text-xs text-[#24140D] focus:ring-2 focus:ring-[#B85C38]"
+                class="w-full px-4 py-3 rounded-xl bg-white border border-[#E8DEC8] text-xs text-[#140C07] focus:ring-2 focus:ring-[#C84C24]"
               />
-              <p class="text-[11px] text-[#523424]/80">
+              <p class="text-[11px] text-[#5C3622]/80">
                 ${isEn ? 'Personal preference or touch to inspire the AI cooking narrative.' : 'Sentuhan pribadi yang akan diintegrasikan ke narasi cerita resep.'}
               </p>
             </div>
@@ -536,12 +536,12 @@ function renderFormView(currentLang) {
         </section>
 
         <!-- CTA Action Bar -->
-        <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1B0F09] border border-[#C49A58]/35 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#140C07] via-[#351C12] to-[#1B0F09] border border-[#D49B42]/35 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="text-left space-y-1">
-            <h3 class="font-editorial-serif text-xl font-bold text-[#FAF6EF]">
+            <h3 class="font-editorial-serif text-xl font-bold text-[#FAF7F2]">
               ${isEn ? 'Ready to craft your authentic recipe?' : 'Siap meracik kreasi resep orisinal Anda?'}
             </h3>
-            <p class="text-xs text-[#FAF6EF]/75">
+            <p class="text-xs text-[#FAF7F2]/75">
               ${isEn 
                 ? 'Your parameters will generate an official culinary blueprint, scaled ingredients, cooking guide, and downloadable poster.' 
                 : 'Parameter pilihan Anda akan langsung menghasilkan blueprint resep resmi, takaran bahan presisi, panduan memasak, serta poster kanvas siap unduh.'}
@@ -551,11 +551,11 @@ function renderFormView(currentLang) {
           <button 
             type="submit" 
             id="generate-recipe-submit-btn"
-            class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#B85C38] hover:bg-[#A04A27] text-[#FAF6EF] font-bold text-sm tracking-wide transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+            class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C84C24] hover:bg-[#AE3E1B] text-[#FAF7F2] font-bold text-sm tracking-wide transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
           >
             <span>✨</span>
             <span>${isEn ? 'Craft Recipe & Generate Visuals' : 'Ciptakan Resep & Komposisi Bumbu'}</span>
-            <svg class="w-4 h-4 text-[#FAF6EF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-4 h-4 text-[#FAF7F2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
@@ -568,7 +568,7 @@ function renderFormView(currentLang) {
 }
 
 /**
- * Output Template View: Full Final Recipe, Pure Dark Placeholder Image, Working Downloads, Ready for DB mapping
+ * Output Template View: Full Final Recipe, Solid Blank Black Visual Area, Magazine Editorial Typography
  */
 function renderResultView(recipe, currentLang) {
   const isEn = currentLang === 'en';
@@ -577,21 +577,21 @@ function renderResultView(recipe, currentLang) {
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 animate-fade-in">
       
       <!-- Top Navigation & Success Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5D9C5]">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E8DEC8]">
         <div class="space-y-1">
           <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold shadow-2xs">
-              ✓ ${isEn ? 'Recipe & Poster Blueprint Ready' : 'Resep & Poster Resmi Berhasil Disusun'}
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold shadow-2xs">
+              ✓ ${isEn ? 'Recipe & Poster Blueprint Synthesized' : 'Resep & Poster Resmi Selesai Disusun'}
             </span>
-            <span class="text-[11px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2.5 py-0.5 rounded-md border border-[#E5D9C5]">
-              ${isEn ? '[Default Template]' : '[Template Baku]'}
+            <span class="text-[11px] font-mono uppercase tracking-wider text-[#4A5834] bg-[#FAF7F2] px-2.5 py-0.5 rounded-md border border-[#E8DEC8]">
+              ${isEn ? 'Heritage Blueprint' : 'Cetak Biru Pawon'}
             </span>
           </div>
-          <h1 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#24140D]">
+          <h1 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#140C07]">
             ${escapeHtml(recipe.title)}
           </h1>
-          <p class="text-xs text-[#523424]">
-            ${isEn ? 'Culinary Architecture Output' : 'Koleksi Eksperimen Dapur Orisinal'} • ID: <span class="font-mono">${escapeHtml(recipe.id)}</span>
+          <p class="text-xs text-[#5C3622]">
+            ${isEn ? 'Culinary Blueprint ID:' : 'ID Dokumen Resep:'} <span class="font-mono font-bold text-[#C84C24]">${escapeHtml(recipe.id)}</span>
           </p>
         </div>
 
@@ -599,7 +599,7 @@ function renderResultView(recipe, currentLang) {
           <button 
             type="button" 
             id="create-another-recipe-btn"
-            class="px-5 py-2.5 rounded-xl border border-[#C49A58] bg-white hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
+            class="px-5 py-2.5 rounded-xl border border-[#D49B42] bg-white hover:bg-[#FAF7F2] text-[#140C07] text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
           >
             <span>←</span>
             <span>${isEn ? 'Craft Another Recipe' : 'Ciptakan Resep Lain'}</span>
@@ -616,213 +616,169 @@ function renderResultView(recipe, currentLang) {
         <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm cursor-pointer hover:text-emerald-950">&times;</button>
       </div>
 
-      <!-- Main Two-Column Layout (Left: Canvas Poster & Working Downloads | Right: Complete Recipe) -->
+      <!-- Main Two-Column Layout (Left: Pure Solid Black Visual & Attribution | Right: Complete Recipe) -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
-        <!-- LEFT COLUMN: Pure Blank Black Poster Preview & Template Downloads (5 cols) -->
+        <!-- LEFT COLUMN: Pure Blank Black Visual & Recipe Actions (5 cols) -->
         <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
           
-          <!-- Poster Preview Container: Pure Blank Black (Sesuai Permintaan) -->
-          <div class="bg-white p-5 rounded-3xl border border-[#C49A58]/35 shadow-lg space-y-4">
-            <div class="flex items-center justify-between text-xs font-bold text-[#24140D] px-1">
-              <span class="flex items-center gap-1.5">
-                <span class="w-2.5 h-2.5 rounded-full bg-[#B85C38]"></span>
-                ${isEn ? 'AI Poster Preview (Blank Template)' : 'Pratinjau Poster AI (Blank Template)'}
+          <!-- Visual Container -->
+          <div class="bg-white p-5 rounded-3xl border border-[#D49B42]/30 shadow-lg space-y-4">
+            <div class="flex items-center justify-between text-xs font-bold text-[#140C07] px-1">
+              <span class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#C84C24]"></span>
+                <span>${isEn ? 'Visual Canvas & Poster' : 'Kanvas Visual & Poster'}</span>
               </span>
-              <span class="text-[10px] text-[#656C42] uppercase font-mono px-2 py-0.5 rounded-md bg-[#FAF6EF] border border-[#E5D9C5]">
-                ${recipe.aspectRatio}
+              <span class="text-[10px] text-[#4A5834] uppercase font-mono px-2 py-0.5 rounded-md bg-[#FAF7F2] border border-[#E8DEC8]">
+                ${recipe.aspectRatio || '4:5'}
               </span>
             </div>
 
-            <!-- Pure Blank Black Visual Area (Bener-Bener Blank Hitam Dulu) -->
-            <div class="relative rounded-2xl overflow-hidden bg-[#0A0806] border border-[#C49A58]/30 shadow-inner flex flex-col items-center justify-center p-8 text-center space-y-3 min-h-[380px]">
-              <div class="w-16 h-16 rounded-2xl bg-white/5 border border-[#C49A58]/30 flex items-center justify-center text-3xl text-[#C49A58] shadow-inner">
-                🖼️
-              </div>
-              <div class="space-y-1">
-                <span class="text-xs font-mono uppercase tracking-widest text-[#FAF6EF]/90 font-bold block">
-                  ${isEn ? '[AI Visual Poster — Pure Blank Black]' : '[Area Poster Visual AI — Blank Hitam]'}
-                </span>
-                <p class="text-[11px] text-[#FAF6EF]/50 max-w-xs mx-auto leading-relaxed">
-                  ${isEn 
-                    ? 'Entire poster visual area in a pure blank black template state, pending upcoming AI visual rendering and database connection.' 
-                    : 'Seluruh area poster kanvas dalam status template blank hitam pekat, disiapkan untuk integrasi modul generasi visual AI backend.'}
-                </p>
-              </div>
-              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#C49A58] font-mono">
-                <span>✦</span>
-                <span>${isEn ? 'Format: Blank Canvas' : 'Format: Kanvas Hitam Blank'}</span>
-              </div>
+            <!-- PURE BLANK BLACK VISUAL AREA - STRICTLY SOLID BLACK AS REQUESTED -->
+            <div class="relative w-full aspect-4/5 rounded-2xl bg-black border border-[#22150E] shadow-2xl overflow-hidden">
+              <!-- Solid blank black surface without placeholder text or icons -->
             </div>
 
-            <!-- Download Feature Status: Deferred / Pending Database Setup -->
-            <div class="p-4 rounded-2xl bg-[#FAF6EF] border border-[#C49A58]/30 space-y-2.5 text-left">
+            <!-- Creator & Recipe Metadata Summary -->
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-[#24140D] flex items-center gap-1.5">
-                  <span>📥</span>
-                  <span>${isEn ? '[Download Actions — Pending Database]' : '[Fitur Unduhan — Menunggu Database]'}</span>
+                <span class="text-xs font-bold text-[#140C07] flex items-center gap-1.5">
+                  <span class="text-[#D49B42]">✦</span>
+                  <span>${isEn ? 'Creator Attribution' : 'Karya & Hak Cipta'}</span>
                 </span>
-                <span class="text-[9px] font-mono uppercase bg-[#E5D9C5]/60 text-[#523424] px-2 py-0.5 rounded-md font-bold">
-                  TEMPLATE
+                <span class="text-[10px] font-mono text-[#C84C24] font-bold">
+                  ${escapeHtml(recipe.id)}
                 </span>
               </div>
-              <p class="text-[11px] text-[#523424]/80 leading-relaxed">
+              <p class="text-xs text-[#5C3622] leading-relaxed">
                 ${isEn 
-                  ? 'File export modules (Poster PNG/JPEG, PDF Recipe Document, Certificate, and JSON Schema) are formatted as template buttons and will be activated once database integration is live.'
-                  : 'Modul ekspor dokumen (Poster PNG/JPEG, Dokumen Resep PDF, Piagam Penghargaan, dan Schema JSON) diformat sebagai template tombol dan akan diaktifkan setelah integrasi database terhubung.'}
+                  ? `Culinary blueprint synthesized by <strong>${escapeHtml(recipe.creatorName)}</strong> using authentic Central Javanese spices and classical pawon culinary logic.` 
+                  : `Cetak biru kuliner diramu oleh <strong>${escapeHtml(recipe.creatorName)}</strong> menggunakan rempah otentik Jawa Tengah dan logika pawon klasik.`}
               </p>
-              <div class="grid grid-cols-2 gap-2 pt-1 text-xs opacity-60 pointer-events-none select-none">
-                <div class="py-2.5 px-3 rounded-xl bg-[#24140D] text-[#FAF6EF] font-semibold text-center text-[10px]">
-                  ${isEn ? 'Poster (PNG)' : 'Unduh Poster (PNG)'}
-                </div>
-                <div class="py-2.5 px-3 rounded-xl bg-[#523424] text-[#FAF6EF] font-semibold text-center text-[10px]">
-                  ${isEn ? 'Poster (JPEG)' : 'Unduh Poster (JPEG)'}
-                </div>
-                <div class="py-2.5 px-3 rounded-xl bg-[#B85C38] text-white font-semibold text-center text-[10px]">
-                  ${isEn ? 'Recipe (PDF)' : 'Unduh Resep (PDF)'}
-                </div>
-                <div class="py-2.5 px-3 rounded-xl bg-[#C49A58] text-[#24140D] font-semibold text-center text-[10px]">
-                  ${isEn ? 'Certificate (PDF)' : 'Unduh Piagam (PDF)'}
-                </div>
+              <div class="pt-1 flex flex-wrap gap-1.5">
+                <span class="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-white border border-[#E8DEC8] text-[#140C07]">
+                  ${isEn ? 'Cooking:' : 'Teknik:'} ${escapeHtml(recipe.cookingMethod)}
+                </span>
+                <span class="text-[10px] font-semibold px-2.5 py-1 rounded-lg bg-white border border-[#E8DEC8] text-[#140C07]">
+                  ${isEn ? 'Warmth:' : 'Kepedasan:'} Lvl ${recipe.spiceLevel}
+                </span>
               </div>
             </div>
 
+            <!-- Action Buttons: Copy Text & Create Another -->
+            <div class="space-y-2 pt-1">
+              <button 
+                type="button" 
+                id="copy-recipe-text-btn"
+                class="w-full py-3 px-4 rounded-xl border border-[#D49B42] bg-white hover:bg-[#FAF7F2] text-[#140C07] text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>📋</span>
+                <span>${isEn ? 'Copy Full Recipe Blueprint' : 'Salin Teks Lengkap Resep'}</span>
+              </button>
+              <button 
+                type="button" 
+                id="bottom-create-another-btn"
+                class="w-full py-3 px-4 rounded-xl bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>←</span>
+                <span>${isEn ? 'Craft Another Recipe' : 'Ciptakan Resep Lain'}</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Creator Certificate Teaser Badge -->
-          <div class="p-5 rounded-2xl bg-gradient-to-br from-[#24140D] to-[#1B0F09] text-[#FAF6EF] border border-[#C49A58]/35 space-y-3 shadow-md">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <span class="text-base text-[#C49A58]">★</span>
-                <span class="text-xs font-bold text-[#C49A58] uppercase tracking-wider">
-                  ${isEn ? 'Creative Recognition Certificate' : 'Piagam Apresiasi Kreasi'}
-                </span>
-              </div>
-              <span class="text-[10px] bg-[#C49A58]/20 text-[#C49A58] border border-[#C49A58]/40 px-2 py-0.5 rounded-full font-mono">
-                A4 LANDSCAPE
-              </span>
+          <!-- Feature Status Info -->
+          <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] text-xs text-[#5C3622] space-y-1.5">
+            <div class="flex items-center gap-1.5 font-bold text-[#140C07]">
+              <span>ℹ️</span>
+              <span>${isEn ? 'Database & Export Status' : 'Status Integrasi Database'}</span>
             </div>
-            <p class="text-xs text-[#FAF6EF]/85 leading-relaxed">
+            <p class="text-[11px] leading-relaxed">
               ${isEn 
-                ? `An official achievement certificate template has been formatted for <strong>${escapeHtml(recipe.creatorName)}</strong> celebrating the synthesis of this culinary blueprint.`
-                : `Format piagam apresiasi resmi telah disiapkan untuk <strong>${escapeHtml(recipe.creatorName)}</strong> atas perancangan cetak biru resep ini.`}
+                ? 'Recipe structure and parameters are finalized and ready for Supabase backend binding. Poster rendering and downloadable PDF modules will be activated once database tables are connected.'
+                : 'Struktur resep telah diformat secara baku dan siap dihubungkan ke tabel database Supabase. Fitur unduhan berkas PDF dan generasi visual poster otomatis akan aktif setelah koneksi basis data selesai.'}
             </p>
           </div>
 
         </div>
 
-        <!-- RIGHT COLUMN: Structured Recipe Details in Template Format (7 cols) -->
+        <!-- RIGHT COLUMN: Structured Recipe Details (7 cols) -->
         <div class="lg:col-span-7 space-y-8">
           
-          <!-- Recipe Overview Card in Clean Template Format -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-5">
+          <!-- Recipe Overview Card -->
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E8DEC8] shadow-sm space-y-5">
             <div class="space-y-2">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2.5 py-0.5 rounded-md border border-[#E5D9C5]">
-                  ${isEn ? '[Recipe Template]' : '[Template Resep]'}
-                </span>
-                <span class="text-xs font-bold text-[#B85C38] uppercase tracking-wider">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#FDF4EE] px-2.5 py-0.5 rounded-full border border-[#C84C24]/20">
                   ${escapeHtml(recipe.javaneseTitle)}
                 </span>
+                <span class="text-[11px] text-[#4A5834] font-medium">
+                  ${isEn ? 'Authentic Synthesis' : 'Resep Tradisional Pawon'}
+                </span>
               </div>
-              <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#24140D]">
+              <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#140C07]">
                 ${escapeHtml(recipe.shortTitle)}
               </h2>
-              <p class="text-xs sm:text-sm text-[#523424] leading-relaxed">
+              <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
                 ${escapeHtml(recipe.description)}
               </p>
             </div>
 
-            <!-- Metadata Metrics Grid (Template Fields) -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#E5D9C5] text-xs">
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Total Time]' : '[Total Waktu]'}</span>
-                <strong class="text-[#24140D] font-bold">${recipe.totalTime}</strong>
-              </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Servings]' : '[Porsi]'}</span>
-                <strong class="text-[#24140D] font-bold">${recipe.servings} ${isEn ? 'Servings' : 'Porsi'}</strong>
-              </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Difficulty]' : '[Tingkat]'}</span>
-                <strong class="text-[#24140D] font-bold">${recipe.difficulty}</strong>
-              </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Est. Cost]' : '[Estimasi Biaya]'}</span>
-                <strong class="text-[#B85C38] font-bold">${recipe.estimatedCost}</strong>
-              </div>
-            </div>
-          </div>
-            <div class="space-y-2">
-              <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2.5 py-0.5 rounded-md border border-[#E5D9C5]">
-                  ${isEn ? '[Recipe Template]' : '[Template Resep]'}
+            <!-- Metadata Metrics Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#E8DEC8] text-xs">
+              <div class="p-3.5 rounded-2xl bg-[#FAF7F2] space-y-1 border border-[#E8DEC8]/70">
+                <span class="text-[#4A5834] block text-[10px] font-bold uppercase tracking-wider">
+                  ${isEn ? 'Total Time' : 'Total Waktu'}
                 </span>
-                <span class="text-xs font-bold text-[#B85C38] uppercase tracking-wider">
-                  ${escapeHtml(recipe.javaneseTitle)}
+                <strong class="text-[#140C07] font-bold text-sm block">${recipe.totalTime}</strong>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-[#FAF7F2] space-y-1 border border-[#E8DEC8]/70">
+                <span class="text-[#4A5834] block text-[10px] font-bold uppercase tracking-wider">
+                  ${isEn ? 'Servings' : 'Porsi'}
                 </span>
+                <strong class="text-[#140C07] font-bold text-sm block">${recipe.servings} ${isEn ? 'Servings' : 'Porsi'}</strong>
               </div>
-              <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#24140D]">
-                ${escapeHtml(recipe.shortTitle)}
-              </h2>
-              <p class="text-xs sm:text-sm text-[#523424] leading-relaxed">
-                ${escapeHtml(recipe.description)}
-              </p>
-            </div>
-
-            <!-- Metadata Metrics Grid (Template Fields) -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#E5D9C5] text-xs">
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Total Time]' : '[Total Waktu]'}</span>
-                <strong class="text-[#24140D] font-bold">${recipe.totalTime}</strong>
+              <div class="p-3.5 rounded-2xl bg-[#FAF7F2] space-y-1 border border-[#E8DEC8]/70">
+                <span class="text-[#4A5834] block text-[10px] font-bold uppercase tracking-wider">
+                  ${isEn ? 'Difficulty' : 'Tingkat'}
+                </span>
+                <strong class="text-[#140C07] font-bold text-sm block">${recipe.difficulty}</strong>
               </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Servings]' : '[Porsi]'}</span>
-                <strong class="text-[#24140D] font-bold">${recipe.servings} ${isEn ? 'Servings' : 'Porsi'}</strong>
-              </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Difficulty]' : '[Tingkat]'}</span>
-                <strong class="text-[#24140D] font-bold">${recipe.difficulty}</strong>
-              </div>
-              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
-                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Est. Cost]' : '[Estimasi Biaya]'}</span>
-                <strong class="text-[#B85C38] font-bold">${recipe.estimatedCost}</strong>
+              <div class="p-3.5 rounded-2xl bg-[#FAF7F2] space-y-1 border border-[#E8DEC8]/70">
+                <span class="text-[#4A5834] block text-[10px] font-bold uppercase tracking-wider">
+                  ${isEn ? 'Est. Cost' : 'Estimasi Biaya'}
+                </span>
+                <strong class="text-[#C84C24] font-bold text-sm block">${recipe.estimatedCost}</strong>
               </div>
             </div>
           </div>
 
           <!-- Scaled Ingredients with Checkboxes -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-5">
-            <div class="flex items-center justify-between pb-3 border-b border-[#E5D9C5]">
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E8DEC8] shadow-sm space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-[#E8DEC8]">
               <div class="space-y-0.5">
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2 py-0.5 rounded-md border border-[#E5D9C5]">
-                    ${isEn ? '[Ingredients Template]' : '[Template Bahan]'}
-                  </span>
-                  <h3 class="font-editorial-serif text-xl font-bold text-[#24140D]">
-                    ${isEn ? 'Ingredients & Quantities' : 'Daftar Bahan & Takaran'}
-                  </h3>
-                </div>
-                <span class="text-xs text-[#656C42]">
-                  ${isEn ? `Calibrated for ${recipe.servings} servings` : `Dikalibrasi untuk ${recipe.servings} porsi santapan`}
+                <h3 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#140C07]">
+                  ${isEn ? 'Ingredients & Proportions' : 'Daftar Bahan & Takaran Bumbu'}
+                </h3>
+                <span class="text-xs text-[#5C3622]">
+                  ${isEn ? `Calibrated for ${recipe.servings} servings` : `Takaran disesuaikan untuk ${recipe.servings} porsi santapan`}
                 </span>
               </div>
-              <span class="text-xs font-bold text-[#B85C38] bg-[#FAF6EF] border border-[#E5D9C5] px-3 py-1 rounded-full">
+              <span class="text-xs font-bold text-[#C84C24] bg-[#FDF4EE] border border-[#C84C24]/20 px-3 py-1 rounded-full">
                 ${recipe.ingredients.length} ${isEn ? 'Items' : 'Bahan'}
               </span>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               ${recipe.ingredients.map((ing) => `
-                <label class="p-3 rounded-xl bg-[#FAF6EF]/60 hover:bg-[#FAF6EF] border border-[#E5D9C5] text-xs flex items-center justify-between gap-3 cursor-pointer transition-colors">
+                <label class="p-3 rounded-2xl bg-[#FAF7F2]/80 hover:bg-[#FAF7F2] border border-[#E8DEC8] text-xs flex items-center justify-between gap-3 cursor-pointer transition-colors group">
                   <div class="flex items-center gap-2.5">
-                    <input type="checkbox" class="rounded text-[#B85C38] focus:ring-[#B85C38] cursor-pointer"/>
+                    <input type="checkbox" class="rounded text-[#C84C24] focus:ring-[#C84C24] cursor-pointer"/>
                     <div>
-                      <strong class="text-[#24140D] block">${escapeHtml(ing.name)}</strong>
-                      <span class="text-[10px] text-[#656C42] italic">${escapeHtml(ing.note || '')}</span>
+                      <strong class="text-[#140C07] block font-semibold group-hover:text-[#C84C24] transition-colors">${escapeHtml(ing.name)}</strong>
+                      <span class="text-[10px] text-[#5C3622] italic">${escapeHtml(ing.note || '')}</span>
                     </div>
                   </div>
-                  <span class="font-mono text-xs font-bold text-[#B85C38] shrink-0 bg-white px-2 py-0.5 rounded-md border border-[#E5D9C5]">
+                  <span class="font-mono text-xs font-bold text-[#C84C24] shrink-0 bg-white px-2.5 py-1 rounded-lg border border-[#E8DEC8] shadow-2xs">
                     ${ing.amount} ${ing.unit}
                   </span>
                 </label>
@@ -831,43 +787,38 @@ function renderResultView(recipe, currentLang) {
           </div>
 
           <!-- Step-by-Step Cooking Guide -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-6">
-            <div class="flex items-center justify-between pb-3 border-b border-[#E5D9C5]">
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#E8DEC8] shadow-sm space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-[#E8DEC8]">
               <div class="space-y-0.5">
-                <div class="flex items-center gap-2">
-                  <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2 py-0.5 rounded-md border border-[#E5D9C5]">
-                    ${isEn ? '[Steps Template]' : '[Template Langkah]'}
-                  </span>
-                  <h3 class="font-editorial-serif text-xl font-bold text-[#24140D]">
-                    ${isEn ? 'Cooking Steps & Milestones' : 'Tahapan Memasak Langkah Demi Langkah'}
-                  </h3>
-                </div>
-                <span class="text-xs text-[#656C42]">
+                <h3 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#140C07]">
+                  ${isEn ? 'Step-by-Step Cooking Guide' : 'Tahapan Memasak Langkah Demi Langkah'}
+                </h3>
+                <span class="text-xs text-[#5C3622]">
                   ${isEn ? 'Sequential instructions with sensory cues' : 'Instruksi bertahap dengan tanda kematangan sensorik'}
                 </span>
               </div>
-              <span class="text-xs font-bold text-[#24140D] bg-[#FAF6EF] border border-[#E5D9C5] px-3 py-1 rounded-full">
+              <span class="text-xs font-bold text-[#140C07] bg-[#FAF7F2] border border-[#E8DEC8] px-3 py-1 rounded-full">
                 ${recipe.steps.length} ${isEn ? 'Steps' : 'Langkah'}
               </span>
             </div>
 
             <div class="space-y-4">
               ${recipe.steps.map((st) => `
-                <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF6EF]/70 border border-[#E5D9C5] space-y-2">
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2]/80 border border-[#E8DEC8] space-y-2">
                   <div class="flex items-center gap-3">
-                    <span class="w-7 h-7 rounded-full bg-[#24140D] text-[#C49A58] flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                    <span class="w-8 h-8 rounded-full bg-[#140C07] text-[#D49B42] flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
                       ${st.stepNumber}
                     </span>
-                    <h4 class="font-bold text-sm text-[#24140D]">
+                    <h4 class="font-bold text-sm text-[#140C07]">
                       ${escapeHtml(st.title)}
                     </h4>
                   </div>
-                  <p class="text-xs text-[#523424] leading-relaxed pl-10">
+                  <p class="text-xs text-[#5C3622] leading-relaxed pl-11">
                     ${escapeHtml(st.instruction)}
                   </p>
                   ${st.sensoryMilestone ? `
-                    <div class="pl-10 pt-1">
-                      <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#656C42] bg-white px-2.5 py-1 rounded-lg border border-[#E5D9C5]">
+                    <div class="pl-11 pt-1">
+                      <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#4A5834] bg-white px-3 py-1 rounded-lg border border-[#E8DEC8] shadow-2xs">
                         <span>👃</span>
                         <span>${isEn ? 'Sensory Milestone:' : 'Tanda Sensorik:'} ${escapeHtml(st.sensoryMilestone)}</span>
                       </span>
@@ -880,36 +831,42 @@ function renderResultView(recipe, currentLang) {
 
           <!-- Chef's Traditional Tips & Food Safety -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="p-5 sm:p-6 rounded-3xl bg-[#FAF6EF] border border-[#C49A58]/35 space-y-3">
-              <h4 class="font-editorial-serif text-base font-bold text-[#24140D] flex items-center gap-2">
+            <div class="p-6 rounded-3xl bg-white border border-[#E8DEC8] shadow-sm space-y-3">
+              <h4 class="font-editorial-serif text-base font-bold text-[#140C07] flex items-center gap-2">
                 <span>💡</span>
-                <span>${isEn ? '[Chef Notes]' : '[Rahasia Dapur Pawon]'}</span>
+                <span>${isEn ? 'Pawon Culinary Secrets' : 'Rahasia Dapur Pawon'}</span>
               </h4>
-              <p class="text-xs text-[#523424] leading-relaxed">
+              <p class="text-xs text-[#5C3622] leading-relaxed">
                 ${escapeHtml(recipe.chefTips)}
               </p>
             </div>
 
-            <div class="p-5 sm:p-6 rounded-3xl bg-[#FAF6EF] border border-[#C49A58]/35 space-y-3">
-              <h4 class="font-editorial-serif text-base font-bold text-[#24140D] flex items-center gap-2">
+            <div class="p-6 rounded-3xl bg-white border border-[#E8DEC8] shadow-sm space-y-3">
+              <h4 class="font-editorial-serif text-base font-bold text-[#140C07] flex items-center gap-2">
                 <span>🛡️</span>
-                <span>${isEn ? '[Food Safety & Storage]' : '[Higienitas & Penyimpanan]'}</span>
+                <span>${isEn ? 'Food Safety & Storage' : 'Higienitas & Petunjuk Penyimpanan'}</span>
               </h4>
-              <p class="text-xs text-[#523424] leading-relaxed">
+              <p class="text-xs text-[#5C3622] leading-relaxed">
                 ${escapeHtml(recipe.safetyNotes)}
               </p>
             </div>
           </div>
 
           <!-- Bottom Return Action -->
-          <div class="pt-4 text-center">
+          <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button 
               type="button" 
-              id="bottom-create-another-btn"
-              class="px-8 py-3.5 rounded-full bg-[#B85C38] hover:bg-[#A04A27] text-white text-xs font-bold transition-all shadow-md hover:shadow-lg cursor-pointer"
+              id="bottom-create-another-btn-alt"
+              class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs font-bold transition-all shadow-md hover:shadow-lg cursor-pointer"
             >
               ${isEn ? '← Craft Another Recipe' : '← Ciptakan Resep Lain'}
             </button>
+            <a 
+              href="#/resep"
+              class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white hover:bg-[#FAF7F2] text-[#140C07] border border-[#E8DEC8] text-xs font-bold transition-all shadow-xs cursor-pointer text-center"
+            >
+              ${isEn ? 'Explore All Regional Recipes →' : 'Jelajahi Resep Daerah Jawa Tengah →'}
+            </a>
           </div>
 
         </div>
@@ -1244,11 +1201,11 @@ export function initAiFoodCreatorInteractions() {
         .map(s => `${s.stepNumber}. ${s.title}\n   ${s.instruction}`)
         .join('\n\n');
 
-      const fullText = `=== LARASRASA TEMPLATE RESEP ===\n${currentGeneratedRecipe.title}\n[Pencipta]: ${currentGeneratedRecipe.creatorName}\n[Porsi]: ${currentGeneratedRecipe.servings} | [Durasi]: ${currentGeneratedRecipe.totalTime}\n\n[DAFTAR BAHAN]\n${ingredientsText}\n\n[LANGKAH MEMASAK]\n${stepsText}\n\n[TIPS DAPUR]\n${currentGeneratedRecipe.chefTips}\n\n[KEAMANAN & PENYIMPANAN]\n${currentGeneratedRecipe.safetyNotes}\n\nDokumen template resmi LarasRasa.`;
+      const fullText = `=== LARASRASA RESEP KULINER JAWA TENGAH ===\n${currentGeneratedRecipe.title}\nDiramu Oleh: ${currentGeneratedRecipe.creatorName}\nPorsi: ${currentGeneratedRecipe.servings} | Durasi: ${currentGeneratedRecipe.totalTime}\n\nDAFTAR BAHAN & TAKARAN:\n${ingredientsText}\n\nTAHAPAN MEMASAK:\n${stepsText}\n\nRAHASIA DAPUR PAWON:\n${currentGeneratedRecipe.chefTips}\n\nHIGIENITAS & PENYIMPANAN:\n${currentGeneratedRecipe.safetyNotes}\n\nDokumen resmi LarasRasa • Cita Rasa Klasik Jawa Tengah.`;
 
       try {
         await navigator.clipboard.writeText(fullText);
-        showToast(isEn ? '✓ Full template recipe text copied to clipboard!' : '✓ Teks lengkap template resep berhasil disalin ke clipboard!');
+        showToast(isEn ? '✓ Full recipe blueprint copied to clipboard!' : '✓ Teks lengkap resep berhasil disalin ke clipboard!');
       } catch (err) {
         console.warn('Clipboard write fallback:', err);
         showToast(isEn ? '✓ Recipe text ready to use!' : '✓ Teks resep siap digunakan!');
@@ -1280,7 +1237,8 @@ export function initAiFoodCreatorInteractions() {
   // Create Another Recipe Buttons
   const createAnotherBtns = [
     document.getElementById('create-another-recipe-btn'),
-    document.getElementById('bottom-create-another-btn')
+    document.getElementById('bottom-create-another-btn'),
+    document.getElementById('bottom-create-another-btn-alt')
   ].filter(Boolean);
 
   createAnotherBtns.forEach(btn => {

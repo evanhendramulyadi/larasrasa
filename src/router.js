@@ -136,11 +136,11 @@ export class Router {
       // 404 Fallback
       pageHtml = `
         <div class="max-w-xl mx-auto px-4 py-28 text-center space-y-4">
-          <span class="font-editorial-serif text-6xl font-bold text-[#B85C38] block">404</span>
-          <h2 class="font-editorial-serif text-3xl font-bold text-[#302018]">Halaman Tidak Ditemukan / Page Not Found</h2>
-          <p class="text-sm text-[#654332]">Halaman yang Anda tuju tidak tersedia di khasanah LarasRasa.</p>
+          <span class="font-editorial-serif text-6xl font-bold text-[#C84C24] block">404</span>
+          <h2 class="font-editorial-serif text-3xl font-bold text-[#140C07]">Halaman Tidak Ditemukan / Page Not Found</h2>
+          <p class="text-sm text-[#5C3622]">Halaman yang Anda tuju tidak tersedia di khasanah LarasRasa.</p>
           <div class="pt-4">
-            <a href="#/" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#302018] hover:bg-[#654332] text-[#FAF6EF] text-xs font-bold transition-all shadow-sm">
+            <a href="#/" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#140C07] hover:bg-[#22150E] text-[#FAF7F2] text-xs font-bold transition-all shadow-sm">
               &larr; ${t('nav.home')}
             </a>
           </div>

@@ -19,14 +19,14 @@ export async function renderFlavorMapPage() {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       
       <!-- Page Header with Javanese Heritage Gradient -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#D49B42]/35 shadow-xl bg-gradient-to-r from-[#140C07] via-[#22150E] to-[#140C07] text-[#FAF7F2]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div class="space-y-3 max-w-2xl">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
-              <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider">
+              <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
                 <line x1="9" x2="9" y1="3" y2="18"/>
                 <line x1="15" x2="15" y1="6" y2="21"/>
@@ -36,7 +36,7 @@ export async function renderFlavorMapPage() {
             <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
               ${t('map.title')}
             </h1>
-            <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+            <p class="text-sm sm:text-base text-[#FAF7F2]/85 leading-relaxed">
               ${t('map.desc')}
             </p>
           </div>
@@ -48,8 +48,8 @@ export async function renderFlavorMapPage() {
                       data-region-pill="${r.id}"
                       class="region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                         r.id === activeRegionId 
-                          ? 'bg-[#B85C38] text-white shadow-sm ring-2 ring-[#C49A58]/50' 
-                          : 'bg-white/10 text-[#FAF6EF] border border-[#C49A58]/40 hover:bg-[#B85C38]/40 backdrop-blur-xs'
+                          ? 'bg-[#C84C24] text-white shadow-sm ring-2 ring-[#D49B42]/50' 
+                          : 'bg-white/10 text-[#FAF7F2] border border-[#D49B42]/40 hover:bg-[#C84C24]/40 backdrop-blur-xs'
                       }">
                 ${r.name.replace('Kota ', '').replace('Kabupaten ', '')}
               </button>
@@ -62,31 +62,31 @@ export async function renderFlavorMapPage() {
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- Left: Interactive Leaflet Map -->
-        <div class="lg:col-span-7 bg-white rounded-3xl border border-[#C49A58]/20 p-4 shadow-sm overflow-hidden flex flex-col">
+        <div class="lg:col-span-7 bg-white rounded-3xl border border-[#E8DEC8] p-4 shadow-sm overflow-hidden flex flex-col">
           <!-- Map Title Bar -->
-          <div class="px-3 py-2 flex items-center justify-between text-xs text-[#654332] border-b border-[#F2E8D8] mb-3">
-            <span class="font-bold uppercase tracking-wider text-[#302018] flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#B85C38]"></span>
+          <div class="px-3 py-2 flex items-center justify-between text-xs text-[#5C3622] border-b border-[#EFE8DA] mb-3">
+            <span class="font-bold uppercase tracking-wider text-[#140C07] flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#C84C24]"></span>
               ${t('map.mapTitle')}
             </span>
-            <span class="text-[11px] italic text-[#654332]/80">${t('map.mapInstruction')}</span>
+            <span class="text-[11px] italic text-[#5C3622]/80">${t('map.mapInstruction')}</span>
           </div>
 
           <!-- Leaflet Container -->
-          <div id="central-java-map" class="w-full h-[460px] sm:h-[540px] rounded-2xl overflow-hidden z-10 bg-[#F2E8D8]/40"></div>
+          <div id="central-java-map" class="w-full h-[460px] sm:h-[540px] rounded-2xl overflow-hidden z-10 bg-[#EFE8DA]/40"></div>
 
           <!-- Map Legend & Interaction Helper -->
-          <div class="pt-4 px-2 flex flex-wrap items-center justify-between gap-3 text-xs text-[#654332]">
+          <div class="pt-4 px-2 flex flex-wrap items-center justify-between gap-3 text-xs text-[#5C3622]">
             <div class="flex items-center gap-2">
-              <span class="w-3.5 h-3.5 rounded-full bg-[#B85C38] border-2 border-white shadow-xs"></span>
-              <span class="font-bold text-[#302018]">${t('map.legendCenter')}</span>
+              <span class="w-3.5 h-3.5 rounded-full bg-[#C84C24] border-2 border-white shadow-xs"></span>
+              <span class="font-bold text-[#140C07]">${t('map.legendCenter')}</span>
             </div>
-            <span class="text-[11px] italic text-[#654332]/80">${t('map.mapInstruction')}</span>
+            <span class="text-[11px] italic text-[#5C3622]/80">${t('map.mapInstruction')}</span>
           </div>
         </div>
 
         <!-- Right: Region Culinary Profile Panel -->
-        <div id="region-detail-panel" class="lg:col-span-5 bg-white rounded-3xl border border-[#C49A58]/20 p-6 sm:p-7 shadow-sm space-y-6">
+        <div id="region-detail-panel" class="lg:col-span-5 bg-white rounded-3xl border border-[#E8DEC8] p-6 sm:p-7 shadow-sm space-y-6">
           ${renderRegionDetailContent(currentRegion)}
         </div>
 

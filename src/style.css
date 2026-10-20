@@ -1,30 +1,31 @@
 @import "tailwindcss";
 
 :root {
-  --color-warm-ivory: #FAF6EF;
-  --color-soft-cream: #F5EDE0;
-  --color-deep-espresso: #24140D;
-  --color-rich-cocoa: #523424;
-  --color-terracotta: #B85C38;
-  --color-terracotta-hover: #A04A27;
-  --color-terracotta-light: #FDF3ED;
-  --color-muted-olive: #656C42;
-  --color-antique-gold: #C49A58;
-  --color-antique-gold-hover: #D4AA6A;
-  --color-antique-gold-light: #FBF4E8;
+  /* Elevated Royal Javanese Heritage Palette */
+  --color-warm-ivory: #FAF7F2;
+  --color-soft-cream: #F4EFE6;
+  --color-deep-espresso: #140C07;
+  --color-rich-cocoa: #3B2215;
+  --color-terracotta: #C84C24;
+  --color-terracotta-hover: #AE3E1B;
+  --color-terracotta-light: #FDF4EE;
+  --color-muted-olive: #4A5834;
+  --color-antique-gold: #D49B42;
+  --color-antique-gold-hover: #E2B365;
+  --color-antique-gold-light: #FDF8EE;
   --color-clean-white: #FFFFFF;
 
-  --color-javanese-900: #1B0F09;
-  --color-javanese-800: #2C1810;
-  --color-javanese-700: #462719;
-  --color-javanese-600: #6B3C27;
-  --color-javanese-500: #B85C38;
-  --color-golden-spice: #C49A58;
-  --color-warm-mustard: #D4AA6A;
-  --color-cream-bg: #FAF6EF;
+  --color-javanese-900: #140C07;
+  --color-javanese-800: #22150E;
+  --color-javanese-700: #3B2215;
+  --color-javanese-600: #5C3622;
+  --color-javanese-500: #C84C24;
+  --color-golden-spice: #D49B42;
+  --color-warm-mustard: #E2B365;
+  --color-cream-bg: #FAF7F2;
   --color-cream-light: #FFFFFF;
-  --color-sand-beige: #F2E8D8;
-  --color-charcoal: #231812;
+  --color-sand-beige: #EFE8DA;
+  --color-charcoal: #1C120C;
 
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
@@ -35,27 +36,18 @@ html, body {
   max-width: 100%;
 }
 
-/* Base Body with Luxurious Javanese Heritage Watermark (Polos, Menarik, Lembut & Bercorak) */
+/* Polos tapi Menarik & Bercorak: Warm Royal Ivory Canvas with Subtle Javanese Micro-Batik Geometry */
 body {
   background-color: #FAF7F2;
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(196, 154, 88, 0.08) 0%, transparent 55%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23C49A58' stroke-width='0.75' stroke-opacity='0.055'%3E%3Cpath d='M48 0 C48 26.51 26.51 48 0 48 C26.51 48 48 69.49 48 96 C48 69.49 69.49 48 96 48 C69.49 48 48 26.51 48 0 Z'/%3E%3Ccircle cx='48' cy='48' r='7' fill='%23B85C38' fill-opacity='0.04' stroke='%23B85C38' stroke-opacity='0.07'/%3E%3Ccircle cx='0' cy='0' r='5' fill='%23C49A58' fill-opacity='0.03'/%3E%3Ccircle cx='96' cy='0' r='5' fill='%23C49A58' fill-opacity='0.03'/%3E%3Ccircle cx='0' cy='96' r='5' fill='%23C49A58' fill-opacity='0.03'/%3E%3Ccircle cx='96' cy='96' r='5' fill='%23C49A58' fill-opacity='0.03'/%3E%3C/g%3E%3C/svg%3E");
+    radial-gradient(ellipse 900px 500px at 50% -50px, rgba(200, 76, 36, 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 450px at 95% 20%, rgba(212, 155, 66, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 700px 450px at 5% 50%, rgba(74, 88, 52, 0.035) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23D49B42' stroke-width='0.55' stroke-opacity='0.08'%3E%3Cpath d='M24 0 L48 24 L24 48 L0 24 Z'/%3E%3Ccircle cx='24' cy='24' r='3.5' stroke='%23C84C24' stroke-width='0.5' stroke-opacity='0.09'/%3E%3Ccircle cx='0' cy='0' r='1.5' fill='%23D49B42' fill-opacity='0.06'/%3E%3Ccircle cx='48' cy='0' r='1.5' fill='%23D49B42' fill-opacity='0.06'/%3E%3Ccircle cx='0' cy='48' r='1.5' fill='%23D49B42' fill-opacity='0.06'/%3E%3Ccircle cx='48' cy='48' r='1.5' fill='%23D49B42' fill-opacity='0.06'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: scroll;
-  color: #24140D;
+  color: #140C07;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
-}
-
-/* Subtle Heritage Section Backgrounds */
-.bg-pawon-section-heritage {
-  position: relative;
-  background-color: transparent;
-}
-
-.bg-pawon-section-hearth {
-  position: relative;
-  background-color: transparent;
 }
 
 /* Custom Scrollbar with Warm Teak Styling */
@@ -64,46 +56,47 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF6EF;
+  background: #FAF7F2;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C49A58;
+  background: #D49B42;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #B85C38;
+  background: #C84C24;
 }
 
 /* Editorial Typography */
 .font-editorial-serif {
   font-family: 'Playfair Display', Georgia, serif;
+  letter-spacing: -0.015em;
 }
 
 .font-editorial-sans {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* Javanese Texture Backgrounds */
+/* Javanese Heritage Textures */
 .bg-javanese-texture {
-  background-color: #302018;
-  background-image: radial-gradient(#654332 0.75px, transparent 0.75px), radial-gradient(#654332 0.75px, #302018 0.75px);
+  background-color: #22150E;
+  background-image: radial-gradient(#3B2215 1px, transparent 1px), radial-gradient(#3B2215 1px, #22150E 1px);
   background-size: 28px 28px;
   background-position: 0 0, 14px 14px;
 }
 
 .bg-ivory-texture {
-  background-color: #FAF6EF;
-  background-image: radial-gradient(#E8DFC8 0.5px, transparent 0.5px);
-  background-size: 20px 20px;
+  background-color: #FAF7F2;
+  background-image: radial-gradient(#E8DEC8 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
 }
 
 /* Leaflet Customizations for LarasRasa */
 .leaflet-popup-content-wrapper {
   background: #FFFFFF !important;
-  color: #302018 !important;
-  border-radius: 14px !important;
-  border: 1px solid #E5D9C5 !important;
-  box-shadow: 0 12px 30px -6px rgba(48, 32, 24, 0.18) !important;
+  color: #140C07 !important;
+  border-radius: 16px !important;
+  border: 1px solid #E8DEC8 !important;
+  box-shadow: 0 16px 36px -6px rgba(20, 12, 7, 0.16) !important;
   padding: 4px !important;
 }
 
@@ -113,18 +106,18 @@ body {
 
 .leaflet-container {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
-  border-radius: 20px;
-  background: #F2E8D8 !important;
+  border-radius: 24px;
+  background: #EFE8DA !important;
 }
 
 /* Card Hover Elevation */
 .card-hover-lift {
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 .card-hover-lift:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 32px -8px rgba(48, 32, 24, 0.12);
-  border-color: #C49A58;
+  box-shadow: 0 18px 36px -10px rgba(20, 12, 7, 0.12), 0 4px 12px -2px rgba(20, 12, 7, 0.04);
+  border-color: #D49B42;
 }
 
 /* 3D Canvas Container */
@@ -144,28 +137,28 @@ body {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background-color: #B85C38;
-  border: 2px solid #FAF6EF;
-  color: #FAF6EF;
+  background-color: #C84C24;
+  border: 2px solid #FAF7F2;
+  color: #FAF7F2;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
   font-weight: bold;
-  box-shadow: 0 4px 14px rgba(48, 32, 24, 0.4);
+  box-shadow: 0 4px 14px rgba(20, 12, 7, 0.4);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, box-shadow 0.2s;
 }
 .culinary-hotspot:hover .culinary-hotspot-pin,
 .culinary-hotspot.active .culinary-hotspot-pin {
   transform: scale(1.18);
-  background-color: #C49A58;
-  box-shadow: 0 6px 18px rgba(196, 154, 88, 0.5);
+  background-color: #D49B42;
+  box-shadow: 0 6px 20px rgba(212, 155, 66, 0.5);
 }
 .culinary-hotspot-pulse {
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  background-color: rgba(184, 92, 56, 0.45);
+  background-color: rgba(200, 76, 36, 0.45);
   animation: hotspot-pulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
   pointer-events: none;
 }
@@ -176,27 +169,27 @@ body {
 
 /* Authentic Javanese Heritage Panel & Glassmorphism */
 .pawon-glass {
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(196, 154, 88, 0.32);
-  box-shadow: 0 10px 30px -5px rgba(36, 20, 13, 0.08);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 155, 66, 0.35);
+  box-shadow: 0 12px 32px -6px rgba(20, 12, 7, 0.08);
 }
 
 .pawon-glass-dark {
-  background: rgba(36, 20, 13, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(196, 154, 88, 0.35);
-  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.35);
+  background: rgba(20, 12, 7, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 155, 66, 0.35);
+  box-shadow: 0 18px 44px -8px rgba(0, 0, 0, 0.45);
 }
 
 .pawon-glow {
-  box-shadow: 0 0 35px -5px rgba(184, 92, 56, 0.25);
+  box-shadow: 0 0 35px -5px rgba(200, 76, 36, 0.28);
 }
 
 .amber-glow {
-  box-shadow: 0 0 25px rgba(196, 154, 88, 0.3);
+  box-shadow: 0 0 28px rgba(212, 155, 66, 0.32);
 }
 
 /* Custom rempah button active styling */
@@ -205,5 +198,7 @@ body {
 }
 .rempah-pill-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(184, 92, 56, 0.2);
+  box-shadow: 0 6px 18px rgba(200, 76, 36, 0.2);
+}
+
 }

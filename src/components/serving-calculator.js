@@ -14,11 +14,11 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
   const currentVal = Math.max(MIN_SERVINGS, Math.min(MAX_SERVINGS, parseInt(activeServings) || baseServings || 4));
 
   return `
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-[#F2E8D8]/70 border border-[#E5D9C5] shadow-2xs">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-[#EFE8DA]/70 border border-[#E8DEC8] shadow-2xs">
       
       <!-- Label & Icon -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-[#302018] text-[#C49A58] flex items-center justify-center font-bold text-xs shadow-xs shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-[#140C07] text-[#D49B42] flex items-center justify-center font-bold text-xs shadow-xs shrink-0">
           <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
             <circle cx="9" cy="7" r="4"/>
@@ -27,8 +27,8 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
           </svg>
         </div>
         <div>
-          <span class="block text-xs font-bold uppercase tracking-wider text-[#302018]">${t('recipeDetail.scaleNotice')}</span>
-          <span class="text-[11px] text-[#654332] block">${t('recipeDetail.scaleSub')}</span>
+          <span class="block text-xs font-bold uppercase tracking-wider text-[#140C07]">${t('recipeDetail.scaleNotice')}</span>
+          <span class="text-[11px] text-[#5C3622] block">${t('recipeDetail.scaleSub')}</span>
           <span class="text-[10px] text-[#8C624D] font-medium block mt-0.5">
             ${isEn ? `Range: ${MIN_SERVINGS} – ${MAX_SERVINGS} servings` : `Batas wajar: ${MIN_SERVINGS} s/d ${MAX_SERVINGS} porsi`}
           </span>
@@ -39,14 +39,14 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
       <div class="flex items-center flex-wrap gap-2 sm:gap-3">
         
         <!-- Interactive Stepper with Free Custom Input -->
-        <div class="inline-flex items-center rounded-xl border border-[#E5D9C5] bg-white p-1 shadow-xs">
+        <div class="inline-flex items-center rounded-xl border border-[#E8DEC8] bg-white p-1 shadow-xs">
           
           <!-- Decrement Button -->
           <button 
             type="button" 
             id="portion-dec-btn"
             aria-label="Kurangi Porsi"
-            class="w-8 h-8 rounded-lg flex items-center justify-center text-[#654332] hover:bg-[#FAF6EF] active:bg-[#E5D9C5] transition-all font-bold text-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            class="w-8 h-8 rounded-lg flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] transition-all font-bold text-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             ${currentVal <= MIN_SERVINGS ? 'disabled' : ''}
           >
             &minus;
@@ -62,7 +62,7 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
               max="${MAX_SERVINGS}" 
               value="${currentVal}"
               aria-label="Jumlah Porsi"
-              class="w-16 sm:w-20 text-center font-bold text-sm text-[#302018] bg-transparent outline-none py-1 focus:ring-1 focus:ring-[#B85C38] rounded-md transition-all appearance-none"
+              class="w-16 sm:w-20 text-center font-bold text-sm text-[#140C07] bg-transparent outline-none py-1 focus:ring-1 focus:ring-[#C84C24] rounded-md transition-all appearance-none"
             />
             <span class="text-[11px] font-semibold text-[#8C624D] pr-1.5 pointer-events-none">
               ${isEn ? 'srv' : 'porsi'}
@@ -74,7 +74,7 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
             type="button" 
             id="portion-inc-btn"
             aria-label="Tambah Porsi"
-            class="w-8 h-8 rounded-lg flex items-center justify-center text-[#654332] hover:bg-[#FAF6EF] active:bg-[#E5D9C5] transition-all font-bold text-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
+            class="w-8 h-8 rounded-lg flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] transition-all font-bold text-sm cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
             ${currentVal >= MAX_SERVINGS ? 'disabled' : ''}
           >
             &#43;
@@ -87,7 +87,7 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
             type="button" 
             data-quick-servings="${baseServings}"
             title="${isEn ? 'Reset to base recipe servings' : 'Kembali ke porsi standar resep'}"
-            class="px-2.5 py-1.5 rounded-lg border border-[#E5D9C5] bg-white hover:bg-[#FAF6EF] text-[#654332] text-[11px] font-bold transition-all shadow-2xs cursor-pointer"
+            class="px-2.5 py-1.5 rounded-lg border border-[#E8DEC8] bg-white hover:bg-[#FAF7F2] text-[#5C3622] text-[11px] font-bold transition-all shadow-2xs cursor-pointer"
           >
             ${isEn ? `Base (${baseServings})` : `Asli (${baseServings})`}
           </button>
@@ -96,7 +96,7 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
             <button 
               type="button" 
               data-quick-servings="${q}"
-              class="px-2 py-1.5 rounded-lg border border-[#E5D9C5] bg-white hover:bg-[#FAF6EF] text-[#654332] text-[11px] font-medium transition-all shadow-2xs cursor-pointer hidden sm:inline-block"
+              class="px-2 py-1.5 rounded-lg border border-[#E8DEC8] bg-white hover:bg-[#FAF7F2] text-[#5C3622] text-[11px] font-medium transition-all shadow-2xs cursor-pointer hidden sm:inline-block"
             >
               ${q}
             </button>

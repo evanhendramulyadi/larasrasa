@@ -27,18 +27,18 @@ export async function renderRecipesPage(urlParams = {}) {
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       
       <!-- Page Header with Javanese Heritage Gradient -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1A0F0A] text-[#FAF6EF]">
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#C49A58]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#B85C38]/15 blur-3xl pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#D49B42]/35 shadow-xl bg-gradient-to-r from-[#140C07] via-[#22150E] to-[#140C07] text-[#FAF7F2]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/10 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/15 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-3 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider">
             <span>${t('hero.badge')}</span>
           </div>
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
             ${t('recipesSection.title')}
           </h1>
-          <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
+          <p class="text-sm sm:text-base text-[#FAF7F2]/85 leading-relaxed">
             ${t('recipesSection.description')}
           </p>
         </div>
@@ -50,11 +50,11 @@ export async function renderRecipesPage(urlParams = {}) {
       </div>
 
       <!-- Result Counter & Status -->
-      <div class="flex items-center justify-between text-xs text-[#777B52] pb-2 border-b border-[#E5D9C5]">
+      <div class="flex items-center justify-between text-xs text-[#4A5834] pb-2 border-b border-[#E8DEC8]">
         <div id="recipe-count-indicator">
-          ${t('recipesSection.showingResults')} <strong class="text-[#302018] font-bold">${recipesList.length}</strong> ${t('recipesSection.authenticRecipes')}
-          ${activeFilters.flavor !== 'semua' ? `<span class="ml-1 text-[#B85C38] font-bold">(${activeFilters.flavor})</span>` : ''}
-          ${activeFilters.region !== 'semua' ? `<span class="ml-1 text-[#B85C38] font-bold">(${activeFilters.region})</span>` : ''}
+          ${t('recipesSection.showingResults')} <strong class="text-[#140C07] font-bold">${recipesList.length}</strong> ${t('recipesSection.authenticRecipes')}
+          ${activeFilters.flavor !== 'semua' ? `<span class="ml-1 text-[#C84C24] font-bold">(${activeFilters.flavor})</span>` : ''}
+          ${activeFilters.region !== 'semua' ? `<span class="ml-1 text-[#C84C24] font-bold">(${activeFilters.region})</span>` : ''}
         </div>
       </div>
 
@@ -69,21 +69,21 @@ export async function renderRecipesPage(urlParams = {}) {
 
 function renderEmptyState() {
   return `
-    <div class="col-span-full py-16 text-center space-y-4 bg-white rounded-3xl border border-dashed border-[#B85C38]/40 p-8">
-      <div class="w-16 h-16 rounded-2xl bg-[#F2E8D8] text-[#B85C38] flex items-center justify-center mx-auto shadow-xs">
+    <div class="col-span-full py-16 text-center space-y-4 bg-white rounded-3xl border border-dashed border-[#C84C24]/40 p-8">
+      <div class="w-16 h-16 rounded-2xl bg-[#EFE8DA] text-[#C84C24] flex items-center justify-center mx-auto shadow-xs">
         <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/>
           <path d="m21 21-4.3-4.3"/>
         </svg>
       </div>
       <div class="space-y-1">
-        <h3 class="font-editorial-serif text-2xl font-bold text-[#302018]">${t('recipesSection.emptyTitle')}</h3>
-        <p class="text-sm text-[#654332] max-w-md mx-auto">
+        <h3 class="font-editorial-serif text-2xl font-bold text-[#140C07]">${t('recipesSection.emptyTitle')}</h3>
+        <p class="text-sm text-[#5C3622] max-w-md mx-auto">
           ${t('recipesSection.emptyDesc')}
         </p>
       </div>
       <div class="pt-2">
-        <button id="empty-state-reset" type="button" class="px-5 py-2.5 rounded-full text-xs font-bold bg-[#302018] text-[#FAF6EF] hover:bg-[#B85C38] transition-colors shadow-xs">
+        <button id="empty-state-reset" type="button" class="px-5 py-2.5 rounded-full text-xs font-bold bg-[#140C07] text-[#FAF7F2] hover:bg-[#C84C24] transition-colors shadow-xs cursor-pointer">
           ${t('recipesSection.emptyResetBtn')}
         </button>
       </div>
@@ -117,9 +117,9 @@ export function initRecipesPageInteractions() {
 
     if (counter) {
       counter.innerHTML = `
-        ${t('recipesSection.showingResults')} <strong class="text-[#302018] font-bold">${list.length}</strong> ${t('recipesSection.authenticRecipes')}
-        ${activeFilters.flavor !== 'semua' ? `<span class="ml-1 text-[#B85C38] font-bold">(${activeFilters.flavor})</span>` : ''}
-        ${activeFilters.region !== 'semua' ? `<span class="ml-1 text-[#B85C38] font-bold">(${activeFilters.region})</span>` : ''}
+        ${t('recipesSection.showingResults')} <strong class="text-[#140C07] font-bold">${list.length}</strong> ${t('recipesSection.authenticRecipes')}
+        ${activeFilters.flavor !== 'semua' ? `<span class="ml-1 text-[#C84C24] font-bold">(${activeFilters.flavor})</span>` : ''}
+        ${activeFilters.region !== 'semua' ? `<span class="ml-1 text-[#C84C24] font-bold">(${activeFilters.region})</span>` : ''}
       `;
     }
   }
@@ -143,9 +143,9 @@ export function initRecipesPageInteractions() {
     document.querySelectorAll('.filter-pill').forEach(btn => {
       const val = btn.getAttribute('data-value');
       if (val === 'semua') {
-        btn.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#302018] text-white shadow-xs';
+        btn.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#140C07] text-white shadow-xs';
       } else {
-        btn.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#FAF6EF] text-[#654332] hover:bg-[#F2E8D8] border border-[#E5D9C5]';
+        btn.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#FAF7F2] text-[#5C3622] hover:bg-[#EFE8DA] border border-[#E8DEC8]';
       }
     });
 
@@ -165,62 +165,65 @@ export function initRecipesPageInteractions() {
   }
 
   if (searchClear) {
-    searchClear.addEventListener('click', () => {
+    searchClear.onclick = () => {
       if (searchInput) searchInput.value = '';
       activeFilters.search = '';
       updateResults();
-    });
+    };
   }
 
-  // Bind Dropdowns
   if (sortSelect) {
-    sortSelect.addEventListener('change', (e) => {
+    sortSelect.onchange = (e) => {
       activeFilters.sort = e.target.value;
       updateResults();
-    });
+    };
   }
 
   if (regionSelect) {
-    regionSelect.addEventListener('change', (e) => {
+    regionSelect.onchange = (e) => {
       activeFilters.region = e.target.value;
       updateResults();
-    });
+    };
   }
 
   if (durationSelect) {
-    durationSelect.addEventListener('change', (e) => {
+    durationSelect.onchange = (e) => {
       activeFilters.duration = e.target.value;
       updateResults();
-    });
+    };
   }
 
   if (diffSelect) {
-    diffSelect.addEventListener('change', (e) => {
+    diffSelect.onchange = (e) => {
       activeFilters.difficulty = e.target.value;
       updateResults();
-    });
+    };
   }
 
-  // Bind Flavor Pills
+  if (resetBtn) {
+    resetBtn.onclick = resetAll;
+  }
+
+  if (emptyReset) {
+    emptyReset.onclick = resetAll;
+  }
+
+  // Flavor pills click delegation
   document.querySelectorAll('.filter-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const value = btn.getAttribute('data-value');
-      activeFilters.flavor = value;
+    btn.onclick = () => {
+      const val = btn.getAttribute('data-value');
+      activeFilters.flavor = val;
 
       document.querySelectorAll('.filter-pill').forEach(b => {
-        b.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#FAF6EF] text-[#654332] hover:bg-[#F2E8D8] border border-[#E5D9C5]';
+        const bVal = b.getAttribute('data-value');
+        if (bVal === val) {
+          b.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#C84C24] text-white font-bold shadow-xs';
+        } else {
+          b.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#FAF7F2] text-[#5C3622] hover:bg-[#EFE8DA] border border-[#E8DEC8]';
+        }
       });
 
-      if (value === 'semua') {
-        btn.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#302018] text-white shadow-xs';
-      } else {
-        btn.className = 'filter-pill px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#B85C38] text-white font-bold shadow-xs';
-      }
-
       updateResults();
-    });
+    };
   });
-
-  if (resetBtn) resetBtn.addEventListener('click', resetAll);
-  if (emptyReset) emptyReset.addEventListener('click', resetAll);
 }
