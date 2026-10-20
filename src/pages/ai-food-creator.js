@@ -619,144 +619,72 @@ function renderResultView(recipe, currentLang) {
       <!-- Main Two-Column Layout (Left: Canvas Poster & Working Downloads | Right: Complete Recipe) -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
         
-        <!-- LEFT COLUMN: Canvas Poster & Action Buttons (5 cols) -->
+        <!-- LEFT COLUMN: Pure Blank Black Poster Preview & Template Downloads (5 cols) -->
         <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
           
-          <!-- Poster Preview Container -->
+          <!-- Poster Preview Container: Pure Blank Black (Sesuai Permintaan) -->
           <div class="bg-white p-5 rounded-3xl border border-[#C49A58]/35 shadow-lg space-y-4">
             <div class="flex items-center justify-between text-xs font-bold text-[#24140D] px-1">
               <span class="flex items-center gap-1.5">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#B85C38]"></span>
-                ${isEn ? 'High-DPI Canvas Poster' : 'Poster Resmi Kanvas HTML5'}
+                ${isEn ? 'AI Poster Preview (Blank Template)' : 'Pratinjau Poster AI (Blank Template)'}
               </span>
               <span class="text-[10px] text-[#656C42] uppercase font-mono px-2 py-0.5 rounded-md bg-[#FAF6EF] border border-[#E5D9C5]">
                 ${recipe.aspectRatio}
               </span>
             </div>
 
-            <!-- Canvas Element for Visual Composition -->
-            <div class="relative rounded-2xl overflow-hidden bg-[#0F0C0A] border border-[#E5D9C5] shadow-inner flex items-center justify-center min-h-[340px]">
-              <canvas 
-                id="food-poster-canvas" 
-                class="w-full h-auto max-h-[500px] object-contain block"
-              ></canvas>
-            </div>
-
-            <!-- Complete Working Download Actions (PNG, JPEG, PDF Recipe, Certificate, JSON Schema, Copy Text) -->
-            <div class="space-y-2.5 pt-2">
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                <button 
-                  type="button" 
-                  id="download-poster-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#24140D] hover:bg-[#351C12] active:scale-98 text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                  </svg>
-                  <span>${isEn ? 'Poster (PNG)' : 'Unduh Poster (PNG)'}</span>
-                </button>
-
-                <button 
-                  type="button" 
-                  id="download-poster-jpeg-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#523424] hover:bg-[#3E2416] active:scale-98 text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                  </svg>
-                  <span>${isEn ? 'Poster (JPEG)' : 'Unduh Poster (JPEG)'}</span>
-                </button>
+            <!-- Pure Blank Black Visual Area (Bener-Bener Blank Hitam Dulu) -->
+            <div class="relative rounded-2xl overflow-hidden bg-[#0A0806] border border-[#C49A58]/30 shadow-inner flex flex-col items-center justify-center p-8 text-center space-y-3 min-h-[380px]">
+              <div class="w-16 h-16 rounded-2xl bg-white/5 border border-[#C49A58]/30 flex items-center justify-center text-3xl text-[#C49A58] shadow-inner">
+                🖼️
               </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                <button 
-                  type="button" 
-                  id="download-pdf-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] active:scale-98 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-                  </svg>
-                  <span>${isEn ? 'Recipe Guide (PDF)' : 'Unduh Resep (PDF)'}</span>
-                </button>
-
-                <button 
-                  type="button" 
-                  id="download-cert-btn"
-                  class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-[#C49A58] via-[#B85C38] to-[#523424] hover:opacity-95 active:scale-98 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
-                >
-                  <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="8" r="6"/>
-                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
-                  </svg>
-                  <span>${isEn ? 'Certificate (PDF)' : 'Unduh Piagam (PDF)'}</span>
-                </button>
-              </div>
-
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                <!-- JSON Schema Export Button -->
-                <button 
-                  type="button" 
-                  id="download-json-btn"
-                  class="w-full py-2.5 px-3 rounded-xl border border-[#C49A58]/50 bg-[#FAF6EF] hover:bg-[#EAE1D1] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
-                  title="Unduh data terstruktur JSON untuk mapping database"
-                >
-                  <span class="text-xs">💾</span>
-                  <span>${isEn ? 'Schema (JSON)' : 'Unduh Schema (JSON)'}</span>
-                </button>
-
-                <!-- Copy Text Button -->
-                <button 
-                  type="button" 
-                  id="copy-recipe-text-btn"
-                  class="w-full py-2.5 px-3 rounded-xl border border-[#E5D9C5] bg-white hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
-                >
-                  <span class="text-xs">📋</span>
-                  <span>${isEn ? 'Copy Full Text' : 'Salin Teks Resep'}</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- In-Memory Image Regeneration Control Panel -->
-            <div class="pt-4 border-t border-[#E5D9C5] space-y-3">
-              <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-[#24140D]">
-                  ${isEn ? 'Regenerate Poster Art' : 'Regenerasi Poster / Gambar'}
+              <div class="space-y-1">
+                <span class="text-xs font-mono uppercase tracking-widest text-[#FAF6EF]/90 font-bold block">
+                  ${isEn ? '[AI Visual Poster — Pure Blank Black]' : '[Area Poster Visual AI — Blank Hitam]'}
                 </span>
-                <span class="text-[10px] text-[#656C42]">${isEn ? 'Preserves recipe data' : 'Resep tetap tersimpan'}</span>
+                <p class="text-[11px] text-[#FAF6EF]/50 max-w-xs mx-auto leading-relaxed">
+                  ${isEn 
+                    ? 'Entire poster visual area in a pure blank black template state, pending upcoming AI visual rendering and database connection.' 
+                    : 'Seluruh area poster kanvas dalam status template blank hitam pekat, disiapkan untuk integrasi modul generasi visual AI backend.'}
+                </p>
               </div>
-
-              <div class="grid grid-cols-2 gap-2 text-xs">
-                <select id="regen-style-select" class="px-2.5 py-1.5 rounded-lg bg-[#FAF6EF] border border-[#E5D9C5] text-xs font-medium text-[#24140D]">
-                  ${PREFERENCE_OPTIONS.imageStyles.map(st => `
-                    <option value="${st.id}" ${recipe.imageStyle === st.id ? 'selected' : ''}>
-                      ${isEn ? st.labelEn : st.labelId}
-                    </option>
-                  `).join('')}
-                </select>
-
-                <select id="regen-ratio-select" class="px-2.5 py-1.5 rounded-lg bg-[#FAF6EF] border border-[#E5D9C5] text-xs font-medium text-[#24140D]">
-                  ${PREFERENCE_OPTIONS.aspectRatios.map(ar => `
-                    <option value="${ar.id}" ${recipe.aspectRatio === ar.id ? 'selected' : ''}>
-                      ${ar.label}
-                    </option>
-                  `).join('')}
-                </select>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#C49A58] font-mono">
+                <span>✦</span>
+                <span>${isEn ? 'Format: Blank Canvas' : 'Format: Kanvas Hitam Blank'}</span>
               </div>
+            </div>
 
-              <button 
-                type="button" 
-                id="regenerate-art-btn"
-                class="w-full py-2 px-3 rounded-lg bg-[#FAF6EF] hover:bg-[#E5D9C5] text-[#24140D] text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer border border-[#C49A58]/30"
-              >
-                <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                  <path d="M3 3v5h5"/>
-                  <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
-                  <path d="M16 16h5v5"/>
-                </svg>
-                <span>${isEn ? 'Apply New Style & Redraw' : 'Terapkan Gaya Baru & Gambar Ulang'}</span>
-              </button>
+            <!-- Download Feature Status: Deferred / Pending Database Setup -->
+            <div class="p-4 rounded-2xl bg-[#FAF6EF] border border-[#C49A58]/30 space-y-2.5 text-left">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-[#24140D] flex items-center gap-1.5">
+                  <span>📥</span>
+                  <span>${isEn ? '[Download Actions — Pending Database]' : '[Fitur Unduhan — Menunggu Database]'}</span>
+                </span>
+                <span class="text-[9px] font-mono uppercase bg-[#E5D9C5]/60 text-[#523424] px-2 py-0.5 rounded-md font-bold">
+                  TEMPLATE
+                </span>
+              </div>
+              <p class="text-[11px] text-[#523424]/80 leading-relaxed">
+                ${isEn 
+                  ? 'File export modules (Poster PNG/JPEG, PDF Recipe Document, Certificate, and JSON Schema) are formatted as template buttons and will be activated once database integration is live.'
+                  : 'Modul ekspor dokumen (Poster PNG/JPEG, Dokumen Resep PDF, Piagam Penghargaan, dan Schema JSON) diformat sebagai template tombol dan akan diaktifkan setelah integrasi database terhubung.'}
+              </p>
+              <div class="grid grid-cols-2 gap-2 pt-1 text-xs opacity-60 pointer-events-none select-none">
+                <div class="py-2.5 px-3 rounded-xl bg-[#24140D] text-[#FAF6EF] font-semibold text-center text-[10px]">
+                  ${isEn ? 'Poster (PNG)' : 'Unduh Poster (PNG)'}
+                </div>
+                <div class="py-2.5 px-3 rounded-xl bg-[#523424] text-[#FAF6EF] font-semibold text-center text-[10px]">
+                  ${isEn ? 'Poster (JPEG)' : 'Unduh Poster (JPEG)'}
+                </div>
+                <div class="py-2.5 px-3 rounded-xl bg-[#B85C38] text-white font-semibold text-center text-[10px]">
+                  ${isEn ? 'Recipe (PDF)' : 'Unduh Resep (PDF)'}
+                </div>
+                <div class="py-2.5 px-3 rounded-xl bg-[#C49A58] text-[#24140D] font-semibold text-center text-[10px]">
+                  ${isEn ? 'Certificate (PDF)' : 'Unduh Piagam (PDF)'}
+                </div>
+              </div>
             </div>
 
           </div>
@@ -776,39 +704,55 @@ function renderResultView(recipe, currentLang) {
             </div>
             <p class="text-xs text-[#FAF6EF]/85 leading-relaxed">
               ${isEn 
-                ? `An official achievement certificate has been minted for <strong>${escapeHtml(recipe.creatorName)}</strong> celebrating the invention of this culinary masterpiece.`
-                : `Piagam apresiasi resmi telah diterbitkan untuk <strong>${escapeHtml(recipe.creatorName)}</strong> atas perancangan mahakarya resep ini.`}
+                ? `An official achievement certificate template has been formatted for <strong>${escapeHtml(recipe.creatorName)}</strong> celebrating the synthesis of this culinary blueprint.`
+                : `Format piagam apresiasi resmi telah disiapkan untuk <strong>${escapeHtml(recipe.creatorName)}</strong> atas perancangan cetak biru resep ini.`}
             </p>
           </div>
 
         </div>
 
-        <!-- RIGHT COLUMN: Structured Recipe Details & Solid Dark Placeholder Image (7 cols) -->
+        <!-- RIGHT COLUMN: Structured Recipe Details in Template Format (7 cols) -->
         <div class="lg:col-span-7 space-y-8">
           
-          <!-- Dish Visual Banner: Empty Solid Black Box Placeholder (Sesuai Permintaan) -->
-          <div class="relative rounded-3xl overflow-hidden border border-[#C49A58]/35 shadow-lg bg-[#0A0806] aspect-16/9 sm:h-72 flex flex-col items-center justify-center p-6 text-center space-y-3">
-            <div class="w-14 h-14 rounded-2xl bg-white/5 border border-[#C49A58]/35 flex items-center justify-center text-2xl text-[#C49A58] shadow-inner">
-              📷
-            </div>
-            <div class="space-y-1">
-              <span class="text-xs font-mono uppercase tracking-widest text-[#FAF6EF]/80 font-bold block">
-                ${isEn ? '[Dish Visual Placeholder - Solid Dark Area]' : '[Area Placeholder Gambar Hidangan - Kosong Hitam]'}
-              </span>
-              <p class="text-[11px] text-[#FAF6EF]/45 max-w-sm mx-auto leading-relaxed">
-                ${isEn 
-                  ? 'Empty solid black visual area • Default template ready for database image URL binding' 
-                  : 'Area gambar kosong hitam pekat • Format default template siap dihubungkan dengan data gambar'}
+          <!-- Recipe Overview Card in Clean Template Format -->
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-5">
+            <div class="space-y-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2.5 py-0.5 rounded-md border border-[#E5D9C5]">
+                  ${isEn ? '[Recipe Template]' : '[Template Resep]'}
+                </span>
+                <span class="text-xs font-bold text-[#B85C38] uppercase tracking-wider">
+                  ${escapeHtml(recipe.javaneseTitle)}
+                </span>
+              </div>
+              <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#24140D]">
+                ${escapeHtml(recipe.shortTitle)}
+              </h2>
+              <p class="text-xs sm:text-sm text-[#523424] leading-relaxed">
+                ${escapeHtml(recipe.description)}
               </p>
             </div>
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-[#C49A58] font-mono">
-              <span>🏷️</span>
-              <span>${escapeHtml(recipe.shortTitle)}</span>
+
+            <!-- Metadata Metrics Grid (Template Fields) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#E5D9C5] text-xs">
+              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Total Time]' : '[Total Waktu]'}</span>
+                <strong class="text-[#24140D] font-bold">${recipe.totalTime}</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Servings]' : '[Porsi]'}</span>
+                <strong class="text-[#24140D] font-bold">${recipe.servings} ${isEn ? 'Servings' : 'Porsi'}</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Difficulty]' : '[Tingkat]'}</span>
+                <strong class="text-[#24140D] font-bold">${recipe.difficulty}</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? '[Est. Cost]' : '[Estimasi Biaya]'}</span>
+                <strong class="text-[#B85C38] font-bold">${recipe.estimatedCost}</strong>
+              </div>
             </div>
           </div>
-
-          <!-- Recipe Overview Card -->
-          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-5">
             <div class="space-y-2">
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="text-[10px] font-mono uppercase tracking-wider text-[#656C42] bg-[#FAF6EF] px-2.5 py-0.5 rounded-md border border-[#E5D9C5]">

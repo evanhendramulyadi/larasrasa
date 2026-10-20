@@ -905,6 +905,157 @@ export const recipeTranslationsEn = {
       { ingredient: 'Frog Legs', substitute: 'Free-range chicken drumettes or wings' }
     ],
     nutritionNote: 'Estimated per warming bowl with broth and fried garlic.'
+  },
+  'sate-kambing-batibul-tegal': {
+    name: 'Tegal Batibul Young Mutton Satay with Sweet Soy & Fresh Chilies',
+    mealType: 'Lunch / Hearty Dinner',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Batibul Lamb Satay is Tegal’s crown jewel, showcasing exceptionally tender lamb cuts from lambs under three months of age with zero gamey odor. Skewered with subtle lamb fat, grilled over coconut shell embers without heavy marinade, and glazed with thick Tegal sweet soy sauce, sliced green bird’s eye chilies, shallots, and fresh juicy tomatoes.',
+    history: 'Centuries of pastoral lamb husbandry across the coastal plains of Tegal and Brebes led to the tradition of choosing tender under-three-month-old lambs (batibul). The meat requires no tenderizing fruits because its natural fibers are already remarkably soft, succulent, and sweet.',
+    culturalBackground: 'Along the northern Pantura highway, open-air batibul satay houses are legendary rest stops for cross-Java travelers and truck drivers seeking nourishing, protein-dense meals.',
+    interestingFacts: [
+      'The word "Batibul" is a Javanese portmanteau for "Bawah Tiga Bulan" (Under Three Months Old).',
+      'The satay is grilled plain with only a whisper of rendered fat to celebrate the pure natural sweetness of the meat.',
+      'Tegal local sweet soy sauce is renowned for its thick consistency and rich coconut palm sugar caramel flavor.'
+    ],
+    regionalVariations: 'Also available as "Balibul" (under five months old), which has slightly firmer, meatier fibers.',
+    equipment: ['Coconut shell charcoal grill', 'Bamboo fan', 'Bamboo skewers', 'Flat serving platter'],
+    chefTips: 'Use coconut charcoal without open flame; the gentle radiant heat caramelizes the outer meat while preserving internal juiciness.',
+    commonMistakes: [
+      { mistake: 'Washing lamb under running tap water', solution: 'Excess moisture ruins sear; pat dry with clean paper towels instead.' },
+      { mistake: 'Overcooking tender meat', solution: 'Batibul lamb cooks quickly in 6-8 minutes total; keep it succulent.' }
+    ],
+    substitutions: [
+      { ingredient: 'Young Lamb', substitute: 'Prime beef tenderloin cuts' }
+    ],
+    nutritionNote: 'Estimated per standard 10-skewer portion with sweet soy and fresh vegetables.'
+  },
+  'tahu-aci-slawi-tegal': {
+    name: 'Crispy Slawi Yellow Tofu with Chewy Seasoned Tapioca & Garlic Chives',
+    mealType: 'Traditional Snack / Finger Food',
+    difficulty: 'Easy',
+    difficultyLevel: 'Beginner',
+    intro: 'Tahu Aci Slawi is an iconic savory snack from Slawi in Tegal. Firm, dense yellow tofu triangles are topped with a seasoned chewy tapioca dough flavored with garlic, toasted coriander, and fresh mountain garlic chives, then deep-fried until the exterior tofu is shatteringly crisp and the tapioca interior remains wonderfully chewy and savory.',
+    history: 'Created in the 1950s by artisanal tofu makers in the Banjaran and Slawi districts. Unlike Sundanese tapioca street snacks, Tegal Tahu Aci uses artisanal firm yellow tofu and fresh Chinese garlic chives (kucai) as an indispensable aromatic herb.',
+    culturalBackground: 'An afternoon staple across Tegal homes, savored piping-hot straight from bubbling woks alongside traditional claypot jasmine tea with rock sugar.',
+    interestingFacts: [
+      'The yellow tofu is cut into triangles with diagonal slits so the tapioca dough grips securely during frying.',
+      'Garlic chives lend a gentle onion-garlic herb aroma that sets it apart from ordinary scallions.',
+      'A popular flat-pressed variation called Tahu Pletok makes a distinct snapping sound when eaten.'
+    ],
+    regionalVariations: 'Tahu Pletok is split wide open before frying to maximize brittle, cracker-like crunch.',
+    equipment: ['Deep frying wok', 'Tongs & slotted spoon', 'Mixing bowl'],
+    chefTips: 'Pour boiling water into the tapioca flour in small splashes to achieve the ideal chewy gelled dough consistency.',
+    commonMistakes: [
+      { mistake: 'Using lukewarm water for tapioca', solution: 'The water must be boiling hot to properly activate the tapioca starch.' },
+      { mistake: 'Frying at too high heat', solution: 'Maintain medium heat so the chewy tapioca interior cooks thoroughly without burning.' }
+    ],
+    substitutions: [
+      { ingredient: 'Slawi Yellow Tofu', substitute: 'Firm organic yellow tofu or pressed white tofu soaked in turmeric water' },
+      { ingredient: 'Garlic Chives', substitute: 'Fine Chinese chives or green scallion tops' }
+    ],
+    nutritionNote: 'Estimated per portion of 4 freshly fried tofu snacks.'
+  },
+  'kupat-glabed-tegal': {
+    name: 'Tegal Kupat Glabed with Rich Golden Coconut Gravy & Clam Satay',
+    mealType: 'Hearty Breakfast / Evening Supper',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Kupat Glabed is a beloved comfort dish from Tegal’s central town square. Chewy rice cakes (kupat) and shredded farm chicken swim in an unctuous golden coconut gravy seasoned with turmeric, galangal, lemongrass, and aromatic bay leaves. In Tegal dialect, "glabed" describes a gravy so rich and thick it gently coats the tongue. Crowned with crushed yellow noodle crackers and savory-sweet skewered clam satay.',
+    history: 'Pioneered around Tegal railway station and town square in the early 20th century as an affordable, deeply satisfying meal for morning travelers and night market stallholders.',
+    culturalBackground: 'Kupat Glabed embodies Tegal hospitality; the golden hue represents prosperity and warmth shared generously with every guest.',
+    interestingFacts: [
+      'The velvety "glabed" texture is achieved through slow reduction of pure coconut milk with a touch of rice flour slurry.',
+      'Skewered boiled blood clams glazed in dark sweet soy sauce are the signature must-have accompaniment.',
+      'Yellow noodle crackers crushed over the gravy add crisp texture that slowly softens as it absorbs the spiced broth.'
+    ],
+    regionalVariations: 'In Randugunting Tegal, Kupat Blengong features the same golden gravy served with tender Muscovy duck cuts.',
+    equipment: ['Saucepan', 'Stone mortar', 'Soup ladle', 'Deep serving bowls'],
+    chefTips: 'Simmer coconut milk over gentle heat with constant stirring to prevent separation and produce a glossy golden sheen.',
+    commonMistakes: [
+      { mistake: 'Boiling coconut milk vigorously without stirring', solution: 'Vigorous boiling causes the coconut emulsion to curdle and separate.' }
+    ],
+    substitutions: [
+      { ingredient: 'Yellow Noodle Crackers', substitute: 'Curly garlic kerupuk or tapioca crisps' },
+      { ingredient: 'Clam Satay', substitute: 'Sweet soy quail egg satay or chicken gizzard skewers' }
+    ],
+    nutritionNote: 'Estimated per bowl complete with rice cakes, golden gravy, chicken, and clam satay.'
+  },
+  'tauto-pekalongan': {
+    name: 'Pekalongan Tauto Beef Soup with Sweet Fermented Tauco & Vermicelli',
+    mealType: 'Lunch / Evening Gathering',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Tauto is a masterpiece of Chinese-Javanese cultural synthesis from the batik city of Pekalongan. A portmanteau of "tauco" (fermented bean paste) and "soto" (soup), it features tender braised beef brisket in a rust-red, deeply savory broth infused with sweet coastal tauco, curly chilies, and aromatic ginger. Served over delicate rice vermicelli with scallions, fresh calamansi lime, and fiery bird’s eye chili sambal.',
+    history: 'Created in the late 19th century in the Chinatown quarters of Sampangan and Sugihwaras in Pekalongan. Local bean paste fermenters developed sweet, dark red tauco with intact beans that imparts unmistakable umami to beef broth.',
+    culturalBackground: 'A beloved nocturnal gathering food for batik artisans unwinding after long hours of hand-dyeing fabrics.',
+    interestingFacts: [
+      'Pekalongan tauco is distinctively sweet-savory and less salty than western Chinese bean pastes.',
+      'Traditionally dished out in compact ceramic bowls and paired with compressed rice cakes or steaming jasmine rice.',
+      'Beef brisket with ribbons of succulent fat is favored for providing natural body to the broth.'
+    ],
+    regionalVariations: 'Also prepared with buffalo meat (Tauto Kerbau) along coastal Muslim villages, or with tender free-range chicken.',
+    equipment: ['Stockpot', 'Sauté pan', 'Vermicelli noodle strainer', 'Ceramic soup bowls'],
+    chefTips: 'Sauté the tauco paste with chili paste until fragrant and caramelized before adding to the beef stock.',
+    commonMistakes: [
+      { mistake: 'Adding raw tauco directly to cold broth', solution: 'Sautéing unlocks the rich nutty undertones and eliminates raw fermented odor.' }
+    ],
+    substitutions: [
+      { ingredient: 'Beef Brisket', substitute: 'Beef shank, chuck roast, or free-range chicken' }
+    ],
+    nutritionNote: 'Estimated per bowl with beef brisket, vermicelli, and savory broth.'
+  },
+  'sroto-sokaraja-banyumas': {
+    name: 'Banyumas Sroto Sokaraja with Crushed Peanut Sauce & Cantir Crackers',
+    mealType: 'Lunch / Casual Gathering',
+    difficulty: 'Medium',
+    difficultyLevel: 'Intermediate',
+    intro: 'Sroto Sokaraja is Banyumas’s legendary signature soup with a culinary profile unlike any other in Indonesia. Served over compressed rice cakes (ketupat) rather than rice, it pairs tender shredded chicken or braised beef with crisp bean sprouts, chewy glass noodles, colorful crispy cantir cassava crackers, a fragrant golden ginger-turmeric broth, and a generous dollop of velvety sweet-savory crushed peanut sauce spiked with tamarind.',
+    history: 'Originated in Sokaraja in Banyumas in the early 20th century. Banyumasan dialect calls this dish "Sroto" rather than "Soto". The addition of freshly ground fried peanut sauce was a stroke of genius that enriches the broth into a creamy, deeply comforting soup.',
+    culturalBackground: 'Bank Street in Sokaraja is a famed culinary strip lined with generational sroto stalls that draw food lovers from all corners of Java.',
+    interestingFacts: [
+      'Served in nostalgic rooster ceramic bowls with rice cakes cut into neat cubes.',
+      'Cantir crackers are made from native cassava starch with festive natural pink and white colors.',
+      'When stirred together, the peanut sauce and clear broth emulsify into a rich, creamy, peanutty broth.'
+    ],
+    regionalVariations: 'Served either with tender free-range chicken or succulent braised beef shank and beef tendon.',
+    equipment: ['Stockpot', 'Peanut frying wok', 'Large stone mortar', 'Vintage ceramic bowls'],
+    chefTips: 'Fry peanuts evenly to golden perfection without scorching so the sauce tastes sweet and nutty with no bitterness.',
+    commonMistakes: [
+      { mistake: 'Blanching bean sprouts too long', solution: 'Dip bean sprouts in hot water for only 10 seconds so they retain their crisp crunch.' },
+      { mistake: 'Substituting rice cakes with plain rice', solution: 'Firm rice cakes are essential to absorb the peanut-enriched broth.' }
+    ],
+    substitutions: [
+      { ingredient: 'Cantir Crackers', substitute: 'Garlic cassava crisps or colorful tapioca crackers' },
+      { ingredient: 'Free-range Chicken', substitute: 'Slow-braised beef shank or tripe' }
+    ],
+    nutritionNote: 'Estimated per bowl with ketupat, shredded chicken, peanut sauce, and cantir crackers.'
+  },
+  'tempe-kemul-wonosobo': {
+    name: 'Wonosobo Tempe Kemul Crispy Turmeric & Garlic Chive Tempeh Fritters',
+    mealType: 'Traditional Snack / Mountain Warmth',
+    difficulty: 'Easy',
+    difficultyLevel: 'Beginner',
+    intro: 'Tempe Kemul is the quintessential comfort food of the misty Dieng Highlands in Wonosobo. In Javanese, "kemul" means a warm blanket; fragrant artisan tempeh is sliced thin and enveloped in a golden batter of rice flour and cassava starch spiced with fresh turmeric, roasted coriander, candlenut, and abundant mountain garlic chives. Fried until the outer edges blossom into shatteringly crisp golden lace.',
+    history: 'Born from the chilly climate on the slopes of Mount Sindoro and Sumbing. Local mountain folk created these warming turmeric-blanketed tempeh fritters to provide quick warmth and sustained energy during damp highland days.',
+    culturalBackground: 'From Wonosobo town square to the hiking trails of Dieng, roadside vendors fry tempe kemul live in bubbling caldrons for travelers bundled up in jackets.',
+    interestingFacts: [
+      'The vibrant yellow hue comes purely from fresh highland turmeric roots, never synthetic dyes.',
+      'Spoonfuls of extra batter are drizzled along the edges of the pan to create extra crispy "lace" crumbs.',
+      'Unlike soft Banyumas mendoan, Tempe Kemul is fried until the outer crust is delightfully crisp.'
+    ],
+    regionalVariations: 'The same fragrant turmeric-chive batter is occasionally used to fry silky local mountain tofu or sweet cassava.',
+    equipment: ['Wide frying wok', 'Slotted skimmer', 'Mixing bowl'],
+    chefTips: 'Mix the batter with ice-cold water; the temperature contrast with hot oil yields an airy, long-lasting crunch.',
+    commonMistakes: [
+      { mistake: 'Making the batter too thick', solution: 'Keep the batter fluid so it creates a delicate, crispy blanket rather than a heavy fritter.' }
+    ],
+    substitutions: [
+      { ingredient: 'Cassava Starch', substitute: 'Cornstarch or tapioca flour' },
+      { ingredient: 'Garlic Chives', substitute: 'Finely sliced young green scallions' }
+    ],
+    nutritionNote: 'Estimated per portion of 2 crispy turmeric tempeh fritters.'
   }
 };
 
@@ -1220,6 +1371,22 @@ export const restaurantTranslationsEn = {
     description: 'The oldest kupat tahu warung in Magelang, serving generations since the pre-independence era. Golden silk tofu, crispy vegetable fritters, chewy rice cake, and delicate sweet-savory garlic broth.',
     historicalContext: 'Founded by Mr. Kuntjoro in 1942. The walls feature historic photographs of Indonesian presidents and national figures who made pilgrimages here when traveling to Borobudur.',
     specialties: ['Complete Kupat Tahu', 'Omelette Fried Kupat Tahu', 'Fresh Red Bean Iced Dessert']
+  },
+  'sate-kambing-wendys-tegal': {
+    signatureDish: 'Tender Batibul Young Lamb Satay & Clear Mutton Stew',
+    category: 'Batibul Young Lamb Specialist',
+    openingHours: 'Daily: 09:30 – 21:00 WIB',
+    description: 'The premier destination for tender batibul lamb satay (under three months old) in Tegal. Skewered plain and grilled over fragrant coconut shell charcoal, delivering extraordinarily juicy meat and natural sweetness.',
+    historicalContext: 'Founded by the Wendy family in the 1980s, becoming an iconic culinary rest stop along the western Pantura corridor of Central Java.',
+    specialties: ['Plain-Grilled Batibul Satay', 'Clear Lamb Garang Asem', 'Mutton Shank Soup', 'Crispy Tahu Aci Slawi']
+  },
+  'mie-ongklok-pak-muhadi-wonosobo': {
+    signatureDish: 'Mie Ongklok with Savory Ebi Gravy & Sweet Beef Satay',
+    category: 'Dieng Highland Heritage Warung',
+    openingHours: 'Daily: 09:30 – 19:30 WIB',
+    description: 'Pioneer of warming noodle bowls in the heart of Wonosobo. Yellow noodles tossed in bamboo ongklok baskets, bathed in thick dried shrimp gravy with garlic chives, served with sweet beef satay and crispy tempe kemul.',
+    historicalContext: 'Mr. Muhadi perfected this comforting dried shrimp broth in the 1980s, becoming a beloved pilgrimage for Dieng Plateau hikers and families seeking warmth.',
+    specialties: ['Special Mie Ongklok', 'Sweet Glazed Beef Satay', 'Crispy Turmeric Tempe Kemul', 'Cassava Geblek']
   }
 };
 

@@ -256,7 +256,14 @@ export const en = {
   about: {
     badge: 'About LarasRasa',
     title: 'Preserving Harmony of Taste & Ancestral Roots',
-    intro: 'LarasRasa is not merely a recipe blog, but a high-end digital publication and interactive taste museum celebrating the rich culinary heritage of Central Java.',
+    intro: 'LarasRasa is not merely a recipe blog, but a high-end digital publication and interactive culinary encyclopedia celebrating the rich culinary heritage of Central Java.',
+    pjblBadge: 'Academic Project Background (PjBL)',
+    pjblTitle: 'Crafted by PPLG Students of SMK Pariwisata Metland School',
+    pjblDesc: 'As part of our Project Based Learning (PjBL) initiative focused on Central Javanese cultural heritage, Group 2 (Website Development) conceptualized and built LarasRasa. We unified modern software engineering (Vite, Tailwind CSS, interactive 3D graphics) with deep cultural research into Central Java’s 8 culinary regions.',
+    pjblSchool: 'SMK Pariwisata Metland School',
+    pjblMajor: 'PPLG (Software & Game Development)',
+    pjblGroup: 'Group 2 — Website Development Division',
+    pjblProjectTitle: 'Project LarasRasa: Central Javanese Culinary Web Encyclopedia',
     larasTitle: 'Laras — Harmony & Noble Character',
     larasDesc: 'In Javanese philosophy, "laras" signifies harmony, balance of gamelan tones, and inner peace. In cooking, it translates into balanced seasoning: the sweetness of palm sugar must never overpower coconut cream, and fiery chilies must never silence the delicate aroma of kencur and bay leaves.',
     rasaTitle: 'Rasa — Experience & Cultural Warmth',
@@ -270,10 +277,10 @@ export const en = {
     heritagePillar2Desc: 'From hours of gentle ungkep simmering over charcoal embers, wild mold soybean fermentation in tempeh, to fragrant banana-leaf wrapping (garang asem).',
     heritagePillar3Title: 'Bond of Family & Social Equality',
     heritagePillar3Desc: 'The communal dining tradition of kembul bujana reflects harmony, social equality, mutual respect, and heartfelt gratitude for the earth’s bounty.',
-    teamBadge: 'The Development Team',
-    teamTitle: 'The Creators Behind LarasRasa',
-    teamSubtitle: 'A cross-disciplinary collaboration blending ancestral culinary wisdom with editorial visual direction, authentic food photography, and modern web engineering.',
-    teamEditNotice: '* These developer profile cards are modular and can be edited directly to reflect the actual team members.',
+    teamBadge: 'Group 2 Development Team',
+    teamTitle: 'Student Developers Behind LarasRasa',
+    teamSubtitle: 'Cross-disciplinary collaboration of PPLG students from SMK Pariwisata Metland School (Group 2), merging Central Javanese culinary roots with modern web engineering.',
+    teamEditNotice: '* Student developer profiles of Group 2 (Website Development), PPLG SMK Pariwisata Metland School.',
     dev1Name: '[Developer Name 1]',
     dev1Role: 'Project Lead & Creative Director',
     dev1Bio: 'Guiding product strategy, cultural heritage research, editorial visual direction, and UX orchestration across the LarasRasa platform.',
@@ -335,7 +342,7 @@ export const en = {
     commitmentTitle: 'Quality Commitment',
     commitmentDesc: 'All historical notes, geographic coordinates, and recipes are verified based on reliable Indonesian culinary literature and cultural conservation records.',
     backendReadyBadge: 'Cultural Dedication: Preserving authentic spice proportions and culinary heritage of Central Java for future generations.',
-    copyright: 'LarasRasa — Cherishing Central Javanese Culinary Heritage. All rights reserved.'
+    copyright: 'Group 2 Web Development — PPLG SMK Pariwisata Metland School. All rights reserved.'
   }
 };
 

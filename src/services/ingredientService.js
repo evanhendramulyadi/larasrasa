@@ -48,7 +48,10 @@ export const LOCAL_INGREDIENT_CATALOG = {
     { id: 'daun-bawang', nameId: 'Daun Bawang & Seledri', nameEn: 'Scallions & Celery', icon: '🌱', category: 'vegetable', description: 'Aroma segar penutup soto dan adonan mendoan.', image: '/assets/images/ingredients/daun-bawang.jpg' },
     { id: 'kecambah', nameId: 'Tauge / Kecambah Segar', nameEn: 'Fresh Bean Sprouts', icon: '🌾', category: 'vegetable', description: 'Kecambah pendek renyah khas soto dan tahu gimbal.', image: '/assets/images/ingredients/kecambah.jpg' },
     { id: 'kol-segar', nameId: 'Kol Segar Iris Tipis', nameEn: 'Crisp Shredded Cabbage', icon: '🥬', category: 'vegetable', description: 'Tekstur renyah pelengkap sate buntel dan selat.', image: '/assets/images/ingredients/kol-segar.jpg' },
-    { id: 'bawang-goreng', nameId: 'Bawang Merah Goreng Brebes', nameEn: 'Crispy Fried Shallots', icon: '🧅', category: 'vegetable', description: 'Taburan harum renyah dari bawang merah Brebes.', image: '/assets/images/ingredients/bawang-goreng.jpg' }
+    { id: 'bawang-goreng', nameId: 'Bawang Merah Goreng Brebes', nameEn: 'Crispy Fried Shallots', icon: '🧅', category: 'vegetable', description: 'Taburan harum renyah dari bawang merah Brebes.', image: '/assets/images/ingredients/bawang-goreng.jpg' },
+    { id: 'daun-kucai', nameId: 'Daun Kucai Segar (Khas Tegal & Dieng)', nameEn: 'Fresh Mountain Garlic Chives', icon: '🌿', category: 'vegetable', description: 'Aromatik wajib tahu aci Slawi dan tempe kemul Dieng.', image: '/assets/images/ingredients/daun-bawang.jpg' },
+    { id: 'tauco-kedelai', nameId: 'Tauco Kedelai Fermentasi (Pekalongan)', nameEn: 'Fermented Sweet Tauco Paste', icon: '🥣', category: 'vegetable', description: 'Kedelai fermentasi manis gurih untuk kuah tauto dan swike.', image: '/assets/images/ingredients/bawang-putih.jpg' },
+    { id: 'kacang-tanah', nameId: 'Kacang Tanah Sangrai Giling', nameEn: 'Roasted Ground Peanuts', icon: '🥜', category: 'vegetable', description: 'Saus kacang legit untuk sroto Sokaraja dan kupat tahu Magelang.', image: '/assets/images/ingredients/kemiri.jpg' }
   ]
 };
 

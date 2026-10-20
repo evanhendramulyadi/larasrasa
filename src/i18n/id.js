@@ -255,7 +255,14 @@ export const id = {
   about: {
     badge: 'Mengenal LarasRasa',
     title: 'Menjaga Keselarasan Rasa & Warisan Leluhur',
-    intro: 'LarasRasa hadir bukan sekadar sebagai portal resep biasa, melainkan sebuah publikasi digital kurasi tinggi dan museum rasa interaktif yang merayakan kekayaan kuliner Jawa Tengah.',
+    intro: 'LarasRasa hadir bukan sekadar sebagai portal resep biasa, melainkan sebuah publikasi digital kurasi tinggi dan ensiklopedia rasa interaktif yang merayakan kekayaan kuliner Jawa Tengah.',
+    pjblBadge: 'Latar Belakang Pembelajaran (PjBL)',
+    pjblTitle: 'Karya Nyata Siswa PPLG SMK Pariwisata Metland School',
+    pjblDesc: 'Sebagai bagian dari Project Based Learning (PjBL) bertema kebudayaan dan kearifan lokal Jawa Tengah, Kelompok 2 (Website Development) merancang dan membangun LarasRasa. Kami memadukan keahlian rekayasa perangkat lunak modern (Vite, Tailwind CSS, grafika 3D interaktif) dengan riset mendalam budaya kuliner 8 wilayah Jawa Tengah.',
+    pjblSchool: 'SMK Pariwisata Metland School',
+    pjblMajor: 'PPLG (Pengembangan Perangkat Lunak dan Gim)',
+    pjblGroup: 'Kelompok 2 — Divisi Website Development',
+    pjblProjectTitle: 'Proyek LarasRasa: Web Ensiklopedia Kuliner Jawa Tengah',
     larasTitle: 'Laras — Keselarasan & Budi Pekerti',
     larasDesc: 'Dalam falsafah Jawa, laras mencerminkan keserasian, keseimbangan nada gamelan, dan ketenangan batin. Di dapur, laras adalah harmoni takaran bumbu: manisnya gula jawa tidak boleh menenggelamkan gurihnya santan, dan pedasnya cabai rawit tidak boleh mematikan segarnya aroma kencur dan daun salam.',
     rasaTitle: 'Rasa — Pengalaman & Kehangatan Tradisi',
@@ -269,10 +276,10 @@ export const id = {
     heritagePillar2Desc: 'Mulai dari ungkep lambat berjam-jam dengan api lilin, fermentasi alami kapang kedelai pada tempe bacem dan mendoan, hingga kukusan beralas daun pisang hutan.',
     heritagePillar3Title: 'Perekat Silaturahmi & Budi Pekerti',
     heritagePillar3Desc: 'Tradisi kembul bujana dan makan bersama adalah cermin kerukunan, kesetaraan sosial, serta rasa syukur mendalam kepada Sang Pencipta.',
-    teamBadge: 'Tim Pengembang LarasRasa',
-    teamTitle: 'Para Pengembang di Balik LarasRasa',
-    teamSubtitle: 'Kolaborasi lintas disiplin dalam merajut tradisi kuliner leluhur dengan kecerdasan buatan, grafika 3D, dan rekayasa web modern.',
-    teamEditNotice: '* Kartu profil pengembang ini dirancang modular dan dapat disunting langsung untuk mencerminkan identitas anggota tim sebenarnya.',
+    teamBadge: 'Tim Pengembang Kelompok 2',
+    teamTitle: 'Siswa Pengembang di Balik LarasRasa',
+    teamSubtitle: 'Kolaborasi siswa PPLG SMK Pariwisata Metland School (Kelompok 2) dalam merajut tradisi kuliner leluhur Jawa Tengah dengan rekayasa web modern.',
+    teamEditNotice: '* Profil tim siswa PPLG Kelompok 2 (Website Development) SMK Pariwisata Metland School.',
     dev1Name: '[Nama Pengembang 1]',
     dev1Role: 'Project Lead & Creative Director',
     dev1Bio: 'Memimpin arah strategis, kurasi budaya Jawa Tengah, arsitektur informasi produk, dan orkestrasi pengalaman pengguna LarasRasa.',
@@ -334,7 +341,7 @@ export const id = {
     commitmentTitle: 'Komitmen Kualitas',
     commitmentDesc: 'Seluruh catatan sejarah, koordinat peta, dan resep masakan dikurasi secara faktual berdasarkan pustaka kuliner Nusantara dan arsip pelestarian budaya.',
     backendReadyBadge: 'Dedikasi Pelestarian: Menjaga kemurnian takaran bumbu dan sejarah kuliner Jawa Tengah untuk generasi penerus.',
-    copyright: 'LarasRasa — Menjaga Warisan Rasa Jawa Tengah. Seluruh hak cipta dilindungi.'
+    copyright: 'Kelompok 2 Web Development — PPLG SMK Pariwisata Metland School. Seluruh hak cipta dilindungi.'
   }
 };
 

@@ -79,6 +79,48 @@ export async function renderAboutPage() {
         </div>
       </div>
 
+      <!-- SECTION: Latar Belakang PjBL SMK Pariwisata Metland School (Permintaan Pengguna) -->
+      <section class="bg-white rounded-3xl border border-[#C49A58]/30 shadow-md p-6 sm:p-10 space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#E5D9C5] pb-5">
+          <div class="space-y-1">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#B85C38]/15 text-[#B85C38] text-xs font-bold uppercase tracking-wider">
+              <span>🎓</span>
+              <span>${t('about.pjblBadge')}</span>
+            </span>
+            <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#24140D]">
+              ${t('about.pjblTitle')}
+            </h2>
+          </div>
+          <span class="text-xs font-mono font-bold text-[#656C42] bg-[#FAF6EF] px-3.5 py-1.5 rounded-xl border border-[#C49A58]/30 self-start md:self-auto">
+            PjBL 2026 • Kelompok 2
+          </span>
+        </div>
+
+        <p class="text-xs sm:text-sm text-[#523424] leading-relaxed">
+          ${t('about.pjblDesc')}
+        </p>
+
+        <!-- 4 Key Highlights of the School Project -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+          <div class="p-4 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52] block">${isEn ? 'Institution' : 'Institusi Pendidikan'}</span>
+            <strong class="text-xs text-[#24140D] font-bold block">${t('about.pjblSchool')}</strong>
+          </div>
+          <div class="p-4 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52] block">${isEn ? 'Department / Major' : 'Program Keahlian'}</span>
+            <strong class="text-xs text-[#24140D] font-bold block">${t('about.pjblMajor')}</strong>
+          </div>
+          <div class="p-4 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52] block">${isEn ? 'Project Group' : 'Tim Pelaksana'}</span>
+            <strong class="text-xs text-[#B85C38] font-bold block">${t('about.pjblGroup')}</strong>
+          </div>
+          <div class="p-4 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#777B52] block">${isEn ? 'Core Project' : 'Karya Digital'}</span>
+            <strong class="text-xs text-[#24140D] font-bold block">LarasRasa Web Application</strong>
+          </div>
+        </div>
+      </section>
+
       <!-- Core Philosophy: Laras & Rasa -->
       <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
         <div class="bg-white p-8 rounded-3xl border border-[#C49A58]/25 shadow-xs space-y-4 flex flex-col justify-between card-hover-lift">
@@ -210,8 +252,8 @@ export async function renderAboutPage() {
                   <div class="w-14 h-14 rounded-2xl ${dev.colorBg} ${dev.colorText} font-editorial-serif text-xl font-bold flex items-center justify-center shadow-md border-2 border-white">
                     ${dev.initials}
                   </div>
-                  <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#FAF6EF] text-[#654332] border border-[#E5D9C5]">
-                    LarasRasa Core
+                  <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#FAF6EF] text-[#B85C38] border border-[#C49A58]/35 font-mono">
+                    Kelompok 2 PPLG
                   </span>
                 </div>
 

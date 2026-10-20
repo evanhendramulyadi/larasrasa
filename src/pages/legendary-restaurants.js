@@ -64,6 +64,8 @@ export async function renderLegendaryRestaurantsPage() {
               <option value="Banyumas" ${currentFilter.city === 'Banyumas' ? 'selected' : ''}>Banyumas (Purwokerto)</option>
               <option value="Pekalongan" ${currentFilter.city === 'Pekalongan' ? 'selected' : ''}>Pekalongan</option>
               <option value="Magelang" ${currentFilter.city === 'Magelang' ? 'selected' : ''}>Magelang</option>
+              <option value="Tegal" ${currentFilter.city === 'Tegal' ? 'selected' : ''}>Tegal</option>
+              <option value="Wonosobo" ${currentFilter.city === 'Wonosobo' ? 'selected' : ''}>Wonosobo</option>
             </select>
           </div>
 
