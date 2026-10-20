@@ -64,15 +64,8 @@ function renderWizardView(step) {
   return `
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 space-y-8">
       
-      <!-- Wizard Header with Javanese Heritage Backdrop -->
-      <div class="relative overflow-hidden rounded-3xl p-8 text-center max-w-3xl mx-auto border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
-        <img 
-          src="/assets/images/hero/javanese-kitchen-master.jpg" 
-          alt="Pawon Jawa Tengah LarasRasa" 
-          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#24140D] via-[#24140D]/80 to-[#24140D]/90 pointer-events-none"></div>
-
+      <!-- Wizard Header with Clean Warm Heritage Aesthetic -->
+      <div class="relative overflow-hidden rounded-3xl p-8 text-center max-w-3xl mx-auto border border-[#C49A58]/35 shadow-xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1B0F09] text-[#FAF6EF]">
         <div class="relative z-10 space-y-2">
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FAF6EF]/10 text-xs font-bold text-[#C49A58] uppercase tracking-wider border border-[#C49A58]/40">
             ${t('recommendations.badge')}
@@ -135,10 +128,10 @@ function renderWizardView(step) {
       <div class="p-4 rounded-2xl bg-[#F2E8D8]/70 border border-[#C49A58]/30 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
         <div class="flex items-center gap-2 text-[#302018]">
           <span class="text-base">✨</span>
-          <span>Ingin meracik kreasi resep orisinal Anda sendiri dengan bumbu pilihan?</span>
+          <span>${isEn ? 'Want to create your own original recipe with chosen ingredients?' : 'Ingin meracik kreasi resep orisinal Anda sendiri dengan bumbu pilihan?'}</span>
         </div>
         <a href="#/ai-food-creator" class="px-4 py-2 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] text-white font-bold shrink-0 transition-colors shadow-2xs">
-          Coba AI Food Creator &rarr;
+          ${isEn ? 'Try AI Food Creator &rarr;' : 'Coba AI Food Creator &rarr;'}
         </a>
       </div>
 
@@ -147,6 +140,8 @@ function renderWizardView(step) {
 }
 
 function renderStepContent(step) {
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+
   switch (step) {
     case 1:
       return `
@@ -160,6 +155,8 @@ function renderStepContent(step) {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
             ${flavorProfiles.map(f => {
               const isChecked = currentAnswers.flavor === f.id;
+              const fName = isEn ? (f.nameEn || f.name) : f.name;
+              const fTagline = isEn ? (f.taglineEn || f.tagline) : f.tagline;
               return `
                 <label class="wizard-option-card flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
                   isChecked 
@@ -171,8 +168,8 @@ function renderStepContent(step) {
                     ●
                   </div>
                   <div>
-                    <strong class="block text-sm text-[#302018] font-bold">${f.name}</strong>
-                    <span class="text-xs text-[#654332] leading-snug">${f.tagline}</span>
+                    <strong class="block text-sm text-[#302018] font-bold">${fName}</strong>
+                    <span class="text-xs text-[#654332] leading-snug">${fTagline}</span>
                   </div>
                 </label>
               `;
@@ -182,6 +179,27 @@ function renderStepContent(step) {
       `;
 
     case 2:
+      const timeOptions = [
+        { 
+          id: 'cepat', 
+          title: isEn ? 'Quick & Practical' : 'Praktis & Kilat', 
+          desc: isEn ? 'Under 35 mins (like crispy mendoan or speedy tahu gimbal)' : 'Kurang dari 35 menit (seperti mendoan atau tahu gimbal dadakan)', 
+          duration: isEn ? '≤ 35 Mins' : '≤ 35 Menit' 
+        },
+        { 
+          id: 'sedang', 
+          title: isEn ? 'Standard Timing' : 'Waktu Standar', 
+          desc: isEn ? '35 to 60 mins (simmered Soto Kudus broth or tender Selat Solo)' : '35 hingga 60 menit (memasak soto kuah kencur atau selat bistik)', 
+          duration: isEn ? '35 – 60 Mins' : '35 – 60 Menit' 
+        },
+        { 
+          id: 'leluasa', 
+          title: isEn ? 'Slow & Deliberate' : 'Leluasa & Khidmat', 
+          desc: isEn ? 'Over 60 mins (aromatic coconut Nasi Liwet or braised bacem)' : 'Lebih dari 60 menit (mengungkep liwet santan atau bacem legit)', 
+          duration: isEn ? '> 60 Mins' : '> 60 Menit' 
+        }
+      ];
+
       return `
         <div class="space-y-4">
           <div>
@@ -191,11 +209,7 @@ function renderStepContent(step) {
             <p class="text-xs text-[#654332]">${t('recommendations.q2Sub')}</p>
           </div>
           <div class="space-y-3 pt-2">
-            ${[
-              { id: 'cepat', title: 'Praktis & Kilat', desc: 'Kurang dari 35 menit (seperti mendoan atau tahu gimbal dadakan)', duration: '≤ 35 Menit' },
-              { id: 'sedang', title: 'Waktu Standar', desc: '35 hingga 60 menit (memasak soto kuah kencur atau selat bistik)', duration: '35 – 60 Menit' },
-              { id: 'leluasa', title: 'Leluasa & Khidmat', desc: 'Lebih dari 60 menit (mengungkep liwet santan atau bacem legit)', duration: '> 60 Menit' }
-            ].map(tim => {
+            ${timeOptions.map(tim => {
               const isChecked = currentAnswers.timeAvailable === tim.id;
               return `
                 <label class="wizard-option-card flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
@@ -240,7 +254,7 @@ function renderStepContent(step) {
                 }">
                   <input type="radio" name="servings" value="${p}" class="sr-only" ${isChecked ? 'checked' : ''}/>
                   <span class="block font-editorial-serif text-3xl font-bold text-[#302018] mb-1">${p}</span>
-                  <span class="text-xs font-semibold uppercase tracking-wider text-[#654332]">Porsi</span>
+                  <span class="text-xs font-semibold uppercase tracking-wider text-[#654332]">${isEn ? 'Servings' : 'Porsi'}</span>
                 </label>
               `;
             }).join('')}
@@ -249,6 +263,27 @@ function renderStepContent(step) {
       `;
 
     case 4:
+      const budgetOptions = [
+        { 
+          id: 'hemat', 
+          title: isEn ? 'Budget-Friendly' : 'Hemat & Ekonomis', 
+          desc: isEn ? 'Local soy & vegetable staples (tempe mendoan, tahu gimbal, megono)' : 'Bahan olahan kedelai lokal (tempe mendoan, tahu gimbal, megono)', 
+          est: isEn ? 'IDR 15k – 35k' : 'Rp 15.000 – Rp 35.000' 
+        },
+        { 
+          id: 'menengah', 
+          title: isEn ? 'Standard Family' : 'Menengah Sehari-hari', 
+          desc: isEn ? 'Free-range chicken & broths (Soto Kudus, Garang Asem, Nasi Liwet)' : 'Olahan ayam kampung & sayur berkuah (Soto Kudus, Garang Asem, Nasi Liwet)', 
+          est: isEn ? 'IDR 40k – 65k' : 'Rp 40.000 – Rp 65.000' 
+        },
+        { 
+          id: 'istimewa', 
+          title: isEn ? 'Special Heritage Feast' : 'Sajian Istimewa Ningrat', 
+          desc: isEn ? 'Spiced beef or tender lamb (Selat Solo, Sate Buntel, Tengkleng)' : 'Olahan daging sapi atau kambing berempah (Selat Solo, Sate Buntel, Tengkleng)', 
+          est: isEn ? 'IDR 70k – 95k' : 'Rp 70.000 – Rp 95.000' 
+        }
+      ];
+
       return `
         <div class="space-y-4">
           <div>
@@ -258,11 +293,7 @@ function renderStepContent(step) {
             <p class="text-xs text-[#654332]">${t('recommendations.q4Sub')}</p>
           </div>
           <div class="space-y-3 pt-2">
-            ${[
-              { id: 'hemat', title: 'Hemat & Ekonomis', desc: 'Bahan olahan kedelai lokal (tempe mendoan, tahu gimbal, megono)', est: 'Rp 15.000 – Rp 35.000' },
-              { id: 'menengah', title: 'Menengah Sehari-hari', desc: 'Olahan ayam kampung & sayur berkuah (Soto Kudus, Garang Asem, Nasi Liwet)', est: 'Rp 40.000 – Rp 65.000' },
-              { id: 'istimewa', title: 'Sajian Istimewa Ningrat', desc: 'Olahan daging sapi atau kambing berempah (Selat Solo, Sate Buntel, Tengkleng)', est: 'Rp 70.000 – Rp 95.000' }
-            ].map(b => {
+            ${budgetOptions.map(b => {
               const isChecked = currentAnswers.budget === b.id;
               return `
                 <label class="wizard-option-card flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${

@@ -25,11 +25,11 @@ export { ingredientService };
 
 export const PREFERENCE_OPTIONS = {
   cookingMethods: [
-    { id: 'tumis', labelId: 'Tumis Cepat Beraroma', labelEn: 'Quick Aromatic Stir-fry', descId: 'Minyak panas, bumbu rajang halus, tekstur renyah segar.' },
-    { id: 'ungkep', labelId: 'Ungkep & Rebus Kuah Kaldu', labelEn: 'Slow Braise & Savory Broth', descId: 'Api kecil, kuah meresap hingga ke serat terdalam.' },
-    { id: 'kukus', labelId: 'Kukus Bungkus Daun Pisang', labelEn: 'Steam in Banana Leaf', descId: 'Aroma daun pisang layu menyatu dengan sari bumbu alami.' },
-    { id: 'bakar', labelId: 'Panggang / Bakar Arang Batok', labelEn: 'Charcoal Grill & Glaze', descId: 'Karamelisasi kecap manis dan asap arang menggoda selera.' },
-    { id: 'goreng', labelId: 'Goreng Krispi / Mendoan Lembut', labelEn: 'Crispy / Soft Pan-fry', descId: 'Lapisan tepung berempah gurih dengan sentuhan daun bawang.' }
+    { id: 'tumis', labelId: 'Tumis Cepat Beraroma', labelEn: 'Quick Aromatic Stir-fry', descId: 'Minyak panas, bumbu rajang halus, tekstur renyah segar.', descEn: 'Hot oil, finely minced spices, fresh crisp texture.' },
+    { id: 'ungkep', labelId: 'Ungkep & Rebus Kuah Kaldu', labelEn: 'Slow Braise & Savory Broth', descId: 'Api kecil, kuah meresap hingga ke serat terdalam.', descEn: 'Low simmer, rich infusion penetrating deep into fibers.' },
+    { id: 'kukus', labelId: 'Kukus Bungkus Daun Pisang', labelEn: 'Steam in Banana Leaf', descId: 'Aroma daun pisang layu menyatu dengan sari bumbu alami.', descEn: 'Wilted banana leaf aroma fusing with natural spiced essences.' },
+    { id: 'bakar', labelId: 'Panggang / Bakar Arang Batok', labelEn: 'Charcoal Grill & Glaze', descId: 'Karamelisasi kecap manis dan asap arang menggoda selera.', descEn: 'Sweet soy caramelization and alluring coconut charcoal smokiness.' },
+    { id: 'goreng', labelId: 'Goreng Krispi / Mendoan Lembut', labelEn: 'Crispy / Soft Pan-fry', descId: 'Lapisan tepung berempah gurih dengan sentuhan daun bawang.', descEn: 'Savory spiced batter crust with scallion accents.' }
   ],
   dishCategories: [
     { id: 'lauk', labelId: 'Lauk Utama Dapur', labelEn: 'Main Dish' },
@@ -537,8 +537,7 @@ export const aiFoodCreatorService = {
 
   /**
    * Composes a professional culinary poster using HTML5 Canvas.
-   * Renders the food imagery, decorative Javanese border, Playfair Display typography,
-   * badges, and crisp "Created by [Creator Name]" attribution.
+   * Minimalist dark template design (solid black image area) ready for Supabase data.
    */
   async composePosterCanvas(canvas, recipe, options = {}) {
     if (!canvas || !recipe) return;
@@ -553,72 +552,44 @@ export const aiFoodCreatorService = {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Load base image
-    const img = new Image();
-    const imgSrc = recipe.baseImage || '/assets/images/hero/hero-culinary.jpg';
-    if (imgSrc.startsWith('http://') || imgSrc.startsWith('https://')) {
-      img.crossOrigin = 'anonymous';
-    }
+    // 1. Solid Pure Black / Dark Elegant Background Fill (Sesuai instruksi: kosongin hitam aja)
+    ctx.fillStyle = '#0F0C0A';
+    ctx.fillRect(0, 0, width, height);
 
-    await new Promise((resolve) => {
-      img.onload = () => resolve(true);
-      img.onerror = () => {
-        // Fallback to solid background if image fails
-        resolve(false);
-      };
-      img.src = imgSrc;
-    });
+    // Subtle dark radial depth
+    const darkGrad = ctx.createRadialGradient(width / 2, height / 2, width * 0.1, width / 2, height / 2, width * 0.75);
+    darkGrad.addColorStop(0, '#1A1410');
+    darkGrad.addColorStop(1, '#080605');
+    ctx.fillStyle = darkGrad;
+    ctx.fillRect(0, 0, width, height);
 
-    // 1. Draw Food Image (Cover Fill)
-    if (img.width > 0) {
-      const scale = Math.max(width / img.width, height / img.height);
-      const x = (width / 2) - (img.width / 2) * scale;
-      const y = (height / 2) - (img.height / 2) * scale;
-      ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-    } else {
-      ctx.fillStyle = '#302018';
-      ctx.fillRect(0, 0, width, height);
-    }
+    // 2. Black Placeholder Center Box for Food Photograph
+    const photoBoxW = Math.round(width * 0.72);
+    const photoBoxH = Math.round(photoBoxW * 0.58);
+    const photoBoxX = Math.round((width - photoBoxW) / 2);
+    const photoBoxY = Math.round(height * 0.22);
 
-    // 2. Visual Style Filters & Tints
-    const style = options.imageStyle || recipe.imageStyle || 'editorial';
-    if (style === 'oil-painting') {
-      // Warm amber painterly wash
-      ctx.fillStyle = 'rgba(196, 154, 88, 0.22)';
-      ctx.fillRect(0, 0, width, height);
-      // Soft sepia overlay
-      ctx.fillStyle = 'rgba(48, 32, 24, 0.35)';
-      ctx.fillRect(0, 0, width, height);
-    } else if (style === 'fine-dining') {
-      // Heavy dramatic moody vignette
-      const radGrad = ctx.createRadialGradient(width / 2, height * 0.4, 80, width / 2, height * 0.45, width * 0.7);
-      radGrad.addColorStop(0, 'rgba(0, 0, 0, 0.05)');
-      radGrad.addColorStop(1, 'rgba(15, 10, 8, 0.85)');
-      ctx.fillStyle = radGrad;
-      ctx.fillRect(0, 0, width, height);
-    } else if (style === 'batik-art') {
-      // Warm terracotta wash
-      ctx.fillStyle = 'rgba(184, 92, 56, 0.18)';
-      ctx.fillRect(0, 0, width, height);
-    }
+    ctx.save();
+    ctx.fillStyle = '#050403';
+    ctx.fillRect(photoBoxX, photoBoxY, photoBoxW, photoBoxH);
+    ctx.strokeStyle = 'rgba(196, 154, 88, 0.35)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(photoBoxX, photoBoxY, photoBoxW, photoBoxH);
 
-    // 3. Vignette & Typography Backdrop Gradients
-    // Top gradient for branding readability
-    const topGrad = ctx.createLinearGradient(0, 0, 0, height * 0.28);
-    topGrad.addColorStop(0, 'rgba(15, 10, 7, 0.88)');
-    topGrad.addColorStop(0.7, 'rgba(30, 20, 14, 0.55)');
-    topGrad.addColorStop(1, 'rgba(30, 20, 14, 0)');
-    ctx.fillStyle = topGrad;
-    ctx.fillRect(0, 0, width, height * 0.28);
+    // Placeholder Camera Icon & Text inside box
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(196, 154, 88, 0.6)';
+    ctx.font = '28px sans-serif';
+    ctx.fillText('📷', width / 2, photoBoxY + (photoBoxH / 2) - 10);
 
-    // Bottom gradient for title and creator badge readability
-    const botGrad = ctx.createLinearGradient(0, height * 0.42, 0, height);
-    botGrad.addColorStop(0, 'rgba(15, 10, 7, 0)');
-    botGrad.addColorStop(0.4, 'rgba(15, 10, 7, 0.75)');
-    botGrad.addColorStop(0.85, 'rgba(15, 10, 7, 0.94)');
-    botGrad.addColorStop(1, 'rgba(10, 6, 4, 0.98)');
-    ctx.fillStyle = botGrad;
-    ctx.fillRect(0, height * 0.42, width, height * 0.58);
+    ctx.fillStyle = '#C49A58';
+    ctx.font = 'bold 15px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('[AREA GAMBAR HIDANGAN - KOSONG HITAM]', width / 2, photoBoxY + (photoBoxH / 2) + 22);
+
+    ctx.fillStyle = 'rgba(250, 246, 239, 0.45)';
+    ctx.font = '11px "Plus Jakarta Sans", sans-serif';
+    ctx.fillText('Default Template Placeholder • Siap Diisi Data Visual', width / 2, photoBoxY + (photoBoxH / 2) + 40);
+    ctx.restore();
 
     // 4. Traditional Javanese Ornamental Borders
     const padding = 34;
@@ -770,7 +741,7 @@ export const aiFoodCreatorService = {
    * Download the food poster canvas as a high-resolution PNG or JPEG file.
    */
   downloadPoster(canvas, recipeTitle, format = 'png') {
-    if (!canvas) return;
+    if (!canvas) return false;
 
     const safeTitle = (recipeTitle || 'larasrasa-poster')
       .toLowerCase()
@@ -780,7 +751,7 @@ export const aiFoodCreatorService = {
     const isJpeg = format === 'jpeg' || format === 'jpg';
     const mimeType = isJpeg ? 'image/jpeg' : 'image/png';
     const ext = isJpeg ? 'jpg' : 'png';
-    const quality = isJpeg ? 0.92 : undefined;
+    const quality = isJpeg ? 0.95 : undefined;
 
     const triggerDownload = (url) => {
       const link = document.createElement('a');
@@ -792,27 +763,83 @@ export const aiFoodCreatorService = {
     };
 
     try {
-      canvas.toBlob((blob) => {
-        if (!blob) {
-          try {
-            const dataUrl = canvas.toDataURL(mimeType, quality);
-            triggerDownload(dataUrl);
-          } catch (e) {
-            console.error('Canvas export error:', e);
-          }
-          return;
-        }
-        const url = URL.createObjectURL(blob);
-        triggerDownload(url);
-        setTimeout(() => URL.revokeObjectURL(url), 3000);
-      }, mimeType, quality);
+      const dataUrl = canvas.toDataURL(mimeType, quality);
+      triggerDownload(dataUrl);
+      return true;
     } catch (err) {
+      console.warn('Direct toDataURL failed, attempting toBlob fallback:', err);
       try {
-        const dataUrl = canvas.toDataURL(mimeType, quality);
-        triggerDownload(dataUrl);
-      } catch (e) {
-        console.error('Canvas fallback export error:', e);
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            triggerDownload(url);
+            setTimeout(() => URL.revokeObjectURL(url), 5000);
+          }
+        }, mimeType, quality);
+        return true;
+      } catch (blobErr) {
+        console.error('Canvas export error:', blobErr);
+        return false;
       }
+    }
+  },
+
+  /**
+   * Export recipe data as a clean JSON schema document ready for database mapping.
+   */
+  downloadRecipeJson(recipe) {
+    if (!recipe) return false;
+    const safeTitle = (recipe.shortTitle || recipe.title || 'resep')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
+    const payload = {
+      template_version: '1.0',
+      schema: 'larasrasa_recipe_entity',
+      data: {
+        id: recipe.id,
+        slug: recipe.slug,
+        title: recipe.title,
+        short_title: recipe.shortTitle,
+        javanese_title: recipe.javaneseTitle,
+        creator_name: recipe.creatorName,
+        creator_nickname: recipe.creatorNickname,
+        description: recipe.description,
+        region_name: recipe.regionName,
+        servings: recipe.servings,
+        prep_time: recipe.prepTime,
+        cook_time: recipe.cookTime,
+        total_time: recipe.totalTime,
+        estimated_cost: recipe.estimatedCost,
+        difficulty: recipe.difficulty,
+        spice_level: recipe.spiceLevel,
+        cooking_method: recipe.cookingMethod,
+        dish_category: recipe.dishCategory,
+        taste_profile: recipe.tasteProfile,
+        ingredients: recipe.ingredients,
+        steps: recipe.steps,
+        chef_tips: recipe.chefTips,
+        safety_notes: recipe.safetyNotes,
+        created_at: recipe.createdAt || new Date().toISOString()
+      }
+    };
+
+    try {
+      const jsonStr = JSON.stringify(payload, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `larasrasa-${safeTitle}-template.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      return true;
+    } catch (err) {
+      console.error('JSON export error:', err);
+      return false;
     }
   },
 
@@ -945,7 +972,10 @@ export const aiFoodCreatorService = {
       doc.text(`${ing.amount} ${ing.unit}`, ingX + 4, ingY);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(80, 50, 35);
-      doc.text(` ${ing.name} (${ing.note})`, ingX + 24, ingY);
+      const noteStr = ing.note ? ` (${ing.note})` : '';
+      const maxTextWidth = colWidth - 28;
+      const ingLabel = doc.splitTextToSize(`${ing.name}${noteStr}`, maxTextWidth)[0] || ing.name;
+      doc.text(` ${ingLabel}`, ingX + 24, ingY);
     });
 
     // --- Page 2: Cooking Steps & Kitchen Secrets ---

@@ -1,10 +1,10 @@
 import { restaurantService } from '../services/restaurantService.js';
 import { renderRestaurantCard } from '../components/restaurant-card.js';
-import { t } from '../i18n/index.js';
+import { i18n, t } from '../i18n/index.js';
 
 /**
- * Restoran Legendaris (Verified Historic Culinary Destinations Discovery)
- * Clean, card-based responsive discovery experience without map dependency.
+ * Direktori Restoran Legendaris Jawa Tengah
+ * Clean, modern, responsive, and fully localized.
  */
 
 let currentFilter = {
@@ -14,6 +14,7 @@ let currentFilter = {
 };
 
 export async function renderLegendaryRestaurantsPage() {
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
   const restaurantsList = await restaurantService.getRestaurants(currentFilter);
 
   const categories = [
@@ -26,15 +27,8 @@ export async function renderLegendaryRestaurantsPage() {
   return `
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       
-      <!-- Page Header with Javanese Heritage Backdrop -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-[#24140D] text-[#FAF6EF]">
-        <img 
-          src="/assets/images/hero/javanese-kitchen-master.jpg" 
-          alt="Restoran Legendaris Jawa Tengah" 
-          class="absolute inset-0 w-full h-full object-cover opacity-35 filter brightness-[0.8] contrast-[1.1] pointer-events-none"
-        />
-        <div class="absolute inset-0 bg-gradient-to-r from-[#24140D] via-[#24140D]/85 to-transparent pointer-events-none"></div>
-
+      <!-- Page Header with Clean Warm Heritage Aesthetic -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#C49A58]/35 shadow-xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1B0F09] text-[#FAF6EF]">
         <div class="relative z-10 space-y-3 max-w-2xl">
           <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FAF6EF]/10 border border-[#C49A58]/40 text-xs font-bold text-[#C49A58] uppercase tracking-wider">
             <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="currentColor">
@@ -93,11 +87,13 @@ export async function renderLegendaryRestaurantsPage() {
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span id="restaurants-count-label">
-              Menampilkan <strong class="text-[#302018]">${restaurantsList.length}</strong> warung & restoran legendaris terverifikasi
+              ${isEn 
+                ? `Showing <strong class="text-[#302018]">${restaurantsList.length}</strong> legendary culinary destinations` 
+                : `Menampilkan <strong class="text-[#302018]">${restaurantsList.length}</strong> tempat makan legendaris`}
             </span>
           </div>
           <span class="text-[11px] text-[#777B52] italic">
-            Klik "Buka di Peta" pada kartu untuk melihat rute navigasi Google Maps
+            ${isEn ? 'Click "Open in Map" on any card for navigation' : 'Klik "Buka di Peta" pada kartu untuk melihat rute navigasi'}
           </span>
         </div>
 
@@ -108,23 +104,10 @@ export async function renderLegendaryRestaurantsPage() {
         ${restaurantsList.length > 0 ? restaurantsList.map(r => renderRestaurantCard(r)).join('') : `
           <div class="col-span-full p-12 text-center rounded-3xl bg-white border border-[#C49A58]/20 space-y-3">
             <span class="text-3xl">🍲</span>
-            <h3 class="font-editorial-serif text-lg font-bold text-[#302018]">Tidak Ada Restoran Ditemukan</h3>
-            <p class="text-xs text-[#654332]">Coba ubah kata kunci pencarian atau pilih kota lainnya.</p>
+            <h3 class="font-editorial-serif text-lg font-bold text-[#302018]">${isEn ? 'No Destinations Found' : 'Tidak Ada Tempat Kuliner Ditemukan'}</h3>
+            <p class="text-xs text-[#654332]">${isEn ? 'Try adjusting your search terms or selecting another city.' : 'Coba ubah kata kunci pencarian atau pilih kota lainnya.'}</p>
           </div>
         `}
-      </div>
-
-      <!-- Verifiable Sources & Heritage Integrity Guarantee Box -->
-      <div class="p-6 rounded-3xl bg-[#F2E8D8]/70 border border-[#C49A58]/30 space-y-2 text-xs text-[#654332]">
-        <h4 class="font-bold text-[#302018] uppercase tracking-wider flex items-center gap-2">
-          <svg class="w-4 h-4 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          </svg>
-          ${t('restaurantsSection.integrityTitle')}
-        </h4>
-        <p class="leading-relaxed">
-          ${t('restaurantsSection.integrityText')}
-        </p>
       </div>
 
     </div>
@@ -137,12 +120,15 @@ export function initLegendaryRestaurantsInteractions() {
   const resetBtn = document.getElementById('restaurant-reset-btn');
 
   async function updateList() {
+    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
     const list = await restaurantService.getRestaurants(currentFilter);
     const grid = document.getElementById('restaurants-grid');
     const countLabel = document.getElementById('restaurants-count-label');
 
     if (countLabel) {
-      countLabel.innerHTML = `Menampilkan <strong class="text-[#302018]">${list.length}</strong> warung & restoran legendaris terverifikasi`;
+      countLabel.innerHTML = isEn 
+        ? `Showing <strong class="text-[#302018]">${list.length}</strong> legendary culinary destinations` 
+        : `Menampilkan <strong class="text-[#302018]">${list.length}</strong> tempat makan legendaris`;
     }
 
     if (grid) {
@@ -152,8 +138,8 @@ export function initLegendaryRestaurantsInteractions() {
         grid.innerHTML = `
           <div class="col-span-full p-12 text-center rounded-3xl bg-white border border-[#C49A58]/20 space-y-3">
             <span class="text-3xl">🍲</span>
-            <h3 class="font-editorial-serif text-lg font-bold text-[#302018]">Tidak Ada Restoran Ditemukan</h3>
-            <p class="text-xs text-[#654332]">Coba ubah kata kunci pencarian atau pilih kota lainnya.</p>
+            <h3 class="font-editorial-serif text-lg font-bold text-[#302018]">${isEn ? 'No Destinations Found' : 'Tidak Ada Tempat Kuliner Ditemukan'}</h3>
+            <p class="text-xs text-[#654332]">${isEn ? 'Try adjusting your search terms or selecting another city.' : 'Coba ubah kata kunci pencarian atau pilih kota lainnya.'}</p>
           </div>
         `;
       }
