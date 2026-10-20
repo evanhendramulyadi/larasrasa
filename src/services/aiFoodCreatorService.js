@@ -555,7 +555,10 @@ export const aiFoodCreatorService = {
 
     // Load base image
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    const imgSrc = recipe.baseImage || '/assets/images/hero/hero-culinary.jpg';
+    if (imgSrc.startsWith('http://') || imgSrc.startsWith('https://')) {
+      img.crossOrigin = 'anonymous';
+    }
 
     await new Promise((resolve) => {
       img.onload = () => resolve(true);
@@ -563,7 +566,7 @@ export const aiFoodCreatorService = {
         // Fallback to solid background if image fails
         resolve(false);
       };
-      img.src = recipe.baseImage || '/assets/images/hero/hero-culinary.jpg';
+      img.src = imgSrc;
     });
 
     // 1. Draw Food Image (Cover Fill)
@@ -779,17 +782,38 @@ export const aiFoodCreatorService = {
     const ext = isJpeg ? 'jpg' : 'png';
     const quality = isJpeg ? 0.92 : undefined;
 
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const url = URL.createObjectURL(blob);
+    const triggerDownload = (url) => {
       const link = document.createElement('a');
       link.href = url;
       link.download = `larasrasa-${safeTitle}-poster.${ext}`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
-    }, mimeType, quality);
+    };
+
+    try {
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          try {
+            const dataUrl = canvas.toDataURL(mimeType, quality);
+            triggerDownload(dataUrl);
+          } catch (e) {
+            console.error('Canvas export error:', e);
+          }
+          return;
+        }
+        const url = URL.createObjectURL(blob);
+        triggerDownload(url);
+        setTimeout(() => URL.revokeObjectURL(url), 3000);
+      }, mimeType, quality);
+    } catch (err) {
+      try {
+        const dataUrl = canvas.toDataURL(mimeType, quality);
+        triggerDownload(dataUrl);
+      } catch (e) {
+        console.error('Canvas fallback export error:', e);
+      }
+    }
   },
 
   /**

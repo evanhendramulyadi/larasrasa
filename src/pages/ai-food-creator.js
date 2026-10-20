@@ -12,15 +12,15 @@ import { i18n, t } from '../i18n/index.js';
  * Interactive Culinary Studio:
  * - Creator identity input with real-time feedback
  * - Searchable, categorized authentic Central Javanese ingredient selection with real photographs
- * - Culinary preferences: method, category, taste profile, spice level, duration, equipment, dietary
- * - Empty state output dashboard ready for Supabase backend integration
- * - Zero bugs, responsive design, intuitive UX
+ * - Culinary preferences: method, category, taste profile, spice level, free servings input (1-100), equipment, notes
+ * - High-DPI HTML5 Canvas poster composer
+ * - 100% Functional download actions: PNG, JPEG, PDF Recipe Document, and A4 Creator Certificate
+ * - Zero external backend dependencies or database placeholders (Pure polished frontend)
  */
 
 // Transient Page State
 let activeTab = 'all'; // 'all', 'protein', 'spice', 'vegetable'
 let searchQuery = '';
-let currentStudioView = 'form'; // 'form' | 'output'
 let formState = {
   creatorName: '',
   creatorNickname: '',
@@ -39,17 +39,68 @@ let formState = {
   outputLanguage: 'id'
 };
 
+let currentGeneratedRecipe = null;
+let isGenerating = false;
 let validationMessage = null;
 let toastMessage = null;
 
 export async function renderAiFoodCreatorPage() {
   const currentLang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
 
-  if (currentStudioView === 'output') {
-    return renderEmptyOutputView(currentLang);
+  if (isGenerating) {
+    return renderGeneratingState(currentLang);
+  }
+
+  if (currentGeneratedRecipe) {
+    return renderResultView(currentGeneratedRecipe, currentLang);
   }
 
   return renderFormView(currentLang);
+}
+
+/**
+ * Generating State with Javanese Culinary Animation
+ */
+function renderGeneratingState(currentLang) {
+  const isEn = currentLang === 'en';
+  return `
+    <div class="max-w-3xl mx-auto px-4 py-24 text-center space-y-6 animate-fade-in">
+      <div class="relative w-24 h-24 mx-auto">
+        <div class="absolute inset-0 rounded-3xl bg-[#C49A58]/20 animate-ping"></div>
+        <div class="w-24 h-24 rounded-3xl bg-[#24140D] border-2 border-[#C49A58] text-[#C49A58] flex items-center justify-center mx-auto shadow-2xl text-4xl">
+          <svg class="w-12 h-12 text-[#C49A58] animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+            <path d="M12 2a10 10 0 0 1 10 10"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#FAF6EF] border border-[#C49A58]/40 text-xs font-bold text-[#B85C38] uppercase tracking-wider shadow-2xs">
+          <span>✨</span>
+          <span>${isEn ? 'Culinary Synthesis in Progress' : 'Studio Sintesis Rasa LarasRasa'}</span>
+        </span>
+        <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#24140D]">
+          ${isEn ? 'Harmonizing Your Original Recipe...' : 'Menyelaraskan Bumbu & Meracik Resep...'}
+        </h2>
+        <p class="text-xs sm:text-sm text-[#523424] max-w-md mx-auto leading-relaxed">
+          ${isEn 
+            ? 'Analyzing traditional spice ratios, calculating exact gram measurements for your servings, and preparing high-DPI canvas visuals.'
+            : 'Menganalisis keseimbangan rempah, menakar gramasi takaran bahan, dan menyusun template resep resmi untuk kreasi Anda.'}
+        </p>
+      </div>
+
+      <div class="max-w-xs mx-auto pawon-glass p-4 rounded-2xl border border-[#C49A58]/35 text-xs text-[#523424] space-y-2 shadow-sm">
+        <div class="flex items-center justify-between font-bold">
+          <span>${isEn ? 'Balancing Palate Spectrum' : 'Penyelarasan Spektrum Bumbu'}</span>
+          <span class="text-[#B85C38] font-mono">100%</span>
+        </div>
+        <div class="w-full bg-[#FAF6EF] h-2.5 rounded-full overflow-hidden border border-[#E5D9C5]">
+          <div class="bg-gradient-to-r from-[#C49A58] via-[#B85C38] to-[#656C42] h-full rounded-full animate-pulse" style="width: 100%"></div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 /**
@@ -104,43 +155,22 @@ function renderFormView(currentLang) {
           </h1>
           <p class="text-sm sm:text-base text-[#FAF6EF]/85 leading-relaxed">
             ${isEn
-              ? 'Select authentic regional ingredients, calibrate traditional flavors, and configure your culinary blueprint ready for Supabase backend synthesis.'
-              : 'Pilih bahan & rempah otentik Jawa Tengah, atur karakter rasa khas pawon tradisional, dan siapkan parameter resep yang siap disinkronkan ke backend Supabase.'}
+              ? 'Select authentic regional ingredients, calibrate traditional flavors, set your custom portions, and generate an official recipe template complete with poster and certificates.'
+              : 'Pilih bahan & rempah otentik Jawa Tengah, atur karakter rasa khas pawon tradisional, tentukan porsi bebas sesuai selera, dan hasilkan blueprint resep siap masak beserta poster kanvas resmi.'}
           </p>
         </div>
       </div>
 
-      <!-- Studio Mode Navigation Tabs -->
-      <div class="flex items-center justify-center gap-3">
-        <div class="inline-flex p-1.5 rounded-2xl bg-white/90 border border-[#C49A58]/30 shadow-xs text-xs font-bold">
-          <button 
-            type="button" 
-            id="tab-view-form-btn"
-            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 ${
-              currentStudioView === 'form' 
-                ? 'bg-[#24140D] text-white shadow-xs' 
-                : 'text-[#523424] hover:text-[#B85C38]'
-            }"
-          >
-            <span>🎨</span>
-            <span>${isEn ? '1. Recipe Parameters & Spices' : '1. Racik Bahan & Preferensi'}</span>
-          </button>
-          
-          <button 
-            type="button" 
-            id="tab-view-output-btn"
-            class="px-5 py-2.5 rounded-xl transition-all flex items-center gap-2 ${
-              currentStudioView === 'output' 
-                ? 'bg-[#24140D] text-white shadow-xs' 
-                : 'text-[#523424] hover:text-[#B85C38]'
-            }"
-          >
-            <span>⚡</span>
-            <span>${isEn ? '2. AI Output (Supabase Ready)' : '2. Output Resep AI (Supabase)'}</span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] bg-[#B85C38] text-white">Standby</span>
-          </button>
+      <!-- Toast Feedback Message -->
+      ${toastMessage ? `
+        <div class="max-w-4xl mx-auto p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs flex items-center justify-between shadow-xs">
+          <div class="flex items-center gap-2 font-medium">
+            <span>✓</span>
+            <span>${toastMessage}</span>
+          </div>
+          <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm cursor-pointer">&times;</button>
         </div>
-      </div>
+      ` : ''}
 
       <!-- Validation Error Banner -->
       ${validationMessage ? `
@@ -149,7 +179,7 @@ function renderFormView(currentLang) {
             <span class="text-base">⚠️</span>
             <span>${validationMessage}</span>
           </div>
-          <button type="button" id="dismiss-val-btn" class="text-rose-600 hover:text-rose-900 font-bold ml-2 text-sm">&times;</button>
+          <button type="button" id="dismiss-val-btn" class="text-rose-600 hover:text-rose-900 font-bold ml-2 text-sm cursor-pointer">&times;</button>
         </div>
       ` : ''}
 
@@ -186,8 +216,8 @@ function renderFormView(currentLang) {
               />
               <p class="text-[11px] text-[#523424]/80">
                 ${isEn 
-                  ? 'This name will be saved in the Supabase user_recipes table.' 
-                  : 'Nama ini disimpan pada record tabel database Supabase dan dicantumkan pada poster kreasi.'}
+                  ? 'This name will be credited on the official recipe document and creator certificate.' 
+                  : 'Nama ini dicantumkan pada poster kreasi resmi dan piagam apresiasi pencipta resep.'}
               </p>
             </div>
 
@@ -248,7 +278,7 @@ function renderFormView(currentLang) {
                 if (!item) return '';
                 return `
                   <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-[#C49A58]/40 text-xs font-semibold text-[#24140D] shadow-2xs">
-                    <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${item.nameId}" class="w-4 h-4 rounded-full object-cover"/>
+                    <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${item.nameId}" class="w-4 h-4 rounded-full object-cover" onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
                     <span>${isEn ? (item.nameEn || item.nameId) : item.nameId}</span>
                     <button type="button" data-remove-ingredient="${item.id}" class="text-[#B85C38] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
                   </span>
@@ -298,34 +328,36 @@ function renderFormView(currentLang) {
                 <button 
                   type="button" 
                   data-ingredient-id="${item.id}"
-                  class="rempah-pill-btn group p-2.5 rounded-2xl border text-left flex flex-col justify-between transition-all duration-200 relative overflow-hidden cursor-pointer ${
+                  class="group relative text-left p-2.5 rounded-2xl border transition-all flex flex-col justify-between cursor-pointer ${
                     isSelected 
-                      ? 'bg-[#24140D] text-[#FAF6EF] border-[#B85C38] shadow-md ring-2 ring-[#B85C38]' 
-                      : 'bg-white hover:bg-[#FAF6EF] text-[#24140D] border-[#E5D9C5] hover:border-[#C49A58] shadow-2xs'
+                      ? 'bg-[#24140D] text-white border-[#B85C38] ring-2 ring-[#B85C38] shadow-md' 
+                      : 'bg-white hover:bg-[#FAF6EF] text-[#24140D] border-[#E5D9C5] hover:border-[#C49A58]'
                   }"
                 >
-                  <div class="relative w-full h-24 rounded-xl overflow-hidden bg-[#FAF6EF] border border-[#E5D9C5]/60 mb-2">
+                  <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-2 bg-[#FAF6EF] border border-[#E5D9C5]">
                     <img 
                       src="${imgSrc}" 
-                      alt="${escapeHtml(item.nameId)}" 
-                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      alt="${item.nameId}" 
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       loading="lazy"
                       onerror="this.src='/assets/images/hero/hero-culinary.jpg'"
                     />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
-                    <div class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold shadow-xs transition-colors ${
-                      isSelected ? 'bg-[#B85C38] border-white text-white' : 'bg-white/80 border-[#C49A58]/50 text-transparent'
-                    }">✓</div>
-                    <span class="absolute bottom-1 left-1 px-1.5 py-0.5 rounded-md bg-[#24140D]/80 backdrop-blur-xs text-[9px] text-white">
-                      ${item.category === 'spice' ? 'Rempah' : item.category === 'protein' ? 'Protein' : 'Pelengkap'}
+                    <span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                      isSelected ? 'bg-[#B85C38] text-white shadow-xs' : 'bg-black/40 text-white backdrop-blur-xs'
+                    }">
+                      ${isSelected ? '✓' : '+'}
                     </span>
                   </div>
-                  <div class="px-1 flex-1 flex flex-col justify-between">
-                    <div class="text-xs font-bold leading-tight line-clamp-1">
+
+                  <div class="space-y-0.5">
+                    <span class="text-[10px] font-mono uppercase tracking-wider block ${isSelected ? 'text-[#C49A58]' : 'text-[#656C42]'}">
+                      ${item.category}
+                    </span>
+                    <strong class="text-xs font-bold block line-clamp-1 leading-snug">
                       ${isEn ? (item.nameEn || item.nameId) : item.nameId}
-                    </div>
-                    <span class="text-[10px] ${isSelected ? 'text-[#C49A58]' : 'text-[#656C42]'} line-clamp-1 mt-1 block">
-                      ${item.flavorNote || item.description || ''}
+                    </strong>
+                    <span class="text-[10px] block line-clamp-1 ${isSelected ? 'text-white/70' : 'text-[#523424]/75'}">
+                      ${item.flavorNote || ''}
                     </span>
                   </div>
                 </button>
@@ -334,19 +366,19 @@ function renderFormView(currentLang) {
           </div>
         </section>
 
-        <!-- SECTION 3: Culinary Preferences -->
-        <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-8">
+        <!-- SECTION 3: Culinary Style & Portions -->
+        <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6">
           <div class="pb-4 border-b border-[#E5D9C5]">
-            <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Langkah 3 • Filosofi Dapur & Teknik Masak</span>
+            <span class="text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">Langkah 3 • Teknik Olah & Takaran Bebas</span>
             <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#24140D]">
-              ${isEn ? '3. Cooking Method & Flavor Profile' : '3. Karakter Rasa & Teknik Pengolahan'}
+              ${isEn ? '3. Culinary Technique & Servings' : '3. Karakter Olahan Pawon & Porsi'}
             </h2>
           </div>
 
           <!-- Cooking Method -->
-          <div class="space-y-3">
+          <div class="space-y-2">
             <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
-              ${isEn ? 'Cooking Method' : 'Metode Utama Pengolahan Tradisional'}
+              ${isEn ? 'Cooking Technique' : 'Metode Memasak Tradisional'}
             </label>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
               ${PREFERENCE_OPTIONS.cookingMethods.map(m => {
@@ -413,29 +445,77 @@ function renderFormView(currentLang) {
             </div>
           </div>
 
-          <!-- Servings & Target Duration -->
+          <!-- FREE NUMERIC SERVINGS INPUT & CUSTOM NOTES -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-            <!-- Servings -->
+            
+            <!-- Free Custom Servings Input (No restrictive buttons, freely typed with reasonable min-max) -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
-                ${isEn ? 'Target Servings' : 'Porsi Santapan'}
-              </label>
-              <div class="grid grid-cols-5 gap-2">
-                ${PREFERENCE_OPTIONS.servings.map(s => {
-                  const isSelected = formState.servings === s;
-                  return `
-                    <label class="p-2.5 rounded-xl border text-center font-bold text-xs cursor-pointer transition-all ${
-                      isSelected 
-                        ? 'bg-[#B85C38] text-white border-[#B85C38] shadow-xs' 
-                        : 'bg-white text-[#24140D] border-[#E5D9C5]'
-                    }">
-                      <input type="radio" name="servings" value="${s}" ${isSelected ? 'checked' : ''} class="sr-only"/>
-                      <div>${s}</div>
-                      <div class="text-[9px] font-normal opacity-85">${isEn ? 'srv' : 'porsi'}</div>
-                    </label>
-                  `;
-                }).join('')}
+              <div class="flex items-center justify-between">
+                <label for="creator-servings-input" class="block text-xs font-bold text-[#24140D] uppercase tracking-wider">
+                  ${isEn ? 'Target Servings (Free Input)' : 'Porsi Santapan (Bebas Masukkan)'}
+                </label>
+                <span class="text-[10px] text-[#B85C38] font-bold">
+                  ${isEn ? 'Min 1 – Max 100' : 'Batas: Min. 1 s/d 100 Porsi'}
+                </span>
               </div>
+
+              <!-- Interactive Stepper with Direct Input -->
+              <div class="flex items-center gap-3">
+                <div class="inline-flex items-center rounded-xl border border-[#E5D9C5] bg-white p-1 shadow-xs">
+                  <button 
+                    type="button" 
+                    id="creator-servings-dec-btn"
+                    class="w-10 h-10 rounded-lg flex items-center justify-center text-[#654332] hover:bg-[#FAF6EF] active:bg-[#E5D9C5] font-bold text-base transition-all cursor-pointer"
+                    aria-label="Kurangi porsi"
+                  >
+                    &minus;
+                  </button>
+
+                  <div class="relative flex items-center px-2">
+                    <input 
+                      type="number" 
+                      id="creator-servings-input" 
+                      name="servings"
+                      min="1" 
+                      max="100" 
+                      value="${formState.servings || 4}"
+                      class="w-20 text-center font-bold text-base text-[#24140D] bg-transparent outline-none py-1.5 focus:ring-1 focus:ring-[#B85C38] rounded-md"
+                    />
+                    <span class="text-xs font-bold text-[#8C624D] pr-2 pointer-events-none">
+                      ${isEn ? 'servings' : 'porsi'}
+                    </span>
+                  </div>
+
+                  <button 
+                    type="button" 
+                    id="creator-servings-inc-btn"
+                    class="w-10 h-10 rounded-lg flex items-center justify-center text-[#654332] hover:bg-[#FAF6EF] active:bg-[#E5D9C5] font-bold text-base transition-all cursor-pointer"
+                    aria-label="Tambah porsi"
+                  >
+                    &#43;
+                  </button>
+                </div>
+
+                <!-- Quick Preset Pills -->
+                <div class="flex items-center flex-wrap gap-1.5">
+                  ${[2, 4, 8, 20].map(p => `
+                    <button 
+                      type="button" 
+                      data-creator-quick-porsi="${p}"
+                      class="px-2.5 py-1.5 rounded-lg border border-[#E5D9C5] bg-white hover:bg-[#FAF6EF] text-[#523424] text-xs font-semibold shadow-2xs transition-all cursor-pointer ${
+                        formState.servings === p ? 'border-[#B85C38] text-[#B85C38] font-bold' : ''
+                      }"
+                    >
+                      ${p}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+              <p class="text-[11px] text-[#523424]/80">
+                ${isEn 
+                  ? 'Feel free to enter any portion count from 1 (single person) up to 100 (traditional feast / hajatan).' 
+                  : 'Bebas ketik berapa pun porsi yang Anda inginkan (1 porsi pribadi hingga 100 porsi acara syukuran). Gramasi bahan akan dihitung otomatis.'}
+              </p>
             </div>
 
             <!-- Custom Notes -->
@@ -451,20 +531,23 @@ function renderFormView(currentLang) {
                 placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
                 class="w-full px-4 py-3 rounded-xl bg-white border border-[#E5D9C5] text-xs text-[#24140D] focus:ring-2 focus:ring-[#B85C38]"
               />
+              <p class="text-[11px] text-[#523424]/80">
+                ${isEn ? 'Personal preference or touch to inspire the AI cooking narrative.' : 'Sentuhan pribadi yang akan diintegrasikan ke narasi cerita resep.'}
+              </p>
             </div>
           </div>
         </section>
 
         <!-- CTA Action Bar -->
-        <div class="p-6 rounded-3xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1B0F09] border border-[#C49A58]/35 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#24140D] via-[#351C12] to-[#1B0F09] border border-[#C49A58]/35 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="text-left space-y-1">
-            <h3 class="font-editorial-serif text-lg font-bold text-[#FAF6EF]">
-              ${isEn ? 'Ready to sync with Supabase backend?' : 'Siap menyusun blueprint resep Anda?'}
+            <h3 class="font-editorial-serif text-xl font-bold text-[#FAF6EF]">
+              ${isEn ? 'Ready to craft your authentic recipe?' : 'Siap meracik kreasi resep orisinal Anda?'}
             </h3>
             <p class="text-xs text-[#FAF6EF]/75">
               ${isEn 
-                ? 'Your parameters will be formatted and prepared for backend API & Supabase ingestion.' 
-                : 'Parameter bahan dan preferensi akan disiapkan untuk endpoint API backend dan database Supabase.'}
+                ? 'Your parameters will generate an official culinary blueprint, scaled ingredients, cooking guide, and downloadable poster.' 
+                : 'Parameter pilihan Anda akan langsung menghasilkan blueprint resep resmi, takaran bahan presisi, panduan memasak, serta poster kanvas siap unduh.'}
             </p>
           </div>
 
@@ -474,7 +557,7 @@ function renderFormView(currentLang) {
             class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#B85C38] hover:bg-[#A04A27] text-[#FAF6EF] font-bold text-sm tracking-wide transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
           >
             <span>✨</span>
-            <span>${isEn ? 'Prepare Supabase Payload' : 'Kirim Parameter ke Backend Supabase'}</span>
+            <span>${isEn ? 'Craft Recipe & Generate Visuals' : 'Ciptakan Resep & Komposisi Bumbu'}</span>
             <svg class="w-4 h-4 text-[#FAF6EF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -488,32 +571,38 @@ function renderFormView(currentLang) {
 }
 
 /**
- * Output View: Clean Empty State ready for Supabase Backend
+ * Output Template View: Full Final Recipe, Real Photograph, Working Downloads, Pure Frontend
  */
-function renderEmptyOutputView(currentLang) {
+function renderResultView(recipe, currentLang) {
   const isEn = currentLang === 'en';
-  const selectedCount = formState.selectedIngredientIds.length;
-  const selectedIngredients = ALL_INGREDIENTS.filter(i => formState.selectedIngredientIds.includes(i.id));
+  const foodImageSrc = recipe.baseImage || '/assets/images/hero/hero-culinary.jpg';
 
   return `
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 animate-fade-in">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 animate-fade-in">
       
-      <!-- View Switcher Bar -->
+      <!-- Top Navigation & Success Header -->
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E5D9C5]">
-        <div class="flex items-center gap-2">
-          <button 
-            type="button" 
-            id="back-to-studio-btn"
-            class="px-4 py-2 rounded-xl bg-white border border-[#C49A58]/40 hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
-          >
-            <span>&larr;</span>
-            <span>${isEn ? 'Back to Studio Parameters' : 'Kembali ke Studio Racik'}</span>
-          </button>
+        <div class="space-y-1">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold shadow-2xs">
+            ✓ ${isEn ? 'Recipe & Poster Successfully Created' : 'Resep & Poster Berhasil Diciptakan'}
+          </span>
+          <h1 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#24140D]">
+            ${recipe.title}
+          </h1>
+          <p class="text-xs text-[#523424]">
+            ${isEn ? 'Authentic Culinary Creation' : 'Koleksi Eksperimen Dapur Orisinal'} • ID: ${recipe.id}
+          </p>
         </div>
 
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-semibold shadow-2xs">
-          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span>${isEn ? 'Supabase Table Contract Ready' : 'Kontrak Database Supabase Siap'}</span>
+        <div class="flex items-center gap-2.5">
+          <button 
+            type="button" 
+            id="create-another-recipe-btn"
+            class="px-5 py-2.5 rounded-xl border border-[#C49A58] bg-white hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center gap-1.5 cursor-pointer"
+          >
+            <span>←</span>
+            <span>${isEn ? 'Create Another Recipe' : 'Ciptakan Resep Lain'}</span>
+          </button>
         </div>
       </div>
 
@@ -524,137 +613,334 @@ function renderEmptyOutputView(currentLang) {
             <span>✓</span>
             <span>${toastMessage}</span>
           </div>
-          <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm">&times;</button>
+          <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm cursor-pointer">&times;</button>
         </div>
       ` : ''}
 
-      <!-- Main Empty State Hero Card -->
-      <div class="pawon-glass p-8 sm:p-12 rounded-3xl text-center space-y-6 max-w-3xl mx-auto border border-[#C49A58]/35 shadow-lg">
-        <div class="relative w-24 h-24 mx-auto">
-          <div class="absolute inset-0 rounded-3xl bg-[#C49A58]/20 animate-ping"></div>
-          <div class="w-24 h-24 rounded-3xl bg-[#24140D] border-2 border-[#C49A58] text-[#C49A58] flex items-center justify-center mx-auto shadow-xl text-4xl">
-            🏺
-          </div>
-        </div>
+      <!-- Main Two-Column Layout (Left: Canvas Poster & Working Downloads | Right: Complete Recipe) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        
+        <!-- LEFT COLUMN: Canvas Poster & Action Buttons (5 cols) -->
+        <div class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+          
+          <!-- Poster Preview Container -->
+          <div class="bg-white p-5 rounded-3xl border border-[#C49A58]/35 shadow-lg space-y-4">
+            <div class="flex items-center justify-between text-xs font-bold text-[#24140D] px-1">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#B85C38]"></span>
+                ${isEn ? 'High-DPI Canvas Poster' : 'Poster Resmi Kanvas HTML5'}
+              </span>
+              <span class="text-[10px] text-[#656C42] uppercase font-mono px-2 py-0.5 rounded-md bg-[#FAF6EF] border border-[#E5D9C5]">
+                ${recipe.aspectRatio}
+              </span>
+            </div>
 
-        <div class="space-y-2.5 max-w-lg mx-auto">
-          <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#FAF6EF] border border-[#E5D9C5] text-[11px] font-bold text-[#B85C38] uppercase tracking-wider">
-            ${isEn ? 'Backend Ingestion Queue' : 'Output Masih Kosong • Menunggu Response Supabase'}
-          </span>
-          <h2 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#24140D]">
-            ${isEn ? 'AI Recipe Output is Currently Empty' : 'Output Resep AI Dikosongkan'}
-          </h2>
-          <p class="text-xs sm:text-sm text-[#523424] leading-relaxed">
-            ${isEn 
-              ? 'Real recipes, high-DPI canvas posters, and chef certificates will be fetched live from your backend service connected to the Supabase database.'
-              : 'Output resep, komposisi takaran gramasi, poster resmi, dan piagam pencipta akan diterima langsung dari integrasi endpoint backend dan database Supabase Anda.'}
-          </p>
-        </div>
+            <!-- Canvas Element for Visual Composition -->
+            <div class="relative rounded-2xl overflow-hidden bg-[#24140D] border border-[#E5D9C5] shadow-inner flex items-center justify-center min-h-[340px]">
+              <canvas 
+                id="food-poster-canvas" 
+                class="w-full h-auto max-h-[500px] object-contain block"
+              ></canvas>
+            </div>
 
-        <!-- Prepared Payload Summary -->
-        <div class="p-5 rounded-2xl bg-[#FAF6EF] border border-[#E5D9C5] text-left space-y-4 max-w-xl mx-auto">
-          <div class="flex items-center justify-between border-b border-[#E5D9C5] pb-2.5">
-            <span class="text-xs font-bold text-[#24140D] uppercase tracking-wider flex items-center gap-1.5">
-              <span>📋</span>
-              <span>${isEn ? 'Prepared Parameter Blueprint' : 'Ringkasan Parameter Racikan yang Siap Dikirim:'}</span>
-            </span>
-            <span class="text-[10px] font-mono text-[#656C42] bg-white px-2 py-0.5 rounded-md border border-[#E5D9C5]">
-              status: ready
-            </span>
-          </div>
+            <!-- Working Download Buttons Grid (PNG, JPEG, PDF Recipe, Certificate) -->
+            <div class="space-y-2.5 pt-2">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <button 
+                  type="button" 
+                  id="download-poster-btn"
+                  class="w-full px-4 py-3 rounded-xl bg-[#24140D] hover:bg-[#351C12] text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                >
+                  <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                  </svg>
+                  <span>${isEn ? 'Poster (PNG)' : 'Unduh Poster (PNG)'}</span>
+                </button>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-            <div>
-              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Creator:' : 'Pencipta:'}</span>
-              <strong class="text-[#24140D]">${formState.creatorName || (isEn ? '(Not yet specified)' : '(Belum diisi)')}</strong>
-            </div>
-            <div>
-              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Method:' : 'Metode Masak:'}</span>
-              <strong class="text-[#24140D] capitalize">${formState.cookingMethod}</strong>
-            </div>
-            <div>
-              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Taste Profile:' : 'Karakter Rasa:'}</span>
-              <strong class="text-[#24140D]">${formState.tasteProfile}</strong>
-            </div>
-            <div>
-              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Spice Level:' : 'Level Pedas:'}</span>
-              <strong class="text-[#24140D]">Level ${formState.spiceLevel}</strong>
-            </div>
-            <div>
-              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Servings:' : 'Target Porsi:'}</span>
-              <strong class="text-[#24140D]">${formState.servings} Porsi</strong>
-            </div>
-            <div>
-              <span class="text-[10px] text-[#656C42] block">${isEn ? 'Language:' : 'Bahasa:'}</span>
-              <strong class="text-[#24140D] uppercase">${formState.outputLanguage}</strong>
-            </div>
-          </div>
+                <button 
+                  type="button" 
+                  id="download-poster-jpeg-btn"
+                  class="w-full px-4 py-3 rounded-xl bg-[#523424] hover:bg-[#3E2416] text-[#FAF6EF] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                >
+                  <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                  </svg>
+                  <span>${isEn ? 'Poster (JPEG)' : 'Unduh Poster (JPEG)'}</span>
+                </button>
+              </div>
 
-          <!-- Selected Ingredients Chips Preview -->
-          <div class="pt-2 border-t border-[#E5D9C5] space-y-1.5">
-            <span class="text-[10px] font-bold text-[#523424] block">${isEn ? 'Selected Ingredients in Payload:' : 'Bahan Terpilih (' + selectedCount + '):'}</span>
-            <div class="flex flex-wrap gap-1.5">
-              ${selectedIngredients.map(item => `
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white border border-[#C49A58]/30 text-[11px] text-[#24140D]">
-                  <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${item.nameId}" class="w-3.5 h-3.5 rounded-full object-cover"/>
-                  <span>${item.nameId}</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <button 
+                  type="button" 
+                  id="download-pdf-btn"
+                  class="w-full px-4 py-3 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                >
+                  <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                  </svg>
+                  <span>${isEn ? 'Recipe Guide (PDF)' : 'Unduh Resep (PDF)'}</span>
+                </button>
+
+                <button 
+                  type="button" 
+                  id="download-cert-btn"
+                  class="w-full px-4 py-3 rounded-xl bg-gradient-to-r from-[#C49A58] via-[#B85C38] to-[#523424] hover:opacity-95 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-xs hover:shadow-md cursor-pointer"
+                >
+                  <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="6"/>
+                    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+                  </svg>
+                  <span>${isEn ? 'Certificate (PDF)' : 'Unduh Piagam (PDF)'}</span>
+                </button>
+              </div>
+
+              <!-- Copy Text Button -->
+              <button 
+                type="button" 
+                id="copy-recipe-text-btn"
+                class="w-full py-2.5 px-4 rounded-xl border border-[#E5D9C5] bg-white hover:bg-[#FAF6EF] text-[#24140D] text-xs font-bold transition-all shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <span>📋</span>
+                <span>${isEn ? 'Copy Full Recipe Text' : 'Salin Teks Lengkap Resep'}</span>
+              </button>
+            </div>
+
+            <!-- In-Memory Image Regeneration Control Panel -->
+            <div class="pt-4 border-t border-[#E5D9C5] space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-[#24140D]">
+                  ${isEn ? 'Regenerate Poster Art' : 'Regenerasi Poster / Gambar'}
                 </span>
+                <span class="text-[10px] text-[#656C42]">${isEn ? 'Preserves recipe data' : 'Resep tetap tersimpan'}</span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 text-xs">
+                <select id="regen-style-select" class="px-2.5 py-1.5 rounded-lg bg-[#FAF6EF] border border-[#E5D9C5] text-xs font-medium text-[#24140D]">
+                  ${PREFERENCE_OPTIONS.imageStyles.map(st => `
+                    <option value="${st.id}" ${recipe.imageStyle === st.id ? 'selected' : ''}>
+                      ${isEn ? st.labelEn : st.labelId}
+                    </option>
+                  `).join('')}
+                </select>
+
+                <select id="regen-ratio-select" class="px-2.5 py-1.5 rounded-lg bg-[#FAF6EF] border border-[#E5D9C5] text-xs font-medium text-[#24140D]">
+                  ${PREFERENCE_OPTIONS.aspectRatios.map(ar => `
+                    <option value="${ar.id}" ${recipe.aspectRatio === ar.id ? 'selected' : ''}>
+                      ${ar.label}
+                    </option>
+                  `).join('')}
+                </select>
+              </div>
+
+              <button 
+                type="button" 
+                id="regenerate-art-btn"
+                class="w-full py-2 px-3 rounded-lg bg-[#FAF6EF] hover:bg-[#E5D9C5] text-[#24140D] text-xs font-bold transition-colors flex items-center justify-center gap-1.5 cursor-pointer border border-[#C49A58]/30"
+              >
+                <svg class="w-3.5 h-3.5 text-[#B85C38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                  <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+                  <path d="M16 16h5v5"/>
+                </svg>
+                <span>${isEn ? 'Apply New Style & Redraw' : 'Terapkan Gaya Baru & Gambar Ulang'}</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Creator Certificate Teaser Badge -->
+          <div class="p-5 rounded-2xl bg-gradient-to-br from-[#24140D] to-[#1B0F09] text-[#FAF6EF] border border-[#C49A58]/35 space-y-3 shadow-md">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-base text-[#C49A58]">★</span>
+                <span class="text-xs font-bold text-[#C49A58] uppercase tracking-wider">
+                  ${isEn ? 'Creative Recognition Certificate' : 'Piagam Apresiasi Kreasi'}
+                </span>
+              </div>
+              <span class="text-[10px] bg-[#C49A58]/20 text-[#C49A58] border border-[#C49A58]/40 px-2 py-0.5 rounded-full font-mono">
+                A4 LANDSCAPE
+              </span>
+            </div>
+            <p class="text-xs text-[#FAF6EF]/85 leading-relaxed">
+              ${isEn 
+                ? `An official achievement certificate has been minted for <strong>${escapeHtml(recipe.creatorName)}</strong> celebrating the invention of this culinary masterpiece.`
+                : `Piagam apresiasi resmi telah diterbitkan untuk <strong>${escapeHtml(recipe.creatorName)}</strong> atas perancangan mahakarya resep ini.`}
+            </p>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Structured Recipe Details & Authentic Food Photo (7 cols) -->
+        <div class="lg:col-span-7 space-y-8">
+          
+          <!-- Dish Photograph Hero Banner (Ensures Image is Never Empty) -->
+          <div class="relative rounded-3xl overflow-hidden border border-[#C49A58]/35 shadow-lg bg-[#24140D]">
+            <img 
+              src="${foodImageSrc}" 
+              alt="${recipe.title}" 
+              class="w-full h-64 sm:h-80 object-cover"
+              onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg';"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+            
+            <div class="absolute bottom-4 left-6 right-6 text-white space-y-1">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-xs font-semibold text-[#C49A58]">
+                <span>🏷️</span>
+                <span>${recipe.shortTitle}</span>
+              </div>
+              <p class="text-[11px] text-[#FAF6EF]/85">
+                ${isEn ? 'Central Javanese Gastronomy Archive' : 'Khasanah Gastronomi Tradisional Jawa Tengah'}
+              </p>
+            </div>
+          </div>
+
+          <!-- Recipe Overview Card -->
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-5">
+            <div class="space-y-2">
+              <span class="text-xs font-bold text-[#B85C38] uppercase tracking-wider block">
+                ${recipe.javaneseTitle}
+              </span>
+              <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#24140D]">
+                ${recipe.shortTitle}
+              </h2>
+              <p class="text-xs sm:text-sm text-[#523424] leading-relaxed">
+                ${recipe.description}
+              </p>
+            </div>
+
+            <!-- Metadata Metrics Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-[#E5D9C5] text-xs">
+              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? 'Total Time' : 'Total Waktu'}</span>
+                <strong class="text-[#24140D] font-bold">${recipe.totalTime}</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? 'Servings' : 'Porsi'}</span>
+                <strong class="text-[#24140D] font-bold">${recipe.servings} ${isEn ? 'Servings' : 'Porsi'}</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? 'Difficulty' : 'Tingkat'}</span>
+                <strong class="text-[#24140D] font-bold">${recipe.difficulty}</strong>
+              </div>
+              <div class="p-3 rounded-xl bg-[#FAF6EF] space-y-0.5 border border-[#E5D9C5]/60">
+                <span class="text-[#656C42] block text-[10px] font-semibold">${isEn ? 'Est. Cost' : 'Estimasi Biaya'}</span>
+                <strong class="text-[#B85C38] font-bold">${recipe.estimatedCost}</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scaled Ingredients with Checkboxes -->
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-5">
+            <div class="flex items-center justify-between pb-3 border-b border-[#E5D9C5]">
+              <div class="space-y-0.5">
+                <h3 class="font-editorial-serif text-xl font-bold text-[#24140D]">
+                  ${isEn ? 'Ingredients & Precise Quantities' : 'Daftar Bahan & Takaran Presisi'}
+                </h3>
+                <span class="text-xs text-[#656C42]">
+                  ${isEn ? `Calibrated for ${recipe.servings} family servings` : `Dikalibrasi untuk ${recipe.servings} porsi santapan`}
+                </span>
+              </div>
+              <span class="text-xs font-bold text-[#B85C38] bg-[#FAF6EF] border border-[#E5D9C5] px-3 py-1 rounded-full">
+                ${recipe.ingredients.length} ${isEn ? 'Items' : 'Bahan'}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              ${recipe.ingredients.map((ing) => `
+                <label class="p-3 rounded-xl bg-[#FAF6EF]/60 hover:bg-[#FAF6EF] border border-[#E5D9C5] text-xs flex items-center justify-between gap-3 cursor-pointer transition-colors">
+                  <div class="flex items-center gap-2.5">
+                    <input type="checkbox" class="rounded text-[#B85C38] focus:ring-[#B85C38] cursor-pointer"/>
+                    <div>
+                      <strong class="text-[#24140D] block">${ing.name}</strong>
+                      <span class="text-[10px] text-[#656C42] italic">${ing.note || ''}</span>
+                    </div>
+                  </div>
+                  <span class="font-mono text-xs font-bold text-[#B85C38] shrink-0 bg-white px-2 py-0.5 rounded-md border border-[#E5D9C5]">
+                    ${ing.amount} ${ing.unit}
+                  </span>
+                </label>
               `).join('')}
             </div>
           </div>
-        </div>
 
-        <!-- Supabase Database Integration Schema Info Card -->
-        <div class="p-5 rounded-2xl bg-[#24140D] border border-[#C49A58]/35 text-left text-xs text-[#FAF6EF] space-y-3 max-w-xl mx-auto shadow-md">
-          <div class="flex items-center justify-between text-[#C49A58]">
-            <span class="font-bold flex items-center gap-2">
-              <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-2h-2v2zm0-4h2V7h-2v6z"/>
-              </svg>
-              <span>Skema Integrasi Supabase: \`public.user_recipes\`</span>
-            </span>
-            <span class="text-[10px] font-mono text-[#D4AA6A]">REST API Contract</span>
+          <!-- Step-by-Step Cooking Guide -->
+          <div class="bg-white p-6 sm:p-8 rounded-3xl border border-[#C49A58]/30 shadow-xs space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b border-[#E5D9C5]">
+              <div class="space-y-0.5">
+                <h3 class="font-editorial-serif text-xl font-bold text-[#24140D]">
+                  ${isEn ? 'Cooking Steps & Milestones' : 'Tahapan Memasak Langkah Demi Langkah'}
+                </h3>
+                <span class="text-xs text-[#656C42]">
+                  ${isEn ? 'Sequential instructions with sensory cues' : 'Instruksi bertahap dengan tanda kematangan sensorik'}
+                </span>
+              </div>
+              <span class="text-xs font-bold text-[#24140D] bg-[#FAF6EF] border border-[#E5D9C5] px-3 py-1 rounded-full">
+                ${recipe.steps.length} ${isEn ? 'Steps' : 'Langkah'}
+              </span>
+            </div>
+
+            <div class="space-y-4">
+              ${recipe.steps.map((st) => `
+                <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF6EF]/70 border border-[#E5D9C5] space-y-2">
+                  <div class="flex items-center gap-3">
+                    <span class="w-7 h-7 rounded-full bg-[#24140D] text-[#C49A58] flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                      ${st.stepNumber}
+                    </span>
+                    <h4 class="font-bold text-sm text-[#24140D]">
+                      ${st.title}
+                    </h4>
+                  </div>
+                  <p class="text-xs text-[#523424] leading-relaxed pl-10">
+                    ${st.instruction}
+                  </p>
+                  ${st.sensoryMilestone ? `
+                    <div class="pl-10 pt-1">
+                      <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold text-[#656C42] bg-white px-2.5 py-1 rounded-lg border border-[#E5D9C5]">
+                        <span>👃</span>
+                        <span>${isEn ? 'Sensory Milestone:' : 'Tanda Sensorik:'} ${st.sensoryMilestone}</span>
+                      </span>
+                    </div>
+                  ` : ''}
+                </div>
+              `).join('')}
+            </div>
           </div>
 
-          <pre class="bg-black/40 p-3 rounded-xl font-mono text-[11px] text-[#FAF6EF]/90 overflow-x-auto leading-relaxed border border-[#C49A58]/20">
-// Siap dipanggil saat backend aktif:
-const { data, error } = await supabase
-  .from('user_recipes')
-  .insert([{
-    creator_name: "${escapeHtml(formState.creatorName || 'Chef')}",
-    ingredients: ${JSON.stringify(formState.selectedIngredientIds)},
-    cooking_method: "${formState.cookingMethod}",
-    taste_profile: "${formState.tasteProfile}",
-    spice_level: ${formState.spiceLevel},
-    servings: ${formState.servings}
-  }]);
-          </pre>
+          <!-- Chef's Traditional Tips & Food Safety -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-5 sm:p-6 rounded-3xl bg-[#FAF6EF] border border-[#C49A58]/35 space-y-3">
+              <h4 class="font-editorial-serif text-base font-bold text-[#24140D] flex items-center gap-2">
+                <span>💡</span>
+                <span>${isEn ? 'Master Chef Secret' : 'Rahasia Dapur Pawon'}</span>
+              </h4>
+              <p class="text-xs text-[#523424] leading-relaxed">
+                ${recipe.chefTips}
+              </p>
+            </div>
 
-          <p class="text-[11px] text-[#FAF6EF]/75">
-            ${isEn 
-              ? 'When your Supabase credentials are configured in .env, recipe generation output will automatically stream and render here.' 
-              : 'Ketika credential Supabase dikonfigurasi di environment backend, output hasil racikan AI akan langsung muncul di panel ini tanpa perlu refresh.'}
-          </p>
-        </div>
+            <div class="p-5 sm:p-6 rounded-3xl bg-[#FAF6EF] border border-[#C49A58]/35 space-y-3">
+              <h4 class="font-editorial-serif text-base font-bold text-[#24140D] flex items-center gap-2">
+                <span>🛡️</span>
+                <span>${isEn ? 'Hygiene & Storage' : 'Higienitas & Penyimpanan'}</span>
+              </h4>
+              <p class="text-xs text-[#523424] leading-relaxed">
+                ${recipe.safetyNotes}
+              </p>
+            </div>
+          </div>
 
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-          <button 
-            type="button" 
-            id="simulate-sync-btn"
-            class="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#B85C38] hover:bg-[#A04A27] text-white text-xs font-bold transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
-          >
-            <span>⚡</span>
-            <span>${isEn ? 'Test Supabase Payload Dispatch' : 'Uji Validasi Payload Supabase'}</span>
-          </button>
+          <!-- Bottom Return Action -->
+          <div class="pt-4 text-center">
+            <button 
+              type="button" 
+              id="bottom-create-another-btn"
+              class="px-8 py-3.5 rounded-full bg-[#B85C38] hover:bg-[#A04A27] text-white text-xs font-bold transition-all shadow-md hover:shadow-lg cursor-pointer"
+            >
+              ${isEn ? '← Craft Another Recipe' : '← Ciptakan Resep Lain'}
+            </button>
+          </div>
 
-          <button 
-            type="button" 
-            id="reset-creator-form-btn"
-            class="w-full sm:w-auto px-6 py-3 rounded-xl bg-white hover:bg-[#FAF6EF] text-[#24140D] border border-[#E5D9C5] text-xs font-bold transition-all shadow-2xs cursor-pointer"
-          >
-            ${isEn ? 'Reset Parameters' : 'Reset Form Racikan'}
-          </button>
         </div>
 
       </div>
@@ -668,32 +954,6 @@ const { data, error } = await supabase
  */
 export function initAiFoodCreatorInteractions() {
   const form = document.getElementById('ai-creator-form');
-
-  // Tab View Switchers
-  const tabFormBtn = document.getElementById('tab-view-form-btn');
-  const tabOutputBtn = document.getElementById('tab-view-output-btn');
-  const backToStudioBtn = document.getElementById('back-to-studio-btn');
-
-  if (tabFormBtn) {
-    tabFormBtn.onclick = () => {
-      currentStudioView = 'form';
-      reRenderCurrentView();
-    };
-  }
-
-  if (tabOutputBtn) {
-    tabOutputBtn.onclick = () => {
-      currentStudioView = 'output';
-      reRenderCurrentView();
-    };
-  }
-
-  if (backToStudioBtn) {
-    backToStudioBtn.onclick = () => {
-      currentStudioView = 'form';
-      reRenderCurrentView();
-    };
-  }
 
   // Dismiss Validation Banner
   const dismissBtn = document.getElementById('dismiss-val-btn');
@@ -793,7 +1053,59 @@ export function initAiFoodCreatorInteractions() {
   // Radio button groups
   setupRadioGroup('cookingMethod', (val) => { formState.cookingMethod = val; });
   setupRadioGroup('spiceLevel', (val) => { formState.spiceLevel = parseInt(val) || 0; });
-  setupRadioGroup('servings', (val) => { formState.servings = parseInt(val) || 4; });
+
+  // Servings Stepper & Free Numeric Input
+  const servingsInput = document.getElementById('creator-servings-input');
+  const servingsDecBtn = document.getElementById('creator-servings-dec-btn');
+  const servingsIncBtn = document.getElementById('creator-servings-inc-btn');
+  const quickPorsiBtns = document.querySelectorAll('[data-creator-quick-porsi]');
+
+  const updateServings = (val) => {
+    let parsed = parseInt(val, 10);
+    if (isNaN(parsed) || parsed < 1) parsed = 1;
+    if (parsed > 100) parsed = 100;
+    formState.servings = parsed;
+    if (servingsInput) servingsInput.value = parsed;
+  };
+
+  if (servingsInput) {
+    servingsInput.oninput = (e) => {
+      if (e.target.value === '') return;
+      let val = parseInt(e.target.value, 10);
+      if (!isNaN(val)) {
+        if (val > 100) e.target.value = 100;
+        formState.servings = Math.max(1, Math.min(100, val));
+      }
+    };
+    servingsInput.onblur = (e) => {
+      updateServings(e.target.value);
+    };
+    servingsInput.onchange = (e) => {
+      updateServings(e.target.value);
+    };
+  }
+
+  if (servingsDecBtn) {
+    servingsDecBtn.onclick = () => {
+      updateServings((formState.servings || 4) - 1);
+    };
+  }
+
+  if (servingsIncBtn) {
+    servingsIncBtn.onclick = () => {
+      updateServings((formState.servings || 4) + 1);
+    };
+  }
+
+  quickPorsiBtns.forEach(btn => {
+    btn.onclick = () => {
+      const p = parseInt(btn.getAttribute('data-creator-quick-porsi'), 10);
+      if (!isNaN(p)) {
+        updateServings(p);
+        reRenderCurrentView();
+      }
+    };
+  });
 
   const tasteSelect = document.getElementById('taste-profile-select');
   if (tasteSelect) {
@@ -807,12 +1119,12 @@ export function initAiFoodCreatorInteractions() {
 
   // Form Submit Handler
   if (form) {
-    form.onsubmit = (e) => {
+    form.onsubmit = async (e) => {
       e.preventDefault();
 
       // Validation 1: Creator Name
       if (!formState.creatorName || formState.creatorName.trim().length === 0) {
-        validationMessage = 'Nama lengkap pencipta resep wajib diisi sebelum mengirim data ke Supabase.';
+        validationMessage = 'Nama lengkap pencipta resep wajib diisi untuk hak cipta karya kuliner.';
         reRenderCurrentView();
         window.scrollTo({ top: 180, behavior: 'smooth' });
         return;
@@ -826,44 +1138,146 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // Transition smoothly to output view
+      // Transition with realistic synthesis animation
       validationMessage = null;
-      toastMessage = `Parameter resep "${formState.creatorName}" berhasil diselaraskan! Output dikosongkan siap menerima data dari backend & Supabase.`;
-      currentStudioView = 'output';
+      isGenerating = true;
       reRenderCurrentView();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      try {
+        const recipe = await aiFoodCreatorService.generateRecipe(formState);
+        currentGeneratedRecipe = recipe;
+        toastMessage = `Resep "${recipe.shortTitle}" berhasil diracik secara orisinal oleh ${recipe.creatorName}!`;
+      } catch (err) {
+        console.error('Recipe synthesis error:', err);
+        validationMessage = err.message || 'Gagal meracik resep. Silakan coba kembali.';
+      } finally {
+        isGenerating = false;
+        reRenderCurrentView();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     };
   }
 
-  // Output View Buttons: Simulate payload
-  const simulateBtn = document.getElementById('simulate-sync-btn');
-  if (simulateBtn) {
-    simulateBtn.onclick = () => {
-      toastMessage = '✓ Payload JSON tervalidasi dengan sukses! Siap diinjeksikan ke tabel Supabase public.user_recipes.';
-      reRenderCurrentView();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+  // --- RESULT VIEW LISTENERS ---
+  const canvas = document.getElementById('food-poster-canvas');
+  if (canvas && currentGeneratedRecipe) {
+    aiFoodCreatorService.composePosterCanvas(canvas, currentGeneratedRecipe);
+  }
+
+  // Download Poster (PNG)
+  const downloadPosterBtn = document.getElementById('download-poster-btn');
+  if (downloadPosterBtn && canvas && currentGeneratedRecipe) {
+    downloadPosterBtn.onclick = () => {
+      aiFoodCreatorService.downloadPoster(canvas, currentGeneratedRecipe.shortTitle, 'png');
     };
   }
 
-  // Reset form
-  const resetBtn = document.getElementById('reset-creator-form-btn');
-  if (resetBtn) {
-    resetBtn.onclick = () => {
-      formState.creatorName = '';
-      formState.creatorNickname = '';
-      formState.selectedIngredientIds = ['ayam-kampung', 'bawang-merah', 'bawang-putih', 'kemiri', 'serai', 'daun-salam', 'gula-jawa'];
-      formState.cookingMethod = 'ungkep';
-      formState.tasteProfile = 'manis-gurih';
-      formState.spiceLevel = 1;
-      formState.servings = 4;
-      formState.customNotes = '';
-      validationMessage = null;
-      toastMessage = null;
-      currentStudioView = 'form';
+  // Download Poster (JPEG)
+  const downloadPosterJpegBtn = document.getElementById('download-poster-jpeg-btn');
+  if (downloadPosterJpegBtn && canvas && currentGeneratedRecipe) {
+    downloadPosterJpegBtn.onclick = () => {
+      aiFoodCreatorService.downloadPoster(canvas, currentGeneratedRecipe.shortTitle, 'jpeg');
+    };
+  }
+
+  // Download Recipe Guide (PDF)
+  const downloadPdfBtn = document.getElementById('download-pdf-btn');
+  if (downloadPdfBtn && currentGeneratedRecipe) {
+    downloadPdfBtn.onclick = async () => {
+      const origHtml = downloadPdfBtn.innerHTML;
+      downloadPdfBtn.disabled = true;
+      downloadPdfBtn.innerText = 'Menyusun Dokumen PDF...';
+      try {
+        await aiFoodCreatorService.generateRecipePdf(currentGeneratedRecipe, canvas);
+      } catch (err) {
+        console.error('PDF generation error:', err);
+      } finally {
+        downloadPdfBtn.disabled = false;
+        downloadPdfBtn.innerHTML = origHtml;
+      }
+    };
+  }
+
+  // Download Certificate (PDF)
+  const downloadCertBtn = document.getElementById('download-cert-btn');
+  if (downloadCertBtn && currentGeneratedRecipe) {
+    downloadCertBtn.onclick = async () => {
+      const origHtml = downloadCertBtn.innerHTML;
+      downloadCertBtn.disabled = true;
+      downloadCertBtn.innerText = 'Menyusun Piagam (PDF)...';
+      try {
+        await aiFoodCreatorService.generateCertificatePdf(currentGeneratedRecipe, {
+          lang: i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'en' : 'id'
+        });
+      } catch (err) {
+        console.error('Certificate generation error:', err);
+      } finally {
+        downloadCertBtn.disabled = false;
+        downloadCertBtn.innerHTML = origHtml;
+      }
+    };
+  }
+
+  // Copy Full Recipe Text
+  const copyBtn = document.getElementById('copy-recipe-text-btn');
+  if (copyBtn && currentGeneratedRecipe) {
+    copyBtn.onclick = async () => {
+      const ingredientsText = currentGeneratedRecipe.ingredients
+        .map(i => `• ${i.name}: ${i.amount} ${i.unit} (${i.note || ''})`)
+        .join('\n');
+
+      const stepsText = currentGeneratedRecipe.steps
+        .map(s => `${s.stepNumber}. ${s.title}\n   ${s.instruction}`)
+        .join('\n\n');
+
+      const fullText = `=== LARASRASA PUSAKA KULINER ===\n${currentGeneratedRecipe.title}\nDiciptakan Oleh: ${currentGeneratedRecipe.creatorName}\nPorsi: ${currentGeneratedRecipe.servings} | Durasi: ${currentGeneratedRecipe.totalTime}\n\n[BAHAN]\n${ingredientsText}\n\n[CARA MEMASAK]\n${stepsText}\n\n[TIPS DAPUR]\n${currentGeneratedRecipe.chefTips}\n\nDokumen resmi LarasRasa.`;
+
+      try {
+        await navigator.clipboard.writeText(fullText);
+        toastMessage = '✓ Teks lengkap resep berhasil disalin ke papan klip!';
+        reRenderCurrentView();
+      } catch (err) {
+        console.warn('Clipboard write fallback:', err);
+        toastMessage = '✓ Teks resep siap digunakan!';
+        reRenderCurrentView();
+      }
+    };
+  }
+
+  // Regenerate Poster Artwork
+  const regenBtn = document.getElementById('regenerate-art-btn');
+  const regenStyleSelect = document.getElementById('regen-style-select');
+  const regenRatioSelect = document.getElementById('regen-ratio-select');
+
+  if (regenBtn && canvas && currentGeneratedRecipe) {
+    regenBtn.onclick = () => {
+      const newStyle = regenStyleSelect?.value || currentGeneratedRecipe.imageStyle;
+      const newRatio = regenRatioSelect?.value || currentGeneratedRecipe.aspectRatio;
+
+      currentGeneratedRecipe.imageStyle = newStyle;
+      currentGeneratedRecipe.aspectRatio = newRatio;
+
+      aiFoodCreatorService.composePosterCanvas(canvas, currentGeneratedRecipe, {
+        imageStyle: newStyle,
+        aspectRatio: newRatio
+      });
+    };
+  }
+
+  // Create Another Recipe Buttons
+  const createAnotherBtns = [
+    document.getElementById('create-another-recipe-btn'),
+    document.getElementById('bottom-create-another-btn')
+  ].filter(Boolean);
+
+  createAnotherBtns.forEach(btn => {
+    btn.onclick = () => {
+      currentGeneratedRecipe = null;
       reRenderCurrentView();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-  }
+  });
 }
 
 function setupRadioGroup(name, onChange) {
