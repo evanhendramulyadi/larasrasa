@@ -34,7 +34,7 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
           </span>
           <span class="text-[11px] text-[#5C3622] block mt-0.5">${t('recipeDetail.scaleSub')}</span>
           <span class="text-[10px] text-[#2E4D38] font-bold block mt-0.5">
-            ${isEn ? `Range: ${MIN_SERVINGS} – ${MAX_SERVINGS} servings` : `Watesan porsi: ${MIN_SERVINGS} s/d ${MAX_SERVINGS} porsi`}
+            ${isEn ? `Range: ${MIN_SERVINGS} – ${MAX_SERVINGS} servings` : `Batas porsi: ${MIN_SERVINGS} s/d ${MAX_SERVINGS} porsi`}
           </span>
         </div>
       </div>

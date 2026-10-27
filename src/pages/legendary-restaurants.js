@@ -82,11 +82,11 @@ export async function renderLegendaryRestaurantsPage() {
             <span id="restaurants-count-label">
               ${isEn 
                 ? `Showing <strong class="text-[#120B07]">${restaurantsList.length}</strong> legendary culinary establishments`
-                : `Nampilaken <strong class="text-[#120B07]">${restaurantsList.length}</strong> warung & restoran legendaris`}
+                : `Menampilkan <strong class="text-[#120B07]">${restaurantsList.length}</strong> tempat makan & warung legendaris`}
             </span>
           </div>
           <span class="text-[11px] text-[#2E4D38] font-semibold italic">
-            ${isEn ? 'Click "Open in Map" on cards for Google Maps navigation' : 'Klik "Buka di Peta" kagem navigasi Google Maps'}
+            ${isEn ? 'Click "Open in Map" on cards for Google Maps navigation' : 'Klik "Buka di Peta" pada kartu untuk navigasi Google Maps'}
           </span>
         </div>
 

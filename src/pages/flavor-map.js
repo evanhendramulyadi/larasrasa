@@ -240,39 +240,71 @@ export async function initFlavorMapInteractions() {
     });
 
     // Custom Icon for Central Java Culinary Epicenters
-    const createMarkerIcon = (isActive = false) => {
+    const createMarkerIcon = (region, isActive = false) => {
+      const shortName = (region.name || '').replace('Kota ', '').replace('Kabupaten ', '');
       return L.divIcon({
-        className: 'custom-map-pin',
+        className: 'flavor-map-marker-container',
         html: `
-          <div class="w-7 h-7 rounded-full ${isActive ? 'bg-[#D49B42] scale-125' : 'bg-[#C84C24]'} border-2 border-white shadow-lg flex items-center justify-center text-white text-[11px] font-bold transition-all duration-300">
-            <span>🍲</span>
+          <div class="flavor-map-marker-wrapper ${isActive ? 'is-active' : ''}">
+            <div class="marker-pulse-ring"></div>
+            <div class="marker-bubble">
+              <span class="marker-icon">🍲</span>
+              <span class="marker-name">${shortName}</span>
+            </div>
+            <div class="marker-pointer"></div>
           </div>
         `,
-        iconSize: [28, 28],
-        iconAnchor: [14, 14],
-        popupAnchor: [0, -16]
+        iconSize: [120, 48],
+        iconAnchor: [60, 44],
+        popupAnchor: [0, -42]
       });
     };
 
-    // Add Markers for Each Region
+    // Add Interactive Markers for Each Region
     regions.forEach(region => {
-      if (region.coordinates && region.coordinates.lat && region.coordinates.lng) {
-        const marker = L.marker([region.coordinates.lat, region.coordinates.lng], {
-          icon: createMarkerIcon(region.id === activeRegionId)
+      const lat = region.coordinates?.lat ?? region.lat;
+      const lng = region.coordinates?.lng ?? region.lng;
+
+      if (lat && lng) {
+        const marker = L.marker([lat, lng], {
+          icon: createMarkerIcon(region, region.id === activeRegionId),
+          title: region.name,
+          riseOnHover: true
         }).addTo(mapInstance);
 
+        const shortName = (region.name || '').replace('Kota ', '').replace('Kabupaten ', '');
+        const dishesPreview = (region.signatureDishes || []).slice(0, 3).join(', ');
+
         marker.bindPopup(`
-          <div class="p-2 space-y-1.5 text-left min-w-[180px]">
-            <span class="text-[10px] font-bold uppercase tracking-wider text-[#C84C24] block">${region.type}</span>
-            <h4 class="font-bold text-sm text-[#120B07]">${region.name}</h4>
-            <p class="text-[11px] text-[#5C3622] leading-tight">${region.tagline}</p>
-            <div class="pt-1.5 border-t border-[#E8DEC8]">
-              <a href="#/resep?region=${region.id}" class="text-[11px] font-bold text-[#C84C24] hover:underline flex items-center gap-1">
-                <span>${t('map.findRecipe')}</span> &rarr;
+          <div class="p-2 space-y-2 text-left min-w-[210px] max-w-[250px]">
+            <div class="relative w-full h-24 rounded-xl overflow-hidden bg-[#120B07] border border-[#D49B42]/30 shadow-xs mb-1">
+              <img src="${region.image || '/assets/images/regions/semarang.jpg'}" alt="${region.name}" class="w-full h-full object-cover" onerror="this.src='/assets/images/regions/semarang.jpg'"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+              <span class="absolute bottom-1.5 left-2 text-[9px] font-bold uppercase tracking-wider text-white bg-black/60 px-2 py-0.5 rounded">
+                ${region.type} Jawa Tengah
+              </span>
+            </div>
+            <div>
+              <h4 class="font-editorial-serif font-bold text-base text-[#120B07] leading-tight">${region.name}</h4>
+              <p class="text-[11px] text-[#C84C24] font-semibold italic mt-0.5">${region.tagline || ''}</p>
+            </div>
+            <div class="text-[10px] text-[#5C3622] bg-[#FAF7F2] p-1.5 rounded-lg border border-[#E8DEC8]">
+              <strong>Khas:</strong> ${dishesPreview}
+            </div>
+            <div class="pt-1 border-t border-[#E8DEC8] flex items-center justify-between">
+              <button type="button" onclick="window.selectFlavorRegion && window.selectFlavorRegion('${region.id}')" class="text-[11px] font-bold text-[#C84C24] hover:underline cursor-pointer">
+                Pilih Wilayah Ini
+              </button>
+              <a href="#/resep?region=${region.id}" class="text-[10px] font-bold text-[#120B07] hover:text-[#C84C24]">
+                Resep &rarr;
               </a>
             </div>
           </div>
-        `);
+        `, {
+          maxWidth: 280,
+          closeButton: true,
+          autoPan: true
+        });
 
         marker.on('click', () => {
           selectRegion(region.id);
@@ -281,6 +313,11 @@ export async function initFlavorMapInteractions() {
         regionMarkers[region.id] = marker;
       }
     });
+
+    // Wire global bridge for popup button
+    window.selectFlavorRegion = (id) => {
+      selectRegion(id);
+    };
 
     // Wire Region Pill Buttons
     const pills = document.querySelectorAll('[data-region-pill]');
@@ -306,6 +343,14 @@ export async function initFlavorMapInteractions() {
         }`;
       });
 
+      // Update all marker icons so active marker stands out
+      regions.forEach(r => {
+        const m = regionMarkers[r.id];
+        if (m) {
+          m.setIcon(createMarkerIcon(r, r.id === id));
+        }
+      });
+
       // Update detail panel
       const panel = document.getElementById('region-detail-panel');
       if (panel) {
@@ -313,15 +358,33 @@ export async function initFlavorMapInteractions() {
       }
 
       // Fly map to coordinates
-      if (targetRegion.coordinates && mapInstance) {
-        mapInstance.flyTo([targetRegion.coordinates.lat, targetRegion.coordinates.lng], 10, {
-          duration: 1.2
+      const lat = targetRegion.coordinates?.lat ?? targetRegion.lat;
+      const lng = targetRegion.coordinates?.lng ?? targetRegion.lng;
+      if (lat && lng && mapInstance) {
+        mapInstance.flyTo([lat, lng], 10, {
+          duration: 1.0
         });
 
         // Open popup
         const m = regionMarkers[id];
-        if (m) m.openPopup();
+        if (m) {
+          setTimeout(() => {
+            m.openPopup();
+          }, 300);
+        }
       }
+
+      // Smooth scroll to detail panel on mobile / tablet (< 1024px)
+      if (window.innerWidth < 1024 && panel) {
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    // Open active region popup on initial load
+    if (activeRegionId && regionMarkers[activeRegionId]) {
+      setTimeout(() => {
+        regionMarkers[activeRegionId].openPopup();
+      }, 500);
     }
 
   } catch (err) {

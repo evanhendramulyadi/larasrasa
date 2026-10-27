@@ -350,7 +350,7 @@ function renderStepContent(step) {
               <span>💡</span>
               <span>${isEn 
                 ? 'Tip: You can freely type any number from 1 to 100. Recommendations and spice formulas adjust automatically.' 
-                : 'Pituduh: Bebas ketik porsi pinten kemawon (1 dumugi 100). Rekomendasi resep lan bumbu badhe dipun-larasaken.'}</span>
+                : 'Petunjuk: Bebas ketik porsi berapa pun (1 hingga 100). Rekomendasi resep dan takaran bumbu akan diselaraskan otomatis.'}</span>
             </p>
 
           </div>
@@ -370,19 +370,19 @@ function renderStepContent(step) {
             ${[
               { 
                 id: 'hemat', 
-                title: isEn ? 'Economical & Frugal' : 'Hemat & Merakyat', 
+                title: isEn ? 'Economical & Frugal' : 'Hemat & Praktis', 
                 desc: isEn ? 'Under Rp 35.000 (dishes featuring tempeh, tofu, or seasonal produce)' : 'Di bawah Rp 35.000 (aneka olahan tempe, tahu, atau sayuran kebun)', 
                 range: '< Rp 35k' 
               },
               { 
                 id: 'menengah', 
-                title: isEn ? 'Standard Family Budget' : 'Standar Kulawarga', 
+                title: isEn ? 'Standard Family Budget' : 'Standar Keluarga', 
                 desc: isEn ? 'Rp 35.000 – Rp 75.000 (chicken, fresh eggs, or warm savory soups)' : 'Rp 35.000 – Rp 75.000 (ayam kampung, telur bebek, atau sup kaldu)', 
                 range: 'Rp 35k – 75k' 
               },
               { 
                 id: 'spesial', 
-                title: isEn ? 'Royal Feast / Special Occasion' : 'Jamuan Istimewa', 
+                title: isEn ? 'Royal Feast / Special Occasion' : 'Jamuan Spesial', 
                 desc: isEn ? 'Above Rp 75.000 (tender beef steaks, royal stews, or complete platters)' : 'Di atas Rp 75.000 (daging sapi empuk, selat keraton, atau olahan istimewa)', 
                 range: '> Rp 75k' 
               }
@@ -419,17 +419,17 @@ function renderStepContent(step) {
 function getServingOccasion(servings, isEn) {
   const s = parseInt(servings, 10) || 4;
   if (s <= 1) {
-    return isEn ? '👤 Personal Portion (Single)' : '👤 Porsi Pribadi (Nyami)';
+    return isEn ? '👤 Personal Portion (Single)' : '👤 Porsi Pribadi (1 Orang)';
   } else if (s === 2) {
-    return isEn ? '👥 Couple Portion (Pairs)' : '👥 Porsi Pasangan (Runtut)';
+    return isEn ? '👥 Couple Portion (Pairs)' : '👥 Porsi Pasangan (2 Orang)';
   } else if (s <= 5) {
-    return isEn ? '👨‍👩‍👧 Immediate Family (Regular)' : '👨‍👩‍👧 Kulawarga Inti (Sarekat)';
+    return isEn ? '👨‍👩‍👧 Immediate Family (Regular)' : '👨‍👩‍👧 Porsi Keluarga Inti (3 - 5 Orang)';
   } else if (s <= 10) {
-    return isEn ? '🍲 Extended Family & Guests' : '🍲 Kulawarga Ageng & Tamu';
+    return isEn ? '🍲 Extended Family & Guests' : '🍲 Keluarga Besar & Tamu (6 - 10 Orang)';
   } else if (s <= 30) {
-    return isEn ? '🎊 Festive Gathering (Bancakan)' : '🎊 Jamuan Pahargyan (Bancakan)';
+    return isEn ? '🎊 Festive Gathering (Bancakan)' : '🎊 Jamuan & Bancakan (11 - 30 Orang)';
   } else {
-    return isEn ? '🎪 Grand Celebration & Feast' : '🎪 Hajatan Ageng & Syukuran';
+    return isEn ? '🎪 Grand Celebration & Feast' : '🎪 Hajatan & Syukuran Besar (30+ Orang)';
   }
 }
 
@@ -478,7 +478,7 @@ function renderResultView(result) {
             <span class="text-xs font-bold uppercase tracking-wider text-[#C84C24]">${t('recommendations.matchBadge')}</span>
           </div>
           <span class="text-xs font-bold text-[#2E4D38]">
-            ${isEn ? `Scaled for ${customSrv} servings` : `Porsi kaselarasken: ${customSrv} porsi`}
+            ${isEn ? `Scaled for ${customSrv} servings` : `Porsi disesuaikan: ${customSrv} porsi`}
           </span>
         </div>
         <div class="max-w-xl mx-auto">

@@ -22,10 +22,10 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
     const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
     return `
       <div class="max-w-4xl mx-auto px-4 py-24 text-center space-y-4">
-        <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">${isEn ? 'Recipe Not Found' : 'Resep Mboten Kapanggih'}</h2>
-        <p class="text-sm text-[#5C3622]">${isEn ? 'Sorry, the requested recipe could not be found.' : 'Nyuwun pangapunten, resep ingkang panjenengan luru mboten sumadya.'}</p>
+        <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">${isEn ? 'Recipe Not Found' : 'Resep Tidak Ditemukan'}</h2>
+        <p class="text-sm text-[#5C3622]">${isEn ? 'Sorry, the requested recipe could not be found.' : 'Mohon maaf, resep yang Anda cari saat ini belum tersedia.'}</p>
         <a href="#/resep" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120B07] text-white text-xs font-bold border border-[#D49B42]/40">
-          &larr; ${isEn ? 'Back to Recipes' : 'Wangsul dhateng Resep'}
+          &larr; ${isEn ? 'Back to Recipes' : 'Kembali ke Resep'}
         </a>
       </div>
     `;
@@ -242,7 +242,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         <div class="space-y-2">
           <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-            <span>${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Practical Kitchen Guide' : 'Panduan Praktis Olah-olah'}</span>
+            <span>${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Practical Kitchen Guide' : 'Panduan Praktis Memasak'}</span>
           </span>
           <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">
             ${t('recipeDetail.stepsTitle')}

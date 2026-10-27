@@ -119,21 +119,21 @@ export class ThreeHeroShowcase {
     const hotspots = [
       {
         id: 'gori',
-        title: isEn ? 'Slow-braised Young Jackfruit (Gudeg)' : 'Gori / Nangka Muda Bacem Kluthuk',
+        title: isEn ? 'Slow-braised Young Jackfruit (Gudeg)' : 'Gori / Nangka Muda Bacem',
         desc: isEn 
           ? 'Young jackfruit simmered for hours with coconut palm sugar, bay leaves, teak leaves, and aromatic spices until rich mahogany and melt-in-the-mouth.'
-          : 'Nangka enom serat padat ingkang dipun-ungkep dangu kaliyan gula kelapa, godhong jati, lan godhong salam ngantos werninipun soklat semu abrit lan lumere resep.',
-        role: isEn ? 'Core Dish' : 'Ruh Masakan',
+          : 'Nangka muda serat padat yang diungkep perlahan bersama gula kelapa, daun jati, dan rempah aromatik hingga empuk meresap kecokelatan.',
+        role: isEn ? 'Core Dish' : 'Inti Masakan',
         x: '43%',
         y: '68%'
       },
       {
         id: 'areh',
-        title: isEn ? 'Velvety Coconut Cream Curd (Areh)' : 'Areh Santan Kanil Gurih Lumer',
+        title: isEn ? 'Velvety Coconut Cream Curd (Areh)' : 'Areh Santan Kanil Gurih',
         desc: isEn 
           ? 'First-press coconut milk reduced over low firewood embers into a silky, savory cloud curd that balances sweet jackfruit.'
-          : 'Santan kelapa kanil perasan kaping sepisan ingkang dipungodhog alon ngantos dados dadih putih gurih lembut panyelarasan rasa legi.',
-        role: isEn ? 'Savory Balance' : 'Gurih Kanil',
+          : 'Santan kelapa kental (kanil) perasan pertama yang dimasak perlahan hingga menghasilkan dadih putih gurih lembut penyeimbang rasa manis.',
+        role: isEn ? 'Savory Balance' : 'Penyeimbang Gurih',
         x: '46%',
         y: '57%'
       },
@@ -142,17 +142,17 @@ export class ThreeHeroShowcase {
         title: isEn ? 'Braised Free-range Chicken (Ayam Bacem)' : 'Ayam Kampung Opor Bacem',
         desc: isEn 
           ? 'Local free-range chicken drumstick braised with coriander, shallots, garlic, and coconut sugar until deeply infused.'
-          : 'Pitik kampung asli empuk kenyal ingkang dipunbacem bumbu ketumbar sangrai, brambang bawang, lan sari gula aren.',
-        role: isEn ? 'Signature Protein' : 'Lauk Pokok',
+          : 'Ayam kampung asli empuk bumbu bacem ketumbar sangrai, bawang merah, bawang putih, dan gula kelapa alami.',
+        role: isEn ? 'Signature Protein' : 'Lauk Utama',
         x: '44%',
         y: '42%'
       },
       {
         id: 'telur',
-        title: isEn ? 'Marbled Braised Duck Egg (Telur Pindang)' : 'Endhog Bebek Pindang Bacem',
+        title: isEn ? 'Marbled Braised Duck Egg (Telur Pindang)' : 'Telur Bebek Pindang Bacem',
         desc: isEn 
           ? 'Rich duck egg boiled and braised with shallot skins and guava leaves, producing a dark mahogany marbled gloss and dense yolk.'
-          : 'Endhog bebek pilihan dipungodhog kaliyan kulit brambang lan godhong jambu kluthuk, ngasilaken werni soklat mengkilap lan gurih padat.',
+          : 'Telur bebek pilihan yang direbus dan dibacem bersama daun jambu biji, menghasilkan semburat cokelat marmer berkilau dan rasa gurih mantap.',
         role: isEn ? 'Traditional Complement' : 'Lauk Tradisi',
         x: '31%',
         y: '56%'
@@ -162,8 +162,8 @@ export class ThreeHeroShowcase {
         title: isEn ? 'Spicy Cattle Skin Stew (Sambal Krecek)' : 'Sambal Goreng Krecek Kulit Sapi',
         desc: isEn 
           ? 'Chewy dried cattle skin cracklings simmered in fiery red chili sauce with whole bird\'s eye chilies to cut through the sweetness.'
-          : 'Krupuk rambak kulit sapi kenyal ingkang dipunolah kaliyan kuah santan lombok abrit lan rawit wutuh, maringi sengatan pedes kemepyar.',
-        role: isEn ? 'Fiery Kick' : 'Pedes Kemepyar',
+          : 'Krecek kulit sapi kenyal gurih yang dimasak dalam kuah santan cabai merah dan rawit utuh, memberi sentuhan pedas menyegarkan.',
+        role: isEn ? 'Fiery Kick' : 'Aksen Pedas Segar',
         x: '66%',
         y: '64%'
       }
@@ -184,7 +184,7 @@ export class ThreeHeroShowcase {
         <!-- Gerabah & Banana Leaf Heritage Badge -->
         <div class="absolute top-3 left-3 z-10 flex items-center gap-1.5 bg-[#120B07]/90 text-[#FAF7F2] px-3 py-1.5 rounded-full border border-[#D49B42]/50 backdrop-blur-md shadow-lg text-[10px] font-bold">
           <span class="text-[#D49B42] shrink-0">🏺</span>
-          <span>${isEn ? 'Plated on Kasongan Earthenware' : 'Dipunladikaken ing Gerabah Kasongan'}</span>
+          <span>${isEn ? 'Plated on Kasongan Earthenware' : 'Disajikan di Gerabah Kasongan'}</span>
         </div>
 
         <!-- Hotspot Pins -->
@@ -223,12 +223,12 @@ export class ThreeHeroShowcase {
           </div>
           <div class="mt-3 pt-2.5 border-t border-[#E8DEC8] flex items-center justify-between">
             <a href="#/resep/gudeg-komplit" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
-              <span>${isEn ? 'View Full Recipe' : 'Pirsani Resep Jangkep'}</span>
+              <span>${isEn ? 'View Full Recipe' : 'Lihat Resep Lengkap'}</span>
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-            <span class="text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Kasongan Earthenware' : 'Kendhi Gerabah Kasongan'}</span>
+            <span class="text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Kasongan Earthenware' : 'Gerabah Tradisional Kasongan'}</span>
           </div>
         </div>
 

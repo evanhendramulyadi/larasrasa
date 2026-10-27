@@ -108,6 +108,11 @@ body {
 }
 
 /* Leaflet Customizations for LarasRasa */
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
 .leaflet-popup-content-wrapper {
   background: #FFFFFF !important;
   color: #120B07 !important;
@@ -125,6 +130,96 @@ body {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif !important;
   border-radius: 24px;
   background: #EFE8DA !important;
+}
+
+/* Flavor Map Custom Pin with Label */
+.flavor-map-marker-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flavor-map-marker-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.flavor-map-marker-wrapper:hover {
+  transform: translateY(-4px) scale(1.06);
+  z-index: 999 !important;
+}
+
+.flavor-map-marker-wrapper.is-active {
+  transform: translateY(-5px) scale(1.12);
+  z-index: 1000 !important;
+}
+
+.marker-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 9999px;
+  background-color: #C84C24;
+  color: #FFFFFF;
+  border: 2px solid #FAF7F2;
+  box-shadow: 0 4px 14px rgba(18, 11, 7, 0.35);
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.flavor-map-marker-wrapper.is-active .marker-bubble {
+  background-color: #D49B42;
+  color: #120B07;
+  border-color: #FAF7F2;
+  box-shadow: 0 6px 20px rgba(212, 155, 66, 0.65);
+}
+
+.marker-icon {
+  font-size: 12px;
+}
+
+.marker-name {
+  letter-spacing: 0.01em;
+}
+
+.marker-pointer {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid #C84C24;
+  margin-top: -1px;
+}
+
+.flavor-map-marker-wrapper.is-active .marker-pointer {
+  border-top-color: #D49B42;
+}
+
+.marker-pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  margin-left: -20px;
+  border-radius: 50%;
+  background-color: rgba(200, 76, 36, 0.35);
+  animation: hotspot-pulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.flavor-map-marker-wrapper.is-active .marker-pulse-ring {
+  background-color: rgba(212, 155, 66, 0.45);
 }
 
 /* Card Hover Elevation & Luxury Lift */

@@ -85,13 +85,13 @@ function renderGeneratingState(currentLang) {
         <p class="text-xs sm:text-sm text-[#5C3622] max-w-md mx-auto leading-relaxed">
           ${isEn 
             ? 'Structuring recipe blueprint container, calculating portion ratios, and preparing payload schema for backend REST API.'
-            : 'Menyusun struktur cithakan resep, ngetung takaran porsi, lan nyawisaken skema payload kagem integrasi backend API.'}
+            : 'Menyusun struktur template resep, menghitung proporsi takaran porsi, dan menyiapkan skema payload untuk integrasi backend REST API.'}
         </p>
       </div>
 
       <div class="max-w-xs mx-auto pawon-glass p-4 rounded-2xl border border-[#D49B42]/35 text-xs text-[#5C3622] space-y-2 shadow-sm">
         <div class="flex items-center justify-between font-bold">
-          <span>${isEn ? 'Template Structure Ready' : 'Struktur Cithakan Siap'}</span>
+          <span>${isEn ? 'Template Structure Ready' : 'Struktur Template Siap'}</span>
           <span class="text-[#C84C24] font-mono">100%</span>
         </div>
         <div class="w-full bg-[#FAF7F2] h-2.5 rounded-full overflow-hidden border border-[#E8DEC8]">
@@ -268,7 +268,7 @@ function renderFormView(currentLang) {
             <div class="flex flex-wrap gap-1.5">
               ${selectedCount === 0 ? `
                 <span class="text-xs italic text-[#5C3622]">
-                  ${isEn ? 'No ingredients selected yet. Click any ingredient card below to add.' : 'Dereng wonten bahan kapilih. Klik kartu rempah ing ngandhap kagem milih.'}
+                  ${isEn ? 'No ingredients selected yet. Click any ingredient card below to add.' : 'Belum ada bahan yang dipilih. Klik kartu bahan atau rempah di bawah untuk menambahkan.'}
                 </span>
               ` : formState.selectedIngredientIds.map(id => {
                 const item = ALL_INGREDIENTS.find(i => i.id === id);
@@ -288,7 +288,7 @@ function renderFormView(currentLang) {
           <div class="flex flex-col md:flex-row gap-3 items-stretch justify-between">
             <div class="inline-flex p-1 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 overflow-x-auto text-xs font-bold text-[#5C3622]">
               <button type="button" data-tab="all" class="px-4 py-2 rounded-xl transition-all cursor-pointer ${activeTab === 'all' ? 'bg-[#120B07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
-                ${isEn ? 'All Ingredients' : 'Sedaya Bahan'}
+                ${isEn ? 'All Ingredients' : 'Semua Bahan'}
               </button>
               <button type="button" data-tab="protein" class="px-4 py-2 rounded-xl transition-all cursor-pointer ${activeTab === 'protein' ? 'bg-[#120B07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
                 🥩 ${isEn ? 'Proteins' : 'Protein & Pokok'}
@@ -306,7 +306,7 @@ function renderFormView(currentLang) {
               <input 
                 type="text" 
                 id="ingredient-search-input" 
-                placeholder="${isEn ? 'Search ingredients...' : 'Luru bahan / rempah...'}" 
+                placeholder="${isEn ? 'Search ingredients...' : 'Cari bahan atau rempah...'}" 
                 value="${escapeHtml(searchQuery)}"
                 class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-[#E8DEC8] text-xs text-[#120B07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] shadow-inner"
               />
@@ -674,7 +674,7 @@ function renderResultView(recipe, currentLang) {
                 </svg>
               </div>
               <h4 class="font-editorial-serif text-base font-bold text-[#D49B42]">
-                ${isEn ? '[Generative Image Frame]' : '[Wewengkon Foto Asil Sintesis]'}
+                ${isEn ? '[Generative Image Frame]' : '[Bingkai Foto Hasil Sintesis AI]'}
               </h4>
               <p class="text-[11px] text-[#FAF7F2]/75 max-w-xs mt-1.5 leading-relaxed">
                 ${t('aiCreator.emptyVisualDesc')}
