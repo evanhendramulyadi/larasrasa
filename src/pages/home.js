@@ -9,8 +9,9 @@ import { ThreeHeroShowcase } from '../components/three-hero.js';
 import { i18n, t } from '../i18n/index.js';
 
 /**
- * Upgraded Homepage (Beranda)
- * With elevated Royal Javanese Heritage palette tokens, bilingual support, and showcase.
+ * World-Class Royal Javanese Heritage Homepage
+ * Elevated palette tokens, authentic bilingual translations with rich Javanese touches,
+ * interactive 3D/photo centerpiece, and comprehensive culinary showcases.
  */
 export async function renderHomePage() {
   const isEn = i18n.getLanguage() === 'en';
@@ -19,44 +20,49 @@ export async function renderHomePage() {
   const sampleSpices = spices.map(localizeSpice).slice(0, 5);
 
   return `
-    <div class="space-y-20 lg:space-y-28 pb-24">
+    <div class="space-y-24 lg:space-y-32 pb-28">
       
       <!-- HERO SECTION -->
-      <section class="relative overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-24 border-b border-[#E8DEC8]">
-        <!-- Subtle Ambient Warm Glow (Polos Menarik Bercorak) -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#D49B42]/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute bottom-0 right-10 w-[450px] h-[450px] bg-[#C84C24]/10 rounded-full blur-3xl pointer-events-none"></div>
+      <section class="relative overflow-hidden pt-8 pb-16 lg:pt-16 lg:pb-24 border-b border-[#D49B42]/30">
+        <!-- Ambient Warm Royal Glow -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#D49B42]/12 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 right-10 w-[500px] h-[500px] bg-[#C84C24]/12 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
             
             <!-- Left Editorial Text -->
-            <div class="lg:col-span-6 space-y-5 sm:space-y-6 text-center lg:text-left z-10">
-              <div class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#EFE8DA] border border-[#E8DEC8] text-[10px] sm:text-xs font-semibold text-[#5C3622] uppercase tracking-wider shadow-2xs">
-                <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-pulse"></span>
+            <div class="lg:col-span-6 space-y-6 text-center lg:text-left z-10">
+              
+              <!-- Royal Crest Pill -->
+              <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-xs">
+                <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-ping"></span>
                 <span>${t('hero.badge')}</span>
               </div>
 
-              <h1 class="font-editorial-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#140C07] leading-[1.14] break-words">
-                ${t('hero.titleStart')} <span class="italic text-[#C84C24]">${t('hero.titleAccent')}</span> ${t('hero.titleEnd')}
+              <!-- Main Headline -->
+              <h1 class="font-editorial-serif text-3xl sm:text-5xl lg:text-[58px] font-bold tracking-tight text-[#120B07] leading-[1.12] break-words">
+                ${t('hero.titleStart')} <span class="italic text-terracotta-gradient">${t('hero.titleAccent')}</span> ${t('hero.titleEnd')}
               </h1>
 
+              <!-- Poetic Intro Description -->
               <p class="text-sm sm:text-lg text-[#5C3622] font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 ${t('hero.description')}
               </p>
 
-              <!-- Hero Actions -->
-              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-1 sm:pt-2">
+              <!-- Hero Action Buttons -->
+              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4 pt-1 sm:pt-2">
                 <a href="#/resep" 
-                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all duration-300 shadow-sm hover:shadow-lg hover:-translate-y-0.5 cursor-pointer">
+                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30]">
                   <span>${t('hero.ctaPrimary')}</span>
                   <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
                 </a>
+                
                 <a href="#/rekomendasi" 
-                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full text-xs sm:text-sm font-bold bg-white hover:bg-[#EFE8DA] text-[#140C07] transition-all border border-[#E8DEC8] shadow-xs cursor-pointer">
-                  <svg class="w-4 h-4 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full text-xs sm:text-sm font-bold bg-white hover:bg-[#FAF7F2] text-[#120B07] transition-all border border-[#D49B42]/45 shadow-xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer">
+                  <svg class="w-4 h-4 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
                   </svg>
                   <span>${t('hero.ctaSecondary')}</span>
@@ -64,26 +70,49 @@ export async function renderHomePage() {
               </div>
 
               <!-- Cultural Quotation Pill -->
-              <div class="pt-2 sm:pt-3 flex items-center justify-center lg:justify-start gap-3 text-xs text-[#4A5834]">
+              <div class="pt-2 sm:pt-3 flex items-center justify-center lg:justify-start gap-3 text-xs text-[#2E4D38]">
                 <span class="inline-block w-8 h-px bg-[#D49B42]"></span>
-                <span class="italic font-editorial-serif text-[11px] sm:text-xs">${t('hero.culturalPill')}</span>
+                <span class="italic font-editorial-serif text-xs sm:text-sm font-semibold">${t('hero.culturalPill')}</span>
               </div>
+
+              <!-- Key Heritage Stats Cards -->
+              <div class="pt-4 grid grid-cols-3 gap-3 text-left">
+                <div class="p-3.5 rounded-2xl bg-white/90 border border-[#D49B42]/35 shadow-xs">
+                  <span class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#C84C24] block">8</span>
+                  <span class="text-[11px] font-bold text-[#120B07] block">${t('hero.statsRegions')}</span>
+                  <span class="text-[9px] text-[#5C3622] block">${t('hero.statsRegionsSub')}</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-white/90 border border-[#D49B42]/35 shadow-xs">
+                  <span class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#D49B42] block">12+</span>
+                  <span class="text-[11px] font-bold text-[#120B07] block">${t('hero.statsRecipes')}</span>
+                  <span class="text-[9px] text-[#5C3622] block">${t('hero.statsRecipesSub')}</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-white/90 border border-[#D49B42]/35 shadow-xs">
+                  <span class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#2E4D38] block">100%</span>
+                  <span class="text-[11px] font-bold text-[#120B07] block">${t('hero.statsHeritage')}</span>
+                  <span class="text-[9px] text-[#5C3622] block">${t('hero.statsHeritageSub')}</span>
+                </div>
+              </div>
+
             </div>
 
             <!-- Right Interactive Centerpiece Showcase -->
             <div class="lg:col-span-6 relative flex items-center justify-center w-full">
-              <div id="hero-3d-canvas" class="w-full max-w-[500px] min-h-[400px] sm:min-h-[470px]"></div>
+              <div id="hero-3d-canvas" class="w-full max-w-[520px] min-h-[420px] sm:min-h-[500px]"></div>
             </div>
 
           </div>
         </div>
       </section>
 
-      <!-- SECTION: DISCOVER BY FLAVOR -->
+      <!-- SECTION: DISCOVER BY FLAVOR SPECTRUM -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
-          <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24]">${t('flavorSection.badge')}</span>
-          <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#140C07]">
+          <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+            <span>${t('flavorSection.badge')}</span>
+          </span>
+          <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
             ${t('flavorSection.title')}
           </h2>
           <p class="text-sm text-[#5C3622] leading-relaxed">
@@ -97,23 +126,24 @@ export async function renderHomePage() {
             const fTagline = isEn ? (f.taglineEn || f.tagline) : f.tagline;
             return `
             <a href="#/resep?flavor=${f.id}" 
-               class="group p-5 rounded-2xl bg-white border border-[#E8DEC8] hover:border-[#C84C24] text-center transition-all duration-300 card-hover-lift flex flex-col items-center justify-between shadow-2xs">
-              <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110" style="background-color: ${f.color}15; color: ${f.color};">
+               class="group p-5 rounded-3xl bg-white border border-[#D49B42]/30 hover:border-[#C84C24] text-center transition-all duration-300 card-hover-lift flex flex-col items-center justify-between shadow-2xs">
+              <div class="w-13 h-13 rounded-2xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110 shadow-xs" style="background-color: ${f.color}15; color: ${f.color}; border: 1px solid ${f.color}35;">
                 <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Z" fill="currentColor" fill-opacity="0.2"/>
                   <circle cx="12" cy="9" r="2.5"/>
                 </svg>
               </div>
               <div>
-                <h3 class="font-editorial-serif text-base font-bold text-[#140C07] group-hover:text-[#C84C24] transition-colors mb-1">
+                <h3 class="font-editorial-serif text-base font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors mb-1">
                   ${fName}
                 </h3>
                 <p class="text-[11px] text-[#5C3622] line-clamp-2 leading-tight">
                   ${fTagline}
                 </p>
               </div>
-              <span class="mt-3 text-[10px] font-bold text-[#C84C24] uppercase tracking-wider group-hover:underline">
-                ${t('flavorSection.exploreBtn')} &rarr;
+              <span class="mt-3 text-[10px] font-bold text-[#C84C24] uppercase tracking-wider group-hover:underline flex items-center gap-1">
+                <span>${t('flavorSection.exploreBtn')}</span>
+                <span>&rarr;</span>
               </span>
             </a>
           `;
@@ -121,21 +151,24 @@ export async function renderHomePage() {
         </div>
       </section>
 
-      <!-- SECTION: FEATURED RECIPES -->
+      <!-- SECTION: FEATURED CURATED RECIPES -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4 pb-4 border-b border-[#D49B42]/25">
           <div class="space-y-2">
-            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24]">${t('recipesSection.badge')}</span>
-            <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#140C07]">
+            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+              <span>${t('recipesSection.badge')}</span>
+            </span>
+            <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
               ${t('recipesSection.title')}
             </h2>
             <p class="text-sm text-[#5C3622] max-w-xl">
               ${t('recipesSection.description')}
             </p>
           </div>
-          <a href="#/resep" class="inline-flex items-center gap-1.5 text-sm font-bold text-[#140C07] hover:text-[#C84C24] transition-colors group shrink-0">
+          <a href="#/resep" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all duration-300 shadow-sm shrink-0">
             <span>${t('recipesSection.viewAll')}</span>
-            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </a>
@@ -146,48 +179,49 @@ export async function renderHomePage() {
         </div>
       </section>
 
-      <!-- SECTION: PETA RASA PREVIEW -->
+      <!-- SECTION: PETA RASA CULINARY GEOGRAPHY TEASER -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-br from-[#140C07] to-[#22150E] rounded-3xl p-8 sm:p-12 lg:p-14 text-white relative overflow-hidden shadow-xl border border-[#D49B42]/30">
-          <div class="absolute -right-16 -bottom-16 w-96 h-96 bg-[#C84C24]/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="bg-gradient-to-br from-[#120B07] via-[#1E120A] to-[#120B07] rounded-3xl p-8 sm:p-12 lg:p-16 text-white relative overflow-hidden shadow-2xl border-2 border-[#D49B42]/40">
+          <div class="absolute -right-20 -bottom-20 w-96 h-96 bg-[#C84C24]/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-20 -top-20 w-80 h-80 bg-[#D49B42]/15 rounded-full blur-3xl pointer-events-none"></div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
             <div class="lg:col-span-6 space-y-6">
-              <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C84C24]/25 border border-[#C84C24]/40 text-xs font-semibold text-[#FAF7F2] uppercase tracking-wider">
-                <svg class="w-3.5 h-3.5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider">
+                <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
                   <line x1="9" x2="9" y1="3" y2="18"/>
                   <line x1="15" x2="15" y1="6" y2="21"/>
                 </svg>
-                ${t('mapSection.badge')}
+                <span>${t('mapSection.badge')}</span>
               </span>
 
               <h2 class="font-editorial-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-[#FAF7F2]">
                 ${t('mapSection.title')}
               </h2>
 
-              <p class="text-sm sm:text-base text-[#EFE8DA]/85 leading-relaxed">
+              <p class="text-sm sm:text-base text-[#FAF7F2]/85 leading-relaxed">
                 ${t('mapSection.description')}
               </p>
 
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs">
-                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
+                <div class="p-4 rounded-2xl bg-white/5 border border-[#D49B42]/30 backdrop-blur-md">
                   <p class="font-bold text-[#D49B42]">Kota Semarang</p>
-                  <p class="text-[11px] text-[#EFE8DA]/70">Lumpia & Tahu Gimbal</p>
+                  <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Lumpia & Tahu Gimbal</p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-                  <p class="font-bold text-[#D49B42]">Kota Surakarta (Solo)</p>
-                  <p class="text-[11px] text-[#EFE8DA]/70">Nasi Liwet & Selat</p>
+                <div class="p-4 rounded-2xl bg-white/5 border border-[#D49B42]/30 backdrop-blur-md">
+                  <p class="font-bold text-[#D49B42]">Solo (Surakarta)</p>
+                  <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Sega Liwet & Selat Solo</p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs">
-                  <p class="font-bold text-[#D49B42]">Kabupaten Kudus</p>
-                  <p class="text-[11px] text-[#EFE8DA]/70">Soto Kencur & Garang Asem</p>
+                <div class="p-4 rounded-2xl bg-white/5 border border-[#D49B42]/30 backdrop-blur-md">
+                  <p class="font-bold text-[#D49B42]">Kab. Kudus</p>
+                  <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Soto Kencur & Garang Asem</p>
                 </div>
               </div>
 
-              <div class="pt-2">
+              <div class="pt-3">
                 <a href="#/peta-rasa" 
-                   class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md">
+                   class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
                   <span>${t('nav.flavorMap')} &rarr;</span>
                 </a>
               </div>
@@ -195,14 +229,14 @@ export async function renderHomePage() {
 
             <!-- Preview Graphic Teaser -->
             <div class="lg:col-span-6 flex items-center justify-center">
-              <div class="w-full aspect-4/3 rounded-2xl overflow-hidden border-2 border-[#D49B42]/30 shadow-2xl relative group">
+              <div class="w-full aspect-4/3 rounded-3xl overflow-hidden border-2 border-[#D49B42]/40 shadow-2xl relative group">
                 <img src="/assets/images/regions/semarang.jpg" 
                      alt="Peta Rasa Jawa Tengah" 
-                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-6">
+                     class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-6 sm:p-8">
                   <span class="text-xs uppercase tracking-widest text-[#D49B42] font-bold">${t('mapSection.badge')}</span>
-                  <h3 class="font-editorial-serif text-2xl font-bold text-white">${t('mapSection.mapTitle')}</h3>
-                  <p class="text-xs text-[#EFE8DA] mt-1">${t('mapSection.mapHint')}</p>
+                  <h3 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-white mt-1">${t('mapSection.mapTitle')}</h3>
+                  <p class="text-xs text-[#EFE8DA] mt-1.5">${t('mapSection.mapHint')}</p>
                 </div>
               </div>
             </div>
@@ -213,8 +247,11 @@ export async function renderHomePage() {
       <!-- SECTION: SPICE DISCOVERY -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
-          <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24]">${t('spicesSection.badge')}</span>
-          <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#140C07]">
+          <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+            <span>${t('spicesSection.badge')}</span>
+          </span>
+          <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
             ${t('spicesSection.title')}
           </h2>
           <p class="text-sm text-[#5C3622] leading-relaxed">
@@ -224,31 +261,31 @@ export async function renderHomePage() {
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
           ${sampleSpices.map(s => `
-            <div class="group bg-white p-4 rounded-2xl border border-[#E8DEC8] shadow-xs hover:border-[#C84C24] transition-all card-hover-lift flex flex-col justify-between">
+            <div class="group bg-white p-5 rounded-3xl border border-[#D49B42]/30 shadow-xs hover:border-[#C84C24] transition-all card-hover-lift flex flex-col justify-between">
               <div>
-                <div class="relative w-full h-32 rounded-xl overflow-hidden mb-3 bg-[#FAF7F2] border border-[#E8DEC8]/60">
+                <div class="relative w-full h-36 rounded-2xl overflow-hidden mb-3.5 bg-[#FAF7F2] border border-[#E8DEC8]">
                   <img src="${s.image}" 
                        alt="${s.name}" 
-                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                       class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
                        loading="lazy"
                        onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                  <span class="absolute bottom-1.5 left-2 px-2 py-0.5 rounded-md bg-[#140C07]/85 text-[9px] font-bold text-[#FAF7F2] backdrop-blur-xs">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                  <span class="absolute bottom-2 left-2 px-2.5 py-0.5 rounded-md bg-[#120B07]/90 text-[10px] font-bold text-[#FAF7F2] backdrop-blur-md border border-[#D49B42]/30">
                     ${s.categoryName}
                   </span>
                 </div>
-                <h3 class="font-editorial-serif text-base font-bold text-[#140C07] group-hover:text-[#C84C24] transition-colors mb-0.5">
+                <h3 class="font-editorial-serif text-base font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors mb-0.5">
                   ${s.name}
                 </h3>
-                <p class="text-[10px] italic text-[#4A5834] mb-1.5 font-mono">
+                <p class="text-[10px] italic text-[#2E4D38] mb-1.5 font-mono font-semibold">
                   ${s.latinName}
                 </p>
-                <p class="text-xs text-[#5C3622]/90 line-clamp-2 leading-relaxed">
+                <p class="text-xs text-[#5C3622] line-clamp-2 leading-relaxed">
                   ${s.role}
                 </p>
               </div>
-              <div class="pt-3 border-t border-[#E8DEC8] mt-3">
-                <a href="#/jelajah-rempah" class="text-xs font-bold text-[#C84C24] hover:text-[#140C07] transition-colors flex items-center justify-between">
+              <div class="pt-3.5 border-t border-[#E8DEC8] mt-3.5">
+                <a href="#/jelajah-rempah" class="text-xs font-bold text-[#C84C24] hover:text-[#120B07] transition-colors flex items-center justify-between">
                   <span>${t('spicesSection.inspectBtn')}</span>
                   <span>&rarr;</span>
                 </a>
@@ -258,21 +295,24 @@ export async function renderHomePage() {
         </div>
       </section>
 
-      <!-- SECTION: LEGENDARY RESTAURANTS -->
+      <!-- SECTION: LEGENDARY HISTORIC RESTAURANTS -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4 pb-4 border-b border-[#D49B42]/25">
           <div class="space-y-2">
-            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24]">${t('restaurantsSection.badge')}</span>
-            <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#140C07]">
+            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+              <span>${t('restaurantsSection.badge')}</span>
+            </span>
+            <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
               ${t('restaurantsSection.title')}
             </h2>
             <p class="text-sm text-[#5C3622] max-w-xl">
               ${t('restaurantsSection.description')}
             </p>
           </div>
-          <a href="#/restoran-legendaris" class="inline-flex items-center gap-1.5 text-sm font-bold text-[#140C07] hover:text-[#C84C24] transition-colors group shrink-0">
+          <a href="#/restoran-legendaris" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all shadow-sm shrink-0">
             <span>${t('nav.restaurants')}</span>
-            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </a>
@@ -283,29 +323,29 @@ export async function renderHomePage() {
         </div>
       </section>
 
-      <!-- SECTION: AI FOOD CREATOR SPOTLIGHT -->
+      <!-- SECTION: AI FOOD CREATOR SPOTLIGHT STUDIO -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#140C07] via-[#22150E] to-[#140C07] border border-[#D49B42]/35 shadow-2xl p-8 sm:p-12 text-[#FAF7F2]">
-          <div class="absolute -right-24 -bottom-24 w-96 h-96 rounded-full bg-[#C84C24]/15 blur-3xl pointer-events-none"></div>
-          <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#D49B42]/10 blur-3xl pointer-events-none"></div>
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#120B07] via-[#1E120A] to-[#120B07] border-2 border-[#D49B42]/45 shadow-2xl p-8 sm:p-12 lg:p-14 text-[#FAF7F2]">
+          <div class="absolute -right-24 -bottom-24 w-96 h-96 rounded-full bg-[#C84C24]/18 blur-3xl pointer-events-none"></div>
+          <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#D49B42]/15 blur-3xl pointer-events-none"></div>
           
           <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div class="lg:col-span-8 space-y-4">
-              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42]">
+              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/45 text-xs font-bold text-[#D49B42] shadow-xs">
                 <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-ping"></span>
-                <span>${isEn ? 'AI CULINARY STUDIO • CREATE YOUR OWN DISH' : 'STUDIO KULINER AI • RANCANG RESEP ORISINAL'}</span>
+                <span>${isEn ? 'AI CULINARY STUDIO • CENTRAL JAVA' : 'STUDIO RACIK KULINER AI • JAWA TENGAH'}</span>
               </div>
               <h2 class="font-editorial-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
-                ${isEn ? 'Create Your Own Javanese Dish & Recipe' : 'Rancang Resep Orisinal & Takaran Bumbu Anda'}
+                ${isEn ? 'Craft Your Recipe Concept & Bumbu Profile' : 'Rancang Konsep Resep & Komposisi Bumbu Anda'}
               </h2>
               <p class="text-sm sm:text-base text-[#FAF7F2]/85 max-w-2xl leading-relaxed">
                 ${isEn 
-                  ? 'Input your culinary vision, choose regional proteins and spices, and our AI Culinary Engine will synthesize an authentic recipe with scaled measurements officially credited to your name.'
-                  : 'Pilih bahan rempah otentik Jawa Tengah, tentukan teknik memasak, dan biarkan AI menyusun takaran presisi serta cetak biru resep resmi bertuliskan nama Anda sebagai pencipta.'}
+                  ? 'Input your culinary vision, choose authentic regional spices, set your custom portions, and generate a standardized recipe template ready for backend integration.'
+                  : 'Pilih bahan rempah otentik Jawa Tengah, tentukan teknik memasak tradisional, atur porsi santapan bebas, lan susun cithakan resep resmi siap sambung backend.'}
               </p>
               <div class="pt-2 flex flex-wrap gap-3">
-                <a href="#/ai-food-creator" class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
-                  <span>✨ ${isEn ? 'Launch AI Food Creator' : 'Ciptakan Resep di Studio AI'}</span>
+                <a href="#/ai-food-creator" class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 border border-[#E05A30]">
+                  <span>✨ ${isEn ? 'Open AI Food Creator Studio' : 'Bukak Studio AI Food Creator'}</span>
                   <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
                   </svg>
@@ -313,20 +353,20 @@ export async function renderHomePage() {
               </div>
             </div>
 
-            <div class="lg:col-span-4 bg-white/5 border border-[#D49B42]/25 rounded-2xl p-6 backdrop-blur-xs space-y-3 text-xs">
-              <span class="text-[10px] font-bold text-[#D49B42] uppercase tracking-wider block">${isEn ? 'AI Studio Advantages' : 'Kelebihan Studio AI'}</span>
-              <div class="space-y-2 text-[#FAF7F2]/80">
-                <div class="flex items-start gap-2">
-                  <span class="text-[#C84C24] font-bold">✓</span>
-                  <span><strong>${isEn ? 'Free & Instant:' : 'Bebas Akses Tanpa Hambatan:'}</strong> ${isEn ? 'Instant recipe synthesis' : 'Perancangan resep cepat'}</span>
+            <div class="lg:col-span-4 bg-white/5 border border-[#D49B42]/35 rounded-3xl p-6 backdrop-blur-md space-y-3.5 text-xs">
+              <span class="text-[11px] font-bold text-[#D49B42] uppercase tracking-wider block">${isEn ? 'AI Studio Architecture' : 'Kautaman Studio AI'}</span>
+              <div class="space-y-2.5 text-[#FAF7F2]/85">
+                <div class="flex items-start gap-2.5">
+                  <span class="text-[#C84C24] font-bold text-sm">✓</span>
+                  <span><strong>${isEn ? 'Free Portions (1-100):' : 'Takaran Porsi Bebas (1-100):'}</strong> ${isEn ? 'Dynamic ratio calculation' : 'Perhitungan gramasi otomatis'}</span>
                 </div>
-                <div class="flex items-start gap-2">
-                  <span class="text-[#C84C24] font-bold">✓</span>
-                  <span><strong>${isEn ? 'Official Attribution:' : 'Hak Cipta Tertera:'}</strong> ${isEn ? 'Full name on recipe blueprint' : 'Nama tertera pada dokumen resep'}</span>
+                <div class="flex items-start gap-2.5">
+                  <span class="text-[#C84C24] font-bold text-sm">✓</span>
+                  <span><strong>${isEn ? 'Creator Attribution:' : 'Hak Cipta Tertera:'}</strong> ${isEn ? 'Official certificate & attribution' : 'Asma pencipta ing cithakan resep'}</span>
                 </div>
-                <div class="flex items-start gap-2">
-                  <span class="text-[#C84C24] font-bold">✓</span>
-                  <span><strong>${isEn ? 'Authentic Spices:' : 'Logika Bumbu Otentik:'}</strong> ${isEn ? 'Curated Central Javanese flavors' : 'Pilihan bahan khas 8 wilayah'}</span>
+                <div class="flex items-start gap-2.5">
+                  <span class="text-[#C84C24] font-bold text-sm">✓</span>
+                  <span><strong>${isEn ? 'Backend Ready:' : 'Kesiapan Backend API:'}</strong> ${isEn ? 'Structured payload ready for Laravel API' : 'Format payload siap kagem endpoint API'}</span>
                 </div>
               </div>
             </div>
@@ -334,17 +374,17 @@ export async function renderHomePage() {
         </div>
       </section>
 
-      <!-- SECTION: RECOMMENDATION CTA -->
+      <!-- SECTION: QUICK CONCIERGE CTA -->
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-gradient-to-r from-white via-[#FAF7F2] to-[#EFE8DA] rounded-3xl p-8 sm:p-12 border border-[#E8DEC8] shadow-lg text-center space-y-6 max-w-3xl mx-auto">
-          <div class="w-14 h-14 rounded-2xl bg-[#140C07] text-[#D49B42] flex items-center justify-center mx-auto shadow-md">
-            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="bg-gradient-to-r from-white via-[#FAF7F2] to-[#F5EFEB] rounded-3xl p-8 sm:p-14 border border-[#D49B42]/40 shadow-xl text-center space-y-6 max-w-3xl mx-auto">
+          <div class="w-16 h-16 rounded-3xl bg-[#120B07] text-[#D49B42] border-2 border-[#D49B42]/50 flex items-center justify-center mx-auto shadow-md">
+            <svg class="w-8 h-8 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
             </svg>
           </div>
 
           <div class="space-y-2">
-            <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#140C07]">
+            <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
               ${t('recommendations.title')}
             </h2>
             <p class="text-sm sm:text-base text-[#5C3622] max-w-xl mx-auto leading-relaxed">
@@ -354,7 +394,7 @@ export async function renderHomePage() {
 
           <div class="pt-2">
             <a href="#/rekomendasi" 
-               class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5">
+               class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
               <span>${t('recommendations.submitBtn')}</span>
               <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>

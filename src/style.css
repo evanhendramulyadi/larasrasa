@@ -1,31 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  /* Elevated Royal Javanese Heritage Palette */
+  /* Elevated Royal Javanese Heritage Palette (Keraton & Nusantara Modern) */
   --color-warm-ivory: #FAF7F2;
-  --color-soft-cream: #F4EFE6;
-  --color-deep-espresso: #140C07;
-  --color-rich-cocoa: #3B2215;
+  --color-cream-canvas: #F5EFEB;
+  --color-sand-soft: #EFE8DA;
+  --color-hairline-border: #E8DEC8;
+  
+  --color-deep-espresso: #120B07;
+  --color-teak-wood: #1E120A;
+  --color-rich-cocoa: #331F14;
+  --color-warm-cinnamon: #5C3622;
+  --color-earth-brown: #7A4E33;
+  
   --color-terracotta: #C84C24;
   --color-terracotta-hover: #AE3E1B;
+  --color-terracotta-glow: #E05A30;
   --color-terracotta-light: #FDF4EE;
-  --color-muted-olive: #4A5834;
+  
   --color-antique-gold: #D49B42;
-  --color-antique-gold-hover: #E2B365;
-  --color-antique-gold-light: #FDF8EE;
-  --color-clean-white: #FFFFFF;
+  --color-royal-gold: #E5AD55;
+  --color-gold-hover: #F2BD68;
+  --color-gold-light: #FDF8ED;
+  --color-gold-border: rgba(212, 155, 66, 0.35);
 
-  --color-javanese-900: #140C07;
-  --color-javanese-800: #22150E;
-  --color-javanese-700: #3B2215;
-  --color-javanese-600: #5C3622;
-  --color-javanese-500: #C84C24;
-  --color-golden-spice: #D49B42;
-  --color-warm-mustard: #E2B365;
-  --color-cream-bg: #FAF7F2;
-  --color-cream-light: #FFFFFF;
-  --color-sand-beige: #EFE8DA;
-  --color-charcoal: #1C120C;
+  --color-pandan-green: #2E4D38;
+  --color-sage-accent: #4A6D56;
+  --color-pandan-light: #EDF4EF;
+
+  --color-clean-white: #FFFFFF;
 
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
@@ -40,27 +43,28 @@ html, body {
 body {
   background-color: #FAF7F2;
   background-image: 
-    radial-gradient(ellipse 900px 500px at 50% -50px, rgba(200, 76, 36, 0.05) 0%, transparent 70%),
-    radial-gradient(ellipse 700px 450px at 95% 20%, rgba(212, 155, 66, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 700px 450px at 5% 50%, rgba(74, 88, 52, 0.035) 0%, transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%23D49B42' stroke-width='0.55' stroke-opacity='0.08'%3E%3Cpath d='M24 0 L48 24 L24 48 L0 24 Z'/%3E%3Ccircle cx='24' cy='24' r='3.5' stroke='%23C84C24' stroke-width='0.5' stroke-opacity='0.09'/%3E%3Ccircle cx='0' cy='0' r='1.5' fill='%23D49B42' fill-opacity='0.06'/%3E%3Ccircle cx='48' cy='0' r='1.5' fill='%23D49B42' fill-opacity='0.06'/%3E%3Ccircle cx='0' cy='48' r='1.5' fill='%23D49B42' fill-opacity='0.06'/%3E%3Ccircle cx='48' cy='48' r='1.5' fill='%23D49B42' fill-opacity='0.06'/%3E%3C/g%3E%3C/svg%3E");
+    radial-gradient(ellipse 950px 550px at 50% -60px, rgba(200, 76, 36, 0.055) 0%, transparent 70%),
+    radial-gradient(ellipse 800px 500px at 95% 25%, rgba(212, 155, 66, 0.065) 0%, transparent 60%),
+    radial-gradient(ellipse 750px 480px at 5% 55%, rgba(46, 77, 56, 0.04) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23D49B42' stroke-width='0.6' stroke-opacity='0.09'%3E%3Cpath d='M28 0 L56 28 L28 56 L0 28 Z'/%3E%3Ccircle cx='28' cy='28' r='4' stroke='%23C84C24' stroke-width='0.55' stroke-opacity='0.1'/%3E%3Ccircle cx='0' cy='0' r='1.8' fill='%23D49B42' fill-opacity='0.07'/%3E%3Ccircle cx='56' cy='0' r='1.8' fill='%23D49B42' fill-opacity='0.07'/%3E%3Ccircle cx='0' cy='56' r='1.8' fill='%23D49B42' fill-opacity='0.07'/%3E%3Ccircle cx='56' cy='56' r='1.8' fill='%23D49B42' fill-opacity='0.07'/%3E%3C/g%3E%3C/svg%3E");
   background-attachment: scroll;
-  color: #140C07;
+  color: #120B07;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   min-height: 100vh;
 }
 
-/* Custom Scrollbar with Warm Teak Styling */
+/* Custom Scrollbar with Warm Teak & Gold Highlights */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
 }
 ::-webkit-scrollbar-track {
   background: #FAF7F2;
 }
 ::-webkit-scrollbar-thumb {
   background: #D49B42;
-  border-radius: 4px;
+  border-radius: 6px;
+  border: 2px solid #FAF7F2;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #C84C24;
@@ -76,10 +80,23 @@ body {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
+/* Gold Gradient Text */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #E5AD55 0%, #D49B42 50%, #B87C26 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-terracotta-gradient {
+  background: linear-gradient(135deg, #E05A30 0%, #C84C24 60%, #922F12 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* Javanese Heritage Textures */
 .bg-javanese-texture {
-  background-color: #22150E;
-  background-image: radial-gradient(#3B2215 1px, transparent 1px), radial-gradient(#3B2215 1px, #22150E 1px);
+  background-color: #1A0E08;
+  background-image: radial-gradient(#331F14 1px, transparent 1px), radial-gradient(#331F14 1px, #1A0E08 1px);
   background-size: 28px 28px;
   background-position: 0 0, 14px 14px;
 }
@@ -93,10 +110,10 @@ body {
 /* Leaflet Customizations for LarasRasa */
 .leaflet-popup-content-wrapper {
   background: #FFFFFF !important;
-  color: #140C07 !important;
-  border-radius: 16px !important;
-  border: 1px solid #E8DEC8 !important;
-  box-shadow: 0 16px 36px -6px rgba(20, 12, 7, 0.16) !important;
+  color: #120B07 !important;
+  border-radius: 18px !important;
+  border: 1px solid rgba(212, 155, 66, 0.4) !important;
+  box-shadow: 0 20px 40px -8px rgba(18, 11, 7, 0.22) !important;
   padding: 4px !important;
 }
 
@@ -110,17 +127,19 @@ body {
   background: #EFE8DA !important;
 }
 
-/* Card Hover Elevation */
+/* Card Hover Elevation & Luxury Lift */
 .card-hover-lift {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.25s ease;
 }
 .card-hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 18px 36px -10px rgba(20, 12, 7, 0.12), 0 4px 12px -2px rgba(20, 12, 7, 0.04);
+  transform: translateY(-6px);
+  box-shadow: 0 22px 44px -12px rgba(18, 11, 7, 0.14), 0 6px 16px -2px rgba(212, 155, 66, 0.08);
   border-color: #D49B42;
 }
 
-/* 3D Canvas Container */
+/* 3D / Centerpiece Canvas Container */
 .webgl-canvas-container {
   touch-action: pan-y;
   user-select: none;
@@ -131,74 +150,83 @@ body {
   position: absolute;
   transform: translate(-50%, -50%);
   cursor: pointer;
-  z-index: 20;
+  z-index: 25;
 }
 .culinary-hotspot-pin {
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background-color: #C84C24;
-  border: 2px solid #FAF7F2;
+  border: 2.5px solid #FAF7F2;
   color: #FAF7F2;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: bold;
-  box-shadow: 0 4px 14px rgba(20, 12, 7, 0.4);
+  font-size: 13px;
+  font-weight: 800;
+  box-shadow: 0 6px 18px rgba(18, 11, 7, 0.45);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s, box-shadow 0.2s;
 }
 .culinary-hotspot:hover .culinary-hotspot-pin,
 .culinary-hotspot.active .culinary-hotspot-pin {
-  transform: scale(1.18);
+  transform: scale(1.22);
   background-color: #D49B42;
-  box-shadow: 0 6px 20px rgba(212, 155, 66, 0.5);
+  box-shadow: 0 8px 24px rgba(212, 155, 66, 0.6);
 }
 .culinary-hotspot-pulse {
   position: absolute;
-  inset: -6px;
+  inset: -8px;
   border-radius: 50%;
   background-color: rgba(200, 76, 36, 0.45);
-  animation: hotspot-pulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+  animation: hotspot-pulse 2.2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
   pointer-events: none;
 }
 @keyframes hotspot-pulse {
-  0% { transform: scale(0.8); opacity: 0.85; }
-  100% { transform: scale(2.4); opacity: 0; }
+  0% { transform: scale(0.75); opacity: 0.9; }
+  100% { transform: scale(2.6); opacity: 0; }
 }
 
-/* Authentic Javanese Heritage Panel & Glassmorphism */
+/* Authentic Javanese Heritage Panel & Frosted Glassmorphism */
 .pawon-glass {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(212, 155, 66, 0.35);
-  box-shadow: 0 12px 32px -6px rgba(20, 12, 7, 0.08);
-}
-
-.pawon-glass-dark {
-  background: rgba(20, 12, 7, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(212, 155, 66, 0.35);
-  box-shadow: 0 18px 44px -8px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 14px 36px -8px rgba(18, 11, 7, 0.08);
+}
+
+.pawon-glass-dark {
+  background: rgba(18, 11, 7, 0.94);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(212, 155, 66, 0.35);
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.5);
 }
 
 .pawon-glow {
-  box-shadow: 0 0 35px -5px rgba(200, 76, 36, 0.28);
+  box-shadow: 0 0 35px -5px rgba(200, 76, 36, 0.3);
 }
 
 .amber-glow {
-  box-shadow: 0 0 28px rgba(212, 155, 66, 0.32);
+  box-shadow: 0 0 30px rgba(212, 155, 66, 0.35);
+}
+
+/* Subtle Shimmer Effect for Luxury Badges & Placeholders */
+@keyframes goldShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.gold-shimmer {
+  background: linear-gradient(90deg, rgba(212,155,66,0.06) 0%, rgba(212,155,66,0.25) 50%, rgba(212,155,66,0.06) 100%);
+  background-size: 200% 100%;
+  animation: goldShimmer 2.8s infinite linear;
 }
 
 /* Custom rempah button active styling */
 .rempah-pill-btn {
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .rempah-pill-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(200, 76, 36, 0.2);
-}
-
+  box-shadow: 0 8px 20px rgba(200, 76, 36, 0.22);
 }

@@ -2,21 +2,14 @@ import { t, i18n } from '../i18n/index.js';
 
 /**
  * Premium Interactive Culinary Heritage Showcase
- * 
- * Replaces previous 3D model presentations with authentic, high-definition
- * editorial culinary photography and interactive dish hotspots:
- * 1. Mode 'feast': High-resolution culinary photograph of an authentic Central Javanese banquet
- *    with interactive hotspot pins revealing cultural dish insights.
- * 2. Mode 'gudeg': Authentic Gudeg Komplit served in traditional Kasongan earthenware clay (gerabah)
- *    and fresh banana leaf, with interactive hotspots identifying the 5 key culinary components.
- * 
- * Fully responsive, bilingual (ID & EN), and performant with zero WebGL overhead.
+ * Mode 'gudeg': Authentic Gudeg Komplit in Kasongan earthenware clay (gerabah) with 5 culinary hotspots.
+ * Mode 'feast': Traditional Central Javanese banquet with iconic regional dish hotspots.
  */
 
 export class ThreeHeroShowcase {
   constructor(containerElement) {
     this.container = containerElement;
-    this.currentMode = 'gudeg'; // 'gudeg' (Pusaka Gerabah & Gudeg) | 'feast' (Jamuan Pusaka)
+    this.currentMode = 'gudeg'; // 'gudeg' | 'feast'
     this.isDisposed = false;
   }
 
@@ -30,42 +23,42 @@ export class ThreeHeroShowcase {
     const isEn = i18n.getLanguage() === 'en';
 
     this.container.innerHTML = `
-      <div class="relative w-full h-full flex flex-col justify-between overflow-hidden rounded-3xl bg-gradient-to-b from-[#FAF7F2] via-white to-[#EFE8DA] border border-[#E8DEC8] shadow-xl p-3 sm:p-4 transition-all duration-300">
+      <div class="relative w-full h-full flex flex-col justify-between overflow-hidden rounded-3xl bg-gradient-to-b from-[#FAF7F2] via-white to-[#F5EFEB] border border-[#D49B42]/40 shadow-xl p-3.5 sm:p-5 transition-all duration-300">
         
         <!-- Header Controls: Mode Selector & Status -->
-        <div class="flex items-center justify-between z-20 gap-2 mb-2.5">
+        <div class="flex items-center justify-between z-20 gap-2 mb-3">
           <!-- Dual-Mode Tabs -->
-          <div class="inline-flex p-1 rounded-full bg-[#FAF7F2] border border-[#E8DEC8] shadow-xs text-xs font-bold text-[#5C3622] max-w-full">
-            <button type="button" id="hero-tab-gudeg" class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1 sm:gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
+          <div class="inline-flex p-1 rounded-full bg-[#EFE8DA] border border-[#D49B42]/30 shadow-inner text-xs font-bold text-[#5C3622] max-w-full">
+            <button type="button" id="hero-tab-gudeg" class="px-3 sm:px-4 py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
               <span>🏺</span>
-              <span class="truncate">${isEn ? 'Pusaka Gerabah' : 'Gudeg Gerabah'}</span>
+              <span class="truncate">${t('hero.tab3d')}</span>
             </button>
-            <button type="button" id="hero-tab-feast" class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1 sm:gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
+            <button type="button" id="hero-tab-feast" class="px-3 sm:px-4 py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
               <span>🍲</span>
               <span class="truncate">${t('hero.tabFeast')}</span>
             </button>
           </div>
 
           <!-- Dynamic Hint / Action Badge -->
-          <div id="hero-showcase-hint" class="text-[11px] font-semibold text-[#5C3622] bg-white/90 px-3 py-1 rounded-full border border-[#E8DEC8] backdrop-blur-xs shadow-2xs hidden sm:flex items-center gap-1.5">
+          <div id="hero-showcase-hint" class="text-[11px] font-bold text-[#120B07] bg-white/95 px-3.5 py-1.5 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-xs hidden sm:flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-pulse"></span>
-            <span id="hero-hint-text">${isEn ? 'Tap pins to explore dish elements' : 'Sentuh titik untuk menelaah racikan'}</span>
+            <span id="hero-hint-text">${t('hero.canvasHint')}</span>
           </div>
         </div>
 
         <!-- Center Viewport Area -->
-        <div id="hero-viewport-area" class="w-full flex-1 relative rounded-2xl overflow-hidden min-h-[300px] sm:min-h-[340px] bg-[#FAF7F2] border border-[#E8DEC8]/50"></div>
+        <div id="hero-viewport-area" class="w-full flex-1 relative rounded-2xl overflow-hidden min-h-[320px] sm:min-h-[360px] bg-[#FAF7F2] border border-[#D49B42]/30 shadow-inner"></div>
 
         <!-- Footer Caption Bar -->
-        <div id="hero-footer-caption" class="z-20 mt-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-xs text-[#5C3622] bg-white/95 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-[#E8DEC8] shadow-xs">
-          <div class="flex items-center gap-1.5 sm:gap-2 min-w-0">
-            <span class="w-2 h-2 rounded-full bg-[#D49B42] shrink-0"></span>
-            <span class="font-bold text-[#140C07] truncate text-[11px] sm:text-xs" id="hero-caption-title">
-              ${isEn ? 'Gudeg Komplit in Traditional Earthenware' : 'Gudeg Komplit Kendhi Gerabah Kasongan'}
+        <div id="hero-footer-caption" class="z-20 mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 text-xs text-[#5C3622] bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-[#D49B42]/35 shadow-xs">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#D49B42] shrink-0 animate-ping"></span>
+            <span class="font-bold text-[#120B07] truncate text-xs sm:text-sm font-editorial-serif" id="hero-caption-title">
+              ${t('hero.canvasTitle')}
             </span>
           </div>
-          <span class="text-[10px] sm:text-[11px] text-[#4A5834] italic font-medium shrink-0" id="hero-caption-subtitle">
-            ${isEn ? 'Authentic Central Javanese Heritage' : 'Pusaka Dapur Autentik Jawa Tengah'}
+          <span class="text-[10px] sm:text-[11px] text-[#2E4D38] font-bold shrink-0" id="hero-caption-subtitle">
+            ${t('hero.canvasSubtitle')}
           </span>
         </div>
 
@@ -95,15 +88,15 @@ export class ThreeHeroShowcase {
 
     if (!viewport) return;
 
-    const activeBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1 sm:gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
-    const inactiveBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1 sm:gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
+    const activeBtnClass = 'px-3 sm:px-4 py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
+    const inactiveBtnClass = 'px-3 sm:px-4 py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
 
     if (mode === 'gudeg') {
       if (btnGudeg) btnGudeg.className = activeBtnClass;
       if (btnFeast) btnFeast.className = inactiveBtnClass;
-      if (hintEl) hintEl.textContent = isEn ? 'Tap pins to explore Gudeg elements' : 'Sentuh titik untuk menelaah elemen Gudeg';
-      if (titleEl) titleEl.textContent = isEn ? 'Gudeg Komplit in Traditional Earthenware' : 'Gudeg Komplit Kendhi Gerabah Kasongan';
-      if (subEl) subEl.textContent = isEn ? 'Surakarta & Yogyakarta Heritage' : 'Warisan Dapur Surakarta & Jogja';
+      if (hintEl) hintEl.textContent = t('hero.canvasHint');
+      if (titleEl) titleEl.textContent = t('hero.canvasTitle');
+      if (subEl) subEl.textContent = t('hero.canvasSubtitle');
 
       this.renderGudegShowcase(viewport);
     } else {
@@ -126,41 +119,41 @@ export class ThreeHeroShowcase {
     const hotspots = [
       {
         id: 'gori',
-        title: isEn ? 'Slow-cooked Young Jackfruit (Gudeg)' : 'Gori / Nangka Muda Bacem',
+        title: isEn ? 'Slow-braised Young Jackfruit (Gudeg)' : 'Gori / Nangka Muda Bacem Kluthuk',
         desc: isEn 
-          ? 'Tender young jackfruit simmered for hours with coconut sugar, bay leaves, teak leaves, and rich spices until mahogany-dark and melt-in-the-mouth.'
-          : 'Nangka muda serat padat yang diungkep perlahan bersama gula jawa, daun salam, daun jati, dan rempah harum hingga berwarna merah kecokelatan meresap.',
-        role: isEn ? 'Heart of the Dish' : 'Ruh Masakan',
+          ? 'Young jackfruit simmered for hours with coconut palm sugar, bay leaves, teak leaves, and aromatic spices until rich mahogany and melt-in-the-mouth.'
+          : 'Nangka enom serat padat ingkang dipun-ungkep dangu kaliyan gula kelapa, godhong jati, lan godhong salam ngantos werninipun soklat semu abrit lan lumere resep.',
+        role: isEn ? 'Core Dish' : 'Ruh Masakan',
         x: '43%',
         y: '68%'
       },
       {
         id: 'areh',
-        title: isEn ? 'Velvety Coconut Cream Curd (Areh)' : 'Areh Santan Kental Gurih',
+        title: isEn ? 'Velvety Coconut Cream Curd (Areh)' : 'Areh Santan Kanil Gurih Lumer',
         desc: isEn 
-          ? 'First-press coconut milk reduced over low firewood embers into a silky, savory cloud curd that balances the sweet jackfruit.'
-          : 'Santan kelapa kental perasan pertama yang dimasak perlahan hingga membentuk dadih putih lembut penyeimbang rasa manis gurih.',
-        role: isEn ? 'Savory Emulsion' : 'Kekayaan Rasa',
+          ? 'First-press coconut milk reduced over low firewood embers into a silky, savory cloud curd that balances sweet jackfruit.'
+          : 'Santan kelapa kanil perasan kaping sepisan ingkang dipungodhog alon ngantos dados dadih putih gurih lembut panyelarasan rasa legi.',
+        role: isEn ? 'Savory Balance' : 'Gurih Kanil',
         x: '46%',
         y: '57%'
       },
       {
         id: 'ayam',
-        title: isEn ? 'Braised Free-range Chicken (Ayam Bacem)' : 'Ayam Kampung Bacem Gurih',
+        title: isEn ? 'Braised Free-range Chicken (Ayam Bacem)' : 'Ayam Kampung Opor Bacem',
         desc: isEn 
           ? 'Local free-range chicken drumstick braised with coriander, shallots, garlic, and coconut sugar until deeply infused.'
-          : 'Ayam kampung asli bertekstur kenyal empuk yang diungkep dengan ketumbar sangrai, bawang putih, dan gula nira kelapa murni.',
-        role: isEn ? 'Signature Protein' : 'Lauk Utama',
+          : 'Pitik kampung asli empuk kenyal ingkang dipunbacem bumbu ketumbar sangrai, brambang bawang, lan sari gula aren.',
+        role: isEn ? 'Signature Protein' : 'Lauk Pokok',
         x: '44%',
         y: '42%'
       },
       {
         id: 'telur',
-        title: isEn ? 'Marbled Braised Duck Egg (Telur Pindang)' : 'Telur Bebek Pindang Bacem',
+        title: isEn ? 'Marbled Braised Duck Egg (Telur Pindang)' : 'Endhog Bebek Pindang Bacem',
         desc: isEn 
           ? 'Rich duck egg boiled and braised with shallot skins and guava leaves, producing a dark mahogany marbled gloss and dense yolk.'
-          : 'Telur bebek pilihan yang dimasak bersama kulit bawang dan daun jambu batu, menghasilkan warna cokelat gelap mengilat dan kuning telur gurih.',
-        role: isEn ? 'Traditional Complement' : 'Lauk Wajib',
+          : 'Endhog bebek pilihan dipungodhog kaliyan kulit brambang lan godhong jambu kluthuk, ngasilaken werni soklat mengkilap lan gurih padat.',
+        role: isEn ? 'Traditional Complement' : 'Lauk Tradisi',
         x: '31%',
         y: '56%'
       },
@@ -169,29 +162,29 @@ export class ThreeHeroShowcase {
         title: isEn ? 'Spicy Cattle Skin Stew (Sambal Krecek)' : 'Sambal Goreng Krecek Kulit Sapi',
         desc: isEn 
           ? 'Chewy dried cattle skin cracklings simmered in fiery red chili sauce with whole bird\'s eye chilies to cut through the sweetness.'
-          : 'Kerupuk kulit sapi kenyal yang dimasak dalam kuah santan cabai merah pedas bertabur rawit utuh, pemberi sengatan pedas penyeimbang manis.',
-        role: isEn ? 'Fiery Balance' : 'Sengatan Pedas',
+          : 'Krupuk rambak kulit sapi kenyal ingkang dipunolah kaliyan kuah santan lombok abrit lan rawit wutuh, maringi sengatan pedes kemepyar.',
+        role: isEn ? 'Fiery Kick' : 'Pedes Kemepyar',
         x: '66%',
         y: '64%'
       }
     ];
 
     viewport.innerHTML = `
-      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#140C07]">
+      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#120B07]">
         <!-- High-res Gudeg Photograph -->
         <img 
           src="/assets/images/hero/pusaka-gerabah-gudeg.jpg" 
-          alt="Gudeg Komplit Gerabah Tradisional" 
-          class="w-full h-full object-cover object-center filter brightness-[0.98] contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-102"
+          alt="Gudeg Komplit Gerabah Kasongan" 
+          class="w-full h-full object-cover object-center filter brightness-[0.98] contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-103"
           onerror="this.src='/assets/images/recipes/gudeg-komplit.jpg'"
         />
 
-        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/25 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
 
         <!-- Gerabah & Banana Leaf Heritage Badge -->
-        <div class="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 z-10 flex items-center gap-1.5 bg-[#140C07]/85 text-[#FAF7F2] px-2.5 sm:px-3 py-1 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-md text-[9px] sm:text-[10px] font-bold max-w-[calc(100%-1.5rem)]">
+        <div class="absolute top-3 left-3 z-10 flex items-center gap-1.5 bg-[#120B07]/90 text-[#FAF7F2] px-3 py-1.5 rounded-full border border-[#D49B42]/50 backdrop-blur-md shadow-lg text-[10px] font-bold">
           <span class="text-[#D49B42] shrink-0">🏺</span>
-          <span class="truncate">${isEn ? 'Plated on Kasongan Earthenware' : 'Disajikan di Gerabah Kasongan'}</span>
+          <span>${isEn ? 'Plated on Kasongan Earthenware' : 'Dipunladikaken ing Gerabah Kasongan'}</span>
         </div>
 
         <!-- Hotspot Pins -->
@@ -212,30 +205,30 @@ export class ThreeHeroShowcase {
         <!-- Interactive Popover Card -->
         <div 
           id="gudeg-hotspot-popover" 
-          class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-[#D49B42]/50 shadow-2xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
+          class="absolute bottom-3 left-3 right-3 p-4 rounded-2xl bg-white/98 backdrop-blur-xl border border-[#D49B42]/60 shadow-2xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
         >
-          <div class="flex items-start justify-between gap-2">
+          <div class="flex items-start justify-between gap-3">
             <div>
-              <span id="gudeg-popover-role" class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#EFE8DA] px-2.5 py-0.5 rounded-md mb-1 border border-[#D49B42]/20">
+              <span id="gudeg-popover-role" class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#FDF4EE] px-2.5 py-0.5 rounded-md mb-1 border border-[#C84C24]/20">
                 Peran Rasa
               </span>
-              <h4 id="gudeg-popover-title" class="font-editorial-serif text-base font-bold text-[#140C07] leading-tight">
+              <h4 id="gudeg-popover-title" class="font-editorial-serif text-lg font-bold text-[#120B07] leading-tight">
                 Nama Elemen
               </h4>
               <p id="gudeg-popover-desc" class="text-xs text-[#5C3622] mt-1.5 leading-relaxed">
                 Deskripsi
               </p>
             </div>
-            <button type="button" id="gudeg-popover-close" class="text-[#5C3622] hover:text-[#140C07] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
+            <button type="button" id="gudeg-popover-close" class="text-[#5C3622] hover:text-[#120B07] p-1 font-bold text-lg cursor-pointer shrink-0">&times;</button>
           </div>
           <div class="mt-3 pt-2.5 border-t border-[#E8DEC8] flex items-center justify-between">
             <a href="#/resep/gudeg-komplit" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
-              <span>${isEn ? 'View Full Gudeg Recipe' : 'Lihat Resep Lengkap Gudeg'}</span>
+              <span>${isEn ? 'View Full Recipe' : 'Pirsani Resep Jangkep'}</span>
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-            <span class="text-[10px] text-[#4A5834] italic">${isEn ? 'Heritage Earthenware Plating' : 'Peranti Tradisi Gerabah'}</span>
+            <span class="text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Kasongan Earthenware' : 'Kendhi Gerabah Kasongan'}</span>
           </div>
         </div>
 
@@ -292,9 +285,11 @@ export class ThreeHeroShowcase {
   }
 
   /* -------------------------------------------------------------
-   * MODE 2: INTERACTIVE PHOTOGRAPHIC CULINARY FEAST & HOTSPOTS
+   * MODE 2: INTERACTIVE BANQUET FEAST SHOWCASE
    * ----------------------------------------------------------- */
   renderFeastShowcase(viewport) {
+    const isEn = i18n.getLanguage() === 'en';
+
     const dishes = [
       {
         id: 'nasi-liwet',
@@ -335,15 +330,15 @@ export class ThreeHeroShowcase {
     ];
 
     viewport.innerHTML = `
-      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#140C07]">
+      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#120B07]">
         <!-- High-res Feast Photograph -->
         <img 
           src="/assets/images/hero/hero-culinary.jpg" 
           alt="Jamuan Pusaka Jawa Tengah" 
-          class="w-full h-full object-cover object-center filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-102"
+          class="w-full h-full object-cover object-center filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-103"
         />
 
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20 pointer-events-none"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/25 pointer-events-none"></div>
 
         <!-- Hotspot Pins -->
         ${dishes.map((dish, i) => `
@@ -363,21 +358,21 @@ export class ThreeHeroShowcase {
         <!-- Interactive Popover Card -->
         <div 
           id="feast-hotspot-popover" 
-          class="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 p-3 sm:p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-[#D49B42]/50 shadow-2xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
+          class="absolute bottom-3 left-3 right-3 p-4 rounded-2xl bg-white/98 backdrop-blur-xl border border-[#D49B42]/60 shadow-2xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
         >
-          <div class="flex items-start justify-between gap-2">
+          <div class="flex items-start justify-between gap-3">
             <div>
-              <span id="popover-dish-region" class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#EFE8DA] px-2.5 py-0.5 rounded-md mb-1 border border-[#D49B42]/20">
+              <span id="popover-dish-region" class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#FDF4EE] px-2.5 py-0.5 rounded-md mb-1 border border-[#C84C24]/20">
                 Wilayah
               </span>
-              <h4 id="popover-dish-title" class="font-editorial-serif text-base font-bold text-[#140C07] leading-tight">
+              <h4 id="popover-dish-title" class="font-editorial-serif text-lg font-bold text-[#120B07] leading-tight">
                 Nama Hidangan
               </h4>
               <p id="popover-dish-desc" class="text-xs text-[#5C3622] mt-1.5 leading-relaxed">
                 Deskripsi
               </p>
             </div>
-            <button type="button" id="popover-close-btn" class="text-[#5C3622] hover:text-[#140C07] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
+            <button type="button" id="popover-close-btn" class="text-[#5C3622] hover:text-[#120B07] p-1 font-bold text-lg cursor-pointer shrink-0">&times;</button>
           </div>
           <div class="mt-3 pt-2.5 border-t border-[#E8DEC8] flex items-center justify-between">
             <a id="popover-dish-link" href="#/resep" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
@@ -386,7 +381,7 @@ export class ThreeHeroShowcase {
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </a>
-            <span class="text-[10px] text-[#4A5834] italic font-medium">${t('hero.canvasBadge')}</span>
+            <span class="text-[10px] text-[#2E4D38] font-bold">${t('hero.canvasBadge')}</span>
           </div>
         </div>
 

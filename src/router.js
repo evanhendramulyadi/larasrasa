@@ -133,14 +133,21 @@ export class Router {
     } else if (path === '/tentang') {
       pageHtml = await renderAboutPage();
     } else {
-      // 404 Fallback
+      // 404 Fallback with bilingual & Javanese touch
+      const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
       pageHtml = `
-        <div class="max-w-xl mx-auto px-4 py-28 text-center space-y-4">
-          <span class="font-editorial-serif text-6xl font-bold text-[#C84C24] block">404</span>
-          <h2 class="font-editorial-serif text-3xl font-bold text-[#140C07]">Halaman Tidak Ditemukan / Page Not Found</h2>
-          <p class="text-sm text-[#5C3622]">Halaman yang Anda tuju tidak tersedia di khasanah LarasRasa.</p>
-          <div class="pt-4">
-            <a href="#/" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#140C07] hover:bg-[#22150E] text-[#FAF7F2] text-xs font-bold transition-all shadow-sm">
+        <div class="max-w-xl mx-auto px-4 py-28 text-center space-y-5">
+          <span class="font-editorial-serif text-7xl font-bold text-[#C84C24] block drop-shadow-sm">404</span>
+          <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">
+            ${isEn ? 'Page Not Found' : 'Kaca Mboten Kapanggih'}
+          </h2>
+          <p class="text-sm text-[#5C3622] leading-relaxed max-w-md mx-auto">
+            ${isEn 
+              ? 'The culinary page you are looking for does not exist in LarasRasa.' 
+              : 'Nyuwun pangapunten, kaca ingkang panjenengan tuju mboten sumadya ing khasanah LarasRasa.'}
+          </p>
+          <div class="pt-3">
+            <a href="#/" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] text-xs font-bold transition-all shadow-md border border-[#D49B42]/40">
               &larr; ${t('nav.home')}
             </a>
           </div>

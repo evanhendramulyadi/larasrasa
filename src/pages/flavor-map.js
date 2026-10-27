@@ -4,7 +4,7 @@ import { i18n, t } from '../i18n/index.js';
 
 /**
  * Peta Rasa (Interactive Central Java Flavor Map)
- * Refined palette, GeoJSON district boundaries, and full bilingual support.
+ * Royal heritage palette, GeoJSON district boundaries, and full bilingual support.
  */
 
 let mapInstance = null;
@@ -16,22 +16,22 @@ export async function renderFlavorMapPage() {
   const currentRegion = regions.find(r => r.id === activeRegionId) || regions[0];
 
   return `
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       
       <!-- Page Header with Javanese Heritage Gradient -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 border border-[#D49B42]/35 shadow-xl bg-gradient-to-r from-[#140C07] via-[#22150E] to-[#140C07] text-[#FAF7F2]">
-        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/10 blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/15 blur-3xl pointer-events-none"></div>
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 lg:p-14 border-2 border-[#D49B42]/40 shadow-2xl bg-gradient-to-r from-[#120B07] via-[#1E120A] to-[#120B07] text-[#FAF7F2]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/18 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div class="space-y-3 max-w-2xl">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider">
-              <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <div class="space-y-3.5 max-w-2xl">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider shadow-xs">
+              <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
                 <line x1="9" x2="9" y1="3" y2="18"/>
                 <line x1="15" x2="15" y1="6" y2="21"/>
               </svg>
-              ${t('map.badge')}
+              <span>${t('map.badge')}</span>
             </div>
             <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
               ${t('map.title')}
@@ -42,14 +42,14 @@ export async function renderFlavorMapPage() {
           </div>
 
           <!-- Quick Region Selector Pills -->
-          <div class="flex flex-wrap gap-1.5 max-w-md md:justify-end">
+          <div class="flex flex-wrap gap-2 max-w-md md:justify-end">
             ${regions.map(r => `
               <button type="button" 
                       data-region-pill="${r.id}"
-                      class="region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer ${
+                      class="region-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                         r.id === activeRegionId 
-                          ? 'bg-[#C84C24] text-white shadow-sm ring-2 ring-[#D49B42]/50' 
-                          : 'bg-white/10 text-[#FAF7F2] border border-[#D49B42]/40 hover:bg-[#C84C24]/40 backdrop-blur-xs'
+                          ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#D49B42]/50' 
+                          : 'bg-white/10 text-[#FAF7F2] border border-[#D49B42]/40 hover:bg-[#C84C24]/50 backdrop-blur-md'
                       }">
                 ${r.name.replace('Kota ', '').replace('Kabupaten ', '')}
               </button>
@@ -62,31 +62,31 @@ export async function renderFlavorMapPage() {
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <!-- Left: Interactive Leaflet Map -->
-        <div class="lg:col-span-7 bg-white rounded-3xl border border-[#E8DEC8] p-4 shadow-sm overflow-hidden flex flex-col">
+        <div class="lg:col-span-7 bg-white rounded-3xl border border-[#D49B42]/35 p-5 shadow-xs overflow-hidden flex flex-col">
           <!-- Map Title Bar -->
-          <div class="px-3 py-2 flex items-center justify-between text-xs text-[#5C3622] border-b border-[#EFE8DA] mb-3">
-            <span class="font-bold uppercase tracking-wider text-[#140C07] flex items-center gap-2">
+          <div class="px-2 py-2 flex items-center justify-between text-xs text-[#5C3622] border-b border-[#E8DEC8] mb-3">
+            <span class="font-bold uppercase tracking-wider text-[#120B07] flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-[#C84C24]"></span>
-              ${t('map.mapTitle')}
+              <span>${t('map.mapTitle')}</span>
             </span>
-            <span class="text-[11px] italic text-[#5C3622]/80">${t('map.mapInstruction')}</span>
+            <span class="text-[11px] italic text-[#2E4D38] font-semibold">${t('map.mapInstruction')}</span>
           </div>
 
           <!-- Leaflet Container -->
-          <div id="central-java-map" class="w-full h-[460px] sm:h-[540px] rounded-2xl overflow-hidden z-10 bg-[#EFE8DA]/40"></div>
+          <div id="central-java-map" class="w-full h-[480px] sm:h-[560px] rounded-2xl overflow-hidden z-10 bg-[#FAF7F2] border border-[#E8DEC8]"></div>
 
-          <!-- Map Legend & Interaction Helper -->
+          <!-- Map Legend -->
           <div class="pt-4 px-2 flex flex-wrap items-center justify-between gap-3 text-xs text-[#5C3622]">
             <div class="flex items-center gap-2">
               <span class="w-3.5 h-3.5 rounded-full bg-[#C84C24] border-2 border-white shadow-xs"></span>
-              <span class="font-bold text-[#140C07]">${t('map.legendCenter')}</span>
+              <span class="font-bold text-[#120B07]">${t('map.legendCenter')}</span>
             </div>
-            <span class="text-[11px] italic text-[#5C3622]/80">${t('map.mapInstruction')}</span>
+            <span class="text-[11px] text-[#5C3622] italic">${t('map.mapInstruction')}</span>
           </div>
         </div>
 
         <!-- Right: Region Culinary Profile Panel -->
-        <div id="region-detail-panel" class="lg:col-span-5 bg-white rounded-3xl border border-[#E8DEC8] p-6 sm:p-7 shadow-sm space-y-6">
+        <div id="region-detail-panel" class="lg:col-span-5 bg-white rounded-3xl border border-[#D49B42]/35 p-6 sm:p-8 shadow-xs space-y-6">
           ${renderRegionDetailContent(currentRegion)}
         </div>
 
@@ -101,14 +101,14 @@ function renderRegionDetailContent(region) {
     <div class="space-y-6">
       
       <!-- Region Image Banner -->
-      <div class="relative rounded-2xl overflow-hidden aspect-16/9 bg-[#302018]/10 border border-[#C49A58]/20">
+      <div class="relative rounded-2xl overflow-hidden aspect-16/9 bg-[#120B07]/10 border border-[#D49B42]/35 shadow-sm">
         <img src="${region.image}" 
              alt="${region.name}" 
              class="w-full h-full object-cover"
              onerror="this.onerror=null; this.src='/assets/images/regions/semarang.jpg';"/>
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-        <div class="absolute bottom-3 left-4 right-4 text-white">
-          <span class="text-[10px] font-bold uppercase tracking-wider text-[#C49A58] bg-black/50 px-2 py-0.5 rounded-md">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
+        <div class="absolute bottom-3.5 left-4 right-4 text-white">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-[#D49B42] bg-black/60 px-2.5 py-0.5 rounded-md border border-[#D49B42]/30">
             ${i18n?.getLanguage && i18n.getLanguage() === 'en' ? `${region.type} in Central Java` : `${region.type} di Jawa Tengah`}
           </span>
           <h2 class="font-editorial-serif text-2xl font-bold leading-tight mt-1 text-white">
@@ -119,17 +119,17 @@ function renderRegionDetailContent(region) {
 
       <!-- Tagline & Description -->
       <div class="space-y-2">
-        <p class="font-editorial-serif italic text-base text-[#B85C38] font-semibold leading-snug">
+        <p class="font-editorial-serif italic text-base text-[#C84C24] font-semibold leading-snug">
           "${region.tagline}"
         </p>
-        <p class="text-xs sm:text-sm text-[#654332] leading-relaxed">
+        <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
           ${region.description}
         </p>
       </div>
 
       ${region.specialNote ? `
-        <div class="p-3.5 rounded-xl bg-[#F2E8D8]/70 border border-[#C49A58]/30 text-xs text-[#302018] leading-relaxed flex items-start gap-2.5">
-          <svg class="w-4 h-4 text-[#B85C38] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 text-xs text-[#120B07] leading-relaxed flex items-start gap-2.5">
+          <svg class="w-4 h-4 text-[#C84C24] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <circle cx="12" cy="12" r="10"/>
             <line x1="12" y1="16" x2="12" y2="12"/>
             <line x1="12" y1="8" x2="12.01" y2="8"/>
@@ -139,23 +139,23 @@ function renderRegionDetailContent(region) {
       ` : ''}
 
       <!-- Cultural Identity -->
-      <div class="p-4 rounded-xl bg-[#FAF6EF] border border-[#C49A58]/20 space-y-1">
-        <span class="block text-[11px] font-bold uppercase tracking-wider text-[#302018]">
+      <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/25 space-y-1">
+        <span class="block text-[11px] font-bold uppercase tracking-wider text-[#120B07]">
           ${t('map.identity')}
         </span>
-        <p class="text-xs text-[#654332] leading-relaxed">
+        <p class="text-xs text-[#5C3622] leading-relaxed">
           ${region.culturalIdentity}
         </p>
       </div>
 
       <!-- Culinary Tendencies -->
       <div class="space-y-2">
-        <span class="block text-xs font-bold uppercase tracking-wider text-[#302018]">
+        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07]">
           ${t('map.flavorCharacteristics')}
         </span>
         <div class="flex flex-wrap gap-1.5">
           ${region.culinaryTendencies.map(tend => `
-            <span class="px-2.5 py-1 rounded-md text-xs bg-[#F2E8D8] text-[#302018] font-medium border border-[#C49A58]/30">
+            <span class="px-3 py-1 rounded-xl text-xs bg-[#FAF7F2] text-[#120B07] font-semibold border border-[#D49B42]/35 shadow-2xs">
               ${tend}
             </span>
           `).join('')}
@@ -164,15 +164,16 @@ function renderRegionDetailContent(region) {
 
       <!-- Signature Dishes -->
       <div class="space-y-2">
-        <span class="block text-xs font-bold uppercase tracking-wider text-[#302018]">
+        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07]">
           ${t('map.signatureDishes')}
         </span>
-        <ul class="space-y-1.5 text-xs">
+        <ul class="space-y-2 text-xs">
           ${region.signatureDishes.map(dish => `
-            <li class="flex items-center justify-between py-1.5 border-b border-[#F2E8D8] text-[#302018]">
-              <span class="font-medium">&bull; ${dish}</span>
-              <a href="#/resep?search=${encodeURIComponent(dish)}" class="text-[#B85C38] hover:text-[#302018] hover:underline font-bold text-[11px] transition-colors">
-                ${t('map.findRecipe')} &rarr;
+            <li class="flex items-center justify-between py-1.5 border-b border-[#E8DEC8] text-[#120B07]">
+              <span class="font-semibold">&bull; ${dish}</span>
+              <a href="#/resep?search=${encodeURIComponent(dish)}" class="text-[#C84C24] hover:text-[#120B07] hover:underline font-bold text-[11px] transition-colors flex items-center gap-1">
+                <span>${t('map.findRecipe')}</span>
+                <span>&rarr;</span>
               </a>
             </li>
           `).join('')}
@@ -181,10 +182,10 @@ function renderRegionDetailContent(region) {
 
       <!-- Key Ingredients -->
       <div class="space-y-1.5">
-        <span class="block text-xs font-bold uppercase tracking-wider text-[#302018]">
+        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07]">
           ${t('map.keyIngredients')}
         </span>
-        <p class="text-xs text-[#654332] leading-relaxed">
+        <p class="text-xs text-[#5C3622] leading-relaxed">
           ${region.keyIngredients.join(', ')}
         </p>
       </div>
@@ -192,9 +193,9 @@ function renderRegionDetailContent(region) {
       <!-- CTA Action -->
       <div class="pt-2">
         <a href="#/resep?region=${region.id}" 
-           class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-full text-xs font-bold bg-[#302018] hover:bg-[#654332] text-[#FAF6EF] transition-all shadow-sm">
+           class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-full text-xs font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all shadow-md border border-[#D49B42]/40">
           <span>${t('map.viewAllRecipes', { region: region.name })}</span>
-          <svg class="w-4 h-4 text-[#C49A58]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg class="w-4 h-4 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
@@ -219,7 +220,6 @@ export async function initFlavorMapInteractions() {
   }
 
   try {
-    // Initialize Leaflet map centered on Central Java
     mapInstance = L.map('central-java-map', {
       center: [-7.15, 110.15],
       zoom: 8,
@@ -228,149 +228,103 @@ export async function initFlavorMapInteractions() {
       scrollWheelZoom: false
     });
 
-    // Primary OpenStreetMap tile layer - 100% free, reliable, no API key required
     const primaryTiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+      attribution: '&copy; OpenStreetMap contributors',
       maxZoom: 19
     });
     
-    primaryTiles.on('tileerror', () => {
-      if (!mapInstance._hasFallbackTiles) {
-        mapInstance._hasFallbackTiles = true;
-        L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors, Humanitarian OpenStreetMap Team',
-          subdomains: 'abc',
-          maxZoom: 19
-        }).addTo(mapInstance);
-      }
-    });
     primaryTiles.addTo(mapInstance);
 
-    // Invalidate size after layout settles to guarantee tile visibility
     requestAnimationFrame(() => {
-      if (mapInstance) mapInstance.invalidateSize();
+      mapInstance.invalidateSize();
     });
-    setTimeout(() => {
-      if (mapInstance) mapInstance.invalidateSize();
-    }, 200);
-    setTimeout(() => {
-      if (mapInstance) mapInstance.invalidateSize();
-    }, 500);
 
-    // Clean location points (markers) for Central Java culinary capitals
-    regionMarkers = {};
-
-    function selectRegion(regionId) {
-      activeRegionId = regionId;
-      const reg = regions.find(r => r.id === regionId);
-      if (reg) {
-        // Update Side Panel
-        const panel = document.getElementById('region-detail-panel');
-        if (panel) {
-          panel.innerHTML = renderRegionDetailContent(reg);
-        }
-
-        // Update selector pill states
-        document.querySelectorAll('.region-pill').forEach(btn => {
-          const pillId = btn.getAttribute('data-region-pill');
-          if (pillId === regionId) {
-            btn.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer bg-[#B85C38] text-white shadow-sm ring-2 ring-[#C49A58]/50';
-          } else {
-            btn.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer bg-white/10 text-[#FAF6EF] border border-[#C49A58]/40 hover:bg-[#B85C38]/40 backdrop-blur-xs';
-          }
-        });
-
-        // Pan map gently and open marker popup
-        if (mapInstance && typeof mapInstance.panTo === 'function') {
-          mapInstance.panTo([reg.lat, reg.lng], { animate: true, duration: 0.8 });
-        }
-        if (regionMarkers[regionId]) {
-          regionMarkers[regionId].openPopup();
-        }
-      }
-    }
-
-    // Populate Location Markers without any polygon or boundary layers
-    regions.forEach(reg => {
-      const pinIcon = L.divIcon({
-        className: 'flavor-city-pin',
+    // Custom Icon for Central Java Culinary Epicenters
+    const createMarkerIcon = (isActive = false) => {
+      return L.divIcon({
+        className: 'custom-map-pin',
         html: `
-          <div style="background-color: #B85C38; border: 2.5px solid #FAF6EF; color: #FAF6EF; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; box-shadow: 0 3px 8px rgba(0,0,0,0.3); transition: transform 0.2s ease;">
-            📍
+          <div class="w-7 h-7 rounded-full ${isActive ? 'bg-[#D49B42] scale-125' : 'bg-[#C84C24]'} border-2 border-white shadow-lg flex items-center justify-center text-white text-[11px] font-bold transition-all duration-300">
+            <span>🍲</span>
           </div>
         `,
         iconSize: [28, 28],
-        iconAnchor: [14, 14]
+        iconAnchor: [14, 14],
+        popupAnchor: [0, -16]
       });
+    };
 
-      const marker = L.marker([reg.lat, reg.lng], { 
-        icon: pinIcon,
-        title: reg.name
-      }).addTo(mapInstance);
+    // Add Markers for Each Region
+    regions.forEach(region => {
+      if (region.coordinates && region.coordinates.lat && region.coordinates.lng) {
+        const marker = L.marker([region.coordinates.lat, region.coordinates.lng], {
+          icon: createMarkerIcon(region.id === activeRegionId)
+        }).addTo(mapInstance);
 
-      marker.bindPopup(`
-        <div class="p-2 text-center font-sans max-w-[200px]">
-          <span class="text-[10px] uppercase font-bold text-[#B85C38] tracking-wider">${reg.type}</span>
-          <h3 class="text-sm font-bold text-[#302018] font-editorial-serif my-0.5">${reg.name}</h3>
-          <p class="text-xs text-[#654332] italic mb-1.5">"${reg.tagline}"</p>
-          <div class="text-[11px] text-[#302018] border-t border-[#F2E8D8] pt-1.5 font-medium">
-            ${reg.signatureDishes.slice(0, 2).join(' &bull; ')}
+        marker.bindPopup(`
+          <div class="p-2 space-y-1.5 text-left min-w-[180px]">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-[#C84C24] block">${region.type}</span>
+            <h4 class="font-bold text-sm text-[#120B07]">${region.name}</h4>
+            <p class="text-[11px] text-[#5C3622] leading-tight">${region.tagline}</p>
+            <div class="pt-1.5 border-t border-[#E8DEC8]">
+              <a href="#/resep?region=${region.id}" class="text-[11px] font-bold text-[#C84C24] hover:underline flex items-center gap-1">
+                <span>${t('map.findRecipe')}</span> &rarr;
+              </a>
+            </div>
           </div>
-        </div>
-      `, {
-        className: 'flavor-map-popup'
-      });
+        `);
 
-      marker.on('click', () => {
-        selectRegion(reg.id);
-      });
+        marker.on('click', () => {
+          selectRegion(region.id);
+        });
 
-      regionMarkers[reg.id] = marker;
-    });
-
-    // Open active region popup if already selected
-    if (regionMarkers[activeRegionId]) {
-      setTimeout(() => {
-        if (regionMarkers[activeRegionId]) regionMarkers[activeRegionId].openPopup();
-      }, 600);
-    }
-} catch (mapErr) {
-  console.warn('Leaflet map initialization warning:', mapErr);
-  if (mapElement) {
-    mapElement.innerHTML = `
-      <div class="h-full flex flex-col items-center justify-center p-6 text-center space-y-3 bg-[#FAF6EF]">
-        <span class="w-12 h-12 rounded-full bg-[#F2E8D8] text-[#B85C38] flex items-center justify-center text-xl">🗺</span>
-        <h4 class="font-editorial-serif text-lg font-bold text-[#302018]">${t('map.fallbackTitle')}</h4>
-        <p class="text-xs text-[#654332] max-w-sm leading-relaxed">${t('map.fallbackDesc')}</p>
-      </div>
-    `;
-  }
-}
-
-  // Bind Quick Region Pills
-  document.querySelectorAll('.region-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const regId = btn.getAttribute('data-region-pill');
-      if (regId) {
-        activeRegionId = regId;
-        const reg = regions.find(r => r.id === regId);
-        if (reg) {
-          const panel = document.getElementById('region-detail-panel');
-          if (panel) panel.innerHTML = renderRegionDetailContent(reg);
-
-          document.querySelectorAll('.region-pill').forEach(b => {
-            b.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all bg-white text-[#302018] border border-[#C49A58]/30 hover:bg-[#F2E8D8]';
-          });
-          btn.className = 'region-pill px-3 py-1.5 rounded-full text-xs font-semibold transition-all bg-[#B85C38] text-white shadow-sm';
-
-          if (mapInstance && typeof mapInstance.flyTo === 'function') {
-            mapInstance.flyTo([reg.lat, reg.lng], 10, { duration: 1.0 });
-          }
-          if (regionMarkers[regId]) {
-            regionMarkers[regId].openPopup();
-          }
-        }
+        regionMarkers[region.id] = marker;
       }
     });
-  });
+
+    // Wire Region Pill Buttons
+    const pills = document.querySelectorAll('[data-region-pill]');
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const rId = pill.getAttribute('data-region-pill');
+        if (rId) selectRegion(rId);
+      });
+    });
+
+    function selectRegion(id) {
+      activeRegionId = id;
+      const targetRegion = regions.find(r => r.id === id);
+      if (!targetRegion) return;
+
+      // Update pills
+      pills.forEach(p => {
+        const isCurrent = p.getAttribute('data-region-pill') === id;
+        p.className = `region-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+          isCurrent 
+            ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#D49B42]/50' 
+            : 'bg-white/10 text-[#FAF7F2] border border-[#D49B42]/40 hover:bg-[#C84C24]/50 backdrop-blur-md'
+        }`;
+      });
+
+      // Update detail panel
+      const panel = document.getElementById('region-detail-panel');
+      if (panel) {
+        panel.innerHTML = renderRegionDetailContent(targetRegion);
+      }
+
+      // Fly map to coordinates
+      if (targetRegion.coordinates && mapInstance) {
+        mapInstance.flyTo([targetRegion.coordinates.lat, targetRegion.coordinates.lng], 10, {
+          duration: 1.2
+        });
+
+        // Open popup
+        const m = regionMarkers[id];
+        if (m) m.openPopup();
+      }
+    }
+
+  } catch (err) {
+    console.error('Error initializing Leaflet map:', err);
+  }
 }
