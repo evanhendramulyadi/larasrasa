@@ -67,8 +67,8 @@ export function renderRecipeCard(recipe) {
         </div>
 
         <!-- Duration & Serving Badges -->
-        <div class="absolute bottom-3.5 left-3.5 right-3.5 flex items-center justify-between">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-white backdrop-blur-md border border-white/10 shadow-xs">
+        <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/85 text-white backdrop-blur-md border border-white/15 shadow-xs shrink-0">
             <svg class="w-3.5 h-3.5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/>
               <polyline points="12 6 12 12 16 14"/>
@@ -76,9 +76,9 @@ export function renderRecipeCard(recipe) {
             <span>${localizedDuration}</span>
           </span>
 
-          <span class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-white backdrop-blur-md border border-white/10 shadow-xs">
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/85 text-white backdrop-blur-md border border-white/15 shadow-xs shrink-0">
             <span>👤</span>
-            <span>${recipe.baseServings} ${t('common.servings')}</span>
+            <span>${recipe.baseServings} ${isEn ? 'Servings' : 'Porsi'}</span>
           </span>
         </div>
       </a>

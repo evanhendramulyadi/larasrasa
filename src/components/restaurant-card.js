@@ -68,15 +68,15 @@ export function renderRestaurantCard(restaurant) {
         </div>
 
         <!-- Action Bar: Price & Map Navigation -->
-        <div class="pt-3.5 border-t border-[#E8DEC8] flex items-center justify-between">
-          <span class="text-xs font-bold text-[#C84C24]">
+        <div class="pt-3.5 border-t border-[#E8DEC8] flex items-center justify-between gap-2">
+          <span class="text-xs font-bold text-[#C84C24] shrink-0">
             ${restaurant.priceRange}
           </span>
           <a href="${restaurant.googleMapsUrl}" 
              target="_blank" 
              rel="noopener noreferrer"
-             class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-[#120B07] text-[#FAF7F2] hover:bg-[#C84C24] transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">
-            <span>${t('common.openInMap')}</span>
+             class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-[#120B07] text-[#FAF7F2] hover:bg-[#C84C24] transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 shrink-0">
+            <span>${isEn ? 'Open Map' : 'Buka di Peta'}</span>
             <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/>
             </svg>

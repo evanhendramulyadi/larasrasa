@@ -76,29 +76,29 @@ export async function renderHomePage() {
               </div>
 
               <!-- Key Heritage Stats Cards -->
-              <div class="pt-4 grid grid-cols-3 gap-3 text-left">
-                <div class="p-3.5 rounded-2xl bg-white/90 border border-[#D49B42]/35 shadow-xs">
-                  <span class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#C84C24] block">8</span>
-                  <span class="text-[11px] font-bold text-[#120B07] block">${t('hero.statsRegions')}</span>
-                  <span class="text-[9px] text-[#5C3622] block">${t('hero.statsRegionsSub')}</span>
+              <div class="pt-4 grid grid-cols-3 gap-2 sm:gap-3 text-left">
+                <div class="p-2.5 sm:p-3.5 rounded-2xl bg-white/95 border border-[#D49B42]/35 shadow-xs overflow-hidden flex flex-col justify-between">
+                  <span class="font-editorial-serif text-lg sm:text-2xl font-bold text-[#C84C24] block leading-none mb-1">8</span>
+                  <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsRegions')}</span>
+                  <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRegionsSub')}</span>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-white/90 border border-[#D49B42]/35 shadow-xs">
-                  <span class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#D49B42] block">12+</span>
-                  <span class="text-[11px] font-bold text-[#120B07] block">${t('hero.statsRecipes')}</span>
-                  <span class="text-[9px] text-[#5C3622] block">${t('hero.statsRecipesSub')}</span>
+                <div class="p-2.5 sm:p-3.5 rounded-2xl bg-white/95 border border-[#D49B42]/35 shadow-xs overflow-hidden flex flex-col justify-between">
+                  <span class="font-editorial-serif text-lg sm:text-2xl font-bold text-[#D49B42] block leading-none mb-1">12+</span>
+                  <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsRecipes')}</span>
+                  <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRecipesSub')}</span>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-white/90 border border-[#D49B42]/35 shadow-xs">
-                  <span class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#2E4D38] block">100%</span>
-                  <span class="text-[11px] font-bold text-[#120B07] block">${t('hero.statsHeritage')}</span>
-                  <span class="text-[9px] text-[#5C3622] block">${t('hero.statsHeritageSub')}</span>
+                <div class="p-2.5 sm:p-3.5 rounded-2xl bg-white/95 border border-[#D49B42]/35 shadow-xs overflow-hidden flex flex-col justify-between">
+                  <span class="font-editorial-serif text-lg sm:text-2xl font-bold text-[#2E4D38] block leading-none mb-1">100%</span>
+                  <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsHeritage')}</span>
+                  <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsHeritageSub')}</span>
                 </div>
               </div>
 
             </div>
 
             <!-- Right Interactive Centerpiece Showcase -->
-            <div class="lg:col-span-6 relative flex items-center justify-center w-full">
-              <div id="hero-3d-canvas" class="w-full max-w-[520px] min-h-[420px] sm:min-h-[500px]"></div>
+            <div class="lg:col-span-6 relative flex items-center justify-center w-full overflow-hidden">
+              <div id="hero-3d-canvas" class="w-full max-w-full lg:max-w-[540px] min-h-[380px] sm:min-h-[480px]"></div>
             </div>
 
           </div>

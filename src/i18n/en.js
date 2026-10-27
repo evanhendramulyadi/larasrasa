@@ -36,13 +36,13 @@ export const en = {
   },
   nav: {
     home: 'Home',
-    recipes: 'Heritage Recipes',
+    recipes: 'Recipes',
     flavorMap: 'Flavor Map',
-    spices: 'Spices & Hearth',
-    restaurants: 'Legendary Eateries',
-    recommendations: 'Discover Menu',
+    spices: 'Spices',
+    restaurants: 'Restaurants',
+    recommendations: 'Recommendations',
     aiFoodCreator: 'AI Food Creator',
-    about: 'About LarasRasa',
+    about: 'About',
     findMenuCTA: 'Find Menu'
   },
   hero: {

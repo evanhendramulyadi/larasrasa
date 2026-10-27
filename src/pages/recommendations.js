@@ -238,33 +238,121 @@ function renderStepContent(step) {
       `;
 
     case 3:
+      const currentSrv = Math.max(1, Math.min(100, parseInt(currentAnswers.servings, 10) || 4));
+      const occasionText = getServingOccasion(currentSrv, isEn);
+
       return `
-        <div class="space-y-4">
+        <div class="space-y-6">
           <div>
-            <h2 class="font-editorial-serif text-2xl font-bold text-[#120B07]">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#FDF4EE] text-[#C84C24] border border-[#C84C24]/20 mb-2">
+              <span>✦</span>
+              <span>${isEn ? 'Free Servings Input (1 – 100)' : 'Pilihan Porsi Bebas (1 s/d 100)'}</span>
+            </span>
+            <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#120B07]">
               ${t('recommendations.q3Title')}
             </h2>
-            <p class="text-xs text-[#5C3622] mt-1">${t('recommendations.q3Sub')}</p>
+            <p class="text-xs sm:text-sm text-[#5C3622] mt-1.5 leading-relaxed">
+              ${t('recommendations.q3Sub')}
+            </p>
           </div>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-2">
-            ${[2, 4, 6, 8].map(p => {
-              const isChecked = currentAnswers.servings === p;
-              return `
-                <label class="wizard-option-card p-5 rounded-2xl border text-center cursor-pointer transition-all card-hover-lift ${
-                  isChecked 
-                    ? 'border-[#C84C24] bg-[#FDF4EE] shadow-md ring-2 ring-[#C84C24]/30' 
-                    : 'border-[#D49B42]/30 bg-white hover:bg-[#FAF7F2]'
-                }">
-                  <input type="radio" name="servings" value="${p}" class="sr-only" ${isChecked ? 'checked' : ''}/>
-                  <span class="font-editorial-serif text-3xl font-bold text-[#120B07] block mb-1">
-                    ${p}
-                  </span>
-                  <span class="text-xs font-bold text-[#5C3622]">
-                    ${p} ${t('common.servings')}
-                  </span>
-                </label>
-              `;
-            }).join('')}
+
+          <!-- Elevated Free Serving Calculator Card -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#FAF7F2] to-white border-2 border-[#D49B42]/40 shadow-sm space-y-6">
+            
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E8DEC8]">
+              <div class="space-y-1">
+                <span class="text-xs uppercase font-bold tracking-widest text-[#5C3622] block">
+                  ${isEn ? 'Culinary Scale Profile:' : 'Kategori Jamuan Santapan:'}
+                </span>
+                <div id="wizard-occasion-badge" class="font-editorial-serif text-lg sm:text-xl font-bold text-[#C84C24]">
+                  ${occasionText}
+                </div>
+              </div>
+
+              <!-- Main Free Stepper & Numeric Input -->
+              <div class="flex items-center self-start sm:self-auto gap-3">
+                <div class="inline-flex items-center rounded-2xl border-2 border-[#D49B42]/45 bg-white p-1.5 shadow-md">
+                  <!-- Decrement Button -->
+                  <button 
+                    type="button" 
+                    id="wizard-servings-dec" 
+                    aria-label="Kurangi Porsi"
+                    class="w-11 h-11 rounded-xl flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] hover:text-[#C84C24] font-bold text-xl transition-all cursor-pointer disabled:opacity-40"
+                    ${currentSrv <= 1 ? 'disabled' : ''}
+                  >
+                    &minus;
+                  </button>
+
+                  <!-- Direct Typing Number Input -->
+                  <div class="relative flex items-center px-2">
+                    <input 
+                      type="number" 
+                      id="wizard-servings-input" 
+                      name="servings"
+                      min="1" 
+                      max="100" 
+                      value="${currentSrv}"
+                      aria-label="Jumlah Porsi"
+                      class="w-20 sm:w-24 text-center font-editorial-serif font-bold text-2xl text-[#120B07] bg-transparent outline-none py-1 focus:ring-2 focus:ring-[#C84C24] rounded-lg transition-all"
+                    />
+                    <span class="text-xs font-bold text-[#8C624D] pr-1 pointer-events-none">
+                      ${isEn ? 'srv' : 'porsi'}
+                    </span>
+                  </div>
+
+                  <!-- Increment Button -->
+                  <button 
+                    type="button" 
+                    id="wizard-servings-inc" 
+                    aria-label="Tambah Porsi"
+                    class="w-11 h-11 rounded-xl flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] hover:text-[#C84C24] font-bold text-xl transition-all cursor-pointer disabled:opacity-40"
+                    ${currentSrv >= 100 ? 'disabled' : ''}
+                  >
+                    &#43;
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick Preset Chips -->
+            <div class="space-y-2.5">
+              <span class="text-xs font-bold text-[#120B07] flex items-center gap-1.5">
+                <span class="text-[#D49B42]">⚡</span>
+                <span>${isEn ? 'Quick Portion Presets:' : 'Pilihan Cepat Takaran Porsi:'}</span>
+              </span>
+              <div class="flex flex-wrap gap-2">
+                ${[
+                  { val: 1, label: isEn ? '1 (Single)' : '1 (Pribadi)' },
+                  { val: 2, label: isEn ? '2 (Couple)' : '2 (Pasangan)' },
+                  { val: 4, label: isEn ? '4 (Family)' : '4 (Keluarga)' },
+                  { val: 6, label: isEn ? '6 (Gathering)' : '6 (Arisan)' },
+                  { val: 8, label: isEn ? '8 (Banquet)' : '8 (Jamuan)' },
+                  { val: 12, label: isEn ? '12 (Feast)' : '12 (Syukuran)' },
+                  { val: 24, label: isEn ? '24 (Event)' : '24 (Hajatan)' },
+                  { val: 50, label: isEn ? '50+ (Grand)' : '50+ (Pesta)' }
+                ].map(item => `
+                  <button 
+                    type="button" 
+                    data-wizard-preset="${item.val}"
+                    class="wizard-preset-btn px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                      currentSrv === item.val
+                        ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#C84C24]/30'
+                        : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border border-[#D49B42]/35 shadow-2xs'
+                    }"
+                  >
+                    ${item.label}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+
+            <p class="text-[11px] text-[#2E4D38] font-medium italic flex items-center gap-1.5 pt-1">
+              <span>💡</span>
+              <span>${isEn 
+                ? 'Tip: You can freely type any number from 1 to 100. Recommendations and spice formulas adjust automatically.' 
+                : 'Pituduh: Bebas ketik porsi pinten kemawon (1 dumugi 100). Rekomendasi resep lan bumbu badhe dipun-larasaken.'}</span>
+            </p>
+
           </div>
         </div>
       `;
@@ -328,8 +416,26 @@ function renderStepContent(step) {
   }
 }
 
+function getServingOccasion(servings, isEn) {
+  const s = parseInt(servings, 10) || 4;
+  if (s <= 1) {
+    return isEn ? '👤 Personal Portion (Single)' : '👤 Porsi Pribadi (Nyami)';
+  } else if (s === 2) {
+    return isEn ? '👥 Couple Portion (Pairs)' : '👥 Porsi Pasangan (Runtut)';
+  } else if (s <= 5) {
+    return isEn ? '👨‍👩‍👧 Immediate Family (Regular)' : '👨‍👩‍👧 Kulawarga Inti (Sarekat)';
+  } else if (s <= 10) {
+    return isEn ? '🍲 Extended Family & Guests' : '🍲 Kulawarga Ageng & Tamu';
+  } else if (s <= 30) {
+    return isEn ? '🎊 Festive Gathering (Bancakan)' : '🎊 Jamuan Pahargyan (Bancakan)';
+  } else {
+    return isEn ? '🎪 Grand Celebration & Feast' : '🎪 Hajatan Ageng & Syukuran';
+  }
+}
+
 function renderResultView(result) {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+  const customSrv = currentAnswers.servings || 4;
 
   return `
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-10 animate-fade-in">
@@ -344,20 +450,47 @@ function renderResultView(result) {
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white">
             ${t('recommendations.resultTitle')}
           </h1>
-          <p class="text-xs sm:text-sm text-[#FAF7F2]/85 max-w-lg mx-auto">
+          <p class="text-xs sm:text-sm text-[#FAF7F2]/85 max-w-lg mx-auto leading-relaxed">
             ${t('recommendations.resultSub')}
           </p>
+          
+          <!-- Custom Portion & Preference Pill -->
+          <div class="pt-2 flex flex-wrap items-center justify-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42]">
+              <span>👤</span>
+              <span>${isEn ? 'Calibrated for' : 'Takaran Khusus'}: <strong class="text-white">${customSrv} ${isEn ? 'servings' : 'porsi'}</strong></span>
+            </span>
+            ${currentAnswers.flavor ? `
+              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#C84C24]/30 border border-[#C84C24]/50 text-xs font-bold text-white capitalize">
+                <span>●</span>
+                <span>${currentAnswers.flavor}</span>
+              </span>
+            ` : ''}
+          </div>
         </div>
       </div>
 
       <!-- Primary Recommended Match -->
       <div class="space-y-4">
-        <div class="flex items-center gap-2">
-          <span class="w-3 h-3 rounded-full bg-[#C84C24]"></span>
-          <span class="text-xs font-bold uppercase tracking-wider text-[#C84C24]">${t('recommendations.matchBadge')}</span>
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-[#C84C24]"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#C84C24]">${t('recommendations.matchBadge')}</span>
+          </div>
+          <span class="text-xs font-bold text-[#2E4D38]">
+            ${isEn ? `Scaled for ${customSrv} servings` : `Porsi kaselarasken: ${customSrv} porsi`}
+          </span>
         </div>
         <div class="max-w-xl mx-auto">
           ${renderRecipeCard(result.primary)}
+        </div>
+        <div class="text-center pt-2">
+          <a href="#/resep/${result.primary.slug}?servings=${customSrv}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
+            <span>${t('recommendations.openRecipeBtn')} (${customSrv} ${isEn ? 'Servings' : 'Porsi'})</span>
+            <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
         </div>
       </div>
 
@@ -376,7 +509,7 @@ function renderResultView(result) {
 }
 
 export function initRecommendationsInteractions(onRerender) {
-  // Option Card Radios
+  // Option Card Radios (Step 1, 2, 4)
   const optionCards = document.querySelectorAll('.wizard-option-card');
   optionCards.forEach(card => {
     card.addEventListener('click', () => {
@@ -385,12 +518,7 @@ export function initRecommendationsInteractions(onRerender) {
         radio.checked = true;
         const name = radio.name;
         const val = radio.value;
-        if (name === 'servings') {
-          currentAnswers.servings = parseInt(val, 10);
-        } else {
-          currentAnswers[name] = val;
-        }
-
+        currentAnswers[name] = val;
         validationError = null;
 
         // Visual update
@@ -406,6 +534,60 @@ export function initRecommendationsInteractions(onRerender) {
           }
         });
       }
+    });
+  });
+
+  // Servings Stepper & Input Interactions (Step 3)
+  const servingsInput = document.getElementById('wizard-servings-input');
+  const servingsDec = document.getElementById('wizard-servings-dec');
+  const servingsInc = document.getElementById('wizard-servings-inc');
+  const occasionBadge = document.getElementById('wizard-occasion-badge');
+
+  const updateServingsUI = (val) => {
+    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+    const clamped = Math.max(1, Math.min(100, parseInt(val, 10) || 4));
+    currentAnswers.servings = clamped;
+    if (servingsInput) servingsInput.value = clamped;
+    if (occasionBadge) occasionBadge.textContent = getServingOccasion(clamped, isEn);
+    if (servingsDec) servingsDec.disabled = (clamped <= 1);
+    if (servingsInc) servingsInc.disabled = (clamped >= 100);
+
+    // Update preset buttons styling
+    document.querySelectorAll('[data-wizard-preset]').forEach(btn => {
+      const pVal = parseInt(btn.getAttribute('data-wizard-preset'), 10);
+      if (pVal === clamped) {
+        btn.className = 'wizard-preset-btn px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer bg-[#C84C24] text-white shadow-md ring-2 ring-[#C84C24]/30';
+      } else {
+        btn.className = 'wizard-preset-btn px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer bg-white hover:bg-[#FAF7F2] text-[#120B07] border border-[#D49B42]/35 shadow-2xs';
+      }
+    });
+  };
+
+  if (servingsInput) {
+    servingsInput.addEventListener('input', (e) => {
+      updateServingsUI(e.target.value);
+    });
+    servingsInput.addEventListener('change', (e) => {
+      updateServingsUI(e.target.value);
+    });
+  }
+
+  if (servingsDec) {
+    servingsDec.addEventListener('click', () => {
+      updateServingsUI((currentAnswers.servings || 4) - 1);
+    });
+  }
+
+  if (servingsInc) {
+    servingsInc.addEventListener('click', () => {
+      updateServingsUI((currentAnswers.servings || 4) + 1);
+    });
+  }
+
+  document.querySelectorAll('[data-wizard-preset]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pVal = parseInt(btn.getAttribute('data-wizard-preset'), 10);
+      updateServingsUI(pVal);
     });
   });
 

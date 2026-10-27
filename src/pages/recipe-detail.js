@@ -14,7 +14,7 @@ import { i18n, t } from '../i18n/index.js';
 
 let currentServings = 4;
 
-export async function renderRecipeDetailPage(slug) {
+export async function renderRecipeDetailPage(slug, queryParams = {}) {
   let recipe;
   try {
     recipe = await recipeService.getRecipeBySlug(slug);
@@ -31,7 +31,17 @@ export async function renderRecipeDetailPage(slug) {
     `;
   }
 
-  currentServings = recipe.baseServings;
+  // Support initial custom servings passed via query parameters (e.g. from Recommendations wizard)
+  if (queryParams && queryParams.servings) {
+    const parsedServings = parseInt(queryParams.servings, 10);
+    if (!isNaN(parsedServings) && parsedServings >= 1 && parsedServings <= 100) {
+      currentServings = parsedServings;
+    } else {
+      currentServings = recipe.baseServings;
+    }
+  } else {
+    currentServings = recipe.baseServings;
+  }
   const diff = getDifficultyBadge(recipe.difficulty);
   const relatedRecipes = await recipeService.getRelatedRecipes(recipe.id, 3);
   
@@ -99,22 +109,22 @@ export async function renderRecipeDetailPage(slug) {
         </p>
 
         <!-- Meta Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-5 border-y border-[#D49B42]/30 py-5 text-center">
-          <div class="p-2">
-            <span class="block text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${t('recipeDetail.prepTime')}</span>
-            <span class="font-bold text-base text-[#120B07]">${recipe.prepTime}</span>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-5 border-y border-[#D49B42]/30 py-5 text-center">
+          <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent">
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('recipeDetail.prepTime')}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.prepTime}</span>
           </div>
-          <div class="p-2 border-l border-[#D49B42]/25">
-            <span class="block text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${t('recipeDetail.cookTime')}</span>
-            <span class="font-bold text-base text-[#120B07]">${recipe.cookTime}</span>
+          <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('recipeDetail.cookTime')}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.cookTime}</span>
           </div>
-          <div class="p-2 border-l border-[#D49B42]/25">
-            <span class="block text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${t('recipeDetail.baseServings')}</span>
-            <span class="font-bold text-base text-[#120B07]">${recipe.baseServings} ${t('common.servings')}</span>
+          <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('recipeDetail.baseServings')}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.baseServings} ${t('common.servings')}</span>
           </div>
-          <div class="p-2 border-l border-[#D49B42]/25">
-            <span class="block text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${t('common.estBudget')}</span>
-            <span class="font-bold text-base text-[#C84C24]">${recipe.estimatedCost}</span>
+          <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('common.estBudget')}</span>
+            <span class="font-bold text-sm sm:text-base text-[#C84C24] block mt-0.5">${recipe.estimatedCost}</span>
           </div>
         </div>
       </header>

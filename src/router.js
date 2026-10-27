@@ -96,7 +96,7 @@ export class Router {
       postRenderAction = () => initRecipesPageInteractions();
     } else if (path.startsWith('/resep/')) {
       const slug = path.replace('/resep/', '');
-      pageHtml = await renderRecipeDetailPage(slug);
+      pageHtml = await renderRecipeDetailPage(slug, queryParams);
       postRenderAction = async () => {
         try {
           const rec = await recipeService.getRecipeBySlug(slug);
