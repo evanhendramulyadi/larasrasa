@@ -28,20 +28,20 @@ export class ThreeHeroShowcase {
         <!-- Header Controls: Mode Selector & Status -->
         <div class="flex items-center justify-between z-20 gap-2 mb-3">
           <!-- Dual-Mode Tabs -->
-          <div class="inline-flex p-1 rounded-full bg-[#EFE8DA] border border-[#D49B42]/30 shadow-inner text-xs font-bold text-[#5C3622] max-w-full">
+          <div class="inline-flex p-1 rounded-full bg-[#EFE8DA] border border-[#D49B42]/30 shadow-inner text-xs font-bold text-[#5C3622] shrink-0">
             <button type="button" id="hero-tab-gudeg" class="px-3 sm:px-4 py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
               <span>🏺</span>
-              <span class="truncate">${t('hero.tab3d')}</span>
+              <span>${t('hero.tab3d')}</span>
             </button>
             <button type="button" id="hero-tab-feast" class="px-3 sm:px-4 py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
               <span>🍲</span>
-              <span class="truncate">${t('hero.tabFeast')}</span>
+              <span>${t('hero.tabFeast')}</span>
             </button>
           </div>
 
           <!-- Dynamic Hint / Action Badge -->
-          <div id="hero-showcase-hint" class="text-[11px] font-bold text-[#120B07] bg-white/95 px-3.5 py-1.5 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-xs hidden sm:flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-pulse"></span>
+          <div id="hero-showcase-hint" class="text-[11px] font-bold text-[#5C3622] bg-white/95 px-3 py-1.5 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-xs hidden sm:flex items-center gap-1.5 whitespace-nowrap shrink-0">
+            <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-pulse shrink-0"></span>
             <span id="hero-hint-text">${t('hero.canvasHint')}</span>
           </div>
         </div>
@@ -50,15 +50,10 @@ export class ThreeHeroShowcase {
         <div id="hero-viewport-area" class="w-full flex-1 relative rounded-2xl overflow-hidden min-h-[320px] sm:min-h-[360px] bg-[#FAF7F2] border border-[#D49B42]/30 shadow-inner"></div>
 
         <!-- Footer Caption Bar -->
-        <div id="hero-footer-caption" class="z-20 mt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 text-xs text-[#5C3622] bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-[#D49B42]/35 shadow-xs">
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="w-2.5 h-2.5 rounded-full bg-[#D49B42] shrink-0 animate-ping"></span>
-            <span class="font-bold text-[#120B07] truncate text-xs sm:text-sm font-editorial-serif" id="hero-caption-title">
-              ${t('hero.canvasTitle')}
-            </span>
-          </div>
-          <span class="text-[10px] sm:text-[11px] text-[#2E4D38] font-bold shrink-0" id="hero-caption-subtitle">
-            ${t('hero.canvasSubtitle')}
+        <div id="hero-footer-caption" class="z-20 mt-3 flex items-center gap-2 text-xs text-[#5C3622] bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-[#D49B42]/35 shadow-xs">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#D49B42] shrink-0 animate-pulse"></span>
+          <span class="font-bold text-[#120B07] text-xs sm:text-sm font-editorial-serif tracking-wide" id="hero-caption-title">
+            ${t('hero.canvasTitle')}
           </span>
         </div>
 
@@ -83,7 +78,6 @@ export class ThreeHeroShowcase {
     const btnFeast = this.container.querySelector('#hero-tab-feast');
     const hintEl = this.container.querySelector('#hero-hint-text');
     const titleEl = this.container.querySelector('#hero-caption-title');
-    const subEl = this.container.querySelector('#hero-caption-subtitle');
     const viewport = this.container.querySelector('#hero-viewport-area');
 
     if (!viewport) return;
@@ -96,15 +90,13 @@ export class ThreeHeroShowcase {
       if (btnFeast) btnFeast.className = inactiveBtnClass;
       if (hintEl) hintEl.textContent = t('hero.canvasHint');
       if (titleEl) titleEl.textContent = t('hero.canvasTitle');
-      if (subEl) subEl.textContent = t('hero.canvasSubtitle');
 
       this.renderGudegShowcase(viewport);
     } else {
       if (btnGudeg) btnGudeg.className = inactiveBtnClass;
       if (btnFeast) btnFeast.className = activeBtnClass;
-      if (hintEl) hintEl.textContent = t('hero.feastSubtitle');
+      if (hintEl) hintEl.textContent = t('hero.canvasHint');
       if (titleEl) titleEl.textContent = t('hero.feastTitle');
-      if (subEl) subEl.textContent = t('hero.feastSubtitle');
 
       this.renderFeastShowcase(viewport);
     }

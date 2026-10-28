@@ -260,7 +260,7 @@ export const restaurants = [
     historicalContext: 'Bapak Muhadi meracik bumbu kuah ebi kental sejak dekade 1980-an yang menjadi penawar dingin paling dicari para pendaki dan wisatawan Dataran Tinggi Dieng.',
     googleMapsUrl: 'https://maps.google.com/?q=-7.3621,109.9015',
     verifiedSource: 'Dinas Pariwisata dan Kebudayaan Kabupaten Wonosobo',
-    image: '/assets/images/recipes/mie-ongklok-wonosobo.jpg',
+    image: '/assets/images/recipes/mie-ongklok.jpg',
     specialties: ['Mie Ongklok Spesial', 'Sate Sapi Bumbu Manis', 'Tempe Kemul Kunyit Krispi', 'Geblek Singkong']
   }
 ];

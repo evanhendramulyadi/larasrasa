@@ -2,7 +2,7 @@ import { recipeService } from '../services/recipeService.js';
 import { restaurantService } from '../services/restaurantService.js';
 import { flavorProfiles } from '../data/flavorProfiles.js';
 import { spices } from '../data/spices.js';
-import { localizeSpice } from './spices.js';
+import { localizeSpice } from '../services/spiceService.js';
 import { renderRecipeCard } from '../components/recipe-card.js';
 import { renderRestaurantCard } from '../components/restaurant-card.js';
 import { ThreeHeroShowcase } from '../components/three-hero.js';

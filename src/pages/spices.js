@@ -1,32 +1,13 @@
+import { spiceService, localizeSpice } from '../services/spiceService.js';
 import { spices } from '../data/spices.js';
-import { spiceTranslationsEn } from '../data/translations-en.js';
 import { i18n, t } from '../i18n/index.js';
+
+export { localizeSpice };
 
 /**
  * Jelajah Rempah (Curated Macro Culinary Spice Exhibition)
  * Botanical profiles, culinary philosophy, traditional preparations, and bilingual i18n.
  */
-
-export function localizeSpice(s) {
-  if (!s) return s;
-  const lang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
-  if (lang !== 'en') return { ...s };
-
-  const trans = spiceTranslationsEn[s.id];
-  if (!trans) return { ...s };
-
-  return {
-    ...s,
-    name: trans.name || s.name,
-    categoryName: trans.categoryName || s.categoryName,
-    role: trans.role || s.role,
-    aromaProfile: trans.aromaProfile || s.aromaProfile,
-    flavorNote: trans.flavorNote || s.flavorNote,
-    preparationMethod: trans.preparationMethod || s.preparationMethod,
-    culturalWisdom: trans.culturalWisdom || s.culturalWisdom,
-    substitutes: trans.substitutes || s.substitutes,
-  };
-}
 
 let activeCategory = 'semua';
 let currentSpiceId = 'bawang-merah';
@@ -41,7 +22,7 @@ export async function renderSpicesPage() {
     { id: 'asam', label: t('spicesSection.catAcid') || 'Asem & Manis Alami' }
   ];
 
-  const localizedSpices = spices.map(localizeSpice);
+  const localizedSpices = await spiceService.getSpices('semua');
   const currentSpice = localizedSpices.find(s => s.id === currentSpiceId) || localizedSpices[0];
 
   const filteredSpices = activeCategory === 'semua'
