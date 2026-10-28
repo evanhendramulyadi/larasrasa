@@ -7,8 +7,8 @@ export const id = {
   common: {
     brandName: 'LarasRasa',
     brandSubtitle: 'Khasanah Rasa & Dapur Pusaka Jawa Tengah',
-    siteTitle: 'LarasRasa — Warisan Rasa Jawa Tengah',
-    siteSubtitle: 'Warisan Rasa Jawa Tengah',
+    siteTitle: 'LarasRasa — Kuliner Jawa Tengah',
+    siteSubtitle: 'Kuliner Jawa Tengah',
     language: 'Bahasa',
     langId: 'ID',
     langEn: 'EN',

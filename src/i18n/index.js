@@ -33,14 +33,24 @@ class I18nManager {
     }
     if (typeof document === 'undefined') return;
 
-    const baseTitle = this.currentLang === 'en'
-      ? 'LarasRasa — Central Java Culinary Heritage'
-      : 'LarasRasa — Warisan Rasa Jawa Tengah';
+    let currentHash = '';
+    if (typeof window !== 'undefined' && window.location && window.location.hash) {
+      currentHash = window.location.hash.replace(/^#\/?/, '').split('?')[0];
+    }
+    const isHomeHash = !currentHash || currentHash === '';
 
-    if (this.currentPagePrefix && this.currentPagePrefix !== 'Beranda' && this.currentPagePrefix !== 'Home') {
-      document.title = `${this.currentPagePrefix} — ${baseTitle}`;
+    const isHome = isHomeHash || 
+      !this.currentPagePrefix || 
+      this.currentPagePrefix === 'Beranda' || 
+      this.currentPagePrefix === 'Home' ||
+      this.currentPagePrefix.trim() === '';
+
+    if (!isHome) {
+      document.title = `${this.currentPagePrefix} — LarasRasa`;
     } else {
-      document.title = baseTitle;
+      document.title = this.currentLang === 'en'
+        ? 'LarasRasa — Central Java Cuisine'
+        : 'LarasRasa — Kuliner Jawa Tengah';
     }
   }
 

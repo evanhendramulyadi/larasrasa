@@ -3,8 +3,19 @@ import { i18n, t } from '../i18n/index.js';
 /**
  * Ultra-Elevated Royal Javanese Heritage Navbar
  * Sticky luxury header with frosted glassmorphism, gold accents,
- * responsive navigation, and seamless bilingual reactivity.
+ * responsive navigation, instant active feedback, and seamless bilingual reactivity.
  */
+
+export function isRouteMatching(itemPath, currentRoute) {
+  if (!currentRoute || currentRoute === '/' || currentRoute === '') {
+    return itemPath === '/' || itemPath === '';
+  }
+  if (itemPath === '/') {
+    return false;
+  }
+  const cleanCurrent = currentRoute.split('?')[0];
+  return cleanCurrent === itemPath || cleanCurrent.startsWith(itemPath + '/');
+}
 
 export function renderNavbar(activeRoute = '/') {
   const currentLang = i18n.getLanguage();
@@ -39,7 +50,7 @@ export function renderNavbar(activeRoute = '/') {
               </span>
               <span class="text-[10px] tracking-widest font-bold text-[#D49B42] uppercase mt-1 flex items-center gap-1.5 whitespace-nowrap">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24] animate-pulse"></span>
-                <span>${currentLang === 'id' ? 'Dapur Pusaka Jawa Tengah' : 'Central Javanese Heritage'}</span>
+                <span>${currentLang === 'id' ? 'Kuliner Jawa Tengah' : 'Central Java Cuisine'}</span>
               </span>
             </div>
           </a>
@@ -47,10 +58,14 @@ export function renderNavbar(activeRoute = '/') {
           <!-- Desktop Navigation Menu -->
           <nav class="hidden xl:flex items-center gap-1 2xl:gap-1.5 font-editorial-sans" aria-label="Menu Utama">
             ${navItems.map(item => {
-              const isActive = activeRoute === item.href.replace('#', '') || (item.href === '#/' && activeRoute === '/');
+              const itemPath = item.href.replace('#', '');
+              const isActive = isRouteMatching(itemPath, activeRoute);
               return `
                 <a href="${item.href}" 
-                   class="whitespace-nowrap px-3 2xl:px-3.5 py-2 text-xs 2xl:text-sm font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 ${
+                   data-nav-path="${itemPath}"
+                   ${item.isSpecial ? 'data-special="true"' : ''}
+                   ${isActive ? 'aria-current="page"' : ''}
+                   class="desktop-nav-link whitespace-nowrap px-3 2xl:px-3.5 py-2 text-xs 2xl:text-sm font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 ${
                      isActive
                        ? 'bg-[#1E120A] text-[#FAF7F2] ring-1 ring-[#D49B42]/45 shadow-sm'
                        : item.isSpecial
@@ -128,9 +143,13 @@ export function renderNavbar(activeRoute = '/') {
       <!-- Mobile Dropdown Drawer with Polished Heritage Styling -->
       <div id="mobile-menu-drawer" class="xl:hidden hidden border-b border-[#D49B42]/25 bg-[#FAF7F2]/98 backdrop-blur-2xl px-4 sm:px-6 pt-3 pb-8 space-y-2 shadow-2xl transition-all duration-300 max-h-[calc(100vh-5rem)] overflow-y-auto">
         ${navItems.map(item => {
-          const isActive = activeRoute === item.href.replace('#', '') || (item.href === '#/' && activeRoute === '/');
+          const itemPath = item.href.replace('#', '');
+          const isActive = isRouteMatching(itemPath, activeRoute);
           return `
             <a href="${item.href}" 
+               data-nav-path="${itemPath}"
+               ${item.isSpecial ? 'data-special="true"' : ''}
+               ${isActive ? 'aria-current="page"' : ''}
                class="mobile-nav-link px-4 py-3 rounded-2xl text-sm font-semibold transition-all flex items-center justify-between ${
                  isActive
                    ? 'bg-[#1E120A] text-[#FAF7F2] shadow-xs'
@@ -165,6 +184,55 @@ export function renderNavbar(activeRoute = '/') {
   `;
 }
 
+/**
+ * Dynamically updates the active indicator across desktop and mobile nav items immediately on click
+ */
+export function setActiveNavbarLink(targetPath = '/') {
+  const cleanPath = (targetPath || '/').replace(/^#/, '');
+  const normalized = cleanPath.split('?')[0] || '/';
+
+  // Desktop navigation items
+  const desktopLinks = document.querySelectorAll('.desktop-nav-link');
+  desktopLinks.forEach(link => {
+    const itemPath = link.getAttribute('data-nav-path');
+    const isSpecial = link.getAttribute('data-special') === 'true';
+    const isActive = isRouteMatching(itemPath, normalized);
+
+    if (isActive) {
+      link.className = 'desktop-nav-link whitespace-nowrap px-3 2xl:px-3.5 py-2 text-xs 2xl:text-sm font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 bg-[#1E120A] text-[#FAF7F2] ring-1 ring-[#D49B42]/45 shadow-sm';
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.className = `desktop-nav-link whitespace-nowrap px-3 2xl:px-3.5 py-2 text-xs 2xl:text-sm font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 ${
+        isSpecial
+          ? 'text-[#C84C24] bg-[#FDF4EE] hover:bg-[#FBE8DD] border border-[#C84C24]/35 font-bold shadow-2xs hover:scale-102'
+          : 'text-[#5C3622] hover:text-[#C84C24] hover:bg-[#EFE8DA]/80'
+      }`;
+      link.removeAttribute('aria-current');
+    }
+  });
+
+  // Mobile drawer navigation items
+  const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+  mobileLinks.forEach(link => {
+    const itemPath = link.getAttribute('data-nav-path');
+    if (!itemPath) return;
+    const isSpecial = link.getAttribute('data-special') === 'true';
+    const isActive = isRouteMatching(itemPath, normalized);
+
+    if (isActive) {
+      link.className = 'mobile-nav-link px-4 py-3 rounded-2xl text-sm font-semibold transition-all flex items-center justify-between bg-[#1E120A] text-[#FAF7F2] shadow-xs';
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.className = `mobile-nav-link px-4 py-3 rounded-2xl text-sm font-semibold transition-all flex items-center justify-between ${
+        isSpecial
+          ? 'text-[#C84C24] bg-[#FDF4EE] border border-[#C84C24]/30 font-bold'
+          : 'text-[#120B07] hover:bg-[#EFE8DA]'
+      }`;
+      link.removeAttribute('aria-current');
+    }
+  });
+}
+
 export function initNavbarInteractions() {
   const btn = document.getElementById('mobile-menu-btn');
   const drawer = document.getElementById('mobile-menu-drawer');
@@ -180,10 +248,14 @@ export function initNavbarInteractions() {
       closeIcon.classList.toggle('hidden');
     };
 
-    // Close on clicking a link
+    // Close on clicking a link & immediately update active state
     const links = drawer.querySelectorAll('.mobile-nav-link');
     links.forEach(l => {
       l.addEventListener('click', () => {
+        const targetHref = l.getAttribute('href') || '';
+        const targetPath = targetHref.replace('#', '') || '/';
+        setActiveNavbarLink(targetPath);
+
         drawer.classList.add('hidden');
         hamburgerIcon.classList.remove('hidden');
         closeIcon.classList.add('hidden');
@@ -191,6 +263,16 @@ export function initNavbarInteractions() {
       });
     });
   }
+
+  // Instant active highlight on desktop menu clicks
+  const desktopLinks = document.querySelectorAll('.desktop-nav-link');
+  desktopLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const targetHref = link.getAttribute('href') || '';
+      const targetPath = targetHref.replace('#', '') || '/';
+      setActiveNavbarLink(targetPath);
+    });
+  });
 
   // Language buttons handler (Desktop & Mobile)
   const langButtons = document.querySelectorAll('[data-lang]');
@@ -202,4 +284,20 @@ export function initNavbarInteractions() {
       }
     });
   });
+
+  // Scroll listener to reinforce sticky header elevation
+  const header = document.getElementById('main-header');
+  if (header) {
+    const handleScroll = () => {
+      if (window.scrollY > 20) {
+        header.classList.add('shadow-md', 'border-[#D49B42]/40', 'bg-[#FAF7F2]/95');
+        header.classList.remove('shadow-xs', 'bg-[#FAF7F2]/90');
+      } else {
+        header.classList.remove('shadow-md', 'border-[#D49B42]/40', 'bg-[#FAF7F2]/95');
+        header.classList.add('shadow-xs', 'bg-[#FAF7F2]/90');
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+  }
 }

@@ -1,4 +1,4 @@
-import { renderNavbar, initNavbarInteractions } from './components/navbar.js';
+import { renderNavbar, initNavbarInteractions, setActiveNavbarLink } from './components/navbar.js';
 import { renderFooter } from './components/footer.js';
 import { renderHomePage, initHomePageInteractions } from './pages/home.js';
 import { renderRecipesPage, initRecipesPageInteractions } from './pages/recipes.js';
@@ -9,7 +9,7 @@ import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } 
 import { renderRecommendationsPage, initRecommendationsInteractions } from './pages/recommendations.js';
 import { renderAboutPage } from './pages/about.js';
 import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions } from './pages/ai-food-creator.js';
-import { recipeService } from './services/recipeService.js';
+import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
 
 /**
@@ -26,7 +26,11 @@ export class Router {
   }
 
   init() {
-    window.addEventListener('hashchange', this.handleRouteChange);
+    window.addEventListener('hashchange', () => {
+      const { path } = this.parseHash();
+      setActiveNavbarLink(path);
+      this.handleRouteChange();
+    });
     window.addEventListener('larasrasa:languagechange', () => {
       this.handleRouteChange();
     });
@@ -84,6 +88,9 @@ export class Router {
     // 2. Parse current route
     const { path, queryParams } = this.parseHash();
 
+    // Instant visual update for navbar active indicator
+    setActiveNavbarLink(path);
+
     // 3. Match Route & Render Page Content
     let pageHtml = '';
     let postRenderAction = null;
@@ -102,7 +109,8 @@ export class Router {
       pageHtml = await renderRecipeDetailPage(slug, queryParams);
       try {
         const rec = await recipeService.getRecipeBySlug(slug);
-        pageTitlePrefix = rec ? rec.title : t('nav.recipes');
+        const locRec = rec ? localizeRecipe(rec) : null;
+        pageTitlePrefix = locRec ? (locRec.name || locRec.title) : (rec ? (rec.name || rec.title) : t('nav.recipes'));
         postRenderAction = () => initRecipeDetailInteractions(rec);
       } catch (e) {
         console.warn(e);

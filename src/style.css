@@ -34,9 +34,22 @@
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
-html, body {
-  overflow-x: hidden;
+html {
+  overflow-x: clip;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: clip;
   max-width: 100%;
+}
+
+/* Header Sticky Guarantee */
+#main-header {
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 50 !important;
 }
 
 /* Polos tapi Menarik & Bercorak: Warm Royal Ivory Canvas with Subtle Javanese Micro-Batik Geometry */
