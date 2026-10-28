@@ -120,7 +120,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
             <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('recipeDetail.baseServings')}</span>
-            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.baseServings} ${t('common.servings')}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.baseServings || 4} ${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'People' : 'Orang'}</span>
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
             <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('common.estBudget')}</span>

@@ -78,7 +78,7 @@ export function renderRecipeCard(recipe) {
 
           <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/85 text-white backdrop-blur-md border border-white/15 shadow-xs shrink-0">
             <span>👤</span>
-            <span>${recipe.baseServings} ${isEn ? 'Servings' : 'Porsi'}</span>
+            <span>${recipe.baseServings || 4} ${isEn ? 'People' : 'Orang'}</span>
           </span>
         </div>
       </a>

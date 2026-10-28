@@ -34,7 +34,7 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
           </span>
           <span class="text-[11px] text-[#5C3622] block mt-0.5">${t('recipeDetail.scaleSub')}</span>
           <span class="text-[10px] text-[#2E4D38] font-bold block mt-0.5">
-            ${isEn ? `Range: ${MIN_SERVINGS} – ${MAX_SERVINGS} servings` : `Batas porsi: ${MIN_SERVINGS} s/d ${MAX_SERVINGS} porsi`}
+            ${isEn ? 'Calibrated for 4 people (family scale)' : 'Standar kebutuhan santap: 4 orang'}
           </span>
         </div>
       </div>
@@ -69,7 +69,7 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
               class="w-16 sm:w-20 text-center font-bold text-base text-[#120B07] bg-transparent outline-none py-1 focus:ring-1 focus:ring-[#C84C24] rounded-lg transition-all appearance-none"
             />
             <span class="text-[11px] font-bold text-[#8C624D] pr-1.5 pointer-events-none">
-              ${isEn ? 'srv' : 'porsi'}
+              ${isEn ? 'people' : 'orang'}
             </span>
           </div>
 
@@ -89,11 +89,11 @@ export function renderServingCalculator(baseServings = 4, activeServings = 4) {
         <div class="flex items-center gap-1.5 text-xs">
           <button 
             type="button" 
-            data-quick-servings="${baseServings}"
-            title="${isEn ? 'Reset to base recipe servings' : 'Kembali ke porsi standar resep'}"
+            data-quick-servings="4"
+            title="${isEn ? 'Reset to 4 people standard' : 'Kembali ke standar 4 orang'}"
             class="px-3 py-2 rounded-xl border border-[#D49B42]/40 bg-white hover:bg-[#FAF7F2] text-[#120B07] text-[11px] font-bold transition-all shadow-xs cursor-pointer"
           >
-            ${isEn ? `Base (${baseServings})` : `Asli (${baseServings})`}
+            ${isEn ? 'Standard (4 People)' : 'Standar (4 Orang)'}
           </button>
           
           ${[2, 4, 10, 20].filter(q => q !== baseServings).map(q => `

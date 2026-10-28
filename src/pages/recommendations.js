@@ -246,7 +246,7 @@ function renderStepContent(step) {
           <div>
             <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#FDF4EE] text-[#C84C24] border border-[#C84C24]/20 mb-2">
               <span>✦</span>
-              <span>${isEn ? 'Free Servings Input (1 – 100)' : 'Pilihan Porsi Bebas (1 s/d 100)'}</span>
+              <span>${isEn ? 'Family Dining Standard (4 People)' : 'Standar Kebutuhan Santap (4 Orang)'}</span>
             </span>
             <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#120B07]">
               ${t('recommendations.q3Title')}
@@ -296,7 +296,7 @@ function renderStepContent(step) {
                       class="w-20 sm:w-24 text-center font-editorial-serif font-bold text-2xl text-[#120B07] bg-transparent outline-none py-1 focus:ring-2 focus:ring-[#C84C24] rounded-lg transition-all"
                     />
                     <span class="text-xs font-bold text-[#8C624D] pr-1 pointer-events-none">
-                      ${isEn ? 'srv' : 'porsi'}
+                      ${isEn ? 'people' : 'orang'}
                     </span>
                   </div>
 
@@ -318,18 +318,14 @@ function renderStepContent(step) {
             <div class="space-y-2.5">
               <span class="text-xs font-bold text-[#120B07] flex items-center gap-1.5">
                 <span class="text-[#D49B42]">⚡</span>
-                <span>${isEn ? 'Quick Portion Presets:' : 'Pilihan Cepat Takaran Porsi:'}</span>
+                <span>${isEn ? 'Portion Presets:' : 'Pilihan Takaran Porsi:'}</span>
               </span>
               <div class="flex flex-wrap gap-2">
                 ${[
-                  { val: 1, label: isEn ? '1 (Single)' : '1 (Pribadi)' },
-                  { val: 2, label: isEn ? '2 (Couple)' : '2 (Pasangan)' },
-                  { val: 4, label: isEn ? '4 (Family)' : '4 (Keluarga)' },
-                  { val: 6, label: isEn ? '6 (Gathering)' : '6 (Arisan)' },
-                  { val: 8, label: isEn ? '8 (Banquet)' : '8 (Jamuan)' },
-                  { val: 12, label: isEn ? '12 (Feast)' : '12 (Syukuran)' },
-                  { val: 24, label: isEn ? '24 (Event)' : '24 (Hajatan)' },
-                  { val: 50, label: isEn ? '50+ (Grand)' : '50+ (Pesta)' }
+                  { val: 4, label: isEn ? '★ 4 People (Family Standard)' : '★ 4 Orang (Standar Kebutuhan Keluarga)' },
+                  { val: 2, label: isEn ? '2 People (Couple)' : '2 Orang (Pasangan)' },
+                  { val: 6, label: isEn ? '6 People (Gathering)' : '6 Orang (Arisan)' },
+                  { val: 8, label: isEn ? '8 People (Banquet)' : '8 Orang (Jamuan)' }
                 ].map(item => `
                   <button 
                     type="button" 
@@ -458,7 +454,7 @@ function renderResultView(result) {
           <div class="pt-2 flex flex-wrap items-center justify-center gap-2">
             <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42]">
               <span>👤</span>
-              <span>${isEn ? 'Calibrated for' : 'Takaran Khusus'}: <strong class="text-white">${customSrv} ${isEn ? 'servings' : 'porsi'}</strong></span>
+              <span>${isEn ? 'Calibrated for' : 'Takaran Khusus'}: <strong class="text-white">${customSrv} ${isEn ? 'People' : 'Orang'}</strong></span>
             </span>
             ${currentAnswers.flavor ? `
               <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#C84C24]/30 border border-[#C84C24]/50 text-xs font-bold text-white capitalize">
@@ -478,7 +474,7 @@ function renderResultView(result) {
             <span class="text-xs font-bold uppercase tracking-wider text-[#C84C24]">${t('recommendations.matchBadge')}</span>
           </div>
           <span class="text-xs font-bold text-[#2E4D38]">
-            ${isEn ? `Scaled for ${customSrv} servings` : `Porsi disesuaikan: ${customSrv} porsi`}
+            ${isEn ? `Calibrated for ${customSrv} people` : `Porsi disesuaikan: ${customSrv} orang`}
           </span>
         </div>
         <div class="max-w-xl mx-auto">
@@ -486,7 +482,7 @@ function renderResultView(result) {
         </div>
         <div class="text-center pt-2">
           <a href="#/resep/${result.primary.slug}?servings=${customSrv}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
-            <span>${t('recommendations.openRecipeBtn')} (${customSrv} ${isEn ? 'Servings' : 'Porsi'})</span>
+            <span>${t('recommendations.openRecipeBtn')} (${customSrv} ${isEn ? 'People' : 'Orang'})</span>
             <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>

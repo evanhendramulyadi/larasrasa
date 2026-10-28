@@ -1748,12 +1748,12 @@ export const recipes = [
     cookingDuration: '40 Menit',
     prepTime: '15 Menit',
     cookTime: '25 Menit',
-    baseServings: 6,
+    baseServings: 4,
     difficulty: 'Mudah',
     difficultyLevel: 'Mudah',
     flavorProfiles: ['manis', 'gurih'],
     budgetCategory: 'Sangat Terjangkau',
-    estimatedCost: 'Rp 22.000 – Rp 35.000',
+    estimatedCost: 'Rp 18.000 – Rp 28.000',
     image: '/assets/images/recipes/wingko-babat.jpg',
     intro: 'Wingko Babat adalah kudapan panggang legendaris berbahan parutan kelapa muda setengah tua, tepung ketan putih pilihan, santan, dan gula pasir. Dipanggang di atas wajan datar hingga permukaannya kecokelatan harum berkaramel legit dengan tekstur kenyal empuk menggoda selera.',
     history: 'Meski berasal dari kota Babat di perbatasan Jawa Timur, wingko mencapai puncak ketenaran dan kejayaan ikoniknya di Stasiun Tawang Semarang sejak tahun 1940-an melalui toko Wingko Babat Cap Kereta Api yang legendaris.',
@@ -1769,12 +1769,12 @@ export const recipes = [
       {
         name: 'Bahan Adonan Wingko',
         items: [
-          { name: 'Kelapa setengah tua, kupas kulit ari lalu parut kasar', amount: 300, unit: 'gram', notes: 'Gunakan kelapa segar bukan kelapa kering' },
-          { name: 'Tepung ketan putih berkualitas', amount: 250, unit: 'gram', notes: 'Ayak bersih' },
-          { name: 'Gula pasir putih', amount: 180, unit: 'gram', notes: 'Sesuaikan tingkat manis' },
-          { name: 'Santan kelapa hangat', amount: 150, unit: 'ml', notes: 'Dari perasan kelapa murni' },
-          { name: 'Margarin leleh', amount: 2, unit: 'sdm', notes: 'Menambah kelembutan adonan' },
-          { name: 'Garam halus', amount: 0.5, unit: 'sdt', notes: 'Pengangkat rasa gurih kelapa' },
+          { name: 'Kelapa setengah tua, kupas kulit ari lalu parut kasar', amount: 200, unit: 'gram', notes: 'Gunakan kelapa segar bukan kelapa kering' },
+          { name: 'Tepung ketan putih berkualitas', amount: 170, unit: 'gram', notes: 'Ayak bersih' },
+          { name: 'Gula pasir putih', amount: 120, unit: 'gram', notes: 'Sesuaikan tingkat manis' },
+          { name: 'Santan kelapa hangat', amount: 100, unit: 'ml', notes: 'Dari perasan kelapa murni' },
+          { name: 'Margarin leleh', amount: 1.5, unit: 'sdm', notes: 'Menambah kelembutan adonan' },
+          { name: 'Garam halus', amount: 0.3, unit: 'sdt', notes: 'Pengangkat rasa gurih kelapa' },
           { name: 'Vanili bubuk', amount: 0.25, unit: 'sdt', notes: 'Aroma wangi lembut' }
         ]
       }
@@ -1844,12 +1844,12 @@ export const recipes = [
     cookingDuration: '35 Menit',
     prepTime: '15 Menit',
     cookTime: '20 Menit',
-    baseServings: 6,
+    baseServings: 4,
     difficulty: 'Mudah',
     difficultyLevel: 'Mudah',
     flavorProfiles: ['manis', 'gurih'],
     budgetCategory: 'Sangat Terjangkau',
-    estimatedCost: 'Rp 18.000 – Rp 28.000',
+    estimatedCost: 'Rp 15.000 – Rp 22.000',
     image: '/assets/images/recipes/getuk-trio.jpg',
     intro: 'Getuk Trio Magelang diolah dari singkong pilihan yang dikukus pulen merekah lalu ditumbuk halus bersama gula dan sedikit mentega. Tiga lapis warna alami (cokelat gula jawa, merah muda, dan putih krim) menyajikan kelembutan manis bersahabat bertabur kelapa parut kukus gurih.',
     history: 'Diciptakan oleh masyarakat Magelang pada era penjajahan Jepang ketika beras sulit didapat dan singkong menjadi makanan pokok pengganti. Masyarakat berkreasi menumbuk singkong kukus dengan bumbu gula kelapa hingga lahirlah getuk yang lembut dan lezat.',
@@ -1865,18 +1865,18 @@ export const recipes = [
       {
         name: 'Bahan Utama Getuk',
         items: [
-          { name: 'Singkong kualitas bagus, kupas potong-potong', amount: 800, unit: 'gram', notes: 'Pilih singkong mentega empuk' },
-          { name: 'Gula pasir putih', amount: 100, unit: 'gram', notes: 'Untuk lapisan putih & merah muda' },
-          { name: 'Gula merah kelapa sisir', amount: 60, unit: 'gram', notes: 'Untuk lapisan cokelat alami' },
-          { name: 'Mentega / margarin kualitas bagus', amount: 2, unit: 'sdm', notes: 'Memberi rasa gurih wangi dan tekstur licin' },
-          { name: 'Garam halus', amount: 0.5, unit: 'sdt', notes: 'Secukupnya' },
+          { name: 'Singkong kualitas bagus, kupas potong-potong', amount: 530, unit: 'gram', notes: 'Pilih singkong mentega empuk' },
+          { name: 'Gula pasir putih', amount: 65, unit: 'gram', notes: 'Untuk lapisan putih & merah muda' },
+          { name: 'Gula merah kelapa sisir', amount: 40, unit: 'gram', notes: 'Untuk lapisan cokelat alami' },
+          { name: 'Mentega / margarin kualitas bagus', amount: 1.5, unit: 'sdm', notes: 'Memberi rasa gurih wangi dan tekstur licin' },
+          { name: 'Garam halus', amount: 0.3, unit: 'sdt', notes: 'Secukupnya' },
           { name: 'Pewarna merah muda alami', amount: 2, unit: 'tetes', notes: 'Opsional sari bit atau pasta frambozen' }
         ]
       },
       {
         name: 'Bahan Taburan Gurih',
         items: [
-          { name: 'Kelapa setengah tua parut memanjang', amount: 150, unit: 'gram', notes: 'Kukus bersama sejumput garam dan daun pandan' }
+          { name: 'Kelapa setengah tua parut memanjang', amount: 100, unit: 'gram', notes: 'Kukus bersama sejumput garam dan daun pandan' }
         ]
       }
     ],
@@ -1945,12 +1945,12 @@ export const recipes = [
     cookingDuration: '35 Menit',
     prepTime: '15 Menit',
     cookTime: '20 Menit',
-    baseServings: 6,
+    baseServings: 4,
     difficulty: 'Sedang',
     difficultyLevel: 'Menengah',
     flavorProfiles: ['manis', 'gurih'],
     budgetCategory: 'Sangat Terjangkau',
-    estimatedCost: 'Rp 25.000 – Rp 38.000',
+    estimatedCost: 'Rp 18.000 – Rp 28.000',
     image: '/assets/images/recipes/serabi-notosuman.jpg',
     intro: 'Serabi Notosuman adalah kue dadar beras khas Solo yang dimasak di atas wajan tanah liat kecil bertutup. Bagian tengahnya begitu lembut lumer berlumur areh santan kental manis, sementara tepiannya tipis garing renyah kecokelatan digulung rapi dalam selembar daun pisang segar.',
     history: 'Diciptakan pertama kali oleh pasangan Hoo Gek Hok dan Tan Giok Lan pada tahun 1923 di Jalan Notosuman (kini Jalan Moh. Yamin), Solo. Resep turun-temurun ini mempertahankan teknik memanggang di atas wajan tanah liat berbahan bakar arang kayu.',
@@ -1966,19 +1966,19 @@ export const recipes = [
       {
         name: 'Bahan Adonan Serabi',
         items: [
-          { name: 'Tepung beras putih berkualitas', amount: 200, unit: 'gram', notes: 'Pilih tepung beras baru yang wangi' },
-          { name: 'Santan kelapa hangat', amount: 500, unit: 'ml', notes: 'Dari perasan kelapa murni' },
-          { name: 'Gula pasir', amount: 60, unit: 'gram', notes: 'Beri manis lembut di adonan' },
-          { name: 'Ragi instan', amount: 0.5, unit: 'sdt', notes: 'Membantu pembentukan rongga lembut' },
-          { name: 'Garam halus', amount: 0.5, unit: 'sdt', notes: 'Pengangkat rasa gurih' },
+          { name: 'Tepung beras putih berkualitas', amount: 135, unit: 'gram', notes: 'Pilih tepung beras baru yang wangi' },
+          { name: 'Santan kelapa hangat', amount: 330, unit: 'ml', notes: 'Dari perasan kelapa murni' },
+          { name: 'Gula pasir', amount: 40, unit: 'gram', notes: 'Beri manis lembut di adonan' },
+          { name: 'Ragi instan', amount: 0.3, unit: 'sdt', notes: 'Membantu pembentukan rongga lembut' },
+          { name: 'Garam halus', amount: 0.3, unit: 'sdt', notes: 'Pengangkat rasa gurih' },
           { name: 'Daun pandan wangi', amount: 2, unit: 'lembar', notes: 'Rebus bersama santan' }
         ]
       },
       {
         name: 'Bahan Areh Gurih Kental (Topping)',
         items: [
-          { name: 'Santan kental perasan pertama', amount: 150, unit: 'ml', notes: 'Masak dengan sedikit garam hingga kental berminyak' },
-          { name: 'Gula pasir', amount: 1.5, unit: 'sdm', notes: 'Larutkan di areh' },
+          { name: 'Santan kental perasan pertama', amount: 100, unit: 'ml', notes: 'Masak dengan sedikit garam hingga kental berminyak' },
+          { name: 'Gula pasir', amount: 1, unit: 'sdm', notes: 'Larutkan di areh' },
           { name: 'Garam', amount: 0.25, unit: 'sdt', notes: 'Rasa gurih mantap' }
         ]
       }
@@ -2046,12 +2046,12 @@ export const recipes = [
     cookingDuration: '35 Menit',
     prepTime: '15 Menit',
     cookTime: '20 Menit',
-    baseServings: 2,
+    baseServings: 4,
     difficulty: 'Mudah',
     difficultyLevel: 'Pemula',
     flavorProfiles: ['gurih', 'kaya-rempah', 'hangat'],
     budgetCategory: 'Ekonomis',
-    estimatedCost: 'Rp 25.000 – Rp 40.000',
+    estimatedCost: 'Rp 40.000 – Rp 60.000',
     image: '/assets/images/recipes/bakmi-jawa.jpg',
     intro: 'Bakmi Jawa Godhog adalah sajian mi kuning kenyal berkuah kaldu ayam kampung kental yang dimasak satu per satu di atas tungku anglo arang menyala. Dipadukan dengan kocokan telur bebek gurih, suwiran ayam kampung, irisan kol renyah, dan taburan bawang merah goreng renyah.',
     history: 'Lahir dari tradisi kuliner pedesaan Gunungkidul dan Mataraman yang kemudian menyebar ke seantero Surakarta, Jogja, hingga Semarang. Penggunaan tungku arang kayu jati dan wajan baja cekung kecil bukan sekadar nostalgia, melainkan teknik vital untuk menghasilkan aroma asap arang (smoky wok-hei) yang tidak bisa ditiru kompor gas modern.',
@@ -2067,33 +2067,33 @@ export const recipes = [
       {
         name: 'Bahan Utama Mi & Isian',
         items: [
-          { name: 'Mi basah kuning kenyal', amount: 250, unit: 'gram', notes: 'Bilas air hangat sebentar' },
-          { name: 'Bihun beras seduh', amount: 50, unit: 'gram', notes: 'Pelengkap campur khas' },
-          { name: 'Daging ayam kampung rebus, suwir', amount: 150, unit: 'gram', notes: 'Gunakan ayam kampung agar gurih' },
-          { name: 'Telur bebek segar', amount: 2, unit: 'butir', notes: 'Kocok lepas' },
-          { name: 'Kol segar, iris kasar', amount: 100, unit: 'gram', notes: 'Cuci bersih tiriskan' },
-          { name: 'Tomat merah, potong kasar', amount: 1, unit: 'buah', notes: 'Penyegar rasa' },
-          { name: 'Daun bawang & seledri, iris 1 cm', amount: 2, unit: 'batang', notes: 'Aroma segar' },
-          { name: 'Kaldu ayam kampung asli', amount: 600, unit: 'ml', notes: 'Rebusan tulang ayam kampung' }
+          { name: 'Mi basah kuning kenyal', amount: 500, unit: 'gram', notes: 'Bilas air hangat sebentar' },
+          { name: 'Bihun beras seduh', amount: 100, unit: 'gram', notes: 'Pelengkap campur khas' },
+          { name: 'Daging ayam kampung rebus, suwir', amount: 300, unit: 'gram', notes: 'Gunakan ayam kampung agar gurih' },
+          { name: 'Telur bebek segar', amount: 4, unit: 'butir', notes: 'Kocok lepas' },
+          { name: 'Kol segar, iris kasar', amount: 200, unit: 'gram', notes: 'Cuci bersih tiriskan' },
+          { name: 'Tomat merah, potong kasar', amount: 2, unit: 'buah', notes: 'Penyegar rasa' },
+          { name: 'Daun bawang & seledri, iris 1 cm', amount: 4, unit: 'batang', notes: 'Aroma segar' },
+          { name: 'Kaldu ayam kampung asli', amount: 1200, unit: 'ml', notes: 'Rebusan tulang ayam kampung' }
         ]
       },
       {
         name: 'Bumbu Halus (Ulek)',
         items: [
-          { name: 'Bawang putih', amount: 6, unit: 'siung', notes: 'Kunci gurih kaldu' },
-          { name: 'Kemiri sangrai', amount: 4, unit: 'butir', notes: 'Pengental alami' },
-          { name: 'Merica butiran sangrai', amount: 1, unit: 'sdt', notes: 'Ulek halus' },
-          { name: 'Ebi kering sangrai', amount: 1, unit: 'sdm', notes: 'Pemberi aroma umami khas' },
-          { name: 'Garam & gula pasir', amount: 1, unit: 'sdt', notes: 'Penyeimbang rasa' }
+          { name: 'Bawang putih', amount: 10, unit: 'siung', notes: 'Kunci gurih kaldu' },
+          { name: 'Kemiri sangrai', amount: 6, unit: 'butir', notes: 'Pengental alami' },
+          { name: 'Merica butiran sangrai', amount: 1.5, unit: 'sdt', notes: 'Ulek halus' },
+          { name: 'Ebi kering sangrai', amount: 2, unit: 'sdm', notes: 'Pemberi aroma umami khas' },
+          { name: 'Garam & gula pasir', amount: 2, unit: 'sdt', notes: 'Penyeimbang rasa' }
         ]
       },
       {
         name: 'Bumbu Kuah & Taburan',
         items: [
-          { name: 'Kecap manis tradisional', amount: 1, unit: 'sdm', notes: 'Sentuhan manis tipis' },
-          { name: 'Minyak kelapa untuk menumis', amount: 2, unit: 'sdm', notes: 'Lebih wangi dari minyak sawit' },
-          { name: 'Bawang merah goreng renyah', amount: 2, unit: 'sdm', notes: 'Taburan wajib' },
-          { name: 'Cabai rawit hijau utuh', amount: 10, unit: 'buah', notes: 'Camilan pedas pendamping' }
+          { name: 'Kecap manis tradisional', amount: 2, unit: 'sdm', notes: 'Sentuhan manis tipis' },
+          { name: 'Minyak kelapa untuk menumis', amount: 3, unit: 'sdm', notes: 'Lebih wangi dari minyak sawit' },
+          { name: 'Bawang merah goreng renyah', amount: 4, unit: 'sdm', notes: 'Taburan wajib' },
+          { name: 'Cabai rawit hijau utuh', amount: 15, unit: 'buah', notes: 'Camilan pedas pendamping' }
         ]
       }
     ],

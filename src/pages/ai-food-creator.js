@@ -449,10 +449,10 @@ function renderFormView(currentLang) {
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <label for="creator-servings-input" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-                  ${isEn ? 'Target Servings (Free Input)' : 'Porsi Santapan (Bebas Masukkan)'}
+                  ${isEn ? 'Target Servings (4 People Standard)' : 'Porsi Santapan: 4 Orang (Standar Kebutuhan)'}
                 </label>
-                <span class="text-[10px] text-[#C84C24] font-bold">
-                  ${isEn ? 'Min 1 – Max 100' : 'Batas: Min. 1 s/d 100 Porsi'}
+                <span class="text-[10px] text-[#2E4D38] font-bold">
+                  ${isEn ? 'Calibrated for 4 People' : 'Telah Disesuaikan (4 Orang)'}
                 </span>
               </div>
 
@@ -479,7 +479,7 @@ function renderFormView(currentLang) {
                       class="w-20 text-center font-bold text-base text-[#120B07] bg-transparent outline-none py-1.5 focus:ring-1 focus:ring-[#C84C24] rounded-md"
                     />
                     <span class="text-xs font-bold text-[#8C624D] pr-2 pointer-events-none">
-                      ${isEn ? 'servings' : 'porsi'}
+                      ${isEn ? 'people' : 'orang'}
                     </span>
                   </div>
 
@@ -495,7 +495,7 @@ function renderFormView(currentLang) {
 
                 <!-- Quick Preset Pills -->
                 <div class="flex items-center flex-wrap gap-1.5">
-                  ${[2, 4, 8, 20].map(p => `
+                  ${[4, 2, 6, 8].map(p => `
                     <button 
                       type="button" 
                       data-creator-quick-porsi="${p}"
@@ -503,15 +503,15 @@ function renderFormView(currentLang) {
                         formState.servings === p ? 'border-[#C84C24] text-[#C84C24] font-bold bg-[#FDF4EE]' : ''
                       }"
                     >
-                      ${p}
+                      ${p} ${isEn ? 'Ppl' : 'Orang'}
                     </button>
                   `).join('')}
                 </div>
               </div>
               <p class="text-[11px] text-[#5C3622]/80">
                 ${isEn 
-                  ? 'Feel free to enter any portion count from 1 to 100.' 
-                  : 'Bebas ketik berapa pun porsi yang Anda inginkan (1 hingga 100 porsi).'}
+                  ? 'Standard calibration is set to 4 people for balanced flavor and ingredient proportions.' 
+                  : 'Standar porsi telah diselaraskan untuk kebutuhan 4 orang agar keharmonisan bumbu dan gramasi bahan tetap terjaga.'}
               </p>
             </div>
 
@@ -699,7 +699,7 @@ function renderResultView(recipe, currentLang) {
               <div class="space-y-1 text-xs text-[#5C3622]">
                 <p><strong>${isEn ? 'Creator:' : 'Pencipta:'}</strong> ${escapeHtml(formState.creatorName || (isEn ? 'Anonymous' : 'Anonim'))}</p>
                 ${formState.creatorNickname ? `<p><strong>${isEn ? 'Title:' : 'Gelar:'}</strong> ${escapeHtml(formState.creatorNickname)}</p>` : ''}
-                <p><strong>${isEn ? 'Servings:' : 'Porsi:'}</strong> ${formState.servings} ${isEn ? 'servings' : 'porsi'}</p>
+                <p><strong>${isEn ? 'Servings:' : 'Porsi:'}</strong> ${formState.servings || 4} ${isEn ? 'People (Standard)' : 'Orang (Standar Kebutuhan)'}</p>
                 <p><strong>${isEn ? 'Method:' : 'Metode:'}</strong> ${escapeHtml(formState.cookingMethod)}</p>
                 <p><strong>${isEn ? 'Spice Warmth:' : 'Kepedasan:'}</strong> Level ${formState.spiceLevel}</p>
                 <p><strong>${isEn ? 'Ingredients Count:' : 'Jumlah Bahan:'}</strong> ${formState.selectedIngredientIds.length} bahan</p>
@@ -774,7 +774,7 @@ function renderResultView(recipe, currentLang) {
                 <span class="text-[#2E4D38] block text-[10px] font-bold uppercase tracking-wider">
                   ${isEn ? 'Servings' : 'Porsi'}
                 </span>
-                <strong class="text-[#120B07] font-bold text-sm block">${formState.servings} ${isEn ? 'Servings' : 'Porsi'}</strong>
+                <strong class="text-[#120B07] font-bold text-sm block">${formState.servings || 4} ${isEn ? 'People' : 'Orang'}</strong>
               </div>
               <div class="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]/80 text-center space-y-1">
                 <span class="text-[#2E4D38] block text-[10px] font-bold uppercase tracking-wider">
@@ -801,7 +801,7 @@ function renderResultView(recipe, currentLang) {
                 </h3>
               </div>
               <span class="text-xs px-2.5 py-1 rounded-lg bg-[#FAF7F2] text-[#2E4D38] font-bold border border-[#D49B42]/30">
-                ${formState.servings} ${isEn ? 'servings scale' : 'porsi'}
+                ${formState.servings || 4} ${isEn ? 'people scale' : 'orang'}
               </span>
             </div>
 
