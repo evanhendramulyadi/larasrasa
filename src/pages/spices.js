@@ -6,7 +6,7 @@ export { localizeSpice };
 
 /**
  * Jelajah Rempah (Curated Macro Culinary Spice Exhibition)
- * Full-width catalog and interactive pop-up modal exhibition.
+ * Full-width catalog and vertical interactive pop-up modal exhibition.
  */
 
 let activeCategory = 'semua';
@@ -129,8 +129,8 @@ function renderSpiceModal(spice) {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
 
   return `
-    <div id="spice-modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 overflow-y-auto bg-black/70 backdrop-blur-sm spice-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-spice-title">
-      <div id="spice-modal-dialog" class="relative w-full max-w-4xl lg:max-w-5xl bg-white rounded-3xl shadow-2xl border-2 border-[#D49B42]/40 overflow-hidden my-auto spice-modal-card">
+    <div id="spice-modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/70 backdrop-blur-sm spice-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-spice-title">
+      <div id="spice-modal-dialog" class="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl border-2 border-[#D49B42]/40 overflow-hidden flex flex-col max-h-[88vh] my-auto spice-modal-card">
         
         <!-- Close Button (X) -->
         <button type="button" 
@@ -142,106 +142,111 @@ function renderSpiceModal(spice) {
           </svg>
         </button>
 
-        <!-- Modal Header with Panoramic Macro Image -->
-        <div class="relative w-full h-36 sm:h-44 overflow-hidden bg-[#120B07]">
+        <!-- Modal Header with Macro Image (Shrink 0) -->
+        <div class="relative w-full h-52 sm:h-60 shrink-0 overflow-hidden bg-[#120B07]">
           <img src="${spice.image}" 
                alt="${spice.name}" 
-               class="w-full h-full object-cover filter brightness-[0.95] contrast-[1.05]"
+               class="w-full h-full object-cover filter brightness-[0.96] contrast-[1.05]"
                onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-[#120B07] via-black/45 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#120B07] via-black/40 to-transparent"></div>
           
-          <div class="absolute bottom-3 sm:bottom-4 left-5 sm:left-6 right-14 text-white space-y-0.5">
+          <div class="absolute bottom-3.5 left-5 right-14 text-white space-y-1">
             <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#C84C24] text-white shadow-xs border border-white/20">
               <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
               <span>${spice.categoryName}</span>
             </div>
-            <h2 id="modal-spice-title" class="font-editorial-serif text-xl sm:text-2xl font-bold tracking-tight text-white leading-tight">
+            <h2 id="modal-spice-title" class="font-editorial-serif text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
               ${spice.name}
             </h2>
-            <p class="text-xs text-[#D49B42] italic font-mono font-semibold">
+            <p class="text-xs sm:text-sm text-[#D49B42] italic font-mono font-semibold">
               ${spice.latinName}
             </p>
           </div>
         </div>
 
-        <!-- Modal Body: Single-Row 3-Column Layout ("Sebaris" Tanpa Scroll) -->
-        <div class="p-4 sm:p-5">
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 items-stretch">
-            
-            <!-- Col 1: Peran Utama & Karakter Rasa -->
-            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 flex flex-col justify-between space-y-2.5">
-              <div>
-                <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-                  <span>${isEn ? 'Culinary Role' : 'Peran Utama & Rasa'}</span>
-                </span>
-                <p class="text-xs text-[#120B07] leading-relaxed">
-                  ${spice.role}
-                </p>
+        <!-- Modal Body: Vertical Scrollable Content ("Vertikal & Cukup Pop Up Saja yang Di-scroll") -->
+        <div class="p-5 sm:p-6 overflow-y-auto space-y-4">
+          
+          <!-- Section 1: Peran Utama Masakan -->
+          <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-1.5">
+            <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
+              <span>${isEn ? 'Culinary Role & Soul' : 'Peran Utama & Karakter Kuliner'}</span>
+            </span>
+            <p class="text-xs sm:text-sm text-[#120B07] leading-relaxed">
+              ${spice.role}
+            </p>
+            ${spice.flavorNote ? `
+              <div class="pt-2 mt-2 border-t border-[#D49B42]/20 text-xs text-[#2E4D38] leading-relaxed">
+                <span class="font-bold text-[#C84C24]">${isEn ? 'Flavor Note:' : 'Catatan Rasa:'}</span> ${spice.flavorNote}
               </div>
-              ${spice.flavorNote ? `
-                <div class="pt-2 border-t border-[#D49B42]/20 text-[11px] text-[#2E4D38] leading-snug">
-                  <span class="font-bold text-[#C84C24]">${isEn ? 'Flavor Note:' : 'Catatan Rasa:'}</span> ${spice.flavorNote}
-                </div>
-              ` : ''}
-            </div>
-
-            <!-- Col 2: Profil Aroma & Olahan Pawon -->
-            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 flex flex-col justify-between space-y-2.5">
-              <div>
-                <span class="text-[11px] font-bold text-[#120B07] uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#D49B42]"></span>
-                  <span>${t('spicesSection.aromaTitle') || 'Aroma & Karakter'}</span>
-                </span>
-                <p class="text-xs text-[#5C3622] leading-relaxed">
-                  ${spice.aromaProfile}
-                </p>
-              </div>
-              <div class="pt-2 border-t border-[#D49B42]/20 text-[11px] text-[#5C3622] leading-snug">
-                <span class="font-bold text-[#120B07] block mb-0.5">${t('spicesSection.prepTitle') || 'Teknik Pengolahan Pawon:'}</span>
-                <span>${spice.preparationMethod}</span>
-              </div>
-            </div>
-
-            <!-- Col 3: Kearifan Budaya & Sajian Ikonik -->
-            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 flex flex-col justify-between space-y-2.5">
-              <div>
-                <span class="text-[11px] font-bold text-[#2E4D38] uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
-                  <span class="w-1.5 h-1.5 rounded-full bg-[#2E4D38]"></span>
-                  <span>${t('spicesSection.wisdomTitle') || 'Kearifan & Tradisi'}</span>
-                </span>
-                <p class="text-xs text-[#5C3622] leading-relaxed italic">
-                  "${spice.culturalWisdom}"
-                </p>
-              </div>
-              
-              <div class="pt-2 border-t border-[#D49B42]/20 space-y-1">
-                ${spice.iconicDishes && spice.iconicDishes.length > 0 ? `
-                  <div class="text-[11px] text-[#120B07]">
-                    <span class="font-bold text-[#C84C24] block mb-1 text-[10px] uppercase tracking-wider">${t('spicesSection.dishesTitle') || 'Sajian Ikonik:'}</span>
-                    <div class="flex flex-wrap gap-1">
-                      ${spice.iconicDishes.map(dish => `
-                        <span class="px-2 py-0.5 rounded-md bg-white border border-[#D49B42]/35 text-[10px] font-semibold text-[#120B07] shadow-2xs">
-                          ${dish}
-                        </span>
-                      `).join('')}
-                    </div>
-                  </div>
-                ` : ''}
-
-                ${spice.substitutes ? `
-                  <p class="text-[10px] text-[#7A4E33] pt-1">
-                    <span class="font-bold text-[#120B07]">${t('spicesSection.substitutesTitle') || 'Alternatif'}:</span> ${spice.substitutes}
-                  </p>
-                ` : ''}
-              </div>
-            </div>
-
+            ` : ''}
           </div>
+
+          <!-- Section 2: Profil Aroma & Karakter Rasa -->
+          <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-1.5">
+            <span class="text-[11px] font-bold text-[#120B07] uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#D49B42]"></span>
+              <span>${t('spicesSection.aromaTitle') || 'Aroma & Karakter Rasa:'}</span>
+            </span>
+            <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
+              ${spice.aromaProfile}
+            </p>
+          </div>
+
+          <!-- Section 3: Teknik Pengolahan Pawon -->
+          <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-1.5">
+            <span class="text-[11px] font-bold text-[#120B07] uppercase tracking-wider flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#D49B42]"></span>
+              <span>${t('spicesSection.prepTitle') || 'Teknik Pengolahan di Dapur:'}</span>
+            </span>
+            <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
+              ${spice.preparationMethod}
+            </p>
+          </div>
+
+          <!-- Section 4: Kearifan Budaya & Filosofi Leluhur -->
+          <div class="p-4 rounded-2xl bg-gradient-to-r from-[#120B07] to-[#1E120A] text-[#FAF7F2] border border-[#D49B42]/40 space-y-1.5 shadow-xs">
+            <div class="flex items-center gap-2 text-[#D49B42] text-[11px] font-bold uppercase tracking-wider">
+              <svg class="w-4 h-4 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z"></path>
+                <path d="M12 8v4l3 3"></path>
+              </svg>
+              <span>${t('spicesSection.wisdomTitle') || 'Kearifan Budaya & Manfaat:'}</span>
+            </div>
+            <p class="text-xs sm:text-sm text-[#FAF7F2]/90 leading-relaxed italic">
+              "${spice.culturalWisdom}"
+            </p>
+          </div>
+
+          <!-- Section 5: Sajian Ikonik Terkait -->
+          ${spice.iconicDishes && spice.iconicDishes.length > 0 ? `
+            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/25 space-y-2">
+              <span class="text-[11px] font-bold text-[#120B07] uppercase tracking-wider block">
+                ${t('spicesSection.dishesTitle') || 'Hidangan Ikonik yang Menggunakan:'}
+              </span>
+              <div class="flex flex-wrap gap-1.5">
+                ${spice.iconicDishes.map(dish => `
+                  <span class="px-2.5 py-1 rounded-lg bg-white border border-[#D49B42]/35 text-xs font-semibold text-[#120B07] shadow-2xs">
+                    🍲 ${dish}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- Section 6: Alternatif Pengganti -->
+          ${spice.substitutes ? `
+            <div class="text-xs text-[#5C3622] bg-[#FAF7F2]/80 p-3.5 rounded-xl border border-[#E8DEC8]">
+              <span class="font-bold text-[#120B07]">${t('spicesSection.substitutesTitle') || 'Alternatif Pengganti'}: </span>
+              ${spice.substitutes}
+            </div>
+          ` : ''}
+
         </div>
 
-        <!-- Modal Footer: Clean Single Close Button (Without Jelajahi Resep Button) -->
-        <div class="p-3 bg-[#FAF7F2] border-t border-[#D49B42]/20 flex items-center justify-center">
+        <!-- Modal Footer: Single Close Button (Shrink 0) -->
+        <div class="p-3.5 bg-[#FAF7F2] border-t border-[#D49B42]/20 flex items-center justify-center shrink-0">
           <button type="button" 
                   id="modal-close-footer-btn" 
                   class="px-8 py-2 rounded-full text-xs font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#C84C24] hover:text-white hover:border-[#C84C24] transition-all cursor-pointer shadow-xs">
@@ -263,10 +268,15 @@ function openSpiceModal(spiceId) {
   if (!spice) return;
 
   root.innerHTML = renderSpiceModal(spice);
+
+  // Lock background page scroll strictly (both html and body)
+  document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
 
   const closeModal = () => {
     root.innerHTML = '';
+    // Restore background page scroll
+    document.documentElement.style.overflow = '';
     document.body.style.overflow = '';
     window.removeEventListener('keydown', handleKeyDown);
   };
@@ -292,6 +302,10 @@ function openSpiceModal(spiceId) {
 }
 
 export function initSpicesPageInteractions() {
+  // Ensure page scroll is restored upon route navigation/init
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
+
   const catBtns = document.querySelectorAll('[data-spice-category]');
   catBtns.forEach(btn => {
     btn.addEventListener('click', () => {

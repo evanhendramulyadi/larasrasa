@@ -366,8 +366,10 @@ body {
 
 .spice-modal-backdrop {
   animation: modalFadeIn 0.25s ease-out forwards;
+  overscroll-behavior: contain;
 }
 
 .spice-modal-card {
   animation: modalScaleIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overscroll-behavior: contain;
 }
