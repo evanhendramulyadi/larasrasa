@@ -214,12 +214,15 @@ export const id = {
     inspect3dHint: 'Eksplorasi bentuk makro dan rahasia kearifan rempah',
     selectHint: 'Pilih bumbu di bawah untuk melihat foto makro dan karakter aromatiknya:',
     availableCount: 'bahan bumbu tersedia',
-    inspectBtn: 'Lihat Rempah Ini',
+    inspectBtn: 'Lihat Rahasia Rempah',
     inspectingBadge: 'Sedang Dilihat ✓',
     aromaTitle: 'Aroma & Karakter Rasa:',
     prepTitle: 'Teknik Pengolahan di Dapur:',
     wisdomTitle: 'Kearifan Budaya & Manfaat:',
-    dishesTitle: 'Hidangan Ikonik yang Menggunakan:'
+    dishesTitle: 'Hidangan Ikonik yang Menggunakan:',
+    substitutesTitle: 'Alternatif Pengganti:',
+    closeModal: 'Tutup',
+    exploreRecipes: 'Jelajahi Resep Terkait'
   },
   restaurantsSection: {
     badge: 'Tempat Makan Terverifikasi Lintas Generasi',

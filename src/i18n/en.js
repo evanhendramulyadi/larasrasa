@@ -213,12 +213,15 @@ export const en = {
     inspect3dHint: 'Explore macro botanical photography and lore',
     selectHint: 'Select a spice below to inspect its macro texture and aromatic profile:',
     availableCount: 'spices cataloged',
-    inspectBtn: 'Inspect This Spice',
+    inspectBtn: 'View Spice Secrets',
     inspectingBadge: 'Inspecting Now ✓',
     aromaTitle: 'Aroma & Palate Profile:',
     prepTitle: 'Kitchen Preparation Technique:',
     wisdomTitle: 'Ancestral Wisdom & Benefits:',
-    dishesTitle: 'Associated Iconic Dishes:'
+    dishesTitle: 'Associated Iconic Dishes:',
+    substitutesTitle: 'Culinary Substitutions:',
+    closeModal: 'Close',
+    exploreRecipes: 'Explore Related Recipes'
   },
   restaurantsSection: {
     badge: 'Verified Cross-Generational Eateries',
