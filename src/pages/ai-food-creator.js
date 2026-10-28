@@ -445,74 +445,30 @@ function renderFormView(currentLang) {
           <!-- FREE NUMERIC SERVINGS INPUT & CUSTOM NOTES -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             
-            <!-- Free Custom Servings Input -->
+            <!-- Fixed Standard 4 People Servings Info (No Configuration Needed) -->
             <div class="space-y-2">
               <div class="flex items-center justify-between">
-                <label for="creator-servings-input" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-                  ${isEn ? 'Target Servings (4 People Standard)' : 'Porsi Santapan: 4 Orang (Standar Kebutuhan)'}
-                </label>
-                <span class="text-[10px] text-[#2E4D38] font-bold">
-                  ${isEn ? 'Calibrated for 4 People' : 'Telah Disesuaikan (4 Orang)'}
+                <span class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
+                  ${isEn ? 'Servings Scale (Fixed)' : 'Porsi Santapan (Standar Otomatis)'}
+                </span>
+                <span class="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  ${isEn ? '✓ 4 People (Family Scale)' : '✓ 4 Orang (Standar Keluarga)'}
                 </span>
               </div>
 
-              <!-- Interactive Stepper with Direct Input -->
-              <div class="flex items-center gap-3">
-                <div class="inline-flex items-center rounded-2xl border border-[#D49B42]/35 bg-white p-1 shadow-xs">
-                  <button 
-                    type="button" 
-                    id="creator-servings-dec-btn"
-                    class="w-10 h-10 rounded-xl flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] font-bold text-base transition-all cursor-pointer"
-                    aria-label="Kurangi porsi"
-                  >
-                    &minus;
-                  </button>
-
-                  <div class="relative flex items-center px-2">
-                    <input 
-                      type="number" 
-                      id="creator-servings-input" 
-                      name="servings"
-                      min="1" 
-                      max="100" 
-                      value="${formState.servings || 4}"
-                      class="w-20 text-center font-bold text-base text-[#120B07] bg-transparent outline-none py-1.5 focus:ring-1 focus:ring-[#C84C24] rounded-md"
-                    />
-                    <span class="text-xs font-bold text-[#8C624D] pr-2 pointer-events-none">
-                      ${isEn ? 'people' : 'orang'}
-                    </span>
-                  </div>
-
-                  <button 
-                    type="button" 
-                    id="creator-servings-inc-btn"
-                    class="w-10 h-10 rounded-xl flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] font-bold text-base transition-all cursor-pointer"
-                    aria-label="Tambah porsi"
-                  >
-                    &#43;
-                  </button>
+              <div class="p-4 rounded-2xl border border-[#D49B42]/35 bg-white flex items-center gap-3.5 shadow-2xs">
+                <div class="w-10 h-10 rounded-xl bg-[#1E120A] text-[#D49B42] flex items-center justify-center shrink-0 font-bold text-base">
+                  👥
                 </div>
-
-                <!-- Quick Preset Pills -->
-                <div class="flex items-center flex-wrap gap-1.5">
-                  ${[4, 2, 6, 8].map(p => `
-                    <button 
-                      type="button" 
-                      data-creator-quick-porsi="${p}"
-                      class="px-3 py-2 rounded-xl border border-[#D49B42]/35 bg-white hover:bg-[#FAF7F2] text-[#5C3622] text-xs font-bold shadow-2xs transition-all cursor-pointer ${
-                        formState.servings === p ? 'border-[#C84C24] text-[#C84C24] font-bold bg-[#FDF4EE]' : ''
-                      }"
-                    >
-                      ${p} ${isEn ? 'Ppl' : 'Orang'}
-                    </button>
-                  `).join('')}
+                <div>
+                  <strong class="text-sm text-[#120B07] font-bold block">${isEn ? '4 People (Family Standard)' : '4 Orang (Standar Santap Keluarga)'}</strong>
+                  <span class="text-xs text-[#5C3622] leading-tight block mt-0.5">
+                    ${isEn 
+                      ? 'Ingredient measurements and spice ratios are calibrated automatically for 4 people.' 
+                      : 'Komposisi bumbu dan takaran bahan otomatis diselaraskan secara pas untuk santap 4 orang.'}
+                  </span>
                 </div>
               </div>
-              <p class="text-[11px] text-[#5C3622]/80">
-                ${isEn 
-                  ? 'Standard calibration is set to 4 people for balanced flavor and ingredient proportions.' 
-                  : 'Standar porsi telah diselaraskan untuk kebutuhan 4 orang agar keharmonisan bumbu dan gramasi bahan tetap terjaga.'}
-              </p>
             </div>
 
             <!-- Custom Notes -->
@@ -1007,52 +963,8 @@ export function initAiFoodCreatorInteractions() {
   setupRadioGroup('cookingMethod', val => { formState.cookingMethod = val; });
   setupRadioGroup('spiceLevel', val => { formState.spiceLevel = parseInt(val, 10); });
 
-  // Free Numeric Servings Stepper & Input
-  const servingsInput = document.getElementById('creator-servings-input');
-  const servingsDec = document.getElementById('creator-servings-dec-btn');
-  const servingsInc = document.getElementById('creator-servings-inc-btn');
-  const quickPorsiBtns = document.querySelectorAll('[data-creator-quick-porsi]');
-
-  if (servingsInput) {
-    servingsInput.oninput = (e) => {
-      let val = parseInt(e.target.value, 10);
-      if (!isNaN(val)) {
-        val = Math.max(1, Math.min(100, val));
-        formState.servings = val;
-      }
-    };
-    servingsInput.onblur = (e) => {
-      let val = parseInt(e.target.value, 10);
-      if (isNaN(val) || val < 1) val = 4;
-      val = Math.max(1, Math.min(100, val));
-      formState.servings = val;
-      servingsInput.value = val;
-    };
-  }
-
-  if (servingsDec) {
-    servingsDec.onclick = () => {
-      formState.servings = Math.max(1, (formState.servings || 4) - 1);
-      if (servingsInput) servingsInput.value = formState.servings;
-    };
-  }
-
-  if (servingsInc) {
-    servingsInc.onclick = () => {
-      formState.servings = Math.min(100, (formState.servings || 4) + 1);
-      if (servingsInput) servingsInput.value = formState.servings;
-    };
-  }
-
-  quickPorsiBtns.forEach(btn => {
-    btn.onclick = () => {
-      const p = parseInt(btn.getAttribute('data-creator-quick-porsi'), 10);
-      if (p) {
-        formState.servings = p;
-        reRenderCurrentView();
-      }
-    };
-  });
+  // Standard Servings (Fixed 4 People)
+  formState.servings = 4;
 
   // Form Submit: Render Empty Template Output
   if (form) {

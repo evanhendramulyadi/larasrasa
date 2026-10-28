@@ -18,8 +18,9 @@ const TOTAL_STEPS = 4;
 let currentAnswers = {
   flavor: '',
   timeAvailable: 'sedang',
-  servings: 4,
-  budget: 'menengah'
+  dishType: 'kuah-segar',
+  budget: 'menengah',
+  servings: 4
 };
 let validationError = null;
 let activeResult = null;
@@ -238,117 +239,70 @@ function renderStepContent(step) {
       `;
 
     case 3:
-      const currentSrv = Math.max(1, Math.min(100, parseInt(currentAnswers.servings, 10) || 4));
-      const occasionText = getServingOccasion(currentSrv, isEn);
+      const dishTypes = [
+        {
+          id: 'kuah-segar',
+          icon: '🍲',
+          title: isEn ? 'Fresh & Clear Broths' : 'Berkuah Segar & Bening',
+          desc: isEn ? 'Soto, fresh soups, and light herbal broths (Soto Kudus, Sup Matahari, Garang Asem)' : 'Soto, sup bening, dan kaldu rempah segar tanpa santan berat (Soto Kudus, Sup Matahari)',
+          tag: isEn ? 'Light & Refreshing' : 'Segar & Hangat'
+        },
+        {
+          id: 'kuah-santan',
+          icon: '🥥',
+          title: isEn ? 'Rich Coconut Stews & Curries' : 'Berkuah Santan Gurih & Medok',
+          desc: isEn ? 'Gudeg, opor, mangut, and liwet simmered slowly in rich seasoned coconut milk' : 'Gudeg, opor, mangut pedas, nasi gandul, atau nasi liwet berbalut santan areh gurih',
+          tag: isEn ? 'Rich & Savory' : 'Gurih Meresap'
+        },
+        {
+          id: 'kering-bakar',
+          icon: '🍢',
+          title: isEn ? 'Grilled, Roasted & Caramelized' : 'Olahan Bakar, Panggang & Ungkep',
+          desc: isEn ? 'Smoky skewered satay, slow-braised sweet bacem, and charcoal grilled meats' : 'Sate buntel, ayam bacem, sate batibul, olahan arang atau ungkepan bumbu karamel',
+          tag: isEn ? 'Smoky & Sweet' : 'Aroma Bakaran'
+        },
+        {
+          id: 'kudapan-lauk',
+          icon: '🥟',
+          title: isEn ? 'Crispy Delights & Traditional Bites' : 'Lauk Gorengan & Kudapan Tradisional',
+          desc: isEn ? 'Warm tempe mendoan, savory tahu aci, or classic heritage teatime bites' : 'Tempe mendoan purwokerto, tahu aci slawi, atau kudapan klasik teman santap keluarga',
+          tag: isEn ? 'Crispy & Casual' : 'Renyah & Praktis'
+        }
+      ];
 
       return `
-        <div class="space-y-6">
+        <div class="space-y-4">
           <div>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#FDF4EE] text-[#C84C24] border border-[#C84C24]/20 mb-2">
-              <span>✦</span>
-              <span>${isEn ? 'Family Dining Standard (4 People)' : 'Standar Kebutuhan Santap (4 Orang)'}</span>
-            </span>
-            <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#120B07]">
+            <h2 class="font-editorial-serif text-2xl font-bold text-[#120B07]">
               ${t('recommendations.q3Title')}
             </h2>
-            <p class="text-xs sm:text-sm text-[#5C3622] mt-1.5 leading-relaxed">
-              ${t('recommendations.q3Sub')}
-            </p>
+            <p class="text-xs text-[#5C3622] mt-1">${t('recommendations.q3Sub')}</p>
           </div>
-
-          <!-- Elevated Free Serving Calculator Card -->
-          <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-[#FAF7F2] to-white border-2 border-[#D49B42]/40 shadow-sm space-y-6">
-            
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E8DEC8]">
-              <div class="space-y-1">
-                <span class="text-xs uppercase font-bold tracking-widest text-[#5C3622] block">
-                  ${isEn ? 'Culinary Scale Profile:' : 'Kategori Jamuan Santapan:'}
-                </span>
-                <div id="wizard-occasion-badge" class="font-editorial-serif text-lg sm:text-xl font-bold text-[#C84C24]">
-                  ${occasionText}
-                </div>
-              </div>
-
-              <!-- Main Free Stepper & Numeric Input -->
-              <div class="flex items-center self-start sm:self-auto gap-3">
-                <div class="inline-flex items-center rounded-2xl border-2 border-[#D49B42]/45 bg-white p-1.5 shadow-md">
-                  <!-- Decrement Button -->
-                  <button 
-                    type="button" 
-                    id="wizard-servings-dec" 
-                    aria-label="Kurangi Porsi"
-                    class="w-11 h-11 rounded-xl flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] hover:text-[#C84C24] font-bold text-xl transition-all cursor-pointer disabled:opacity-40"
-                    ${currentSrv <= 1 ? 'disabled' : ''}
-                  >
-                    &minus;
-                  </button>
-
-                  <!-- Direct Typing Number Input -->
-                  <div class="relative flex items-center px-2">
-                    <input 
-                      type="number" 
-                      id="wizard-servings-input" 
-                      name="servings"
-                      min="1" 
-                      max="100" 
-                      value="${currentSrv}"
-                      aria-label="Jumlah Porsi"
-                      class="w-20 sm:w-24 text-center font-editorial-serif font-bold text-2xl text-[#120B07] bg-transparent outline-none py-1 focus:ring-2 focus:ring-[#C84C24] rounded-lg transition-all"
-                    />
-                    <span class="text-xs font-bold text-[#8C624D] pr-1 pointer-events-none">
-                      ${isEn ? 'people' : 'orang'}
-                    </span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+            ${dishTypes.map(d => {
+              const isChecked = currentAnswers.dishType === d.id;
+              return `
+                <label class="wizard-option-card flex items-start gap-3.5 p-4 rounded-2xl border cursor-pointer transition-all duration-200 card-hover-lift ${
+                  isChecked 
+                    ? 'border-[#C84C24] bg-[#FDF4EE] shadow-md ring-2 ring-[#C84C24]/30' 
+                    : 'border-[#D49B42]/30 bg-white hover:bg-[#FAF7F2]'
+                }">
+                  <input type="radio" name="dishType" value="${d.id}" class="sr-only" ${isChecked ? 'checked' : ''}/>
+                  <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 bg-white border border-[#D49B42]/35 shadow-2xs text-lg">
+                    ${d.icon}
                   </div>
-
-                  <!-- Increment Button -->
-                  <button 
-                    type="button" 
-                    id="wizard-servings-inc" 
-                    aria-label="Tambah Porsi"
-                    class="w-11 h-11 rounded-xl flex items-center justify-center text-[#5C3622] hover:bg-[#FAF7F2] active:bg-[#E8DEC8] hover:text-[#C84C24] font-bold text-xl transition-all cursor-pointer disabled:opacity-40"
-                    ${currentSrv >= 100 ? 'disabled' : ''}
-                  >
-                    &#43;
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Quick Preset Chips -->
-            <div class="space-y-2.5">
-              <span class="text-xs font-bold text-[#120B07] flex items-center gap-1.5">
-                <span class="text-[#D49B42]">⚡</span>
-                <span>${isEn ? 'Portion Presets:' : 'Pilihan Takaran Porsi:'}</span>
-              </span>
-              <div class="flex flex-wrap gap-2">
-                ${[
-                  { val: 4, label: isEn ? '★ 4 People (Family Standard)' : '★ 4 Orang (Standar Kebutuhan Keluarga)' },
-                  { val: 2, label: isEn ? '2 People (Couple)' : '2 Orang (Pasangan)' },
-                  { val: 6, label: isEn ? '6 People (Gathering)' : '6 Orang (Arisan)' },
-                  { val: 8, label: isEn ? '8 People (Banquet)' : '8 Orang (Jamuan)' }
-                ].map(item => `
-                  <button 
-                    type="button" 
-                    data-wizard-preset="${item.val}"
-                    class="wizard-preset-btn px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                      currentSrv === item.val
-                        ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#C84C24]/30'
-                        : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border border-[#D49B42]/35 shadow-2xs'
-                    }"
-                  >
-                    ${item.label}
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-
-            <p class="text-[11px] text-[#2E4D38] font-medium italic flex items-center gap-1.5 pt-1">
-              <span>💡</span>
-              <span>${isEn 
-                ? 'Tip: You can freely type any number from 1 to 100. Recommendations and spice formulas adjust automatically.' 
-                : 'Petunjuk: Bebas ketik porsi berapa pun (1 hingga 100). Rekomendasi resep dan takaran bumbu akan diselaraskan otomatis.'}</span>
-            </p>
-
+                  <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                      <strong class="block text-sm text-[#120B07] font-bold">${d.title}</strong>
+                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FAF7F2] text-[#C84C24] border border-[#D49B42]/30">
+                        ${d.tag}
+                      </span>
+                    </div>
+                    <span class="text-xs text-[#5C3622] leading-snug block">${d.desc}</span>
+                  </div>
+                </label>
+              `;
+            }).join('')}
           </div>
         </div>
       `;
@@ -412,26 +366,8 @@ function renderStepContent(step) {
   }
 }
 
-function getServingOccasion(servings, isEn) {
-  const s = parseInt(servings, 10) || 4;
-  if (s <= 1) {
-    return isEn ? '👤 Personal Portion (Single)' : '👤 Porsi Pribadi (1 Orang)';
-  } else if (s === 2) {
-    return isEn ? '👥 Couple Portion (Pairs)' : '👥 Porsi Pasangan (2 Orang)';
-  } else if (s <= 5) {
-    return isEn ? '👨‍👩‍👧 Immediate Family (Regular)' : '👨‍👩‍👧 Porsi Keluarga Inti (3 - 5 Orang)';
-  } else if (s <= 10) {
-    return isEn ? '🍲 Extended Family & Guests' : '🍲 Keluarga Besar & Tamu (6 - 10 Orang)';
-  } else if (s <= 30) {
-    return isEn ? '🎊 Festive Gathering (Bancakan)' : '🎊 Jamuan & Bancakan (11 - 30 Orang)';
-  } else {
-    return isEn ? '🎪 Grand Celebration & Feast' : '🎪 Hajatan & Syukuran Besar (30+ Orang)';
-  }
-}
-
 function renderResultView(result) {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
-  const customSrv = currentAnswers.servings || 4;
 
   return `
     <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-10 animate-fade-in">
@@ -450,11 +386,11 @@ function renderResultView(result) {
             ${t('recommendations.resultSub')}
           </p>
           
-          <!-- Custom Portion & Preference Pill -->
+          <!-- Fixed Standard 4 People & Preference Pills -->
           <div class="pt-2 flex flex-wrap items-center justify-center gap-2">
             <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42]">
-              <span>👤</span>
-              <span>${isEn ? 'Calibrated for' : 'Takaran Khusus'}: <strong class="text-white">${customSrv} ${isEn ? 'People' : 'Orang'}</strong></span>
+              <span>👥</span>
+              <span>${isEn ? 'Standard Servings:' : 'Standar Porsi:'} <strong class="text-white">4 ${isEn ? 'People' : 'Orang'}</strong></span>
             </span>
             ${currentAnswers.flavor ? `
               <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#C84C24]/30 border border-[#C84C24]/50 text-xs font-bold text-white capitalize">
@@ -474,15 +410,15 @@ function renderResultView(result) {
             <span class="text-xs font-bold uppercase tracking-wider text-[#C84C24]">${t('recommendations.matchBadge')}</span>
           </div>
           <span class="text-xs font-bold text-[#2E4D38]">
-            ${isEn ? `Calibrated for ${customSrv} people` : `Porsi disesuaikan: ${customSrv} orang`}
+            ${isEn ? 'Calibrated for 4 people (family standard)' : 'Terkalibrasi pas untuk 4 orang'}
           </span>
         </div>
         <div class="max-w-xl mx-auto">
           ${renderRecipeCard(result.primary)}
         </div>
         <div class="text-center pt-2">
-          <a href="#/resep/${result.primary.slug}?servings=${customSrv}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
-            <span>${t('recommendations.openRecipeBtn')} (${customSrv} ${isEn ? 'People' : 'Orang'})</span>
+          <a href="#/resep/${result.primary.slug}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
+            <span>${t('recommendations.openRecipeBtn')} (4 ${isEn ? 'People' : 'Orang'})</span>
             <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -505,7 +441,7 @@ function renderResultView(result) {
 }
 
 export function initRecommendationsInteractions(onRerender) {
-  // Option Card Radios (Step 1, 2, 4)
+  // Option Card Radios (Step 1, 2, 3, 4)
   const optionCards = document.querySelectorAll('.wizard-option-card');
   optionCards.forEach(card => {
     card.addEventListener('click', () => {
@@ -530,60 +466,6 @@ export function initRecommendationsInteractions(onRerender) {
           }
         });
       }
-    });
-  });
-
-  // Servings Stepper & Input Interactions (Step 3)
-  const servingsInput = document.getElementById('wizard-servings-input');
-  const servingsDec = document.getElementById('wizard-servings-dec');
-  const servingsInc = document.getElementById('wizard-servings-inc');
-  const occasionBadge = document.getElementById('wizard-occasion-badge');
-
-  const updateServingsUI = (val) => {
-    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
-    const clamped = Math.max(1, Math.min(100, parseInt(val, 10) || 4));
-    currentAnswers.servings = clamped;
-    if (servingsInput) servingsInput.value = clamped;
-    if (occasionBadge) occasionBadge.textContent = getServingOccasion(clamped, isEn);
-    if (servingsDec) servingsDec.disabled = (clamped <= 1);
-    if (servingsInc) servingsInc.disabled = (clamped >= 100);
-
-    // Update preset buttons styling
-    document.querySelectorAll('[data-wizard-preset]').forEach(btn => {
-      const pVal = parseInt(btn.getAttribute('data-wizard-preset'), 10);
-      if (pVal === clamped) {
-        btn.className = 'wizard-preset-btn px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer bg-[#C84C24] text-white shadow-md ring-2 ring-[#C84C24]/30';
-      } else {
-        btn.className = 'wizard-preset-btn px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer bg-white hover:bg-[#FAF7F2] text-[#120B07] border border-[#D49B42]/35 shadow-2xs';
-      }
-    });
-  };
-
-  if (servingsInput) {
-    servingsInput.addEventListener('input', (e) => {
-      updateServingsUI(e.target.value);
-    });
-    servingsInput.addEventListener('change', (e) => {
-      updateServingsUI(e.target.value);
-    });
-  }
-
-  if (servingsDec) {
-    servingsDec.addEventListener('click', () => {
-      updateServingsUI((currentAnswers.servings || 4) - 1);
-    });
-  }
-
-  if (servingsInc) {
-    servingsInc.addEventListener('click', () => {
-      updateServingsUI((currentAnswers.servings || 4) + 1);
-    });
-  }
-
-  document.querySelectorAll('[data-wizard-preset]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const pVal = parseInt(btn.getAttribute('data-wizard-preset'), 10);
-      updateServingsUI(pVal);
     });
   });
 
@@ -637,7 +519,7 @@ export function initRecommendationsInteractions(onRerender) {
     restartBtn.addEventListener('click', () => {
       activeResult = null;
       wizardStep = 1;
-      currentAnswers = { flavor: '', timeAvailable: 'sedang', servings: 4, budget: 'menengah' };
+      currentAnswers = { flavor: '', timeAvailable: 'sedang', dishType: 'kuah-segar', budget: 'menengah', servings: 4 };
       if (typeof onRerender === 'function') onRerender();
     });
   }

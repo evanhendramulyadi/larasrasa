@@ -50,29 +50,47 @@ export const recommendationService = {
         matchReasons.push(`Memiliki karakter rasa ${preferences.flavor} khas Jawa Tengah yang Anda idamkan`);
       }
 
-      // 2. Kecocokan Waktu Memasak (Bobot: 25 poin)
+      // 2. Kecocokan Waktu Memasak (Bobot: 20 poin)
       const durationMin = parseInt(recipe.cookingDuration) || 60;
       if (preferences.timeAvailable === 'cepat' && durationMin <= 35) {
-        score += 25;
+        score += 20;
         matchReasons.push(`Waktu olah singkat (${recipe.cookingDuration}), pas untuk jadwal memasak Anda`);
       } else if (preferences.timeAvailable === 'sedang' && durationMin <= 60) {
-        score += 25;
+        score += 20;
         matchReasons.push(`Durasi memasak ideal (${recipe.cookingDuration}) untuk hidangan berkuah keluarga`);
       } else if (preferences.timeAvailable === 'leluasa') {
-        score += 20;
+        score += 15;
         matchReasons.push(`Proses ungkep lambat (${recipe.cookingDuration}) menghasilkan bumbu meresap sempurna`);
       }
 
-      // 3. Kecocokan Alokasi Anggaran Belanja (Bobot: 30 poin)
+      // 3. Kecocokan Tipe Olahan / Sajian (Bobot: 25 poin)
+      if (preferences.dishType) {
+        const textToSearch = (recipe.name + ' ' + (recipe.mealType || '') + ' ' + (recipe.intro || '')).toLowerCase();
+        if (preferences.dishType === 'kuah-segar' && (textToSearch.includes('soto') || textToSearch.includes('sup') || textToSearch.includes('asem') || textToSearch.includes('segar') || textToSearch.includes('selat') || textToSearch.includes('tauto') || textToSearch.includes('sroto'))) {
+          score += 25;
+          matchReasons.push('Sajian berkuah segar kaya rempah yang menghangatkan suasana');
+        } else if (preferences.dishType === 'kuah-santan' && (textToSearch.includes('santan') || textToSearch.includes('gudeg') || textToSearch.includes('opor') || textToSearch.includes('mangut') || textToSearch.includes('gandul') || textToSearch.includes('liwet') || textToSearch.includes('glabed'))) {
+          score += 25;
+          matchReasons.push('Kuah santan gurih meresap dengan kehangatan khas dapur Mataram');
+        } else if (preferences.dishType === 'kering-bakar' && (textToSearch.includes('sate') || textToSearch.includes('bakar') || textToSearch.includes('bacem') || textToSearch.includes('panggang') || textToSearch.includes('tengkleng'))) {
+          score += 25;
+          matchReasons.push('Karamelisasi bumbu manis gurih dengan aroma panggangan arang sedap');
+        } else if (preferences.dishType === 'kudapan-lauk' && (textToSearch.includes('mendoan') || textToSearch.includes('tahu') || textToSearch.includes('tempe') || textToSearch.includes('camilan') || textToSearch.includes('kudapan') || textToSearch.includes('getuk') || textToSearch.includes('serabi') || textToSearch.includes('wingko'))) {
+          score += 25;
+          matchReasons.push('Olahan lauk pendamping atau kudapan renyah gurih bersahabat');
+        }
+      }
+
+      // 4. Kecocokan Alokasi Anggaran Belanja (Bobot: 25 poin)
       if (preferences.budget) {
         if (preferences.budget === 'hemat' && (recipe.budgetCategory === 'Sangat Terjangkau' || recipe.budgetCategory === 'Terjangkau')) {
-          score += 30;
+          score += 25;
           matchReasons.push('Bahan-bahan ekonomis berbasis kedelai dan bumbu pasar harian');
         } else if (preferences.budget === 'menengah' && (recipe.budgetCategory === 'Terjangkau' || recipe.budgetCategory === 'Menengah')) {
-          score += 30;
+          score += 25;
           matchReasons.push('Anggaran bersahabat untuk sajian lauk utama keluarga harian');
         } else if (preferences.budget === 'istimewa') {
-          score += 30;
+          score += 25;
           matchReasons.push('Kombinasi bahan premium untuk santap khidmat istimewa');
         } else {
           score += 15;
@@ -97,15 +115,20 @@ export const recommendationService = {
     const rationaleNarrative = this._generateNarrative(topPick, preferences, topReasons);
 
     return {
+      primary: topPick,
       primaryRecommendation: topPick,
       matchScore: Math.min(Math.max(scoredRecipes[0]?.score || 75, 75), 98),
       rationale: rationaleNarrative,
       matchHighlights: topReasons,
-      estimatedCostForServings: this._calculateServingCost(topPick, preferences.servings || 4),
-      suggestedServings: preferences.servings || topPick.baseServings,
+      estimatedCostForServings: this._calculateServingCost(topPick, 4),
+      suggestedServings: 4,
       alternatives: alternatives,
       timestamp: new Date().toISOString()
     };
+  },
+
+  async getRecommendation(preferences) {
+    return this.getRecommendations(preferences);
   },
 
   /**
