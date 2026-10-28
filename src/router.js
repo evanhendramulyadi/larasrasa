@@ -16,7 +16,7 @@ import { scrollToTop } from './utils/dom.js';
  * Client-Side Router for LarasRasa SPA
  */
 
-import { t } from './i18n/index.js';
+import { t, i18n } from './i18n/index.js';
 
 export class Router {
   constructor(appContainer) {
@@ -87,35 +87,42 @@ export class Router {
     // 3. Match Route & Render Page Content
     let pageHtml = '';
     let postRenderAction = null;
+    let pageTitlePrefix = '';
 
     if (path === '/' || path === '') {
       pageHtml = await renderHomePage();
       postRenderAction = () => initHomePageInteractions();
+      pageTitlePrefix = '';
     } else if (path === '/resep') {
       pageHtml = await renderRecipesPage(queryParams);
       postRenderAction = () => initRecipesPageInteractions();
+      pageTitlePrefix = t('nav.recipes');
     } else if (path.startsWith('/resep/')) {
       const slug = path.replace('/resep/', '');
       pageHtml = await renderRecipeDetailPage(slug, queryParams);
-      postRenderAction = async () => {
-        try {
-          const rec = await recipeService.getRecipeBySlug(slug);
-          initRecipeDetailInteractions(rec);
-        } catch (e) {
-          console.warn(e);
-        }
-      };
+      try {
+        const rec = await recipeService.getRecipeBySlug(slug);
+        pageTitlePrefix = rec ? rec.title : t('nav.recipes');
+        postRenderAction = () => initRecipeDetailInteractions(rec);
+      } catch (e) {
+        console.warn(e);
+        pageTitlePrefix = t('nav.recipes');
+      }
     } else if (path === '/peta-rasa') {
       pageHtml = await renderFlavorMapPage();
       postRenderAction = () => initFlavorMapInteractions();
+      pageTitlePrefix = t('nav.flavorMap');
     } else if (path === '/jelajah-rempah') {
       pageHtml = await renderSpicesPage();
       postRenderAction = () => initSpicesPageInteractions();
+      pageTitlePrefix = t('nav.spices');
     } else if (path === '/restoran-legendaris') {
       pageHtml = await renderLegendaryRestaurantsPage();
       postRenderAction = () => initLegendaryRestaurantsInteractions();
+      pageTitlePrefix = t('nav.restaurants');
     } else if (path === '/rekomendasi') {
       pageHtml = await renderRecommendationsPage();
+      pageTitlePrefix = t('nav.recommendations');
       const renderWizard = async () => {
         const updatedHtml = await renderRecommendationsPage();
         const pageMain = document.getElementById('page-main-content');
@@ -130,9 +137,12 @@ export class Router {
     } else if (path === '/ai-food-creator') {
       pageHtml = await renderAiFoodCreatorPage();
       postRenderAction = () => initAiFoodCreatorInteractions();
+      pageTitlePrefix = t('nav.aiFoodCreator');
     } else if (path === '/tentang') {
       pageHtml = await renderAboutPage();
+      pageTitlePrefix = t('nav.about');
     } else {
+      pageTitlePrefix = '404';
       // 404 Fallback with bilingual & Javanese touch
       const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
       pageHtml = `
@@ -154,6 +164,9 @@ export class Router {
         </div>
       `;
     }
+
+    // Update document title reactively
+    i18n.updateDocumentTitle(pageTitlePrefix);
 
     // 4. Assemble Shell (Navbar + Main Content + Footer)
     this.app.innerHTML = `

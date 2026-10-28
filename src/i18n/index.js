@@ -18,8 +18,29 @@ class I18nManager {
       }
     } catch (_) {}
     this.currentLang = (saved === 'en' || saved === 'id') ? saved : 'id';
-    if (typeof document !== 'undefined' && document.documentElement) {
-      document.documentElement.lang = this.currentLang;
+    this.currentPagePrefix = '';
+    if (typeof document !== 'undefined') {
+      if (document.documentElement) {
+        document.documentElement.lang = this.currentLang;
+      }
+      this.updateDocumentTitle();
+    }
+  }
+
+  updateDocumentTitle(pagePrefix = null) {
+    if (pagePrefix !== null) {
+      this.currentPagePrefix = pagePrefix;
+    }
+    if (typeof document === 'undefined') return;
+
+    const baseTitle = this.currentLang === 'en'
+      ? 'LarasRasa — Central Java Culinary Heritage'
+      : 'LarasRasa — Warisan Rasa Jawa Tengah';
+
+    if (this.currentPagePrefix && this.currentPagePrefix !== 'Beranda' && this.currentPagePrefix !== 'Home') {
+      document.title = `${this.currentPagePrefix} — ${baseTitle}`;
+    } else {
+      document.title = baseTitle;
     }
   }
 
@@ -37,8 +58,11 @@ class I18nManager {
         localStorage.setItem('larasrasa_lang', lang);
       }
     } catch (_) {}
-    if (typeof document !== 'undefined' && document.documentElement) {
-      document.documentElement.lang = lang;
+    if (typeof document !== 'undefined') {
+      if (document.documentElement) {
+        document.documentElement.lang = lang;
+      }
+      this.updateDocumentTitle();
     }
 
     // Dispatch global event for instant reactive UI rerender without browser reload

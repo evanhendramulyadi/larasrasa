@@ -134,9 +134,13 @@ body {
 
 /* Flavor Map Custom Pin with Label */
 .flavor-map-marker-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: auto !important;
+  border: none !important;
+  background: transparent !important;
 }
 
 .flavor-map-marker-wrapper {
@@ -145,17 +149,20 @@ body {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  transform: translate(-50%, -100%);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
+  white-space: nowrap;
+  width: max-content;
 }
 
 .flavor-map-marker-wrapper:hover {
-  transform: translateY(-4px) scale(1.06);
+  transform: translate(-50%, -105%) scale(1.06);
   z-index: 999 !important;
 }
 
 .flavor-map-marker-wrapper.is-active {
-  transform: translateY(-5px) scale(1.12);
+  transform: translate(-50%, -106%) scale(1.12);
   z-index: 1000 !important;
 }
 
@@ -163,7 +170,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 11px;
+  padding: 5px 12px;
   border-radius: 9999px;
   background-color: #C84C24;
   color: #FFFFFF;
@@ -172,7 +179,14 @@ body {
   font-size: 11px;
   font-weight: 700;
   white-space: nowrap;
+  width: max-content;
+  max-width: none !important;
   transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+/* Hide Leaflet default attribution text */
+.leaflet-control-attribution {
+  display: none !important;
 }
 
 .flavor-map-marker-wrapper.is-active .marker-bubble {

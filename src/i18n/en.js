@@ -6,6 +6,8 @@ export const en = {
   common: {
     brandName: 'LarasRasa',
     brandSubtitle: 'Culinary Heritage & Hearth of Central Java',
+    siteTitle: 'LarasRasa — Central Java Culinary Heritage',
+    siteSubtitle: 'Central Java Culinary Heritage',
     language: 'Language',
     langId: 'ID',
     langEn: 'EN',
