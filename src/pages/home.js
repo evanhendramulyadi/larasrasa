@@ -97,8 +97,8 @@ export async function renderHomePage() {
             </div>
 
             <!-- Right Interactive Centerpiece Showcase -->
-            <div class="lg:col-span-6 relative flex items-center justify-center w-full overflow-hidden">
-              <div id="hero-3d-canvas" class="w-full max-w-full lg:max-w-[540px] min-h-[380px] sm:min-h-[480px]"></div>
+            <div class="lg:col-span-6 relative flex items-center justify-center w-full">
+              <div id="hero-3d-canvas" class="w-full max-w-full lg:max-w-[580px] h-[480px] sm:h-[540px] lg:h-[560px]"></div>
             </div>
 
           </div>

@@ -23,36 +23,36 @@ export class ThreeHeroShowcase {
     const isEn = i18n.getLanguage() === 'en';
 
     this.container.innerHTML = `
-      <div class="relative w-full h-full flex flex-col justify-between overflow-hidden rounded-3xl bg-gradient-to-b from-[#FAF7F2] via-white to-[#F5EFEB] border border-[#D49B42]/40 shadow-xl p-3.5 sm:p-5 transition-all duration-300">
+      <div class="relative w-full h-full flex flex-col justify-between overflow-hidden rounded-3xl bg-gradient-to-b from-[#FAF7F2] via-white to-[#F5EFEB] border border-[#D49B42]/40 shadow-xl p-3 sm:p-4.5 transition-all duration-300">
         
         <!-- Header Controls: Mode Selector & Status -->
         <div class="flex items-center justify-between z-20 gap-2 mb-3">
           <!-- Dual-Mode Tabs -->
           <div class="inline-flex p-1 rounded-full bg-[#EFE8DA] border border-[#D49B42]/30 shadow-inner text-xs font-bold text-[#5C3622] shrink-0">
-            <button type="button" id="hero-tab-gudeg" class="px-3 sm:px-4 py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
+            <button type="button" id="hero-tab-gudeg" class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
               <span>🏺</span>
               <span>${t('hero.tab3d')}</span>
             </button>
-            <button type="button" id="hero-tab-feast" class="px-3 sm:px-4 py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
+            <button type="button" id="hero-tab-feast" class="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer text-[11px] sm:text-xs shrink-0 font-bold">
               <span>🍲</span>
               <span>${t('hero.tabFeast')}</span>
             </button>
           </div>
 
           <!-- Dynamic Hint / Action Badge -->
-          <div id="hero-showcase-hint" class="text-[11px] font-bold text-[#5C3622] bg-white/95 px-3 py-1.5 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-xs hidden sm:flex items-center gap-1.5 whitespace-nowrap shrink-0">
+          <div id="hero-showcase-hint" class="text-[10.5px] sm:text-[11px] font-bold text-[#5C3622] bg-white/95 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-xs hidden sm:flex items-center gap-1.5 whitespace-nowrap shrink-0">
             <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-pulse shrink-0"></span>
             <span id="hero-hint-text">${t('hero.canvasHint')}</span>
           </div>
         </div>
 
-        <!-- Center Viewport Area -->
-        <div id="hero-viewport-area" class="w-full flex-1 relative rounded-2xl overflow-hidden min-h-[320px] sm:min-h-[360px] bg-[#FAF7F2] border border-[#D49B42]/30 shadow-inner"></div>
+        <!-- Center Viewport Area (Full-bleed responsive canvas with zero empty bottom gap) -->
+        <div id="hero-viewport-area" class="w-full flex-1 relative rounded-2xl overflow-hidden min-h-[340px] sm:min-h-[400px] bg-[#120B07] border border-[#D49B42]/40 shadow-inner flex flex-col"></div>
 
         <!-- Footer Caption Bar -->
-        <div id="hero-footer-caption" class="z-20 mt-3 flex items-center gap-2 text-xs text-[#5C3622] bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-[#D49B42]/35 shadow-xs">
+        <div id="hero-footer-caption" class="z-20 mt-3 flex items-center gap-2 text-xs text-[#5C3622] bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-[#D49B42]/35 shadow-xs shrink-0">
           <span class="w-2.5 h-2.5 rounded-full bg-[#D49B42] shrink-0 animate-pulse"></span>
-          <span class="font-bold text-[#120B07] text-xs sm:text-sm font-editorial-serif tracking-wide" id="hero-caption-title">
+          <span class="font-bold text-[#120B07] text-xs sm:text-sm font-editorial-serif tracking-wide truncate" id="hero-caption-title">
             ${t('hero.canvasTitle')}
           </span>
         </div>
@@ -82,8 +82,8 @@ export class ThreeHeroShowcase {
 
     if (!viewport) return;
 
-    const activeBtnClass = 'px-3 sm:px-4 py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
-    const inactiveBtnClass = 'px-3 sm:px-4 py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
+    const activeBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
+    const inactiveBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
 
     if (mode === 'gudeg') {
       if (btnGudeg) btnGudeg.className = activeBtnClass;
@@ -162,7 +162,7 @@ export class ThreeHeroShowcase {
     ];
 
     viewport.innerHTML = `
-      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#120B07]">
+      <div class="absolute inset-0 w-full h-full overflow-hidden group select-none bg-[#120B07]">
         <!-- High-res Gudeg Photograph -->
         <img 
           src="/assets/images/hero/pusaka-gerabah-gudeg.jpg" 
@@ -322,7 +322,7 @@ export class ThreeHeroShowcase {
     ];
 
     viewport.innerHTML = `
-      <div class="relative w-full h-full rounded-2xl overflow-hidden group select-none bg-[#120B07]">
+      <div class="absolute inset-0 w-full h-full overflow-hidden group select-none bg-[#120B07]">
         <!-- High-res Feast Photograph -->
         <img 
           src="/assets/images/hero/hero-culinary.jpg" 
