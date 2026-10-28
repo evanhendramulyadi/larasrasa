@@ -238,7 +238,7 @@ function renderSpiceModal(spice) {
           <!-- Section 6: Alternatif Pengganti -->
           ${spice.substitutes ? `
             <div class="text-xs text-[#5C3622] bg-[#FAF7F2]/80 p-3.5 rounded-xl border border-[#E8DEC8]">
-              <span class="font-bold text-[#120B07]">${t('spicesSection.substitutesTitle') || 'Alternatif Pengganti'}: </span>
+              <span class="font-bold text-[#120B07]">${t('spicesSection.substitutesTitle') || 'Alternatif Pengganti:'} </span>
               ${spice.substitutes}
             </div>
           ` : ''}
