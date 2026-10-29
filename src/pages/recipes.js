@@ -11,8 +11,6 @@ let activeFilters = {
   search: '',
   region: 'semua',
   flavor: 'semua',
-  duration: 'semua',
-  difficulty: 'semua',
   sort: 'popular'
 };
 
@@ -97,8 +95,6 @@ export function initRecipesPageInteractions() {
   const searchClear = document.getElementById('recipe-search-clear');
   const sortSelect = document.getElementById('recipe-sort-select');
   const regionSelect = document.getElementById('filter-region');
-  const durationSelect = document.getElementById('filter-duration');
-  const diffSelect = document.getElementById('filter-difficulty');
 
   async function applyFilters() {
     const list = await recipeService.getRecipes(activeFilters);
@@ -115,8 +111,6 @@ export function initRecipesPageInteractions() {
             search: '',
             region: 'semua',
             flavor: 'semua',
-            duration: 'semua',
-            difficulty: 'semua',
             sort: 'popular'
           };
           window.location.hash = '#/resep';
@@ -162,20 +156,6 @@ export function initRecipesPageInteractions() {
   if (regionSelect) {
     regionSelect.addEventListener('change', (e) => {
       activeFilters.region = e.target.value;
-      applyFilters();
-    });
-  }
-
-  if (durationSelect) {
-    durationSelect.addEventListener('change', (e) => {
-      activeFilters.duration = e.target.value;
-      applyFilters();
-    });
-  }
-
-  if (diffSelect) {
-    diffSelect.addEventListener('change', (e) => {
-      activeFilters.difficulty = e.target.value;
       applyFilters();
     });
   }

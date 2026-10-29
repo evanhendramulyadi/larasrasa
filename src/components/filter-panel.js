@@ -86,45 +86,17 @@ export function renderFilterPanel(currentFilters = {}) {
         </div>
       </div>
 
-      <!-- Third Row: Region & Duration Dropdowns -->
-      <div class="pt-4 border-t border-[#E8DEC8] grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <!-- Region Filter -->
-        <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-[#5C3622] mb-1.5">
+      <!-- Third Row: Region Filter -->
+      <div class="pt-4 border-t border-[#E8DEC8] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <label for="filter-region" class="block text-xs font-bold uppercase tracking-wider text-[#5C3622] shrink-0">
             ${t('common.city')}:
           </label>
-          <select id="filter-region" data-filter-type="region" class="w-full py-2.5 px-3.5 rounded-xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-semibold text-[#120B07] cursor-pointer focus:ring-2 focus:ring-[#C84C24]">
+          <select id="filter-region" data-filter-type="region" class="w-full sm:w-72 py-2.5 px-3.5 rounded-xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-semibold text-[#120B07] cursor-pointer focus:ring-2 focus:ring-[#C84C24]">
             <option value="semua">${t('recipesSection.allRegions')}</option>
             ${regions.map(r => `
               <option value="${r.id}" ${selectedRegion === r.id ? 'selected' : ''}>${r.name}</option>
             `).join('')}
-          </select>
-        </div>
-
-        <!-- Cooking Duration Filter -->
-        <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-[#5C3622] mb-1.5">
-            ${t('recipesSection.durationLabel')}
-          </label>
-          <select id="filter-duration" data-filter-type="duration" class="w-full py-2.5 px-3.5 rounded-xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-semibold text-[#120B07] cursor-pointer focus:ring-2 focus:ring-[#C84C24]">
-            <option value="semua" ${selectedDuration === 'semua' ? 'selected' : ''}>${t('recipesSection.allDurations')}</option>
-            <option value="quick" ${selectedDuration === 'quick' ? 'selected' : ''}>${t('recipesSection.durationQuick')}</option>
-            <option value="standard" ${selectedDuration === 'standard' ? 'selected' : ''}>${t('recipesSection.durationStandard')}</option>
-            <option value="slow" ${selectedDuration === 'slow' ? 'selected' : ''}>${t('recipesSection.durationSlow')}</option>
-          </select>
-        </div>
-
-        <!-- Difficulty Level Filter -->
-        <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-[#5C3622] mb-1.5">
-            ${t('recipesSection.difficultyLabel')}
-          </label>
-          <select id="filter-difficulty" data-filter-type="difficulty" class="w-full py-2.5 px-3.5 rounded-xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-semibold text-[#120B07] cursor-pointer focus:ring-2 focus:ring-[#C84C24]">
-            <option value="semua" ${selectedDiff === 'semua' ? 'selected' : ''}>${t('recipesSection.allDifficulties')}</option>
-            <option value="sangat mudah" ${selectedDiff === 'sangat mudah' ? 'selected' : ''}>${t('recipesSection.diffVeryEasy')}</option>
-            <option value="mudah" ${selectedDiff === 'mudah' ? 'selected' : ''}>${t('recipesSection.diffEasy')}</option>
-            <option value="sedang" ${selectedDiff === 'sedang' ? 'selected' : ''}>${t('recipesSection.diffMedium')}</option>
-            <option value="mahir" ${selectedDiff === 'mahir' ? 'selected' : ''}>${t('recipesSection.diffHard')}</option>
           </select>
         </div>
       </div>

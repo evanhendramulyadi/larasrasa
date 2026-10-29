@@ -50,16 +50,10 @@ export const restaurantService = {
       result = result.filter(r => r.category.toLowerCase().includes(params.category.toLowerCase()));
     }
 
-    // Filter pencarian teks
+    // Filter pencarian teks: khusus nama warung atau restoran saja
     if (params.search && params.search.trim()) {
       const q = params.search.toLowerCase().trim();
-      result = result.filter(r =>
-        r.name.toLowerCase().includes(q) ||
-        r.signatureDish.toLowerCase().includes(q) ||
-        r.address.toLowerCase().includes(q) ||
-        r.city.toLowerCase().includes(q) ||
-        r.description.toLowerCase().includes(q)
-      );
+      result = result.filter(r => r.name.toLowerCase().includes(q));
     }
 
     return result;

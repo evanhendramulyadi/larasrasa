@@ -230,7 +230,7 @@ export const id = {
     description: 'Menemukan saksi sejarah perjalanan kuliner Jawa Tengah dengan alamat nyata, koordinat presisi, dan cita rasa autentik warisan leluhur.',
     mapTitle: 'Peta Tempat Makan Bersejarah',
     mapHint: 'Klik penanda (marker) untuk melihat rute navigasi Google Maps',
-    searchPlaceholder: 'Cari warung, nama masakan, atau jalan...',
+    searchPlaceholder: 'Cari warung atau restoran (contoh: Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'Kota / Wilayah:',
     allCities: 'Semua Kota',
     integrityTitle: 'Integritas Data & Dokumentasi Sejarah',

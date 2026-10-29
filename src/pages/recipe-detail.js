@@ -1,9 +1,6 @@
 import { recipeService } from '../services/recipeService.js';
-import { restaurantService } from '../services/restaurantService.js';
 import { renderServingCalculator, initServingCalculator } from '../components/serving-calculator.js';
 import { scaleIngredientAmount, getDifficultyBadge } from '../utils/formatters.js';
-import { renderRecipeCard } from '../components/recipe-card.js';
-import { renderRestaurantCard } from '../components/restaurant-card.js';
 import { i18n, t } from '../i18n/index.js';
 
 /**
@@ -43,13 +40,6 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
     currentServings = recipe.baseServings;
   }
   const diff = getDifficultyBadge(recipe.difficulty);
-  const relatedRecipes = await recipeService.getRelatedRecipes(recipe.id, 3);
-  
-  let relevantRestaurants = [];
-  if (recipe.legendaryRestaurantIds && recipe.legendaryRestaurantIds.length > 0) {
-    const allR = await restaurantService.getRestaurants();
-    relevantRestaurants = allR.filter(r => recipe.legendaryRestaurantIds.includes(r.id));
-  }
   const cookingSteps = recipe.steps || recipe.instructions || [];
 
   return `
@@ -401,41 +391,6 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           </p>
         </div>
       </section>
-
-      <!-- 21. RELEVANT LEGENDARY RESTAURANTS -->
-      ${relevantRestaurants.length > 0 ? `
-        <section class="space-y-6 pt-6 border-t border-[#D49B42]/30">
-          <div class="space-y-1">
-            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-              <span>${t('recipeDetail.restaurantsTitle')}</span>
-            </span>
-            <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#120B07]">
-              ${recipe.name}
-            </h2>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            ${relevantRestaurants.map(rst => renderRestaurantCard(rst)).join('')}
-          </div>
-        </section>
-      ` : ''}
-
-      <!-- 20. RELATED RECIPES -->
-      ${relatedRecipes.length > 0 ? `
-        <section class="space-y-6 pt-6 border-t border-[#D49B42]/30">
-          <div class="flex items-center justify-between pb-2 border-b border-[#D49B42]/20">
-            <h2 class="font-editorial-serif text-2xl font-bold text-[#120B07]">
-              ${t('recipeDetail.relatedTitle')}
-            </h2>
-            <a href="#/resep" class="text-xs font-bold text-[#C84C24] hover:text-[#120B07] transition-colors">
-              ${t('recipesSection.viewAll')} &rarr;
-            </a>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            ${relatedRecipes.map(rel => renderRecipeCard(rel)).join('')}
-          </div>
-        </section>
-      ` : ''}
 
     </article>
   `;

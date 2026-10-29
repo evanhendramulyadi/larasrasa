@@ -229,7 +229,7 @@ export const en = {
     description: 'Discover living witnesses to Central Java’s culinary history with real street addresses, verified GPS coordinates, and timeless recipes.',
     mapTitle: 'Historic Restaurant Location Map',
     mapHint: 'Click markers to open Google Maps turn-by-turn navigation',
-    searchPlaceholder: 'Search eatery name, dish, or city...',
+    searchPlaceholder: 'Search eatery or restaurant (e.g., Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'City / Region:',
     allCities: 'All Cities',
     integrityTitle: 'Data Integrity & Historical Verification',
