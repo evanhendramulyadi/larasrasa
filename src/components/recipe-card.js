@@ -1,4 +1,5 @@
 import { getDifficultyBadge } from '../utils/formatters.js';
+import { getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { t, i18n } from '../i18n/index.js';
 
 /**
@@ -10,14 +11,11 @@ export function renderRecipeCard(recipe) {
   const diff = getDifficultyBadge(recipe.difficulty);
   const isEn = i18n?.getLanguage ? i18n.getLanguage() === 'en' : (typeof document !== 'undefined' && document.documentElement.lang === 'en');
   
-  const flavorLabels = {
-    segar: isEn ? 'Fresh' : 'Segar Sumyah',
-    asam: isEn ? 'Tangy' : 'Asem Alami',
-    pedas: isEn ? 'Spicy' : 'Pedes Kemepyar',
-    manis: isEn ? 'Sweet' : 'Legi Lumer',
-    gurih: isEn ? 'Savory' : 'Gurih Kanil',
-    'kaya-rempah': isEn ? 'Spiced' : 'Kaya Rempah'
-  };
+  const localizedFlavors = getLocalizedFlavorProfiles();
+  const flavorMap = {};
+  localizedFlavors.forEach(f => {
+    flavorMap[f.id] = f.name;
+  });
 
   // Localize duration
   let localizedDuration = recipe.cookingDuration || '';
@@ -33,7 +31,7 @@ export function renderRecipeCard(recipe) {
     if (f === 'manis') colorClass = 'bg-orange-50/90 text-orange-800 border-orange-200';
     if (f === 'gurih') colorClass = 'bg-[#F5EFEB] text-[#331F14] border-[#E8DEC8]';
     if (f === 'kaya-rempah') colorClass = 'bg-[#FDF4EE] text-[#C84C24] border-[#C84C24]/30';
-    const tagText = flavorLabels[f] || f;
+    const tagText = flavorMap[f] || f;
     return `<span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${colorClass} shadow-2xs">${tagText}</span>`;
   }).join(' ');
 

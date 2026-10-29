@@ -162,24 +162,6 @@ function renderRegionDetailContent(region) {
         </div>
       </div>
 
-      <!-- Signature Dishes -->
-      <div class="space-y-2">
-        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07]">
-          ${t('map.signatureDishes')}
-        </span>
-        <ul class="space-y-2 text-xs">
-          ${region.signatureDishes.map(dish => `
-            <li class="flex items-center justify-between py-1.5 border-b border-[#E8DEC8] text-[#120B07] gap-2">
-              <span class="font-semibold truncate">&bull; ${dish}</span>
-              <a href="#/resep?search=${encodeURIComponent(dish)}" class="text-[#C84C24] hover:text-[#120B07] hover:underline font-bold text-[11px] transition-colors flex items-center gap-1 shrink-0">
-                <span>${t('map.findRecipe')}</span>
-                <span>&rarr;</span>
-              </a>
-            </li>
-          `).join('')}
-        </ul>
-      </div>
-
       <!-- Key Ingredients -->
       <div class="space-y-1.5">
         <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07]">

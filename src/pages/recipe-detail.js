@@ -46,23 +46,32 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
     <article class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
       
       <!-- Back Navigation & Breadcrumb -->
-      <nav class="flex items-center justify-between text-xs text-[#2E4D38]" aria-label="Breadcrumb">
-        <div class="flex items-center gap-2">
+      <nav class="flex flex-wrap items-center justify-between gap-3 text-xs text-[#2E4D38]" aria-label="Breadcrumb">
+        <div class="flex items-center gap-2 flex-wrap">
           <a href="#/" class="hover:text-[#120B07] transition-colors font-medium">${t('nav.home')}</a>
           <span>/</span>
           <a href="#/resep" class="hover:text-[#120B07] transition-colors font-medium">${t('nav.recipes')}</a>
           <span>/</span>
-          <span class="text-[#120B07] font-bold">${recipe.regionName}</span>
+          <span class="text-[#120B07] font-bold">${recipe.name}</span>
         </div>
         
-        <button id="recipe-share-btn" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] text-[#120B07] font-bold transition-all shadow-xs cursor-pointer">
-          <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
-            <polyline points="16 6 12 2 8 6"/>
-            <line x1="12" y1="2" x2="12" y2="15"/>
-          </svg>
-          <span id="share-btn-text">${t('recipeDetail.shareBtn')}</span>
-        </button>
+        <div class="flex items-center gap-2">
+          <button id="recipe-share-btn" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] text-[#120B07] font-bold transition-all shadow-xs cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+              <polyline points="16 6 12 2 8 6"/>
+              <line x1="12" y1="2" x2="12" y2="15"/>
+            </svg>
+            <span id="share-btn-text">${t('recipeDetail.shareBtn')}</span>
+          </button>
+
+          <a href="#/resep" id="recipe-close-btn" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#D49B42]/40 hover:bg-[#C84C24] hover:text-white hover:border-[#C84C24] text-[#120B07] font-bold transition-all shadow-xs cursor-pointer" aria-label="Tutup Resep">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            <span>${t('spicesSection.closeModal') || 'Tutup'}</span>
+          </a>
+        </div>
       </nav>
 
       <!-- 1. FOOD NAME & REGIONAL ORIGIN HEADER -->
@@ -391,6 +400,16 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           </p>
         </div>
       </section>
+
+      <!-- Bottom Action: Tutup Resep -->
+      <div class="pt-6 border-t border-[#D49B42]/30 flex items-center justify-center">
+        <a href="#/resep" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#120B07] text-[#FAF7F2] hover:bg-[#C84C24] transition-all font-bold text-xs shadow-md border border-[#D49B42]/40 cursor-pointer">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          <span>${t('spicesSection.closeModal') || 'Tutup'}</span>
+        </a>
+      </div>
 
     </article>
   `;
