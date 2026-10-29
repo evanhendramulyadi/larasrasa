@@ -1,6 +1,7 @@
 import { recommendationService } from '../services/recommendationService.js';
-import { flavorProfiles } from '../data/flavorProfiles.js';
+import { flavorProfiles, getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { renderRecipeCard } from '../components/recipe-card.js';
+import { getDifficultyBadge } from '../utils/formatters.js';
 import { t, i18n } from '../i18n/index.js';
 
 /**
@@ -368,71 +369,276 @@ function renderStepContent(step) {
 
 function renderResultView(result) {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+  const primary = result.primary || result.primaryRecommendation;
+  const diff = getDifficultyBadge(primary.difficulty);
+  const localizedFlavors = getLocalizedFlavorProfiles();
+  const flavorMap = {};
+  localizedFlavors.forEach(f => {
+    flavorMap[f.id] = f.name;
+  });
+
+  const timeLabels = {
+    cepat: isEn ? '≤ 35 Mins' : 'Praktis Kilat (≤ 35 Mnt)',
+    sedang: isEn ? '35–60 Mins' : 'Standar (35–60 Mnt)',
+    leluasa: isEn ? '> 60 Mins' : 'Ungkep Sabar (> 60 Mnt)'
+  };
+
+  const dishTypeLabels = {
+    'kuah-segar': isEn ? 'Fresh Broth' : 'Berkuah Segar',
+    'kuah-santan': isEn ? 'Rich Coconut Milk' : 'Kuah Santan Gurih',
+    'kering-bakar': isEn ? 'Grilled & Roasted' : 'Bakar & Ungkep',
+    'kudapan-lauk': isEn ? 'Crispy Lauk & Bites' : 'Lauk & Kudapan Renyah'
+  };
+
+  const budgetLabels = {
+    hemat: isEn ? '< Rp 35k' : 'Hemat (< Rp 35k)',
+    menengah: isEn ? 'Rp 35k–75k' : 'Keluarga (Rp 35k–75k)',
+    spesial: isEn ? '> Rp 75k' : 'Jamuan Spesial (> Rp 75k)'
+  };
+
+  const chosenFlavorName = flavorMap[currentAnswers.flavor] || currentAnswers.flavor;
+  const chosenTimeName = timeLabels[currentAnswers.timeAvailable] || currentAnswers.timeAvailable;
+  const chosenDishTypeName = dishTypeLabels[currentAnswers.dishType] || currentAnswers.dishType;
+  const chosenBudgetName = budgetLabels[currentAnswers.budget] || currentAnswers.budget;
+
+  const matchHighlights = result.matchHighlights && result.matchHighlights.length > 0 
+    ? result.matchHighlights 
+    : [
+        isEn ? 'Signature Central Javanese flavor profile matching your craving' : 'Karakter bumbu rempah autentik khas Jawa Tengah yang paling selaras',
+        isEn ? 'Ideal cooking duration calibrated for your kitchen schedule' : 'Durasi memasak yang pas dengan ritme dapur Anda hari ini',
+        isEn ? 'Balanced ingredient budget tailored for standard 4 people' : 'Estimasi belanja bahan yang bersahabat untuk santap 4 orang'
+      ];
+
+  const primaryFlavorLabel = (primary.flavorProfiles || []).map(f => flavorMap[f] || f).join(' • ');
 
   return `
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-10 animate-fade-in">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-12 animate-fade-in">
       
-      <!-- Result Banner -->
-      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-4xl mx-auto border-2 border-[#D49B42]/40 shadow-2xl bg-gradient-to-br from-[#120B07] via-[#1E120A] to-[#120B07] text-[#FAF7F2]">
-        <div class="relative z-10 space-y-3">
-          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/30">
-            <span>✓</span>
+      <!-- 1. Royal Celebration Header & Parameter Summary -->
+      <div class="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center max-w-5xl mx-auto border-2 border-[#D49B42]/40 shadow-2xl bg-gradient-to-br from-[#120B07] via-[#1E120A] to-[#120B07] text-[#FAF7F2]">
+        <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/15 blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/18 blur-3xl pointer-events-none"></div>
+
+        <div class="relative z-10 space-y-4">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/35 shadow-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>${t('recommendations.resultBadge')}</span>
-          </span>
-          <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white">
+            <span class="text-white/40">|</span>
+            <span class="text-white font-mono">${result.matchScore || 96}% ${isEn ? 'Match' : 'Kecocokan'}</span>
+          </div>
+
+          <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
             ${t('recommendations.resultTitle')}
           </h1>
-          <p class="text-xs sm:text-sm text-[#FAF7F2]/85 max-w-lg mx-auto leading-relaxed">
+
+          <p class="text-xs sm:text-sm text-[#FAF7F2]/85 max-w-xl mx-auto leading-relaxed">
             ${t('recommendations.resultSub')}
           </p>
           
-          <!-- Fixed Standard 4 People & Preference Pills -->
-          <div class="pt-2 flex flex-wrap items-center justify-center gap-2">
-            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42]">
+          <!-- Criteria Recap Chips -->
+          <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] shadow-xs">
               <span>👥</span>
-              <span>${isEn ? 'Standard Servings:' : 'Standar Porsi:'} <strong class="text-white">4 ${isEn ? 'People' : 'Orang'}</strong></span>
+              <span>4 ${isEn ? 'People' : 'Orang'}</span>
             </span>
-            ${currentAnswers.flavor ? `
-              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#C84C24]/30 border border-[#C84C24]/50 text-xs font-bold text-white capitalize">
-                <span>●</span>
-                <span>${currentAnswers.flavor}</span>
+            ${chosenFlavorName ? `
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
+                <span>👅</span>
+                <span>${chosenFlavorName}</span>
+              </span>
+            ` : ''}
+            ${chosenTimeName ? `
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
+                <span>⏱️</span>
+                <span>${chosenTimeName}</span>
+              </span>
+            ` : ''}
+            ${chosenDishTypeName ? `
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
+                <span>🍲</span>
+                <span>${chosenDishTypeName}</span>
+              </span>
+            ` : ''}
+            ${chosenBudgetName ? `
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
+                <span>💰</span>
+                <span>${chosenBudgetName}</span>
               </span>
             ` : ''}
           </div>
         </div>
       </div>
 
-      <!-- Primary Recommended Match -->
-      <div class="space-y-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-[#C84C24]"></span>
-            <span class="text-xs font-bold uppercase tracking-wider text-[#C84C24]">${t('recommendations.matchBadge')}</span>
+      <!-- 2. Spotlight Hero Feature Card (2 Columns: High Quality Macro Photo + Editorial Blueprint) -->
+      <div class="bg-white rounded-3xl border-2 border-[#D49B42]/35 shadow-xl overflow-hidden p-6 sm:p-8 lg:p-10 card-hover-lift">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          
+          <!-- Left Column: Hero Macro Image Showcase (5 Cols) -->
+          <div class="lg:col-span-5 relative group">
+            <div class="relative aspect-4/3 lg:aspect-4/5 w-full rounded-3xl overflow-hidden bg-[#120B07] border border-[#D49B42]/30 shadow-md">
+              <img src="${primary.image}" 
+                   alt="${primary.name}" 
+                   class="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out" 
+                   onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+              
+              <!-- Floating Top Badges -->
+              <div class="absolute top-4 left-4 right-4 flex items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#120B07]/85 backdrop-blur-md text-[11px] font-bold text-[#FAF7F2] border border-[#D49B42]/40 shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <span>${primary.regionName}</span>
+                </span>
+
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600/90 backdrop-blur-md text-[11px] font-bold text-white shadow-sm border border-emerald-400/40">
+                  <span>★</span>
+                  <span>${result.matchScore || 96}% ${isEn ? 'Match' : 'Harmonis'}</span>
+                </span>
+              </div>
+
+              <!-- Floating Bottom Overlay -->
+              <div class="absolute bottom-4 left-4 right-4 text-white space-y-1.5">
+                ${primary.javaneseName ? `
+                  <p class="font-editorial-serif italic text-xs text-[#D49B42] font-semibold">
+                    "${primary.javaneseName}"
+                  </p>
+                ` : ''}
+                <div class="flex items-center gap-2 pt-1 text-[11px] font-semibold text-white/90">
+                  <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
+                    ⏱️ ${primary.cookingDuration}
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
+                    👥 4 ${isEn ? 'People' : 'Orang'}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-          <span class="text-xs font-bold text-[#2E4D38]">
-            ${isEn ? 'Calibrated for 4 people (family standard)' : 'Terkalibrasi pas untuk 4 orang'}
-          </span>
-        </div>
-        <div class="max-w-xl mx-auto">
-          ${renderRecipeCard(result.primary)}
-        </div>
-        <div class="text-center pt-2">
-          <a href="#/resep/${result.primary.slug}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
-            <span>${t('recommendations.openRecipeBtn')} (4 ${isEn ? 'People' : 'Orang'})</span>
-            <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
+
+          <!-- Right Column: Editorial Blueprint & Match Highlights (7 Cols) -->
+          <div class="lg:col-span-7 space-y-5">
+            
+            <!-- Category, Difficulty & Flavor Badges -->
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider ${diff.class} shadow-2xs">
+                ${diff.label}
+              </span>
+              <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/30 shadow-2xs">
+                ${primary.mealType}
+              </span>
+              ${primaryFlavorLabel ? `
+                <span class="text-xs px-3 py-1 rounded-full bg-[#FDF4EE] text-[#C84C24] font-bold border border-[#C84C24]/30 shadow-2xs">
+                  ${primaryFlavorLabel}
+                </span>
+              ` : ''}
+            </div>
+
+            <!-- Title & Regional Lore Excerpt -->
+            <div class="space-y-1.5">
+              <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07] leading-tight">
+                ${primary.name}
+              </h2>
+              <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed line-clamp-3">
+                ${primary.intro}
+              </p>
+            </div>
+
+            <!-- Rationale & Match Highlights Box -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-3">
+              <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C84C24]">
+                <svg class="w-4 h-4 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>${isEn ? 'Why This Dish Matches You Today' : 'Harmoni Bumbu & Keselarasan Menu Hari Ini'}</span>
+              </div>
+              
+              <div class="space-y-2">
+                ${matchHighlights.map(h => `
+                  <div class="flex items-start gap-2.5 text-xs text-[#120B07] leading-relaxed">
+                    <span class="w-4 h-4 rounded-full bg-[#C84C24]/15 text-[#C84C24] flex items-center justify-center shrink-0 font-bold text-[10px] mt-0.5">✓</span>
+                    <span>${h}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- 4-Metric Grid (Serving, Time, Difficulty, Budget) -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center pt-1">
+              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
+                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Servings' : 'Porsi'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">4 ${isEn ? 'People' : 'Orang'}</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
+                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Cook Time' : 'Waktu Olah'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">${primary.cookingDuration}</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
+                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Difficulty' : 'Tingkat'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">${diff.label}</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
+                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Est. Budget' : 'Est. Belanja'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${result.estimatedCostForServings || primary.estimatedCost}</span>
+              </div>
+            </div>
+
+            <!-- Primary Action CTAs -->
+            <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <a href="#/resep/${primary.slug}?servings=4" 
+                 class="flex-1 inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs sm:text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center">
+                <span>${t('recommendations.openRecipeBtn')}</span>
+                <span>&rarr;</span>
+              </a>
+
+              <button id="wizard-restart-btn-spotlight" 
+                      type="button" 
+                      class="px-5 py-3.5 rounded-full text-xs font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs text-center flex items-center justify-center gap-1.5">
+                <span>↺</span>
+                <span>${t('recommendations.restartBtn')}</span>
+              </button>
+            </div>
+
+          </div>
+
         </div>
       </div>
 
-      <!-- Action: Restart Quiz or View All -->
+      <!-- 3. Alternative Matches Section (If any) -->
+      ${result.alternatives && result.alternatives.length > 0 ? `
+        <div class="space-y-6 pt-4">
+          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[#D49B42]/25 pb-3">
+            <div>
+              <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C84C24]">
+                <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+                <span>${t('recommendations.alternativesTitle')}</span>
+              </div>
+              <h3 class="font-editorial-serif text-2xl font-bold text-[#120B07] mt-1">
+                ${isEn ? 'Other Harmonious Options' : 'Pilihan Masakan Lain yang Juga Selaras'}
+              </h3>
+            </div>
+            <p class="text-xs text-[#5C3622] max-w-md">
+              ${t('recommendations.alternativesSub')}
+            </p>
+          </div>
+
+          <!-- Grid of Alternative Recipe Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            ${result.alternatives.map(alt => renderRecipeCard(alt)).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- 4. Bottom Global Actions -->
       <div class="pt-6 border-t border-[#E8DEC8] flex flex-col sm:flex-row items-center justify-center gap-4">
-        <button id="wizard-restart-btn" type="button" class="w-full sm:w-auto px-6 py-3 rounded-full border border-[#D49B42]/50 bg-white hover:bg-[#FAF7F2] text-[#120B07] text-xs font-bold transition-all shadow-xs cursor-pointer">
-          &larr; ${t('recommendations.restartBtn')}
+        <button id="wizard-restart-btn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-[#D49B42]/50 bg-white hover:bg-[#FAF7F2] text-[#120B07] text-xs font-bold transition-all shadow-xs cursor-pointer">
+          <span>&larr;</span>
+          <span>${t('recommendations.restartBtn')}</span>
         </button>
-        <a href="#/resep" class="w-full sm:w-auto px-6 py-3 rounded-full bg-[#120B07] hover:bg-[#C84C24] text-white text-xs font-bold transition-all shadow-md text-center">
-          ${t('recipesSection.viewAll')} &rarr;
+        <a href="#/resep" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#120B07] hover:bg-[#C84C24] text-white text-xs font-bold transition-all shadow-md text-center">
+          <span>${t('recipesSection.viewAll')}</span>
+          <span>&rarr;</span>
         </a>
       </div>
 
@@ -513,14 +719,21 @@ export function initRecommendationsInteractions(onRerender) {
     });
   }
 
-  // Restart Button
+  // Restart Button (Global & Spotlight)
+  const handleRestart = () => {
+    activeResult = null;
+    wizardStep = 1;
+    currentAnswers = { flavor: '', timeAvailable: 'sedang', dishType: 'kuah-segar', budget: 'menengah', servings: 4 };
+    if (typeof onRerender === 'function') onRerender();
+  };
+
   const restartBtn = document.getElementById('wizard-restart-btn');
   if (restartBtn) {
-    restartBtn.addEventListener('click', () => {
-      activeResult = null;
-      wizardStep = 1;
-      currentAnswers = { flavor: '', timeAvailable: 'sedang', dishType: 'kuah-segar', budget: 'menengah', servings: 4 };
-      if (typeof onRerender === 'function') onRerender();
-    });
+    restartBtn.addEventListener('click', handleRestart);
+  }
+
+  const restartBtnSpotlight = document.getElementById('wizard-restart-btn-spotlight');
+  if (restartBtnSpotlight) {
+    restartBtnSpotlight.addEventListener('click', handleRestart);
   }
 }
