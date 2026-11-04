@@ -7,7 +7,6 @@ import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-m
 import { renderSpicesPage, initSpicesPageInteractions } from './pages/spices.js';
 import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
 import { renderRecommendationsPage, initRecommendationsInteractions } from './pages/recommendations.js';
-import { renderAboutPage } from './pages/about.js';
 import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions } from './pages/ai-food-creator.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
@@ -146,9 +145,6 @@ export class Router {
       pageHtml = await renderAiFoodCreatorPage();
       postRenderAction = () => initAiFoodCreatorInteractions();
       pageTitlePrefix = t('nav.aiFoodCreator');
-    } else if (path === '/tentang') {
-      pageHtml = await renderAboutPage();
-      pageTitlePrefix = t('nav.about');
     } else {
       pageTitlePrefix = '404';
       // 404 Fallback with bilingual & Javanese touch

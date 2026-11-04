@@ -60,7 +60,6 @@ export function renderFooter() {
               <li><a href="#/restoran-legendaris" class="hover:text-[#D49B42] transition-colors flex items-center gap-2"><span>›</span> ${t('nav.restaurants')}</a></li>
               <li><a href="#/rekomendasi" class="hover:text-[#D49B42] transition-colors flex items-center gap-2"><span>›</span> ${t('nav.recommendations')}</a></li>
               <li><a href="#/ai-food-creator" class="hover:text-[#D49B42] text-[#D49B42] font-bold transition-colors flex items-center gap-2"><span>✨</span> ${t('nav.aiFoodCreator')}</a></li>
-              <li><a href="#/tentang" class="hover:text-[#D49B42] transition-colors flex items-center gap-2"><span>›</span> ${t('nav.about')}</a></li>
             </ul>
           </div>
 
@@ -103,11 +102,6 @@ export function renderFooter() {
                   ? 'Project Based Learning (PjBL) assignment themed on Central Javanese culinary heritage. Crafted with care by <strong>Group 2 (Website Development)</strong>.'
                   : 'Karya Project Based Learning (PjBL) bertema kebudayaan & kuliner Jawa Tengah dening <strong>Kelompok 2 (Website Development)</strong>.'}
               </p>
-              <div class="pt-1.5">
-                <a href="#/tentang" class="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#D49B42] hover:text-white transition-colors underline">
-                  <span>${isEn ? 'Read team story' : 'Waos bab tim pangembang'} &rarr;</span>
-                </a>
-              </div>
             </div>
           </div>
 
@@ -119,8 +113,6 @@ export function renderFooter() {
             &copy; ${year} <strong class="text-white">LarasRasa</strong>. ${isEn ? 'All rights reserved.' : 'Sedaya hak cipta kaayomi.'} • SMK Pariwisata Metland School (PPLG)
           </p>
           <div class="flex items-center gap-4 text-[11px]">
-            <a href="#/tentang" class="hover:text-white transition-colors">${t('nav.about')}</a>
-            <span>•</span>
             <a href="#/resep" class="hover:text-white transition-colors">${t('nav.recipes')}</a>
             <span>•</span>
             <a href="#/peta-rasa" class="hover:text-white transition-colors">${t('nav.flavorMap')}</a>
