@@ -36,13 +36,12 @@ export function renderNavbar(activeRoute = '/') {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20 sm:h-22 gap-3">
           
-          <!-- Brand Logo with Royal Crest Style -->
-          <a href="#/" class="flex items-center gap-3.5 shrink-0 group focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] rounded-2xl p-1" aria-label="LarasRasa Beranda">
-            <div class="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-white p-1.5 border-2 border-[#D49B42]/50 shadow-md flex items-center justify-center shrink-0 group-hover:scale-105 group-hover:border-[#C84C24] transition-all duration-300 relative overflow-hidden">
-              <div class="absolute inset-0 bg-gradient-to-tr from-[#D49B42]/10 to-transparent pointer-events-none"></div>
+          <!-- Brand Logo without Pop-up Box to Prevent Double Lines -->
+          <a href="#/" class="flex items-center gap-3 shrink-0 group outline-none focus:outline-none focus:ring-0 select-none" aria-label="LarasRasa Beranda">
+            <div class="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
               <img src="/assets/images/logo-larasrasa.jpeg" 
                    alt="LarasRasa Logo" 
-                   class="w-full h-full object-contain rounded-xl" />
+                   class="w-full h-full object-contain mix-blend-multiply" />
             </div>
             <div class="flex flex-col">
               <span class="font-editorial-serif text-2xl sm:text-[26px] font-bold tracking-tight text-[#120B07] leading-none group-hover:text-[#C84C24] transition-colors">
@@ -261,6 +260,20 @@ export function initNavbarInteractions() {
         closeIcon.classList.add('hidden');
         btn.setAttribute('aria-expanded', 'false');
       });
+    });
+  }
+
+  // Brand logo click handler to reset active nav link and close drawer
+  const brandLogo = document.querySelector('a[aria-label="LarasRasa Beranda"]');
+  if (brandLogo) {
+    brandLogo.addEventListener('click', () => {
+      setActiveNavbarLink('/');
+      if (drawer && !drawer.classList.contains('hidden')) {
+        drawer.classList.add('hidden');
+        if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
+        if (closeIcon) closeIcon.classList.add('hidden');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      }
     });
   }
 
