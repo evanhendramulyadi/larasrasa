@@ -65,7 +65,7 @@ function renderGeneratingState(currentLang) {
   return `
     <div class="max-w-3xl mx-auto px-4 py-24 text-center space-y-6 animate-fade-in">
       <div class="relative w-24 h-24 mx-auto">
-        <div class="absolute inset-0 rounded-3xl bg-[#D49B42]/20 animate-ping"></div>
+        <div class="absolute inset-0 rounded-3xl bg-[#D49B42]/15 blur-md"></div>
         <div class="w-24 h-24 rounded-3xl bg-[#120B07] border-2 border-[#D49B42] text-[#D49B42] flex items-center justify-center mx-auto shadow-2xl text-4xl">
           <svg class="w-12 h-12 text-[#D49B42] animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
@@ -139,8 +139,7 @@ function renderFormView(currentLang) {
         <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/18 blur-3xl pointer-events-none"></div>
         
         <div class="relative z-10 space-y-3.5 max-w-2xl mx-auto">
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 shadow-xs">
-            <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-ping"></span>
+          <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 shadow-xs">
             <span class="text-xs font-bold text-[#D49B42] uppercase tracking-wider">
               ${isEn ? 'AI Culinary Studio • Central Java' : 'Studio Eksperimen Kuliner AI • Jawa Tengah'}
             </span>
@@ -556,8 +555,8 @@ function renderResultView(recipe, currentLang) {
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#D49B42]/30">
         <div class="space-y-1.5">
           <div class="flex items-center gap-2 flex-wrap">
-            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold shadow-2xs">
-              ✦ ${t('aiCreator.emptyTemplateBadge')}
+            <span class="inline-flex items-center px-3.5 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold shadow-2xs">
+              ${t('aiCreator.emptyTemplateBadge')}
             </span>
             <span class="text-[11px] font-mono uppercase tracking-wider text-[#2E4D38] bg-[#FAF7F2] px-3 py-1 rounded-md border border-[#D49B42]/30 font-bold">
               ID: ${creationId}
@@ -643,9 +642,8 @@ function renderResultView(recipe, currentLang) {
             <!-- Creator & Form Parameters Summary -->
             <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-3">
               <div class="flex items-center justify-between">
-                <span class="text-xs font-bold text-[#120B07] flex items-center gap-1.5">
-                  <span class="text-[#D49B42]">✦</span>
-                  <span>${isEn ? 'Attribution & Portions' : 'Hak Cipta & Takaran'}</span>
+                <span class="text-xs font-bold text-[#120B07]">
+                  ${isEn ? 'Attribution & Portions' : 'Hak Cipta & Takaran'}
                 </span>
                 <span class="text-[10px] font-mono text-[#C84C24] font-bold">
                   ${creationId}
@@ -811,9 +809,8 @@ function renderResultView(recipe, currentLang) {
           <!-- Slot 4: Chef Secret & Nutrition Estimations Wireframe -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div class="p-5 rounded-3xl bg-[#FAF7F2] border border-dashed border-[#D49B42]/35 space-y-2 text-xs">
-              <strong class="text-[#120B07] font-bold flex items-center gap-1.5">
-                <span class="text-[#C84C24]">✦</span>
-                <span>${isEn ? 'Chef Tips Slot' : 'Slot Wewadi Pawon (Kiat Chef)'}</span>
+              <strong class="text-[#120B07] font-bold">
+                ${isEn ? 'Chef Tips Slot' : 'Slot Wewadi Pawon (Kiat Chef)'}
               </strong>
               <p class="text-[#5C3622] leading-relaxed">
                 ${t('aiCreator.emptyTipsPlaceholder')}
@@ -821,9 +818,8 @@ function renderResultView(recipe, currentLang) {
             </div>
 
             <div class="p-5 rounded-3xl bg-[#FAF7F2] border border-dashed border-[#D49B42]/35 space-y-2 text-xs">
-              <strong class="text-[#120B07] font-bold flex items-center gap-1.5">
-                <span class="text-[#2E4D38]">✦</span>
-                <span>${isEn ? 'Nutrition Estimates Slot' : 'Slot Estimasi Gizi & Nutrisi'}</span>
+              <strong class="text-[#120B07] font-bold">
+                ${isEn ? 'Nutrition Estimates Slot' : 'Slot Estimasi Gizi & Nutrisi'}
               </strong>
               <p class="text-[#5C3622] leading-relaxed">
                 ${isEn 

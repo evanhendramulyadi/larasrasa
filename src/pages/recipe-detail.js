@@ -193,9 +193,8 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
 
           <!-- Cooking Equipment -->
           <div class="bg-white p-6 rounded-3xl border border-[#D49B42]/30 space-y-3 shadow-xs">
-            <h4 class="font-editorial-serif text-xs font-bold uppercase tracking-wider text-[#120B07] flex items-center gap-1.5">
-              <span class="text-[#C84C24]">✦</span>
-              <span>${t('recipeDetail.equipmentTitle')}</span>
+            <h4 class="font-editorial-serif text-xs font-bold uppercase tracking-wider text-[#120B07]">
+              ${t('recipeDetail.equipmentTitle')}
             </h4>
             <div class="flex flex-wrap gap-2">
               ${(recipe.equipment || []).map(eq => `

@@ -58,8 +58,7 @@ export function renderRecipeCard(recipe) {
 
         <!-- Heritage Category Badge Overlay -->
         <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
-            <span class="text-[#D49B42]">✦</span>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
             <span>${recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}</span>
           </span>
 

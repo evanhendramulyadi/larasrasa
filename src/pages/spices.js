@@ -151,8 +151,7 @@ function renderSpiceModal(spice) {
           <div class="absolute inset-0 bg-gradient-to-t from-[#120B07] via-black/40 to-transparent"></div>
           
           <div class="absolute bottom-3.5 left-5 right-14 text-white space-y-1">
-            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#C84C24] text-white shadow-xs border border-white/20">
-              <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+            <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#C84C24] text-white shadow-xs border border-white/20">
               <span>${spice.categoryName}</span>
             </div>
             <h2 id="modal-spice-title" class="font-editorial-serif text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">

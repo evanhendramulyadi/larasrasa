@@ -35,8 +35,7 @@ export function renderRestaurantCard(restaurant) {
           <h3 class="font-editorial-serif text-xl sm:text-2xl font-bold leading-tight drop-shadow-md group-hover:text-[#F2BD68] transition-colors">
             ${restaurant.name}
           </h3>
-          <p class="text-xs text-[#EFE8DA] line-clamp-1 mt-1 font-semibold flex items-center gap-1.5">
-            <span class="text-[#D49B42]">✦</span>
+          <p class="text-xs text-[#EFE8DA] line-clamp-1 mt-1 font-semibold">
             <span>${restaurant.signatureDish}</span>
           </p>
         </div>

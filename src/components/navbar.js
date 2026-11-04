@@ -48,9 +48,8 @@ export function renderNavbar(activeRoute = '/') {
               <span class="font-editorial-serif text-2xl sm:text-[26px] font-bold tracking-tight text-[#120B07] leading-none group-hover:text-[#C84C24] transition-colors">
                 Laras<span class="text-[#C84C24]">Rasa</span>
               </span>
-              <span class="text-[10px] tracking-widest font-bold text-[#D49B42] uppercase mt-1 flex items-center gap-1.5 whitespace-nowrap">
-                <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24] animate-pulse"></span>
-                <span>${currentLang === 'id' ? 'Kuliner Jawa Tengah' : 'Central Java Cuisine'}</span>
+              <span class="text-[10px] tracking-widest font-bold text-[#D49B42] uppercase mt-1 whitespace-nowrap">
+                ${currentLang === 'id' ? 'Kuliner Jawa Tengah' : 'Central Java Cuisine'}
               </span>
             </div>
           </a>

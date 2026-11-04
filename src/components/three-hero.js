@@ -41,7 +41,7 @@ export class ThreeHeroShowcase {
 
           <!-- Dynamic Hint / Action Badge -->
           <div id="hero-showcase-hint" class="text-[10.5px] sm:text-[11px] font-bold text-[#5C3622] bg-white/95 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-xs hidden sm:flex items-center gap-1.5 whitespace-nowrap shrink-0">
-            <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-pulse shrink-0"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24] shrink-0"></span>
             <span id="hero-hint-text">${t('hero.canvasHint')}</span>
           </div>
         </div>
@@ -51,7 +51,7 @@ export class ThreeHeroShowcase {
 
         <!-- Footer Caption Bar -->
         <div id="hero-footer-caption" class="z-20 mt-3 flex items-center gap-2 text-xs text-[#5C3622] bg-white/95 backdrop-blur-md px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl border border-[#D49B42]/35 shadow-xs shrink-0">
-          <span class="w-2.5 h-2.5 rounded-full bg-[#D49B42] shrink-0 animate-pulse"></span>
+          <span class="w-2 h-2 rounded-full bg-[#D49B42] shrink-0"></span>
           <span class="font-bold text-[#120B07] text-xs sm:text-sm font-editorial-serif tracking-wide truncate" id="hero-caption-title">
             ${t('hero.canvasTitle')}
           </span>

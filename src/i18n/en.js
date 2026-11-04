@@ -47,7 +47,7 @@ export const en = {
     findMenuCTA: 'Find Menu'
   },
   hero: {
-    badge: '✦ Treasures of Indonesian Culinary Heritage',
+    badge: 'Treasures of Indonesian Culinary Heritage',
     greeting: 'Welcome to LarasRasa',
     titleStart: 'Harmonizing',
     titleAccent: 'Ancestral Flavors',

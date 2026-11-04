@@ -70,8 +70,7 @@ function renderWizardView(step) {
         <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/18 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-3">
-          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-xs font-bold text-[#D49B42] uppercase tracking-wider border border-[#D49B42]/40 shadow-xs">
-            <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-pulse"></span>
+          <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 text-xs font-bold text-[#D49B42] uppercase tracking-wider border border-[#D49B42]/40 shadow-xs">
             <span>${t('recommendations.badge')}</span>
           </span>
           <h1 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-white">
@@ -361,7 +360,7 @@ function renderResultView(result) {
 
         <div class="relative z-10 space-y-4">
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/35 shadow-xs">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             <span>${t('recommendations.resultBadge')}</span>
             <span class="text-white/40">|</span>
             <span class="text-white font-mono">${result.matchScore || 96}% ${isEn ? 'Match' : 'Harmonis'}</span>
@@ -441,7 +440,7 @@ function renderResultView(result) {
                 ` : ''}
                 <div class="flex items-center gap-2 pt-1 text-[11px] font-semibold text-white/90">
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
-                    ✦ ${primary.mealType || 'Kuliner Tradisional'}
+                    ${primary.mealType || 'Kuliner Tradisional'}
                   </span>
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
                     👥 4 ${isEn ? 'People' : 'Orang'}

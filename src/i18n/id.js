@@ -48,7 +48,7 @@ export const id = {
     findMenuCTA: 'Pilih Menu'
   },
   hero: {
-    badge: '✦ Pusaka Kuliner Jawa Tengah • Pawon Nusantara',
+    badge: 'Pusaka Kuliner Jawa Tengah • Pawon Nusantara',
     greeting: 'Selamat Datang di LarasRasa',
     titleStart: 'Menyelaraskan',
     titleAccent: 'Harmoni Rasa',

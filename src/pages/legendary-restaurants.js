@@ -78,7 +78,7 @@ export async function renderLegendaryRestaurantsPage() {
         <!-- Status & Results Count Bar -->
         <div class="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-[#E8DEC8] text-xs text-[#5C3622]">
           <div class="flex items-center gap-2 font-medium">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
             <span id="restaurants-count-label">
               ${isEn 
                 ? `Showing <strong class="text-[#120B07]">${restaurantsList.length}</strong> legendary culinary establishments`
@@ -99,9 +99,8 @@ export async function renderLegendaryRestaurantsPage() {
 
       <!-- Heritage Integrity Card -->
       <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-white via-[#FAF7F2] to-[#F5EFEB] border border-[#D49B42]/35 shadow-sm space-y-2">
-        <h3 class="font-editorial-serif text-lg font-bold text-[#120B07] flex items-center gap-2">
-          <span class="text-[#D49B42]">✦</span>
-          <span>${t('restaurantsSection.integrityTitle')}</span>
+        <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">
+          ${t('restaurantsSection.integrityTitle')}
         </h3>
         <p class="text-xs text-[#5C3622] leading-relaxed">
           ${t('restaurantsSection.integrityText')}

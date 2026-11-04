@@ -9,22 +9,13 @@ import { ThreeHeroShowcase } from '../components/three-hero.js';
 import { i18n, t } from '../i18n/index.js';
 
 /**
- * Cultural ornamental divider separating major homepage sections.
+ * Clean architectural divider separating major homepage sections.
  */
-function renderSectionDivider(label = '') {
+function renderSectionDivider() {
   return `
     <!-- SECTION DIVIDER -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-5" aria-hidden="true">
-      <div class="relative flex items-center justify-center">
-        <div class="grow h-px bg-gradient-to-r from-transparent via-[#D49B42]/50 to-[#D49B42]/20"></div>
-        <div class="mx-3 sm:mx-6 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-[#D49B42]/40 shadow-2xs text-[#5C3622] select-none">
-          <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-          <span class="text-xs text-[#D49B42]">✦</span>
-          ${label ? `<span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#5C3622]">${label}</span><span class="text-xs text-[#D49B42]">✦</span>` : ''}
-          <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-        </div>
-        <div class="grow h-px bg-gradient-to-l from-transparent via-[#D49B42]/50 to-[#D49B42]/20"></div>
-      </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6" aria-hidden="true">
+      <div class="h-px bg-gradient-to-r from-transparent via-[#D49B42]/35 to-transparent"></div>
     </div>
   `;
 }
@@ -56,8 +47,7 @@ export async function renderHomePage() {
             <div class="lg:col-span-6 space-y-6 text-center lg:text-left z-10">
               
               <!-- Royal Crest Pill -->
-              <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-xs">
-                <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-ping"></span>
+              <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/90 border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-xs">
                 <span>${t('hero.badge')}</span>
               </div>
 
@@ -132,9 +122,8 @@ export async function renderHomePage() {
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="rounded-3xl bg-white/85 border border-[#D49B42]/35 p-6 sm:p-10 lg:p-12 shadow-sm backdrop-blur-xs">
           <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
-            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center justify-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-              <span>${t('flavorSection.badge')}</span>
+            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24]">
+              ${t('flavorSection.badge')}
             </span>
             <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
               ${t('flavorSection.title')}
@@ -183,9 +172,8 @@ export async function renderHomePage() {
         <div class="rounded-3xl bg-[#F8F3EC]/80 border border-[#D49B42]/40 p-6 sm:p-10 lg:p-12 shadow-sm">
           <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 sm:mb-10 gap-4 pb-4 border-b border-[#D49B42]/25">
             <div class="space-y-2">
-              <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-                <span>${t('recipesSection.badge')}</span>
+              <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24]">
+                ${t('recipesSection.badge')}
               </span>
               <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
                 ${t('recipesSection.title')}
@@ -281,9 +269,8 @@ export async function renderHomePage() {
       <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="rounded-3xl bg-white/85 border border-[#D49B42]/35 p-6 sm:p-10 lg:p-12 shadow-sm backdrop-blur-xs">
           <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
-            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center justify-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-              <span>${t('spicesSection.badge')}</span>
+            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24]">
+              ${t('spicesSection.badge')}
             </span>
             <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
               ${t('spicesSection.title')}
@@ -337,9 +324,8 @@ export async function renderHomePage() {
         <div class="rounded-3xl bg-[#F8F3EC]/80 border border-[#D49B42]/40 p-6 sm:p-10 lg:p-12 shadow-sm">
           <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 sm:mb-10 gap-4 pb-4 border-b border-[#D49B42]/25">
             <div class="space-y-2">
-              <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-                <span>${t('restaurantsSection.badge')}</span>
+              <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24]">
+                ${t('restaurantsSection.badge')}
               </span>
               <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
                 ${t('restaurantsSection.title')}
@@ -372,8 +358,7 @@ export async function renderHomePage() {
           
           <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div class="lg:col-span-8 space-y-4">
-              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/45 text-xs font-bold text-[#D49B42] shadow-xs">
-                <span class="w-2 h-2 rounded-full bg-[#C84C24] animate-ping"></span>
+              <div class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/45 text-xs font-bold text-[#D49B42] shadow-xs">
                 <span>${isEn ? 'AI CULINARY STUDIO • CENTRAL JAVA' : 'STUDIO RACIK KULINER AI • JAWA TENGAH'}</span>
               </div>
               <h2 class="font-editorial-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
