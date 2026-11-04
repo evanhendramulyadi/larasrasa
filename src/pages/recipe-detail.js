@@ -1,15 +1,15 @@
 import { recipeService } from '../services/recipeService.js';
-import { renderServingCalculator, initServingCalculator } from '../components/serving-calculator.js';
-import { scaleIngredientAmount, getDifficultyBadge } from '../utils/formatters.js';
+import { scaleIngredientAmount } from '../utils/formatters.js';
+import { getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { i18n, t } from '../i18n/index.js';
 
 /**
- * Editorial Royal Heritage Recipe Detail View
- * Comprehensive culinary editorial article with dynamic portion calculator,
- * interactive checklist steps, cultural background, and bilingual support.
+ * Editorial Royal Heritage Cultural Culinary Detail View
+ * Introduces Central Javanese culinary heritage, historical chronicles,
+ * cultural lore, and authentic recipes calibrated for standard 4 people.
  */
 
-let currentServings = 4;
+const STANDARD_SERVINGS = 4;
 
 export async function renderRecipeDetailPage(slug, queryParams = {}) {
   let recipe;
@@ -19,27 +19,23 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
     const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
     return `
       <div class="max-w-4xl mx-auto px-4 py-24 text-center space-y-4">
-        <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">${isEn ? 'Recipe Not Found' : 'Resep Tidak Ditemukan'}</h2>
-        <p class="text-sm text-[#5C3622]">${isEn ? 'Sorry, the requested recipe could not be found.' : 'Mohon maaf, resep yang Anda cari saat ini belum tersedia.'}</p>
+        <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">${isEn ? 'Culinary Heritage Not Found' : 'Kuliner Tidak Ditemukan'}</h2>
+        <p class="text-sm text-[#5C3622]">${isEn ? 'Sorry, the requested culinary chronicle could not be found.' : 'Mohon maaf, catatan kuliner yang Anda cari saat ini belum tersedia.'}</p>
         <a href="#/resep" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120B07] text-white text-xs font-bold border border-[#D49B42]/40">
-          &larr; ${isEn ? 'Back to Recipes' : 'Kembali ke Resep'}
+          &larr; ${isEn ? 'Back to Culinary Catalog' : 'Kembali ke Khasanah Kuliner'}
         </a>
       </div>
     `;
   }
 
-  // Support initial custom servings passed via query parameters (e.g. from Recommendations wizard)
-  if (queryParams && queryParams.servings) {
-    const parsedServings = parseInt(queryParams.servings, 10);
-    if (!isNaN(parsedServings) && parsedServings >= 1 && parsedServings <= 100) {
-      currentServings = parsedServings;
-    } else {
-      currentServings = recipe.baseServings;
-    }
-  } else {
-    currentServings = recipe.baseServings;
-  }
-  const diff = getDifficultyBadge(recipe.difficulty);
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+  const localizedFlavors = getLocalizedFlavorProfiles();
+  const flavorMap = {};
+  localizedFlavors.forEach(f => {
+    flavorMap[f.id] = f.name;
+  });
+
+  const flavorText = (recipe.flavorProfiles || []).map(f => flavorMap[f] || f).join(' • ');
   const cookingSteps = recipe.steps || recipe.instructions || [];
 
   return `
@@ -84,12 +80,14 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             </svg>
             <span>${recipe.regionName}</span>
           </span>
-          <span class="text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider ${diff.class} shadow-2xs">
-            ${diff.label}
-          </span>
           <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/30 shadow-2xs">
-            ${recipe.mealType}
+            ${recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
           </span>
+          ${flavorText ? `
+            <span class="text-xs px-3 py-1 rounded-full bg-[#FDF4EE] text-[#C84C24] font-bold border border-[#C84C24]/30 shadow-2xs">
+              ${flavorText}
+            </span>
+          ` : ''}
         </div>
 
         <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-[#120B07] leading-tight">
@@ -107,23 +105,23 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           ${recipe.intro}
         </p>
 
-        <!-- Meta Grid -->
+        <!-- Cultural & Culinary Summary Grid (No Cook Time, No Difficulty, No Price) -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-5 border-y border-[#D49B42]/30 py-5 text-center">
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent">
-            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('recipeDetail.prepTime')}</span>
-            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.prepTime}</span>
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Origin Region' : 'Sentra Tradisi'}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.regionName}</span>
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
-            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('recipeDetail.cookTime')}</span>
-            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.cookTime}</span>
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Flavor Character' : 'Karakter Rasa'}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5 truncate">${flavorText || 'Autentik'}</span>
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
-            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('recipeDetail.baseServings')}</span>
-            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.baseServings || 4} ${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'People' : 'Orang'}</span>
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Standard Servings' : 'Standar Resep'}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">4 ${isEn ? 'People' : 'Orang (Keluarga)'}</span>
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
-            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${t('common.estBudget')}</span>
-            <span class="font-bold text-sm sm:text-base text-[#C84C24] block mt-0.5">${recipe.estimatedCost}</span>
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Culinary Tradition' : 'Ragam Pusaka'}</span>
+            <span class="font-bold text-sm sm:text-base text-[#C84C24] block mt-0.5 truncate">${recipe.mealType || 'Tradisional'}</span>
           </div>
         </div>
       </header>
@@ -137,13 +135,13 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
         <div class="absolute bottom-5 left-6 right-6 text-white text-xs flex items-center justify-between">
           <span class="bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-[#D49B42]/50 font-bold">
-            ${recipe.regionName}
+            📍 ${recipe.regionName}
           </span>
-          <span class="text-[11px] opacity-90 hidden sm:inline font-semibold">${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Authentic Culinary Heritage' : 'Pusaka Kuliner Autentik Jawa Tengah'}</span>
+          <span class="text-[11px] opacity-90 hidden sm:inline font-semibold">${isEn ? 'Central Javanese Gastronomic Heritage' : 'Pusaka Warisan Gastronomi Jawa Tengah'}</span>
         </div>
       </div>
 
-      <!-- 4 & 5 & 6. HISTORY, CULTURAL BACKGROUND & INTERESTING FACTS -->
+      <!-- 3. HISTORY, CULTURAL LORE & ANCESTRAL BACKGROUND (FEATURED CENTERPIECE) -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div class="lg:col-span-7 space-y-6">
           <div class="bg-white p-7 sm:p-9 rounded-3xl border border-[#D49B42]/35 space-y-4 shadow-xs">
@@ -172,7 +170,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           ` : ''}
         </div>
 
-        <!-- 5. Interesting Facts Column -->
+        <!-- Facts & Traditional Cooking Implements -->
         <div class="lg:col-span-5 space-y-6">
           <div class="bg-gradient-to-br from-[#120B07] via-[#1E120A] to-[#120B07] text-[#FAF7F2] p-7 rounded-3xl shadow-xl space-y-4 border border-[#D49B42]/35">
             <h3 class="font-editorial-serif text-xl font-bold text-[#D49B42] flex items-center gap-2">
@@ -193,7 +191,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             </ul>
           </div>
 
-          <!-- 9. Cooking Equipment -->
+          <!-- Cooking Equipment -->
           <div class="bg-white p-6 rounded-3xl border border-[#D49B42]/30 space-y-3 shadow-xs">
             <h4 class="font-editorial-serif text-xs font-bold uppercase tracking-wider text-[#120B07] flex items-center gap-1.5">
               <span class="text-[#C84C24]">✦</span>
@@ -213,35 +211,40 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         </div>
       </section>
 
-      <!-- 8. INGREDIENTS & DYNAMIC SERVING CALCULATOR -->
+      <!-- 4. INGREDIENTS & SPICE COMPOSITION (STANDARD 4 SERVINGS, HARMONIOUS SUPPORT) -->
       <section class="space-y-6 pt-6 border-t border-[#D49B42]/30">
-        <div class="space-y-1">
-          <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-            <span>${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Spice Composition & Portions' : 'Komposisi Bumbu & Takaran Porsi'}</span>
-          </span>
-          <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">
-            ${t('recipeDetail.ingredientsTitle')}
-          </h2>
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+          <div class="space-y-1">
+            <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+              <span>${isEn ? 'Ingredients & Spice Composition' : 'Komposisi Bumbu & Bahan Tradisional'}</span>
+            </span>
+            <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">
+              ${t('recipeDetail.ingredientsTitle')}
+            </h2>
+          </div>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/35 text-xs font-bold text-[#5C3622]">
+            <span>👥</span>
+            <span>${isEn ? 'Calibrated for 4 People' : 'Standar Porsi Santap: 4 Orang'}</span>
+          </div>
         </div>
 
-        <!-- Serving Scaler Tool -->
-        <div id="serving-calculator-container">
-          ${renderServingCalculator(recipe.baseServings, currentServings)}
-        </div>
+        <p class="text-xs text-[#5C3622]">
+          ${isEn ? 'All ingredient measurements are naturally calibrated for a standard 4-person family meal in Central Javanese culinary tradition.' : 'Seluruh takaran gramasi bumbu dan bahan telah terkalibrasi pas untuk santap 4 orang dalam tradisi dapur keluarga Jawa Tengah.'}
+        </p>
 
-        <!-- Ingredients Table / Groups -->
+        <!-- Ingredients Table / Groups (Fixed 4 Servings) -->
         <div id="ingredients-display" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          ${renderIngredientsTable(recipe, currentServings)}
+          ${renderIngredientsTable(recipe, STANDARD_SERVINGS)}
         </div>
       </section>
 
-      <!-- 14. STEP-BY-STEP COOKING INSTRUCTIONS WITH INTERACTIVE CHECKLIST -->
+      <!-- 5. PRACTICAL COOKING INSTRUCTIONS -->
       <section class="space-y-6 pt-6 border-t border-[#D49B42]/30">
         <div class="space-y-2">
           <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-            <span>${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Practical Kitchen Guide' : 'Panduan Praktis Memasak'}</span>
+            <span>${isEn ? 'Cooking Guidance' : 'Panduan Memasak Tradisional'}</span>
           </span>
           <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">
             ${t('recipeDetail.stepsTitle')}
@@ -266,20 +269,9 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
                 </button>
 
                 <div class="flex-1 space-y-2">
-                  <div class="flex items-center justify-between flex-wrap gap-2">
-                    <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">
-                      ${t('common.step')} ${step.stepNumber}: ${step.title}
-                    </h3>
-                    ${step.timerMinutes ? `
-                      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#FAF7F2] text-[#120B07] border border-[#D49B42]/35">
-                        <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                          <circle cx="12" cy="12" r="10"/>
-                          <polyline points="12 6 12 12 16 14"/>
-                        </svg>
-                        <span>${step.timerMinutes} ${t('common.minutes')}</span>
-                      </span>
-                    ` : ''}
-                  </div>
+                  <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">
+                    ${t('common.step')} ${step.stepNumber}: ${step.title}
+                  </h3>
 
                   <p class="text-sm text-[#120B07] leading-relaxed step-instruction">
                     ${step.instruction}
@@ -301,7 +293,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         </div>
       </section>
 
-      <!-- 15 & 16. COOKING TIPS & COMMON MISTAKES -->
+      <!-- 6. COOKING TIPS & COMMON MISTAKES -->
       <section class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-[#D49B42]/30">
         <!-- Cooking Tips -->
         <div class="bg-amber-50/70 p-7 rounded-3xl border border-amber-200/80 space-y-3.5 shadow-2xs">
@@ -342,7 +334,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         </div>
       </section>
 
-      <!-- 17 & 18 & 19. SUBSTITUTIONS, SERVING & NUTRITION -->
+      <!-- 7. SUBSTITUTIONS, SERVING & NUTRITION -->
       <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-6 border-t border-[#D49B42]/30">
         <!-- Substitutions -->
         <div class="bg-white p-6 sm:p-7 rounded-3xl border border-[#D49B42]/30 space-y-3 shadow-xs">
@@ -379,19 +371,19 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           </h4>
           <div class="grid grid-cols-2 gap-2 text-center text-xs">
             <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-              <span class="block text-[10px] text-[#2E4D38] font-bold">${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Calories' : 'Kalori'}</span>
+              <span class="block text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Calories' : 'Kalori'}</span>
               <span class="font-bold text-[#120B07] text-sm">${recipe.nutrition.calories}</span>
             </div>
             <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-              <span class="block text-[10px] text-[#2E4D38] font-bold">${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Protein' : 'Protein'}</span>
+              <span class="block text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Protein' : 'Protein'}</span>
               <span class="font-bold text-[#120B07] text-sm">${recipe.nutrition.protein}</span>
             </div>
             <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-              <span class="block text-[10px] text-[#2E4D38] font-bold">${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Carbs' : 'Karbohidrat'}</span>
+              <span class="block text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Carbs' : 'Karbohidrat'}</span>
               <span class="font-bold text-[#120B07] text-sm">${recipe.nutrition.carbs}</span>
             </div>
             <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-              <span class="block text-[10px] text-[#2E4D38] font-bold">${i18n?.getLanguage && i18n.getLanguage() === 'en' ? 'Fat' : 'Lemak'}</span>
+              <span class="block text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Fat' : 'Lemak'}</span>
               <span class="font-bold text-[#120B07] text-sm">${recipe.nutrition.fat}</span>
             </div>
           </div>
@@ -415,7 +407,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
   `;
 }
 
-function renderIngredientsTable(recipe, targetServings) {
+function renderIngredientsTable(recipe, targetServings = 4) {
   return (recipe.ingredientGroups || []).map(group => `
     <div class="bg-white p-6 sm:p-7 rounded-3xl border border-[#D49B42]/30 space-y-3.5 shadow-xs">
       <h3 class="font-editorial-serif text-base font-bold text-[#120B07] border-b border-[#D49B42]/25 pb-2.5 flex items-center gap-2">
@@ -424,7 +416,7 @@ function renderIngredientsTable(recipe, targetServings) {
       </h3>
       <ul class="space-y-2 text-xs">
         ${group.items.map(item => {
-          const scaledAmount = scaleIngredientAmount(item.amount, recipe.baseServings, targetServings);
+          const scaledAmount = scaleIngredientAmount(item.amount, recipe.baseServings || 4, targetServings);
           return `
             <li class="flex items-start justify-between gap-3 py-2 border-b border-[#E8DEC8]/60 last:border-0">
               <span class="text-[#120B07] font-semibold leading-relaxed">
@@ -443,17 +435,6 @@ function renderIngredientsTable(recipe, targetServings) {
 }
 
 export function initRecipeDetailInteractions(recipe) {
-  const calcContainer = document.getElementById('serving-calculator-container');
-  if (calcContainer && recipe) {
-    initServingCalculator(recipe, (newServings) => {
-      currentServings = newServings;
-      const display = document.getElementById('ingredients-display');
-      if (display) {
-        display.innerHTML = renderIngredientsTable(recipe, newServings);
-      }
-    });
-  }
-
   // Interactive Checklist Steps
   const stepCheckboxes = document.querySelectorAll('.step-checkbox');
   stepCheckboxes.forEach(btn => {

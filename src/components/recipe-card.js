@@ -1,14 +1,12 @@
-import { getDifficultyBadge } from '../utils/formatters.js';
 import { getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { t, i18n } from '../i18n/index.js';
 
 /**
- * Editorial Royal Heritage Recipe Card Component
- * Refined typography, Javanese authentic dish naming, smooth hover elevations,
- * and comprehensive bilingual labels.
+ * Editorial Royal Heritage Cultural Dish Card Component
+ * Highlights cultural introduction, regional origins, flavor character,
+ * and Javanese authentic dish naming without domestic cooking pressure.
  */
 export function renderRecipeCard(recipe) {
-  const diff = getDifficultyBadge(recipe.difficulty);
   const isEn = i18n?.getLanguage ? i18n.getLanguage() === 'en' : (typeof document !== 'undefined' && document.documentElement.lang === 'en');
   
   const localizedFlavors = getLocalizedFlavorProfiles();
@@ -16,12 +14,6 @@ export function renderRecipeCard(recipe) {
   localizedFlavors.forEach(f => {
     flavorMap[f.id] = f.name;
   });
-
-  // Localize duration
-  let localizedDuration = recipe.cookingDuration || '';
-  if (isEn && localizedDuration) {
-    localizedDuration = localizedDuration.replace(/Menit/gi, 'Mins').replace(/Jam/gi, 'hr');
-  }
 
   const flavorTags = (recipe.flavorProfiles || []).map(f => {
     let colorClass = 'bg-[#FAF7F2] text-[#5C3622] border-[#E8DEC8]';
@@ -64,19 +56,16 @@ export function renderRecipeCard(recipe) {
           </span>
         </div>
 
-        <!-- Duration & Serving Badges -->
+        <!-- Heritage Category Badge Overlay -->
         <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/85 text-white backdrop-blur-md border border-white/15 shadow-xs shrink-0">
-            <svg class="w-3.5 h-3.5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            <span>${localizedDuration}</span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
+            <span class="text-[#D49B42]">✦</span>
+            <span>${recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}</span>
           </span>
 
-          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/85 text-white backdrop-blur-md border border-white/15 shadow-xs shrink-0">
-            <span>👤</span>
-            <span>${recipe.baseServings || 4} ${isEn ? 'People' : 'Orang'}</span>
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
+            <span>👥</span>
+            <span>4 ${isEn ? 'People' : 'Orang'}</span>
           </span>
         </div>
       </a>
@@ -84,17 +73,17 @@ export function renderRecipeCard(recipe) {
       <!-- Card Body Content -->
       <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
         <div>
-          <!-- Flavor Tags & Difficulty Level -->
+          <!-- Flavor Tags & Heritage Indicator -->
           <div class="flex items-center justify-between gap-2 mb-3">
             <div class="flex flex-wrap gap-1.5">
               ${flavorTags}
             </div>
-            <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider ${diff.class} shrink-0">
-              ${diff.label}
+            <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-[#FAF7F2] text-[#5C3622] border border-[#E8DEC8] shrink-0">
+              ${isEn ? 'Heritage' : 'Pusaka'}
             </span>
           </div>
 
-          <!-- Recipe Title -->
+          <!-- Recipe / Dish Title -->
           <h3 class="font-editorial-serif text-xl font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors leading-snug mb-1">
             <a href="#/resep/${recipe.slug}" class="hover:underline">
               ${recipe.name}
@@ -108,22 +97,22 @@ export function renderRecipeCard(recipe) {
             </p>
           ` : ''}
 
-          <!-- Narrative excerpt -->
+          <!-- Narrative Lore & Introduction Excerpt -->
           <p class="text-xs text-[#5C3622] line-clamp-2 leading-relaxed">
             ${recipe.intro}
           </p>
         </div>
 
-        <!-- Card Footer Action & Estimated Budget -->
+        <!-- Card Footer: Cultural Origin & Exploration CTA -->
         <div class="pt-3.5 border-t border-[#E8DEC8] flex items-center justify-between text-xs">
-          <div class="flex items-center gap-1.5 text-[#2E4D38] font-bold text-[11px]">
-            <span>💰</span>
-            <span>Est. ${recipe.estimatedCost}</span>
+          <div class="flex items-center gap-1.5 text-[#5C3622] font-semibold text-[11px]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
+            <span>${recipe.regionName}</span>
           </div>
 
           <a href="#/resep/${recipe.slug}" 
              class="inline-flex items-center gap-1.5 font-bold text-[#120B07] group-hover:text-[#C84C24] transition-all">
-            <span>${t('recipesSection.viewRecipeBtn')}</span>
+            <span>${isEn ? 'Explore History & Recipe' : 'Pelajari Sejarah & Resep'}</span>
             <svg class="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>

@@ -1,26 +1,23 @@
 import { recommendationService } from '../services/recommendationService.js';
 import { flavorProfiles, getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { renderRecipeCard } from '../components/recipe-card.js';
-import { getDifficultyBadge } from '../utils/formatters.js';
 import { t, i18n } from '../i18n/index.js';
 
 /**
- * Rekomendasi Untukmu (Personalized Food Finder)
- * 4-step guided culinary questionnaire.
+ * Rekomendasi Kuliner Jawa Tengah (Cultural Culinary Taste Matcher)
+ * 3-step cultural gastronomic curation:
  * Q1: Karakter Rasa (Flavor Profile)
- * Q2: Durasi Memasak (Available Cooking Time)
- * Q3: Jumlah Porsi (Servings)
- * Q4: Alokasi Anggaran (Budget)
+ * Q2: Tipe Santapan (Dining Experience & Dish Style)
+ * Q3: Kawasan Budaya (Regional Heritage Exploration)
  */
 
 let wizardStep = 1;
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 3;
 
 let currentAnswers = {
   flavor: '',
-  timeAvailable: 'sedang',
   dishType: 'kuah-segar',
-  budget: 'menengah',
+  regionPreference: 'semua',
   servings: 4
 };
 let validationError = null;
@@ -131,17 +128,6 @@ function renderWizardView(step) {
         </div>
       </div>
 
-      <!-- AI Food Creator Link Callout -->
-      <div class="p-5 rounded-3xl bg-[#FAF7F2] border border-[#D49B42]/35 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-xs">
-        <div class="flex items-center gap-2.5 text-[#120B07] font-medium">
-          <span class="text-lg">✨</span>
-          <span>${isEn ? 'Want to synthesize your own custom recipe blueprint?' : 'Ingin meracik kreasi resep orisinal Anda sendiri dengan bumbu pilihan?'}</span>
-        </div>
-        <a href="#/ai-food-creator" class="px-5 py-2.5 rounded-full bg-[#120B07] hover:bg-[#C84C24] text-white font-bold shrink-0 transition-colors shadow-xs">
-          ${isEn ? 'Try AI Food Creator &rarr;' : 'Coba AI Food Creator &rarr;'}
-        </a>
-      </div>
-
     </div>
   `;
 }
@@ -186,88 +172,34 @@ function renderStepContent(step) {
       `;
 
     case 2:
-      return `
-        <div class="space-y-4">
-          <div>
-            <h2 class="font-editorial-serif text-2xl font-bold text-[#120B07]">
-              ${t('recommendations.q2Title')}
-            </h2>
-            <p class="text-xs text-[#5C3622] mt-1">${t('recommendations.q2Sub')}</p>
-          </div>
-          <div class="space-y-3 pt-2">
-            ${[
-              { 
-                id: 'cepat', 
-                title: isEn ? 'Quick & Practical' : 'Praktis & Kilat', 
-                desc: isEn ? 'Under 35 mins (such as crispy mendoan or fresh tahu gimbal)' : 'Kurang dari 35 menit (seperti mendoan atau tahu gimbal dadakan)', 
-                duration: isEn ? '≤ 35 Mins' : '≤ 35 Menit' 
-              },
-              { 
-                id: 'sedang', 
-                title: isEn ? 'Standard Timing' : 'Waktu Standar Pawon', 
-                desc: isEn ? '35 to 60 mins (cooking fragrant soto or royal beef stew)' : '35 hingga 60 menit (memasak soto kuah kencur atau selat bistik)', 
-                duration: isEn ? '35 – 60 Mins' : '35 – 60 Menit' 
-              },
-              { 
-                id: 'leluasa', 
-                title: isEn ? 'Slow & Patient Simmer' : 'Ungkep Sabar & Khidmat', 
-                desc: isEn ? 'Over 60 mins (slow-braising coconut liwet or authentic bacem)' : 'Lebih dari 60 menit (mengungkep liwet santan atau bacem legit)', 
-                duration: isEn ? '> 60 Mins' : '> 60 Menit' 
-              }
-            ].map(tim => {
-              const isChecked = currentAnswers.timeAvailable === tim.id;
-              return `
-                <label class="wizard-option-card flex items-center justify-between p-4 sm:p-5 rounded-2xl border cursor-pointer transition-all card-hover-lift ${
-                  isChecked 
-                    ? 'border-[#C84C24] bg-[#FDF4EE] shadow-md ring-2 ring-[#C84C24]/30' 
-                    : 'border-[#D49B42]/30 bg-white hover:bg-[#FAF7F2]'
-                }">
-                  <div class="flex items-center gap-3.5">
-                    <input type="radio" name="timeAvailable" value="${tim.id}" class="sr-only" ${isChecked ? 'checked' : ''}/>
-                    <div>
-                      <strong class="block text-sm text-[#120B07] font-bold">${tim.title}</strong>
-                      <span class="text-xs text-[#5C3622]">${tim.desc}</span>
-                    </div>
-                  </div>
-                  <span class="text-xs font-mono font-bold text-[#C84C24] bg-[#FAF7F2] px-3 py-1.5 rounded-xl border border-[#D49B42]/35 shadow-2xs">
-                    ${tim.duration}
-                  </span>
-                </label>
-              `;
-            }).join('')}
-          </div>
-        </div>
-      `;
-
-    case 3:
       const dishTypes = [
         {
           id: 'kuah-segar',
           icon: '🍲',
-          title: isEn ? 'Fresh & Clear Broths' : 'Berkuah Segar & Bening',
-          desc: isEn ? 'Soto, fresh soups, and light herbal broths (Soto Kudus, Sup Matahari, Garang Asem)' : 'Soto, sup bening, dan kaldu rempah segar tanpa santan berat (Soto Kudus, Sup Matahari)',
-          tag: isEn ? 'Light & Refreshing' : 'Segar & Hangat'
+          title: isEn ? 'Fresh & Clear Broths' : 'Santapan Berkuah Segar Bening',
+          desc: isEn ? 'Comforting soups and herbal broths without heavy creaminess (Soto Kudus, Sup Matahari, Garang Asem)' : 'Soto bening, sup kaldu rempah, dan olahan asam segar yang melegakan serta menenangkan (Soto Kudus, Sup Matahari)',
+          tag: isEn ? 'Light & Refreshing' : 'Segar & Menenangkan'
         },
         {
           id: 'kuah-santan',
           icon: '🥥',
           title: isEn ? 'Rich Coconut Stews & Curries' : 'Berkuah Santan Gurih & Medok',
-          desc: isEn ? 'Gudeg, opor, mangut, and liwet simmered slowly in rich seasoned coconut milk' : 'Gudeg, opor, mangut pedas, nasi gandul, atau nasi liwet berbalut santan areh gurih',
+          desc: isEn ? 'Simmered seasoned coconut milk stews (Gudeg, Mangut Lele, Opor, Nasi Gandul, Nasi Liwet)' : 'Gudeg, opor ayam kampung, mangut lele asap, nasi gandul, atau nasi liwet berbalut areh gurih lembut',
           tag: isEn ? 'Rich & Savory' : 'Gurih Meresap'
         },
         {
           id: 'kering-bakar',
           icon: '🍢',
           title: isEn ? 'Grilled, Roasted & Caramelized' : 'Olahan Bakar, Panggang & Ungkep',
-          desc: isEn ? 'Smoky skewered satay, slow-braised sweet bacem, and charcoal grilled meats' : 'Sate buntel, ayam bacem, sate batibul, olahan arang atau ungkepan bumbu karamel',
+          desc: isEn ? 'Charcoal skewered meats, slow-braised sweet bacem, and caramelized heritage specialties' : 'Sate buntel Solo, daging bacem legit manis, sate ambal, dan olahan ungkepan bumbu karamel sedap',
           tag: isEn ? 'Smoky & Sweet' : 'Aroma Bakaran'
         },
         {
           id: 'kudapan-lauk',
           icon: '🥟',
           title: isEn ? 'Crispy Delights & Traditional Bites' : 'Lauk Gorengan & Kudapan Tradisional',
-          desc: isEn ? 'Warm tempe mendoan, savory tahu aci, or classic heritage teatime bites' : 'Tempe mendoan purwokerto, tahu aci slawi, atau kudapan klasik teman santap keluarga',
-          tag: isEn ? 'Crispy & Casual' : 'Renyah & Praktis'
+          desc: isEn ? 'Warm tempe mendoan, savory tahu gimbal, crispy spring rolls, or classic teatime snacks' : 'Tempe mendoan Banyumas hangat, tahu gimbal Semarang, lumpia renyah, atau kudapan khas teman santap',
+          tag: isEn ? 'Crispy & Casual' : 'Renyah & Santai'
         }
       ];
 
@@ -275,9 +207,9 @@ function renderStepContent(step) {
         <div class="space-y-4">
           <div>
             <h2 class="font-editorial-serif text-2xl font-bold text-[#120B07]">
-              ${t('recommendations.q3Title')}
+              ${t('recommendations.q2Title')}
             </h2>
-            <p class="text-xs text-[#5C3622] mt-1">${t('recommendations.q3Sub')}</p>
+            <p class="text-xs text-[#5C3622] mt-1">${t('recommendations.q2Sub')}</p>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
             ${dishTypes.map(d => {
@@ -308,52 +240,67 @@ function renderStepContent(step) {
         </div>
       `;
 
-    case 4:
+    case 3:
+      const regions = [
+        {
+          id: 'keraton',
+          icon: '👑',
+          title: isEn ? 'Royal Court & Interior (Surakarta / Solo)' : 'Keraton & Pedalaman (Surakarta / Solo)',
+          desc: isEn ? 'Elegance of savory areh coconut cream, subtle sweetness, and refined noble hearth heritage' : 'Keanggunan santan areh gurih lembut, manis berkelas, dan warisan dapur bangsawan Kasunanan Surakarta',
+          badge: isEn ? 'Royal Heritage' : 'Pusaka Keraton'
+        },
+        {
+          id: 'pantura',
+          icon: '🌊',
+          title: isEn ? 'Northern Coast / Pantura (Semarang, Pekalongan, Tegal, Kudus)' : 'Pesisir Pantura (Semarang, Pekalongan, Tegal, Kudus)',
+          desc: isEn ? 'Coastal vibrancy infused with fragrant shrimp paste (petis), fermented soybeans (tauco), and bamboo shoots' : 'Dinamika bumbu pesisir kaya aroma petis udang, rebung manis, tauco harum, dan kaldu daging rempah',
+          badge: isEn ? 'Coastal Trade' : 'Jalur Rempah Pesisir'
+        },
+        {
+          id: 'pegunungan',
+          icon: '⛰️',
+          title: isEn ? 'Mountain Valleys (Wonosobo, Magelang, Banyumas)' : 'Lembah & Pegunungan (Wonosobo, Magelang, Banyumas)',
+          desc: isEn ? 'Highland comfort driven by aromatic kencur ginger, crispy mendoan, and warming thick broths' : 'Kearifan bumbu bumi dingin, kehangatan kencur, mie ongklok berkuah kental, kupat tahu, dan tempe mendoan',
+          badge: isEn ? 'Highland Hearth' : 'Rempah Pegunungan'
+        },
+        {
+          id: 'semua',
+          icon: '✨',
+          title: isEn ? 'All Central Javanese Regions' : 'Seluruh Sentra Jawa Tengah',
+          desc: isEn ? 'Open across all 8 cultural culinary centers without regional boundaries' : 'Buka rekomendasi lintas seluruh 8 sentra kuliner untuk menemukan hidangan tradisional paling selaras',
+          badge: isEn ? 'Broad Discovery' : 'Lintas Sentra'
+        }
+      ];
+
       return `
         <div class="space-y-4">
           <div>
             <h2 class="font-editorial-serif text-2xl font-bold text-[#120B07]">
-              ${t('recommendations.q4Title')}
+              ${t('recommendations.q3Title')}
             </h2>
-            <p class="text-xs text-[#5C3622] mt-1">${t('recommendations.q4Sub')}</p>
+            <p class="text-xs text-[#5C3622] mt-1">${t('recommendations.q3Sub')}</p>
           </div>
           <div class="space-y-3 pt-2">
-            ${[
-              { 
-                id: 'hemat', 
-                title: isEn ? 'Economical & Frugal' : 'Hemat & Praktis', 
-                desc: isEn ? 'Under Rp 35.000 (dishes featuring tempeh, tofu, or seasonal produce)' : 'Di bawah Rp 35.000 (aneka olahan tempe, tahu, atau sayuran kebun)', 
-                range: '< Rp 35k' 
-              },
-              { 
-                id: 'menengah', 
-                title: isEn ? 'Standard Family Budget' : 'Standar Keluarga', 
-                desc: isEn ? 'Rp 35.000 – Rp 75.000 (chicken, fresh eggs, or warm savory soups)' : 'Rp 35.000 – Rp 75.000 (ayam kampung, telur bebek, atau sup kaldu)', 
-                range: 'Rp 35k – 75k' 
-              },
-              { 
-                id: 'spesial', 
-                title: isEn ? 'Royal Feast / Special Occasion' : 'Jamuan Spesial', 
-                desc: isEn ? 'Above Rp 75.000 (tender beef steaks, royal stews, or complete platters)' : 'Di atas Rp 75.000 (daging sapi empuk, selat keraton, atau olahan istimewa)', 
-                range: '> Rp 75k' 
-              }
-            ].map(b => {
-              const isChecked = currentAnswers.budget === b.id;
+            ${regions.map(r => {
+              const isChecked = currentAnswers.regionPreference === r.id;
               return `
-                <label class="wizard-option-card flex items-center justify-between p-4 sm:p-5 rounded-2xl border cursor-pointer transition-all card-hover-lift ${
+                <label class="wizard-option-card flex items-start justify-between p-4 sm:p-5 rounded-2xl border cursor-pointer transition-all card-hover-lift ${
                   isChecked 
                     ? 'border-[#C84C24] bg-[#FDF4EE] shadow-md ring-2 ring-[#C84C24]/30' 
                     : 'border-[#D49B42]/30 bg-white hover:bg-[#FAF7F2]'
                 }">
-                  <div class="flex items-center gap-3.5">
-                    <input type="radio" name="budget" value="${b.id}" class="sr-only" ${isChecked ? 'checked' : ''}/>
-                    <div>
-                      <strong class="block text-sm text-[#120B07] font-bold">${b.title}</strong>
-                      <span class="text-xs text-[#5C3622]">${b.desc}</span>
+                  <div class="flex items-start gap-3.5">
+                    <input type="radio" name="regionPreference" value="${r.id}" class="sr-only" ${isChecked ? 'checked' : ''}/>
+                    <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 bg-white border border-[#D49B42]/35 shadow-2xs text-lg">
+                      ${r.icon}
+                    </div>
+                    <div class="space-y-0.5">
+                      <strong class="block text-sm text-[#120B07] font-bold">${r.title}</strong>
+                      <span class="text-xs text-[#5C3622] leading-relaxed block">${r.desc}</span>
                     </div>
                   </div>
-                  <span class="text-xs font-mono font-bold text-[#2E4D38] bg-[#FAF7F2] px-3 py-1.5 rounded-xl border border-[#D49B42]/35 shadow-2xs">
-                    ${b.range}
+                  <span class="text-[10px] font-bold text-[#C84C24] bg-[#FAF7F2] px-3 py-1.5 rounded-xl border border-[#D49B42]/35 shadow-2xs shrink-0 whitespace-nowrap ml-3">
+                    ${r.badge}
                   </span>
                 </label>
               `;
@@ -370,43 +317,36 @@ function renderStepContent(step) {
 function renderResultView(result) {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
   const primary = result.primary || result.primaryRecommendation;
-  const diff = getDifficultyBadge(primary.difficulty);
   const localizedFlavors = getLocalizedFlavorProfiles();
   const flavorMap = {};
   localizedFlavors.forEach(f => {
     flavorMap[f.id] = f.name;
   });
 
-  const timeLabels = {
-    cepat: isEn ? '≤ 35 Mins' : 'Praktis Kilat (≤ 35 Mnt)',
-    sedang: isEn ? '35–60 Mins' : 'Standar (35–60 Mnt)',
-    leluasa: isEn ? '> 60 Mins' : 'Ungkep Sabar (> 60 Mnt)'
-  };
-
   const dishTypeLabels = {
-    'kuah-segar': isEn ? 'Fresh Broth' : 'Berkuah Segar',
+    'kuah-segar': isEn ? 'Fresh Broth' : 'Berkuah Segar Bening',
     'kuah-santan': isEn ? 'Rich Coconut Milk' : 'Kuah Santan Gurih',
     'kering-bakar': isEn ? 'Grilled & Roasted' : 'Bakar & Ungkep',
-    'kudapan-lauk': isEn ? 'Crispy Lauk & Bites' : 'Lauk & Kudapan Renyah'
+    'kudapan-lauk': isEn ? 'Crispy Lauk & Bites' : 'Lauk & Kudapan Tradisional'
   };
 
-  const budgetLabels = {
-    hemat: isEn ? '< Rp 35k' : 'Hemat (< Rp 35k)',
-    menengah: isEn ? 'Rp 35k–75k' : 'Keluarga (Rp 35k–75k)',
-    spesial: isEn ? '> Rp 75k' : 'Jamuan Spesial (> Rp 75k)'
+  const regionLabels = {
+    keraton: isEn ? 'Royal Court (Solo)' : 'Keraton Solo',
+    pantura: isEn ? 'Northern Coast' : 'Pesisir Pantura',
+    pegunungan: isEn ? 'Mountain Valleys' : 'Pegunungan & Lembah',
+    semua: isEn ? 'All Central Java' : 'Seluruh Jawa Tengah'
   };
 
   const chosenFlavorName = flavorMap[currentAnswers.flavor] || currentAnswers.flavor;
-  const chosenTimeName = timeLabels[currentAnswers.timeAvailable] || currentAnswers.timeAvailable;
   const chosenDishTypeName = dishTypeLabels[currentAnswers.dishType] || currentAnswers.dishType;
-  const chosenBudgetName = budgetLabels[currentAnswers.budget] || currentAnswers.budget;
+  const chosenRegionName = regionLabels[currentAnswers.regionPreference] || currentAnswers.regionPreference;
 
   const matchHighlights = result.matchHighlights && result.matchHighlights.length > 0 
     ? result.matchHighlights 
     : [
-        isEn ? 'Signature Central Javanese flavor profile matching your craving' : 'Karakter bumbu rempah autentik khas Jawa Tengah yang paling selaras',
-        isEn ? 'Ideal cooking duration calibrated for your kitchen schedule' : 'Durasi memasak yang pas dengan ritme dapur Anda hari ini',
-        isEn ? 'Balanced ingredient budget tailored for standard 4 people' : 'Estimasi belanja bahan yang bersahabat untuk santap 4 orang'
+        isEn ? 'Signature Central Javanese flavor profile matching your craving' : 'Karakter bumbu rempah autentik khas Jawa Tengah yang paling selaras dengan selera',
+        isEn ? 'Rich cultural heritage and gastronomic history from its culinary center' : 'Memiliki kekayaan cerita sejarah dan tradisi luhur dari sentra asalnya',
+        isEn ? 'Traditional recipe balanced with standard 4-person family proportions' : 'Resep terkalibrasi pas untuk santapan 4 orang keluarga'
       ];
 
   const primaryFlavorLabel = (primary.flavorProfiles || []).map(f => flavorMap[f] || f).join(' • ');
@@ -424,7 +364,7 @@ function renderResultView(result) {
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             <span>${t('recommendations.resultBadge')}</span>
             <span class="text-white/40">|</span>
-            <span class="text-white font-mono">${result.matchScore || 96}% ${isEn ? 'Match' : 'Kecocokan'}</span>
+            <span class="text-white font-mono">${result.matchScore || 96}% ${isEn ? 'Match' : 'Harmonis'}</span>
           </div>
 
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
@@ -439,18 +379,12 @@ function renderResultView(result) {
           <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
             <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] shadow-xs">
               <span>👥</span>
-              <span>4 ${isEn ? 'People' : 'Orang'}</span>
+              <span>4 ${isEn ? 'People' : 'Orang (Keluarga)'}</span>
             </span>
             ${chosenFlavorName ? `
               <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
                 <span>👅</span>
                 <span>${chosenFlavorName}</span>
-              </span>
-            ` : ''}
-            ${chosenTimeName ? `
-              <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
-                <span>⏱️</span>
-                <span>${chosenTimeName}</span>
               </span>
             ` : ''}
             ${chosenDishTypeName ? `
@@ -459,17 +393,17 @@ function renderResultView(result) {
                 <span>${chosenDishTypeName}</span>
               </span>
             ` : ''}
-            ${chosenBudgetName ? `
+            ${chosenRegionName ? `
               <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
-                <span>💰</span>
-                <span>${chosenBudgetName}</span>
+                <span>📍</span>
+                <span>${chosenRegionName}</span>
               </span>
             ` : ''}
           </div>
         </div>
       </div>
 
-      <!-- 2. Spotlight Hero Feature Card (2 Columns: High Quality Macro Photo + Editorial Blueprint) -->
+      <!-- 2. Spotlight Hero Feature Card (2 Columns: Authentic Culture, History & Recipe) -->
       <div class="bg-white rounded-3xl border-2 border-[#D49B42]/35 shadow-xl overflow-hidden p-6 sm:p-8 lg:p-10 card-hover-lift">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           
@@ -507,7 +441,7 @@ function renderResultView(result) {
                 ` : ''}
                 <div class="flex items-center gap-2 pt-1 text-[11px] font-semibold text-white/90">
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
-                    ⏱️ ${primary.cookingDuration}
+                    ✦ ${primary.mealType || 'Kuliner Tradisional'}
                   </span>
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
                     👥 4 ${isEn ? 'People' : 'Orang'}
@@ -517,14 +451,11 @@ function renderResultView(result) {
             </div>
           </div>
 
-          <!-- Right Column: Editorial Blueprint & Match Highlights (7 Cols) -->
+          <!-- Right Column: Editorial Cultural Intro & Match Highlights (7 Cols) -->
           <div class="lg:col-span-7 space-y-5">
             
-            <!-- Category, Difficulty & Flavor Badges -->
+            <!-- Category & Flavor Badges -->
             <div class="flex flex-wrap items-center gap-2">
-              <span class="text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider ${diff.class} shadow-2xs">
-                ${diff.label}
-              </span>
               <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/30 shadow-2xs">
                 ${primary.mealType}
               </span>
@@ -533,6 +464,9 @@ function renderResultView(result) {
                   ${primaryFlavorLabel}
                 </span>
               ` : ''}
+              <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#2E4D38] font-bold border border-[#2E4D38]/30 shadow-2xs">
+                ${isEn ? 'Standard 4 Servings' : 'Porsi Standar 4 Orang'}
+              </span>
             </div>
 
             <!-- Title & Regional Lore Excerpt -->
@@ -551,7 +485,7 @@ function renderResultView(result) {
                 <svg class="w-4 h-4 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
-                <span>${isEn ? 'Why This Dish Matches You Today' : 'Harmoni Bumbu & Keselarasan Menu Hari Ini'}</span>
+                <span>${isEn ? 'Culinary Harmony & Cultural Context' : 'Harmoni Rasa & Cerita Kuliner Hari Ini'}</span>
               </div>
               
               <div class="space-y-2">
@@ -564,29 +498,29 @@ function renderResultView(result) {
               </div>
             </div>
 
-            <!-- 4-Metric Grid (Serving, Time, Difficulty, Budget) -->
+            <!-- 4-Metric Cultural Summary (Sentra, Karakter, Porsi, Kategori) -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center pt-1">
               <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Servings' : 'Porsi'}</span>
+                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Origin' : 'Sentra Asal'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">${primary.regionName}</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
+                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Flavor' : 'Karakter'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${primaryFlavorLabel || 'Autentik'}</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
+                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Servings' : 'Porsi Resep'}</span>
                 <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">4 ${isEn ? 'People' : 'Orang'}</span>
               </div>
               <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Cook Time' : 'Waktu Olah'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">${primary.cookingDuration}</span>
-              </div>
-              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Difficulty' : 'Tingkat'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">${diff.label}</span>
-              </div>
-              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Est. Budget' : 'Est. Belanja'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${result.estimatedCostForServings || primary.estimatedCost}</span>
+                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Tradition' : 'Kategori'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${primary.mealType}</span>
               </div>
             </div>
 
             <!-- Primary Action CTAs -->
             <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <a href="#/resep/${primary.slug}?servings=4" 
+              <a href="#/resep/${primary.slug}" 
                  class="flex-1 inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs sm:text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center">
                 <span>${t('recommendations.openRecipeBtn')}</span>
                 <span>&rarr;</span>
@@ -615,7 +549,7 @@ function renderResultView(result) {
                 <span>${t('recommendations.alternativesTitle')}</span>
               </div>
               <h3 class="font-editorial-serif text-2xl font-bold text-[#120B07] mt-1">
-                ${isEn ? 'Other Harmonious Options' : 'Pilihan Masakan Lain yang Juga Selaras'}
+                ${isEn ? 'Other Harmonious Options' : 'Pilihan Kuliner Lain yang Juga Selaras'}
               </h3>
             </div>
             <p class="text-xs text-[#5C3622] max-w-md">
@@ -647,7 +581,7 @@ function renderResultView(result) {
 }
 
 export function initRecommendationsInteractions(onRerender) {
-  // Option Card Radios (Step 1, 2, 3, 4)
+  // Option Card Radios (Step 1, 2, 3)
   const optionCards = document.querySelectorAll('.wizard-option-card');
   optionCards.forEach(card => {
     card.addEventListener('click', () => {
@@ -695,7 +629,7 @@ export function initRecommendationsInteractions(onRerender) {
         if (typeof onRerender === 'function') onRerender();
 
         try {
-          const res = await recommendationService.getRecommendation(currentAnswers);
+          const res = await recommendationService.getRecommendations(currentAnswers);
           activeResult = res;
         } catch (err) {
           console.warn('Recommendation failed:', err);
@@ -723,7 +657,7 @@ export function initRecommendationsInteractions(onRerender) {
   const handleRestart = () => {
     activeResult = null;
     wizardStep = 1;
-    currentAnswers = { flavor: '', timeAvailable: 'sedang', dishType: 'kuah-segar', budget: 'menengah', servings: 4 };
+    currentAnswers = { flavor: '', dishType: 'kuah-segar', regionPreference: 'semua', servings: 4 };
     if (typeof onRerender === 'function') onRerender();
   };
 

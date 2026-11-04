@@ -47,9 +47,8 @@ export function renderFilterPanel(currentFilters = {}) {
           </label>
           <select id="recipe-sort-select" class="py-3 px-4 rounded-2xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-bold text-[#120B07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] cursor-pointer">
             <option value="popular" ${selectedSort === 'popular' ? 'selected' : ''}>${t('recipesSection.sortCurated')}</option>
-            <option value="tercepat" ${selectedSort === 'tercepat' ? 'selected' : ''}>${t('recipesSection.sortFastest')}</option>
-            <option value="termudah" ${selectedSort === 'termudah' ? 'selected' : ''}>${t('recipesSection.sortEasiest')}</option>
-            <option value="nama-asc" ${selectedSort === 'nama-asc' ? 'selected' : ''}>${t('recipesSection.sortName')}</option>
+            <option value="nama-asc" ${selectedSort === 'nama-asc' ? 'selected' : ''}>${t('recipesSection.sortNameAsc') || 'Nama (A – Z)'}</option>
+            <option value="nama-desc" ${selectedSort === 'nama-desc' ? 'selected' : ''}>${t('recipesSection.sortNameDesc') || 'Nama (Z – A)'}</option>
           </select>
         </div>
       </div>

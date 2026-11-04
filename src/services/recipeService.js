@@ -112,13 +112,10 @@ export const recipeService = {
 
     // Sorting / Pengurutan
     if (params.sort) {
-      if (params.sort === 'tercepat') {
-        result.sort((a, b) => (parseInt(a.cookingDuration) || 0) - (parseInt(b.cookingDuration) || 0));
-      } else if (params.sort === 'termudah') {
-        const diffWeight = { 'Sangat Mudah': 1, 'Mudah': 2, 'Sedang': 3, 'Sulit': 4 };
-        result.sort((a, b) => (diffWeight[a.difficulty] || 3) - (diffWeight[b.difficulty] || 3));
-      } else if (params.sort === 'nama-asc') {
+      if (params.sort === 'nama-asc') {
         result.sort((a, b) => a.name.localeCompare(b.name));
+      } else if (params.sort === 'nama-desc') {
+        result.sort((a, b) => b.name.localeCompare(a.name));
       }
     }
 
