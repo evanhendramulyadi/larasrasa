@@ -36,14 +36,14 @@ export function renderNavbar(activeRoute = '/') {
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20 sm:h-22 gap-3">
           
-          <!-- Brand Logo: Clean Emblem (No White Pop-up Box) with Outer Ring on Hover & Click -->
+          <!-- Brand Logo: Clean Emblem (Transparent PNG, No Pop-up Scale, No White BG) with Outer Ring on Hover & Click -->
           <a href="#/" 
              class="flex items-center gap-3 shrink-0 group rounded-2xl px-2.5 py-1.5 transition-all duration-200 outline-hidden hover:ring-2 hover:ring-[#C84C24]/80 focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] active:ring-2 active:ring-[#C84C24] cursor-pointer" 
              aria-label="LarasRasa Beranda">
-            <div class="w-11 h-11 sm:w-12 sm:h-12 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
-              <img src="/assets/images/logo-larasrasa.jpeg" 
+            <div class="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center shrink-0">
+              <img src="/assets/images/logo-larasrasa.png" 
                    alt="LarasRasa Logo" 
-                   class="w-full h-full object-contain mix-blend-multiply" />
+                   class="w-full h-full object-contain" />
             </div>
             <div class="flex flex-col">
               <span class="font-editorial-serif text-2xl sm:text-[26px] font-bold tracking-tight text-[#120B07] leading-none group-hover:text-[#C84C24] transition-colors">
