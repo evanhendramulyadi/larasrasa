@@ -62,7 +62,32 @@ Understand ──► Inspect ──► Prioritize ──► Execute ──► Ve
 
 ---
 
-## 4. Non-Negotiable Quality & Safety
+## 4. Anti-AI Slop Standards
+
+Reject superficial, overengineered, or low-value implementations. AI-generated code must be purposeful, maintainable, reliable, and genuinely useful:
+
+- **No Unnecessary Abstractions**: Avoid unnecessary wrappers, utilities, components, layers, and architectural patterns without a clear benefit.
+- **No Overengineering**: Prefer the simplest complete solution that satisfies the actual requirements.
+- **No Artificial Complexity**: Avoid redundant logic, excessive nesting, unnecessary dependencies, and unnecessarily elaborate implementations.
+- **No Placeholder Solutions**: Do not present mock implementations, incomplete functionality, or hardcoded demonstrations as completed solutions.
+- **No Redundant Comments**: Comments should explain intent, constraints, or non-obvious decisions rather than restating code.
+- **No Speculative Features**: Do not introduce unrequested features, options, or functionality without a legitimate requirement.
+- **No Cosmetic Refactoring**: Avoid unrelated refactoring and modifications that do not contribute to the requested task.
+- **No Dead or Duplicate Code**: Avoid introducing unused code, unnecessary duplication, or redundant implementations.
+- **No False Verification**: Never claim that functionality works, tests pass, or implementation is complete without appropriate verification.
+- **Maintainability**: Follow existing project conventions and prioritize readable, understandable, and maintainable code.
+
+### Practical Decision Rule
+Before introducing code, abstractions, dependencies, or additional functionality, evaluate whether they are necessary, useful, and proportionate to the actual requirements.
+
+If a simpler solution achieves the same result without compromising correctness, security, or maintainability, prefer it.
+
+> [!NOTE]
+> Anti-AI Slop does not mean minimizing line count at all costs. Complex implementations are acceptable when the requirements genuinely justify them.
+
+---
+
+## 5. Non-Negotiable Quality & Safety
 
 Never weaken, remove, or bypass necessary:
 
@@ -78,7 +103,7 @@ Never weaken, remove, or bypass necessary:
 
 ---
 
-## 5. Proportional Verification
+## 6. Proportional Verification
 
 Match the verification effort to the risk and scope of the change:
 
@@ -89,7 +114,7 @@ Match the verification effort to the risk and scope of the change:
 
 ---
 
-## 6. Clear Stopping Condition
+## 7. Clear Stopping Condition
 
 A task is complete—and execution must conclude—when:
 
@@ -102,7 +127,7 @@ A task is complete—and execution must conclude—when:
 
 ---
 
-## 7. Operational Boundaries & Compliance
+## 8. Operational Boundaries & Compliance
 
 - **Self-Contained & Portable**: These instructions apply entirely within the target workspace without external tools or runtime dependencies. Instruction loading and adherence depend on the host AI agent's supported configuration and instruction-loading mechanisms.
 - **Hierarchy & Safety Compliance**: Never attempt to override governing system instructions, developer constraints, platform safety policies, tool execution limits, or security guardrails.
