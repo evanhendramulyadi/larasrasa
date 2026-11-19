@@ -21,10 +21,10 @@ export function renderFooter() {
           <!-- Column 1: Brand Identity & Philosophy (4 cols) -->
           <div class="lg:col-span-4 space-y-5">
             <div class="flex items-center gap-3.5">
-              <div class="w-13 h-13 rounded-2xl bg-white p-1.5 border-2 border-[#D49B42]/60 shadow-lg flex items-center justify-center shrink-0">
-                <img src="/assets/images/logo-larasrasa.jpeg" 
+              <div class="w-12 h-12 flex items-center justify-center shrink-0">
+                <img src="/assets/images/logo-larasrasa.png" 
                      alt="LarasRasa Logo" 
-                     class="w-full h-full object-contain rounded-xl" />
+                     class="w-full h-full object-contain" />
               </div>
               <div>
                 <span class="font-editorial-serif text-2xl sm:text-3xl font-bold tracking-tight text-white block">

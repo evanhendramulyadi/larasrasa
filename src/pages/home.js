@@ -22,37 +22,33 @@ export async function renderHomePage() {
   return `
     <div class="w-full">
       
-      <!-- HERO SECTION -->
-      <section class="relative overflow-hidden pt-10 pb-16 lg:pt-16 lg:pb-24 border-b border-[#D49B42]/30 bg-gradient-to-b from-[#FAF7F2] via-[#FAF7F2] to-[#F5EFEB]/50">
-        <!-- Ambient Warm Royal Glow -->
-        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#D49B42]/12 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute bottom-0 right-10 w-[500px] h-[500px] bg-[#C84C24]/10 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+      <!-- HERO SECTION: ONE-SCREEN VIEWPORT OPTIMIZED -->
+      <section class="relative overflow-hidden border-b border-[#D49B42]/30 bg-[#FAF7F2] py-8 sm:py-12 lg:py-0 lg:h-[calc(100svh-68px)] lg:min-h-[560px] lg:max-h-[840px] flex flex-col justify-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
             
             <!-- Left Editorial Text -->
-            <div class="lg:col-span-6 space-y-6 text-center lg:text-left z-10">
+            <div class="lg:col-span-6 space-y-3.5 sm:space-y-4 lg:space-y-3.5 xl:space-y-4 text-center lg:text-left z-10">
               
-              <!-- Royal Crest Pill -->
-              <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/90 border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-xs">
+              <!-- Royal Heritage Pill -->
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 border border-[#D49B42]/40 text-[10.5px] sm:text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-2xs">
                 <span>${t('hero.badge')}</span>
               </div>
 
               <!-- Main Headline -->
-              <h1 class="font-editorial-serif text-3xl sm:text-5xl lg:text-[58px] font-bold tracking-tight text-[#120B07] leading-[1.12] break-words">
+              <h1 class="font-editorial-serif text-2xl sm:text-4xl lg:text-[32px] xl:text-[42px] 2xl:text-[46px] font-bold tracking-tight text-[#120B07] leading-[1.14] break-words">
                 ${t('hero.titleStart')} <span class="italic text-terracotta-gradient">${t('hero.titleAccent')}</span> ${t('hero.titleEnd')}
               </h1>
 
               <!-- Poetic Intro Description -->
-              <p class="text-sm sm:text-lg text-[#5C3622] font-normal leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              <p class="text-xs sm:text-base lg:text-[13px] xl:text-[15px] text-[#5C3622] font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
                 ${t('hero.description')}
               </p>
 
               <!-- Hero Action Buttons -->
-              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4 pt-1 sm:pt-2">
+              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-0.5 sm:pt-1">
                 <a href="#/resep" 
-                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30]">
+                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer border border-[#E05A30]">
                   <span>${t('hero.ctaPrimary')}</span>
                   <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -60,7 +56,7 @@ export async function renderHomePage() {
                 </a>
                 
                 <a href="#/rekomendasi" 
-                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full text-xs sm:text-sm font-bold bg-white hover:bg-[#FAF7F2] text-[#120B07] transition-all border border-[#D49B42]/45 shadow-xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer">
+                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-5.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold bg-white hover:bg-[#FAF7F2] text-[#120B07] transition-all border border-[#D49B42]/40 shadow-2xs hover:shadow-sm hover:-translate-y-0.5 cursor-pointer">
                   <svg class="w-4 h-4 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
                   </svg>
@@ -69,25 +65,25 @@ export async function renderHomePage() {
               </div>
 
               <!-- Cultural Quotation Pill -->
-              <div class="pt-2 sm:pt-3 flex items-center justify-center lg:justify-start gap-3 text-xs text-[#2E4D38]">
-                <span class="inline-block w-8 h-px bg-[#D49B42]"></span>
-                <span class="italic font-editorial-serif text-xs sm:text-sm font-semibold">${t('hero.culturalPill')}</span>
+              <div class="pt-0.5 flex items-center justify-center lg:justify-start gap-2.5 text-xs text-[#2E4D38]">
+                <span class="inline-block w-6 h-px bg-[#D49B42]"></span>
+                <span class="italic font-editorial-serif text-[11px] sm:text-xs font-semibold text-[#5C3622]">${t('hero.culturalPill')}</span>
               </div>
 
               <!-- Key Heritage Stats Cards -->
-              <div class="pt-4 grid grid-cols-3 gap-2 sm:gap-3 text-left">
-                <div class="p-2.5 sm:p-3.5 rounded-2xl bg-white/95 border border-[#D49B42]/35 shadow-xs overflow-hidden flex flex-col justify-between">
-                  <span class="font-editorial-serif text-lg sm:text-2xl font-bold text-[#C84C24] block leading-none mb-1">8</span>
+              <div class="pt-1 sm:pt-1.5 grid grid-cols-3 gap-2 sm:gap-2.5 text-left max-w-lg mx-auto lg:mx-0">
+                <div class="p-2 sm:p-2.5 rounded-xl bg-white/95 border border-[#D49B42]/30 shadow-2xs overflow-hidden flex flex-col justify-between">
+                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#C84C24] block leading-none mb-0.5">8</span>
                   <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsRegions')}</span>
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRegionsSub')}</span>
                 </div>
-                <div class="p-2.5 sm:p-3.5 rounded-2xl bg-white/95 border border-[#D49B42]/35 shadow-xs overflow-hidden flex flex-col justify-between">
-                  <span class="font-editorial-serif text-lg sm:text-2xl font-bold text-[#D49B42] block leading-none mb-1">12+</span>
+                <div class="p-2 sm:p-2.5 rounded-xl bg-white/95 border border-[#D49B42]/30 shadow-2xs overflow-hidden flex flex-col justify-between">
+                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#D49B42] block leading-none mb-0.5">12+</span>
                   <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsRecipes')}</span>
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRecipesSub')}</span>
                 </div>
-                <div class="p-2.5 sm:p-3.5 rounded-2xl bg-white/95 border border-[#D49B42]/35 shadow-xs overflow-hidden flex flex-col justify-between">
-                  <span class="font-editorial-serif text-lg sm:text-2xl font-bold text-[#2E4D38] block leading-none mb-1">100%</span>
+                <div class="p-2 sm:p-2.5 rounded-xl bg-white/95 border border-[#D49B42]/30 shadow-2xs overflow-hidden flex flex-col justify-between">
+                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#2E4D38] block leading-none mb-0.5">100%</span>
                   <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsHeritage')}</span>
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsHeritageSub')}</span>
                 </div>
@@ -97,7 +93,7 @@ export async function renderHomePage() {
 
             <!-- Right Interactive Centerpiece Showcase -->
             <div class="lg:col-span-6 relative flex items-center justify-center w-full">
-              <div id="hero-3d-canvas" class="w-full max-w-full lg:max-w-[580px] h-[480px] sm:h-[540px] lg:h-[560px]"></div>
+              <div id="hero-culinary-showcase" class="w-full max-w-lg lg:max-w-[480px] xl:max-w-[530px] h-[370px] sm:h-[430px] lg:h-[410px] xl:h-[450px] 2xl:h-[480px]"></div>
             </div>
 
           </div>
@@ -105,7 +101,7 @@ export async function renderHomePage() {
       </section>
 
       <!-- SECTION: DISCOVER BY FLAVOR SPECTRUM -->
-      <section class="w-full py-16 sm:py-24 border-b border-[#D49B42]/25 bg-white/70">
+      <section class="w-full py-14 sm:py-20 border-b border-[#D49B42]/25 bg-white/70">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
             <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] block">
@@ -152,7 +148,7 @@ export async function renderHomePage() {
       </section>
 
       <!-- SECTION: FEATURED CURATED RECIPES -->
-      <section class="w-full py-16 sm:py-24 border-b border-[#D49B42]/30 bg-[#F4EDE2]/85 relative">
+      <section class="w-full py-14 sm:py-20 border-b border-[#D49B42]/30 bg-[#F4EDE2]/85 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 sm:mb-12 gap-4 pb-5 border-b border-[#D49B42]/30">
             <div class="space-y-2">
@@ -181,13 +177,10 @@ export async function renderHomePage() {
       </section>
 
       <!-- SECTION: PETA RASA CULINARY GEOGRAPHY -->
-      <section class="w-full py-20 sm:py-28 bg-gradient-to-br from-[#120B07] via-[#1A100B] to-[#120B07] text-white relative overflow-hidden border-b border-[#D49B42]/35 shadow-2xl">
-        <div class="absolute -right-24 -bottom-24 w-[500px] h-[500px] bg-[#C84C24]/15 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -left-24 -top-24 w-[450px] h-[450px] bg-[#D49B42]/12 rounded-full blur-3xl pointer-events-none"></div>
-
+      <section class="w-full py-14 sm:py-20 bg-[#120B07] text-white relative overflow-hidden border-b border-[#D49B42]/30 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div class="lg:col-span-6 space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            <div class="lg:col-span-6 space-y-5">
               <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider">
                 <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                   <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
@@ -205,24 +198,24 @@ export async function renderHomePage() {
                 ${t('mapSection.description')}
               </p>
 
-              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3.5 pt-2 text-xs">
-                <div class="p-4 rounded-2xl bg-white/5 border border-[#D49B42]/30 backdrop-blur-md">
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs">
+                <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
                   <p class="font-bold text-[#D49B42]">Kota Semarang</p>
                   <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Lumpia & Tahu Gimbal</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-white/5 border border-[#D49B42]/30 backdrop-blur-md">
+                <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
                   <p class="font-bold text-[#D49B42]">Solo (Surakarta)</p>
                   <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Sega Liwet & Selat Solo</p>
                 </div>
-                <div class="p-4 rounded-2xl bg-white/5 border border-[#D49B42]/30 backdrop-blur-md">
+                <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
                   <p class="font-bold text-[#D49B42]">Kab. Kudus</p>
                   <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Soto Kencur & Garang Asem</p>
                 </div>
               </div>
 
-              <div class="pt-3">
+              <div class="pt-2">
                 <a href="#/peta-rasa" 
-                   class="inline-flex items-center gap-2.5 px-7 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
+                   class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
                   <span>${t('nav.flavorMap')} &rarr;</span>
                 </a>
               </div>
@@ -230,10 +223,10 @@ export async function renderHomePage() {
 
             <!-- Preview Graphic Teaser -->
             <div class="lg:col-span-6 flex items-center justify-center">
-              <div class="w-full aspect-4/3 rounded-3xl overflow-hidden border-2 border-[#D49B42]/40 shadow-2xl relative group">
+              <div class="w-full aspect-4/3 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#D49B42]/40 shadow-xl relative group">
                 <img src="/assets/images/regions/semarang.jpg" 
                      alt="Peta Rasa Jawa Tengah" 
-                     class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"/>
+                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-6 sm:p-8">
                   <span class="text-xs uppercase tracking-widest text-[#D49B42] font-bold">${t('mapSection.badge')}</span>
                   <h3 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-white mt-1">${t('mapSection.mapTitle')}</h3>
@@ -246,7 +239,7 @@ export async function renderHomePage() {
       </section>
 
       <!-- SECTION: SPICE DISCOVERY -->
-      <section class="w-full py-16 sm:py-24 border-b border-[#D49B42]/25 bg-white/70">
+      <section class="w-full py-14 sm:py-20 border-b border-[#D49B42]/25 bg-white/70">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
             <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] block">
@@ -298,7 +291,7 @@ export async function renderHomePage() {
       </section>
 
       <!-- SECTION: LEGENDARY HISTORIC RESTAURANTS -->
-      <section class="w-full py-16 sm:py-24 border-b border-[#D49B42]/30 bg-[#F4EDE2]/85 relative">
+      <section class="w-full py-14 sm:py-20 border-b border-[#D49B42]/30 bg-[#F4EDE2]/85 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 sm:mb-12 gap-4 pb-5 border-b border-[#D49B42]/30">
             <div class="space-y-2">
@@ -327,27 +320,24 @@ export async function renderHomePage() {
       </section>
 
       <!-- SECTION: AI FOOD CREATOR SPOTLIGHT STUDIO -->
-      <section class="w-full py-16 sm:py-24 border-b border-[#D49B42]/25 bg-white/70">
+      <section class="w-full py-14 sm:py-20 border-b border-[#D49B42]/25 bg-white/70">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#120B07] via-[#1E120A] to-[#120B07] border-2 border-[#D49B42]/45 shadow-2xl p-8 sm:p-12 lg:p-16 text-[#FAF7F2]">
-            <div class="absolute -right-24 -bottom-24 w-96 h-96 rounded-full bg-[#C84C24]/18 blur-3xl pointer-events-none"></div>
-            <div class="absolute -left-20 -top-20 w-80 h-80 rounded-full bg-[#D49B42]/15 blur-3xl pointer-events-none"></div>
-            
-            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-              <div class="lg:col-span-8 space-y-5">
-                <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/45 text-xs font-bold text-[#D49B42] shadow-xs">
+          <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-[#120B07] border border-[#D49B42]/40 shadow-xl p-6 sm:p-10 lg:p-12 text-[#FAF7F2]">
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+              <div class="lg:col-span-8 space-y-4">
+                <div class="inline-flex items-center px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] shadow-xs">
                   <span>${isEn ? 'AI CULINARY STUDIO • CENTRAL JAVA' : 'STUDIO RACIK KULINER AI • JAWA TENGAH'}</span>
                 </div>
-                <h2 class="font-editorial-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                <h2 class="font-editorial-serif text-2xl sm:text-4xl lg:text-[40px] font-bold text-white leading-tight">
                   ${isEn ? 'Craft Your Recipe Concept & Bumbu Profile' : 'Rancang Konsep Resep & Komposisi Bumbu Anda'}
                 </h2>
-                <p class="text-sm sm:text-base text-[#FAF7F2]/85 max-w-2xl leading-relaxed">
+                <p class="text-xs sm:text-base text-[#FAF7F2]/85 max-w-2xl leading-relaxed">
                   ${isEn 
                     ? 'Input your culinary vision, choose authentic regional spices, calibrate for 4 people, and generate a standardized recipe template ready for backend integration.'
                     : 'Pilih bahan rempah otentik Jawa Tengah, tentukan teknik memasak tradisional, sesuaikan porsi 4 orang keluarga, lan susun cithakan resep resmi siap sambung backend.'}
                 </p>
                 <div class="pt-2">
-                  <a href="#/ai-food-creator" class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 border border-[#E05A30]">
+                  <a href="#/ai-food-creator" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
                     <span>${isEn ? 'Open AI Food Creator Studio' : 'Bukak Studio AI Food Creator'}</span>
                     <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                       <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -356,9 +346,9 @@ export async function renderHomePage() {
                 </div>
               </div>
 
-              <div class="lg:col-span-4 bg-white/5 border border-[#D49B42]/35 rounded-3xl p-6 sm:p-7 backdrop-blur-md space-y-4 text-xs">
+              <div class="lg:col-span-4 bg-white/5 border border-[#D49B42]/30 rounded-2xl p-5 sm:p-6 space-y-3.5 text-xs">
                 <span class="text-[11px] font-bold text-[#D49B42] uppercase tracking-wider block">${isEn ? 'AI Studio Architecture' : 'Kautaman Studio AI'}</span>
-                <div class="space-y-3 text-[#FAF7F2]/85">
+                <div class="space-y-2.5 text-[#FAF7F2]/85">
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
                     <span><strong>${isEn ? 'Family Scale (4 People):' : 'Standar Porsi (4 Orang):'}</strong> ${isEn ? 'Calibrated for balanced family dining' : 'Disesuaikan dengan takaran saji 4 orang keluarga'}</span>
@@ -379,7 +369,7 @@ export async function renderHomePage() {
       </section>
 
       <!-- SECTION: QUICK CONCIERGE CTA (MAKANAN APA HARI INI) -->
-      <section class="w-full py-16 sm:py-24 bg-gradient-to-b from-[#FAF7F2] to-[#F5EFEB]">
+      <section class="w-full py-14 sm:py-20 bg-gradient-to-b from-[#FAF7F2] to-[#F5EFEB]">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="bg-white rounded-3xl p-8 sm:p-14 border border-[#D49B42]/40 shadow-xl text-center space-y-6">
             <div class="w-16 h-16 rounded-3xl bg-[#120B07] text-[#D49B42] border-2 border-[#D49B42]/50 flex items-center justify-center mx-auto shadow-md">
@@ -418,9 +408,9 @@ export async function renderHomePage() {
 }
 
 export function initHomePageInteractions() {
-  const heroCanvas = document.getElementById('hero-3d-canvas');
-  if (heroCanvas) {
-    const showcase = new ThreeHeroShowcase(heroCanvas);
+  const heroContainer = document.getElementById('hero-culinary-showcase') || document.getElementById('hero-3d-canvas');
+  if (heroContainer) {
+    const showcase = new ThreeHeroShowcase(heroContainer);
     showcase.init();
     window._currentHeroShowcase = showcase;
   }

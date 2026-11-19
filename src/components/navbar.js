@@ -31,31 +31,31 @@ export function renderNavbar(activeRoute = '/') {
   ];
 
   return `
-    <header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-[#FAF7F2]/90 backdrop-blur-xl border-b border-[#D49B42]/25 shadow-xs">
+    <header id="main-header" class="sticky top-0 z-50 transition-all duration-300 bg-[#FAF7F2]/95 backdrop-blur-xl border-b border-[#D49B42]/25 shadow-xs">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20 sm:h-22 gap-3">
+        <div class="flex items-center justify-between h-16 lg:h-[68px] gap-3">
           
-          <!-- Brand Logo: Clean Emblem (Transparent PNG, No Pop-up Scale, No White BG) with Outer Ring on Hover & Click -->
+          <!-- Brand Logo: Clean Emblem -->
           <a href="#/" 
-             class="flex items-center gap-3 shrink-0 group rounded-2xl px-2.5 py-1.5 transition-all duration-200 outline-hidden hover:ring-2 hover:ring-[#C84C24]/80 focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] active:ring-2 active:ring-[#C84C24] cursor-pointer" 
+             class="flex items-center gap-2.5 shrink-0 group rounded-2xl px-2 py-1 transition-all duration-200 outline-hidden hover:ring-2 hover:ring-[#C84C24]/80 focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] active:ring-2 active:ring-[#C84C24] cursor-pointer" 
              aria-label="LarasRasa Beranda">
-            <div class="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center shrink-0">
+            <div class="w-9 h-9 lg:w-10 lg:h-10 flex items-center justify-center shrink-0">
               <img src="/assets/images/logo-larasrasa.png" 
                    alt="LarasRasa Logo" 
                    class="w-full h-full object-contain" />
             </div>
             <div class="flex flex-col">
-              <span class="font-editorial-serif text-2xl sm:text-[26px] font-bold tracking-tight text-[#120B07] leading-none group-hover:text-[#C84C24] transition-colors">
+              <span class="font-editorial-serif text-xl lg:text-[22px] font-bold tracking-tight text-[#120B07] leading-none group-hover:text-[#C84C24] transition-colors">
                 Laras<span class="text-[#C84C24]">Rasa</span>
               </span>
-              <span class="text-[10px] tracking-widest font-bold text-[#D49B42] uppercase mt-1 whitespace-nowrap">
+              <span class="text-[9px] tracking-wider font-bold text-[#D49B42] uppercase mt-0.5 whitespace-nowrap">
                 ${currentLang === 'id' ? 'Kuliner Jawa Tengah' : 'Central Java Cuisine'}
               </span>
             </div>
           </a>
 
           <!-- Desktop Navigation Menu -->
-          <nav class="hidden xl:flex items-center gap-1 2xl:gap-1.5 font-editorial-sans" aria-label="Menu Utama">
+          <nav class="hidden xl:flex items-center gap-1 font-editorial-sans" aria-label="Menu Utama">
             ${navItems.map(item => {
               const itemPath = item.href.replace('#', '');
               const isActive = isRouteMatching(itemPath, activeRoute);
@@ -64,7 +64,7 @@ export function renderNavbar(activeRoute = '/') {
                    data-nav-path="${itemPath}"
                    ${item.isSpecial ? 'data-special="true"' : ''}
                    ${isActive ? 'aria-current="page"' : ''}
-                   class="desktop-nav-link whitespace-nowrap px-3 2xl:px-3.5 py-2 text-xs 2xl:text-sm font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 ${
+                   class="desktop-nav-link whitespace-nowrap px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-[13px] font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 ${
                      isActive
                        ? 'bg-[#1E120A] text-[#FAF7F2] ring-1 ring-[#D49B42]/45 shadow-sm'
                        : item.isSpecial
@@ -79,13 +79,13 @@ export function renderNavbar(activeRoute = '/') {
           </nav>
 
           <!-- Right Action: Language Switcher & Quick Concierge CTA -->
-          <div class="hidden sm:flex items-center gap-3 shrink-0">
+          <div class="hidden sm:flex items-center gap-2.5 shrink-0">
             <!-- Sleek Language Selector Pill [ID | EN] -->
-            <div class="inline-flex rounded-full p-1 bg-[#EFE8DA] border border-[#D49B42]/30 shadow-inner text-xs font-bold" role="group" aria-label="Language Selector">
+            <div class="inline-flex rounded-full p-0.5 bg-[#EFE8DA] border border-[#D49B42]/30 shadow-inner text-xs font-bold" role="group" aria-label="Language Selector">
               <button type="button" 
                       id="lang-btn-id" 
                       data-lang="id"
-                      class="px-3 py-1 rounded-full transition-all text-[11px] font-bold cursor-pointer ${
+                      class="px-2.5 py-1 rounded-full transition-all text-[11px] font-bold cursor-pointer ${
                         currentLang === 'id' 
                           ? 'bg-[#1E120A] text-[#FAF7F2] shadow-xs' 
                           : 'text-[#5C3622] hover:text-[#C84C24]'
@@ -95,7 +95,7 @@ export function renderNavbar(activeRoute = '/') {
               <button type="button" 
                       id="lang-btn-en" 
                       data-lang="en"
-                      class="px-3 py-1 rounded-full transition-all text-[11px] font-bold cursor-pointer ${
+                      class="px-2.5 py-1 rounded-full transition-all text-[11px] font-bold cursor-pointer ${
                         currentLang === 'en' 
                           ? 'bg-[#1E120A] text-[#FAF7F2] shadow-xs' 
                           : 'text-[#5C3622] hover:text-[#C84C24]'
@@ -106,7 +106,7 @@ export function renderNavbar(activeRoute = '/') {
 
             <!-- Quick Concierge CTA Button -->
             <a href="#/rekomendasi" 
-               class="whitespace-nowrap hidden 2xl:inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-sm hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
+               class="whitespace-nowrap hidden 2xl:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 border border-[#E05A30]">
               <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
               </svg>
@@ -140,7 +140,7 @@ export function renderNavbar(activeRoute = '/') {
       </div>
 
       <!-- Mobile Dropdown Drawer with Polished Heritage Styling -->
-      <div id="mobile-menu-drawer" class="xl:hidden hidden border-b border-[#D49B42]/25 bg-[#FAF7F2]/98 backdrop-blur-2xl px-4 sm:px-6 pt-3 pb-8 space-y-2 shadow-2xl transition-all duration-300 max-h-[calc(100vh-5rem)] overflow-y-auto">
+      <div id="mobile-menu-drawer" class="xl:hidden hidden border-b border-[#D49B42]/25 bg-[#FAF7F2]/98 backdrop-blur-2xl px-4 sm:px-6 pt-3 pb-8 space-y-2 shadow-2xl transition-all duration-300 max-h-[calc(100vh-4rem)] overflow-y-auto">
         ${navItems.map(item => {
           const itemPath = item.href.replace('#', '');
           const isActive = isRouteMatching(itemPath, activeRoute);
