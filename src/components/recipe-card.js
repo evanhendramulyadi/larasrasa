@@ -62,7 +62,7 @@ export function renderRecipeCard(recipe) {
             <span>${recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}</span>
           </span>
         </div>
-      </a>
+      </div>
 
       <!-- Card Body Content -->
       <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
