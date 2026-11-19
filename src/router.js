@@ -8,6 +8,7 @@ import { renderSpicesPage, initSpicesPageInteractions } from './pages/spices.js'
 import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
 import { renderRecommendationsPage, initRecommendationsInteractions } from './pages/recommendations.js';
 import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions } from './pages/ai-food-creator.js';
+import { openRecipeModal } from './components/recipe-modal.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
 
@@ -34,13 +35,14 @@ export class Router {
       this.handleRouteChange();
     });
 
-    // Delegated Recipe Card click & keyboard accessibility
+    // Delegated Recipe Card click & keyboard accessibility (triggers pop-up modal like rempah)
     document.addEventListener('click', (e) => {
       const card = e.target.closest('[data-recipe-slug]');
-      if (card && !e.target.closest('a')) {
+      if (card) {
+        e.preventDefault();
         const slug = card.getAttribute('data-recipe-slug');
         if (slug) {
-          window.location.hash = `#/resep/${slug}`;
+          openRecipeModal(slug);
         }
       }
     });
@@ -52,7 +54,7 @@ export class Router {
           e.preventDefault();
           const slug = card.getAttribute('data-recipe-slug');
           if (slug) {
-            window.location.hash = `#/resep/${slug}`;
+            openRecipeModal(slug);
           }
         }
       }
@@ -105,16 +107,12 @@ export class Router {
       pageTitlePrefix = t('nav.recipes');
     } else if (path.startsWith('/resep/')) {
       const slug = path.replace('/resep/', '');
-      pageHtml = await renderRecipeDetailPage(slug, queryParams);
-      try {
-        const rec = await recipeService.getRecipeBySlug(slug);
-        const locRec = rec ? localizeRecipe(rec) : null;
-        pageTitlePrefix = locRec ? (locRec.name || locRec.title) : (rec ? (rec.name || rec.title) : t('nav.recipes'));
-        postRenderAction = () => initRecipeDetailInteractions(rec);
-      } catch (e) {
-        console.warn(e);
-        pageTitlePrefix = t('nav.recipes');
-      }
+      pageHtml = await renderRecipesPage(queryParams);
+      postRenderAction = () => {
+        initRecipesPageInteractions();
+        openRecipeModal(slug);
+      };
+      pageTitlePrefix = t('nav.recipes');
     } else if (path === '/peta-rasa') {
       pageHtml = await renderFlavorMapPage();
       postRenderAction = () => initFlavorMapInteractions();

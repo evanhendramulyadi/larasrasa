@@ -3,8 +3,8 @@ import { i18n } from '../i18n/index.js';
 export const flavorProfiles = [
   {
     id: 'manis',
-    name: 'Manis Gurih',
-    nameEn: 'Sweet & Savory',
+    name: 'Manis',
+    nameEn: 'Sweet',
     tagline: 'Kelembutan Legi yang Menghangatkan Hati',
     taglineEn: 'Gentle Warmth of Palm Sugar & Aromatics',
     description: 'Karakter rasa manis khas Jawa Tengah lahir dari penggunaan gula kelapa asli (gula jawa), kecap manis tradisional yang difermentasi alami, serta rempah daun seperti salam dan lengkuas. Rasa manis di sini tidak menonjol sendiri, melainkan berpadu selaras dengan gurihnya santan dan bumbu aromatik.',
@@ -18,8 +18,8 @@ export const flavorProfiles = [
   },
   {
     id: 'gurih',
-    name: 'Gurih Lembut',
-    nameEn: 'Mellow Savory',
+    name: 'Gurih',
+    nameEn: 'Savory',
     tagline: 'Kekayaan Santan & Rempah Penyangga Cita Rasa',
     taglineEn: 'Velvety Richness of Coconut Cream & Candlenut',
     description: 'Didominasi oleh gurih alami dari santan perasan pertama (areh), kemiri sangrai, bawang merah lokal, serta ketumbar yang dihaluskan bersama bumbu dasar putih atau kuning.',
@@ -33,8 +33,8 @@ export const flavorProfiles = [
   },
   {
     id: 'segar',
-    name: 'Segar Berkuah',
-    nameEn: 'Clear & Fresh Broth',
+    name: 'Segar',
+    nameEn: 'Fresh',
     tagline: 'Kuah Kaldu Bening Beraroma Rempah Segar',
     taglineEn: 'Golden Clear Broth with Aromatic Kencur & Lime',
     description: 'Karakteristik sup dan soto Jawa Tengah yang bening keemasan, dimasak perlahan dari kaldu ayam kampung atau daging kerbau, dibumbui kencur, jahe, bawang putih goreng, serta perasan jeruk nipis segar.',
@@ -48,8 +48,8 @@ export const flavorProfiles = [
   },
   {
     id: 'asam',
-    name: 'Asam Segar Alami',
-    nameEn: 'Tangy Citrus & Bilimbi',
+    name: 'Asam',
+    nameEn: 'Tangy',
     tagline: 'Kesegaran Belimbing Wuluh & Asam Jawa',
     taglineEn: 'Vibrant Tartness of Sour Bilimbi & Tamarind',
     description: 'Sensasi rasa asam alami yang memecah lemak, dihasilkan dari potongan belimbing wuluh segar, tomat hijau, asam jawa, dan air kelapa muda.',
@@ -63,8 +63,8 @@ export const flavorProfiles = [
   },
   {
     id: 'pedas',
-    name: 'Pedas Hangat',
-    nameEn: 'Warm & Spicy',
+    name: 'Pedas',
+    nameEn: 'Spicy',
     tagline: 'Gigitan Cabai Rawit & Bumbu Ulek Alami',
     taglineEn: 'Zesty Red Chilies & Stone-ground Spices',
     description: 'Bukan sekadar pedas menyengat, tetapi pedas yang berpadu dengan kencur, terasi bakar, dan daun kemangi segar, memberikan kehangatan tubuh khas dataran tinggi.',
@@ -79,7 +79,7 @@ export const flavorProfiles = [
   {
     id: 'kaya-rempah',
     name: 'Kaya Rempah',
-    nameEn: 'Rich & Spiced',
+    nameEn: 'Spiced',
     tagline: 'Kedalaman Rasa dari Racikan Bumbu Purba',
     taglineEn: 'Ancient Complex Spices & Coastal Heritage',
     description: 'Profil bumbu pekat yang menggunakan kluwek, jintan, kapulaga jawa, bunga kecombrang, serta racikan serundeng kelapa bakar.',

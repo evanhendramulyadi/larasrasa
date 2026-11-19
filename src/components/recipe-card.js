@@ -30,13 +30,13 @@ export function renderRecipeCard(recipe) {
   return `
     <article 
       data-recipe-slug="${recipe.slug}"
-      role="link"
+      role="button"
       tabindex="0"
       aria-label="${recipe.name} (${recipe.regionName})"
       class="recipe-card recipe-card-item group bg-white rounded-3xl overflow-hidden border border-[#D49B42]/30 shadow-xs hover:shadow-2xl hover:border-[#D49B42] transition-all duration-300 flex flex-col card-hover-lift cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#C84C24]"
     >
       <!-- Card Image Header with Zoom on Hover -->
-      <a href="#/resep/${recipe.slug}" class="recipe-card-link relative block overflow-hidden aspect-4/3 bg-[#120B07]/10" aria-label="${recipe.name}">
+      <div class="recipe-card-link relative block overflow-hidden aspect-4/3 bg-[#120B07]/10" aria-label="${recipe.name}">
         <img src="${recipe.image}" 
              alt="${recipe.name}" 
              loading="lazy"
@@ -56,15 +56,10 @@ export function renderRecipeCard(recipe) {
           </span>
         </div>
 
-        <!-- Heritage Category Badge Overlay -->
+        <!-- Meal Type Category Badge Overlay -->
         <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
           <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
             <span>${recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}</span>
-          </span>
-
-          <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
-            <span>👥</span>
-            <span>4 ${isEn ? 'People' : 'Orang'}</span>
           </span>
         </div>
       </a>
@@ -72,21 +67,18 @@ export function renderRecipeCard(recipe) {
       <!-- Card Body Content -->
       <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
         <div>
-          <!-- Flavor Tags & Heritage Indicator -->
+          <!-- Flavor Tags -->
           <div class="flex items-center justify-between gap-2 mb-3">
             <div class="flex flex-wrap gap-1.5">
               ${flavorTags}
             </div>
-            <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-[#FAF7F2] text-[#5C3622] border border-[#E8DEC8] shrink-0">
-              ${isEn ? 'Heritage' : 'Pusaka'}
-            </span>
           </div>
 
           <!-- Recipe / Dish Title -->
           <h3 class="font-editorial-serif text-xl font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors leading-snug mb-1">
-            <a href="#/resep/${recipe.slug}" class="hover:underline">
+            <span class="hover:underline">
               ${recipe.name}
-            </a>
+            </span>
           </h3>
 
           <!-- Authentic Javanese Name Subtitle -->
@@ -109,13 +101,12 @@ export function renderRecipeCard(recipe) {
             <span>${recipe.regionName}</span>
           </div>
 
-          <a href="#/resep/${recipe.slug}" 
-             class="inline-flex items-center gap-1.5 font-bold text-[#120B07] group-hover:text-[#C84C24] transition-all">
-            <span>${isEn ? 'Explore History & Recipe' : 'Pelajari Sejarah & Resep'}</span>
+          <span class="inline-flex items-center gap-1.5 font-bold text-[#120B07] group-hover:text-[#C84C24] transition-all">
+            <span>${isEn ? 'Explore Recipe' : 'Pelajari Resep'}</span>
             <svg class="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
-          </a>
+          </span>
         </div>
       </div>
     </article>

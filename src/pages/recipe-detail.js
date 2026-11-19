@@ -116,8 +116,8 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5 truncate">${flavorText || 'Autentik'}</span>
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
-            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Standard Servings' : 'Standar Resep'}</span>
-            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">4 ${isEn ? 'People' : 'Orang (Keluarga)'}</span>
+            <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Standard Servings' : 'Takaran Porsi'}</span>
+            <span class="font-bold text-sm sm:text-base text-[#C84C24] block mt-0.5">${isEn ? '4 Servings' : '4 Porsi'}</span>
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
             <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Culinary Tradition' : 'Ragam Pusaka'}</span>
@@ -222,14 +222,13 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
               ${t('recipeDetail.ingredientsTitle')}
             </h2>
           </div>
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/35 text-xs font-bold text-[#5C3622]">
-            <span>👥</span>
-            <span>${isEn ? 'Calibrated for 4 People' : 'Standar Porsi Santap: 4 Orang'}</span>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/35 text-xs font-bold text-[#C84C24]">
+            <span>${isEn ? 'Calibrated for 4 Servings' : 'Takaran Standar: 4 Porsi'}</span>
           </div>
         </div>
 
         <p class="text-xs text-[#5C3622]">
-          ${isEn ? 'All ingredient measurements are naturally calibrated for a standard 4-person family meal in Central Javanese culinary tradition.' : 'Seluruh takaran gramasi bumbu dan bahan telah terkalibrasi pas untuk santap 4 orang dalam tradisi dapur keluarga Jawa Tengah.'}
+          ${isEn ? 'All ingredient measurements are naturally calibrated for 4 servings in Central Javanese culinary tradition.' : 'Seluruh takaran gramasi bumbu dan bahan telah terkalibrasi pas untuk 4 porsi dalam tradisi dapur keluarga Jawa Tengah.'}
         </p>
 
         <!-- Ingredients Table / Groups (Fixed 4 Servings) -->
