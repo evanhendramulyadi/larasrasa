@@ -78,12 +78,12 @@ export async function renderHomePage() {
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRegionsSub')}</span>
                 </div>
                 <div class="p-2 sm:p-2.5 rounded-xl bg-white/95 border border-[#D49B42]/30 shadow-2xs overflow-hidden flex flex-col justify-between">
-                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#D49B42] block leading-none mb-0.5">12+</span>
+                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#D49B42] block leading-none mb-0.5">29</span>
                   <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsRecipes')}</span>
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRecipesSub')}</span>
                 </div>
                 <div class="p-2 sm:p-2.5 rounded-xl bg-white/95 border border-[#D49B42]/30 shadow-2xs overflow-hidden flex flex-col justify-between">
-                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#2E4D38] block leading-none mb-0.5">100%</span>
+                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#2E4D38] block leading-none mb-0.5">17</span>
                   <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsHeritage')}</span>
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsHeritageSub')}</span>
                 </div>
