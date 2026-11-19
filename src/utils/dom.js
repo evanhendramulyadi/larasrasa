@@ -27,12 +27,15 @@ export function render(container, htmlString, postRenderCallback = null) {
 }
 
 /**
- * Smoothly scroll window to top
+ * Scroll window immediately or smoothly to top
  */
-export function scrollToTop() {
+export function scrollToTop(behavior = 'instant') {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth'
+    left: 0,
+    behavior
   });
+  if (document.documentElement) document.documentElement.scrollTop = 0;
+  if (document.body) document.body.scrollTop = 0;
 }
 

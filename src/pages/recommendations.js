@@ -24,6 +24,19 @@ let validationError = null;
 let activeResult = null;
 let isProcessing = false;
 
+export function resetRecommendationsWizard() {
+  wizardStep = 1;
+  currentAnswers = {
+    flavor: '',
+    dishType: 'kuah-segar',
+    regionPreference: 'semua',
+    servings: 4
+  };
+  validationError = null;
+  activeResult = null;
+  isProcessing = false;
+}
+
 export async function renderRecommendationsPage() {
   if (isProcessing) {
     return renderLoadingView();

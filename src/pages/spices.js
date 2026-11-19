@@ -258,6 +258,22 @@ function renderSpiceModal(spice) {
   `;
 }
 
+let currentSpiceKeyDownHandler = null;
+
+export function closeSpiceModal() {
+  const root = document.getElementById('spice-modal-root');
+  if (root) {
+    root.innerHTML = '';
+  }
+  document.querySelectorAll('#spice-modal-backdrop').forEach(el => el.remove());
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
+  if (currentSpiceKeyDownHandler) {
+    window.removeEventListener('keydown', currentSpiceKeyDownHandler);
+    currentSpiceKeyDownHandler = null;
+  }
+}
+
 function openSpiceModal(spiceId) {
   const root = document.getElementById('spice-modal-root');
   if (!root) return;
@@ -272,30 +288,25 @@ function openSpiceModal(spiceId) {
   document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
 
-  const closeModal = () => {
-    root.innerHTML = '';
-    // Restore background page scroll
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    window.removeEventListener('keydown', handleKeyDown);
-  };
-
-  const handleKeyDown = (e) => {
+  if (currentSpiceKeyDownHandler) {
+    window.removeEventListener('keydown', currentSpiceKeyDownHandler);
+  }
+  currentSpiceKeyDownHandler = (e) => {
     if (e.key === 'Escape') {
-      closeModal();
+      closeSpiceModal();
     }
   };
-  window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener('keydown', currentSpiceKeyDownHandler);
 
   const closeBtn = document.getElementById('close-spice-modal-btn');
   const closeFooterBtn = document.getElementById('modal-close-footer-btn');
   const backdrop = document.getElementById('spice-modal-backdrop');
 
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeSpiceModal);
+  if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeSpiceModal);
   if (backdrop) {
     backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) closeModal();
+      if (e.target === backdrop) closeSpiceModal();
     });
   }
 }

@@ -161,23 +161,6 @@ export function renderNavbar(activeRoute = '/') {
             </a>
           `;
         }).join('')}
-        
-        <div class="pt-4 border-t border-[#E8DEC8] mt-3 space-y-3">
-          <div class="flex items-center justify-between px-2">
-            <span class="text-xs font-bold text-[#5C3622]">${t('common.language')}:</span>
-            <div class="inline-flex rounded-full p-1 bg-[#EFE8DA] border border-[#D49B42]/30 text-xs font-bold">
-              <button type="button" data-lang="id" class="mobile-drawer-lang px-3 py-1 rounded-full ${currentLang === 'id' ? 'bg-[#1E120A] text-white' : 'text-[#5C3622]'}">Bahasa Indonesia</button>
-              <button type="button" data-lang="en" class="mobile-drawer-lang px-3 py-1 rounded-full ${currentLang === 'en' ? 'bg-[#1E120A] text-white' : 'text-[#5C3622]'}">English</button>
-            </div>
-          </div>
-
-          <a href="#/rekomendasi" class="mobile-nav-link w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl text-xs font-bold bg-[#C84C24] text-white shadow-md">
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
-            </svg>
-            ${t('nav.findMenuCTA')}
-          </a>
-        </div>
       </div>
     </header>
   `;

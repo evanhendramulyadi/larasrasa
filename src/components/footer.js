@@ -88,34 +88,64 @@ export function renderFooter() {
           <div class="lg:col-span-3 space-y-4">
             <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-1.5 border-b border-[#D49B42]/30 flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-              <span>${isEn ? 'Academic Project (PjBL)' : 'Proyek Pembelajaran (PjBL)'}</span>
+              <span>${isEn ? 'Academic Project (PjBL IT)' : 'Proyek Pembelajaran (PjBL IT)'}</span>
             </h3>
-            <div class="p-4 rounded-2xl bg-white/5 border border-[#D49B42]/25 space-y-2.5">
+            <div class="p-4 rounded-2xl bg-white/5 border border-[#D49B42]/25 space-y-3">
               <span class="inline-block px-3 py-1 rounded-full bg-[#C84C24] text-white font-bold text-[10px] uppercase tracking-wider">
-                SMK Pariwisata Metland School
+                SMK Pariwisata Metland School — IT
               </span>
               <p class="text-xs font-bold text-white leading-snug">
-                PPLG — Pengembangan Perangkat Lunak & Gim
+                Kelompok 2 PjBL Jurusan IT Semester 1 Blocking 2 Tahun Ajaran 2026/2027
               </p>
-              <p class="text-[11px] text-[#FAF7F2]/75 leading-relaxed">
-                ${isEn 
-                  ? 'Project Based Learning (PjBL) assignment themed on Central Javanese culinary heritage. Crafted with care by <strong>Group 2 (Website Development)</strong>.'
-                  : 'Karya Project Based Learning (PjBL) bertema kebudayaan & kuliner Jawa Tengah dening <strong>Kelompok 2 (Website Development)</strong>.'}
+              <p class="text-[11px] text-[#FAF7F2]/80 leading-relaxed">
+                Kelompok 2 kebagian tugas membuat website tentang Jawa Tengah.
               </p>
+
+              <!-- Team Members & Roles -->
+              <div class="pt-2.5 border-t border-white/10 space-y-1.5">
+                <span class="text-[10px] font-bold text-[#D49B42] uppercase tracking-wider block">
+                  ${isEn ? 'Team Members:' : 'Anggota Kelompok:'}
+                </span>
+                <ul class="text-[11px] text-[#FAF7F2]/90 space-y-1.5 font-medium">
+                  <li class="flex items-start gap-1.5">
+                    <span class="text-[#D49B42] font-bold">&bull;</span>
+                    <span><strong>Evan Hendra Mulyadi</strong> <span class="text-[#FAF7F2]/65 text-[10px] block sm:inline">— Web Developer &amp; Leader</span></span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="text-[#D49B42] font-bold">&bull;</span>
+                    <span><strong>Keisha Nabilah Ar Rahmah</strong> <span class="text-[#FAF7F2]/65 text-[10px] block sm:inline">— UI/UX Designer</span></span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="text-[#D49B42] font-bold">&bull;</span>
+                    <span><strong>M. Azka Derin Sulaeman</strong> <span class="text-[#FAF7F2]/65 text-[10px] block sm:inline">— Flowchart Designer</span></span>
+                  </li>
+                  <li class="flex items-start gap-1.5">
+                    <span class="text-[#D49B42] font-bold">&bull;</span>
+                    <span><strong>Darrel Satya Laksono</strong> <span class="text-[#FAF7F2]/65 text-[10px] block sm:inline">— Pembuat Proposal</span></span>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
         </div>
 
-        <!-- Bottom Copyright & Attributions Bar -->
+        <!-- Bottom Copyright & Back to Top Bar -->
         <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#FAF7F2]/60">
-          <p class="text-center sm:text-left">
-            &copy; ${year} <strong class="text-white">LarasRasa</strong>. ${isEn ? 'All rights reserved.' : 'Sedaya hak cipta kaayomi.'} • SMK Pariwisata Metland School (PPLG)
+          <p class="text-center sm:text-left leading-relaxed">
+            &copy; 2026–Present Kelompok 2 PjBL Jurusan IT Semester 1 Blocking 2 Tahun Ajaran 2026/2027. All Rights Reserved.
           </p>
-          <div class="flex items-center gap-4 text-[11px]">
-            <a href="#/resep" class="hover:text-white transition-colors">${t('nav.recipes')}</a>
-            <span>•</span>
-            <a href="#/peta-rasa" class="hover:text-white transition-colors">${t('nav.flavorMap')}</a>
+          <div class="flex items-center gap-4 text-xs">
+            <button type="button" 
+                    id="footer-back-to-top"
+                    onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+                    class="inline-flex items-center gap-1.5 text-xs text-[#D49B42] hover:text-white transition-colors font-bold cursor-pointer group"
+                    aria-label="${isEn ? 'Back to top' : 'Kembali ke atas'}">
+              <span>${isEn ? 'Back to Top' : 'Kembali ke Atas'}</span>
+              <svg class="w-3.5 h-3.5 transform group-hover:-translate-y-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="m18 15-6-6-6 6"/>
+              </svg>
+            </button>
           </div>
         </div>
 

@@ -4,11 +4,11 @@ import { renderHomePage, initHomePageInteractions } from './pages/home.js';
 import { renderRecipesPage, initRecipesPageInteractions } from './pages/recipes.js';
 import { renderRecipeDetailPage, initRecipeDetailInteractions } from './pages/recipe-detail.js';
 import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-map.js';
-import { renderSpicesPage, initSpicesPageInteractions } from './pages/spices.js';
+import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal } from './pages/spices.js';
 import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
-import { renderRecommendationsPage, initRecommendationsInteractions } from './pages/recommendations.js';
+import { renderRecommendationsPage, initRecommendationsInteractions, resetRecommendationsWizard } from './pages/recommendations.js';
 import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions } from './pages/ai-food-creator.js';
-import { openRecipeModal } from './components/recipe-modal.js';
+import { openRecipeModal, closeRecipeModal } from './components/recipe-modal.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
 
@@ -44,6 +44,16 @@ export class Router {
         if (slug) {
           openRecipeModal(slug);
         }
+        return;
+      }
+
+      // Any navigation link click immediately closes open modals and resets state
+      const navLink = e.target.closest('a[href^="#/"]');
+      if (navLink) {
+        closeRecipeModal();
+        closeSpiceModal();
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
       }
     });
 
@@ -80,7 +90,24 @@ export class Router {
   }
 
   async handleRouteChange() {
-    // 1. Run cleanups for previous view (e.g. Three.js scenes, Leaflet maps)
+    // 1. Run cleanups for previous view: close modals, reset scroll locks, close mobile drawer
+    closeRecipeModal();
+    closeSpiceModal();
+
+    const drawer = document.getElementById('mobile-menu-drawer');
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+    if (drawer && !drawer.classList.contains('hidden')) {
+      drawer.classList.add('hidden');
+      if (mobileBtn) mobileBtn.setAttribute('aria-expanded', 'false');
+      if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
+      if (closeIcon) closeIcon.classList.add('hidden');
+    }
+
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+
     if (window._currentHeroShowcase) {
       window._currentHeroShowcase.dispose();
       window._currentHeroShowcase = null;
@@ -88,6 +115,10 @@ export class Router {
 
     // 2. Parse current route
     const { path, queryParams } = this.parseHash();
+
+    if (path === '/rekomendasi') {
+      resetRecommendationsWizard();
+    }
 
     // Instant visual update for navbar active indicator
     setActiveNavbarLink(path);

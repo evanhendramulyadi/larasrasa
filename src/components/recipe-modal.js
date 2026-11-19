@@ -228,6 +228,22 @@ export function renderRecipeModal(rawRecipe) {
   `;
 }
 
+let currentRecipeKeyDownHandler = null;
+
+export function closeRecipeModal() {
+  const root = document.getElementById('recipe-modal-root');
+  if (root) {
+    root.innerHTML = '';
+  }
+  document.querySelectorAll('#recipe-modal-backdrop').forEach(el => el.remove());
+  document.documentElement.style.overflow = '';
+  document.body.style.overflow = '';
+  if (currentRecipeKeyDownHandler) {
+    window.removeEventListener('keydown', currentRecipeKeyDownHandler);
+    currentRecipeKeyDownHandler = null;
+  }
+}
+
 export async function openRecipeModal(slug) {
   let root = document.getElementById('recipe-modal-root');
   if (!root) {
@@ -252,30 +268,25 @@ export async function openRecipeModal(slug) {
   document.documentElement.style.overflow = 'hidden';
   document.body.style.overflow = 'hidden';
 
-  const closeModal = () => {
-    root.innerHTML = '';
-    // Restore background page scroll
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
-    window.removeEventListener('keydown', handleKeyDown);
-  };
-
-  const handleKeyDown = (e) => {
+  if (currentRecipeKeyDownHandler) {
+    window.removeEventListener('keydown', currentRecipeKeyDownHandler);
+  }
+  currentRecipeKeyDownHandler = (e) => {
     if (e.key === 'Escape') {
-      closeModal();
+      closeRecipeModal();
     }
   };
-  window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener('keydown', currentRecipeKeyDownHandler);
 
   const closeBtn = document.getElementById('close-recipe-modal-btn');
   const closeFooterBtn = document.getElementById('modal-close-footer-btn');
   const backdrop = document.getElementById('recipe-modal-backdrop');
 
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeRecipeModal);
+  if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeRecipeModal);
   if (backdrop) {
     backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) closeModal();
+      if (e.target === backdrop) closeRecipeModal();
     });
   }
 

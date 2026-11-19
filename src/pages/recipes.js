@@ -15,9 +15,13 @@ let activeFilters = {
 };
 
 export async function renderRecipesPage(urlParams = {}) {
-  if (urlParams.flavor) activeFilters.flavor = urlParams.flavor;
-  if (urlParams.region) activeFilters.region = urlParams.region;
-  if (urlParams.search) activeFilters.search = urlParams.search;
+  // Reset filters to defaults or apply incoming URL params cleanly
+  activeFilters = {
+    search: urlParams.search || '',
+    region: urlParams.region || 'semua',
+    flavor: urlParams.flavor || 'semua',
+    sort: 'popular'
+  };
 
   const recipesList = await recipeService.getRecipes(activeFilters);
 
