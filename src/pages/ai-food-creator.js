@@ -43,6 +43,32 @@ let isGenerating = false;
 let validationMessage = null;
 let toastMessage = null;
 
+export function resetAiFoodCreatorState() {
+  activeTab = 'all';
+  searchQuery = '';
+  formState = {
+    creatorName: '',
+    creatorNickname: '',
+    selectedIngredientIds: ['ayam-kampung', 'bawang-merah', 'bawang-putih', 'kemiri', 'serai', 'daun-salam', 'gula-jawa'],
+    cookingMethod: 'ungkep',
+    dishCategory: 'lauk',
+    tasteProfile: 'manis-gurih',
+    spiceLevel: 1,
+    cookingDuration: 'standard',
+    servings: 4,
+    equipment: ['wajan', 'cobek'],
+    dietary: [],
+    customNotes: '',
+    imageStyle: 'editorial',
+    aspectRatio: '1:1',
+    outputLanguage: 'id'
+  };
+  currentGeneratedRecipe = null;
+  isGenerating = false;
+  validationMessage = null;
+  toastMessage = null;
+}
+
 export async function renderAiFoodCreatorPage() {
   const currentLang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
 

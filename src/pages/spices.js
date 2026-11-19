@@ -11,6 +11,10 @@ export { localizeSpice };
 
 let activeCategory = 'semua';
 
+export function resetSpicesPageState() {
+  activeCategory = 'semua';
+}
+
 export async function renderSpicesPage() {
   const categories = [
     { id: 'semua', label: t('spicesSection.catAll') || 'Semua Rempah' },

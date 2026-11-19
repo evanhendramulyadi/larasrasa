@@ -139,8 +139,8 @@ export function renderNavbar(activeRoute = '/') {
         </div>
       </div>
 
-      <!-- Mobile Dropdown Drawer with Polished Heritage Styling -->
-      <div id="mobile-menu-drawer" class="xl:hidden hidden border-b border-[#D49B42]/25 bg-[#FAF7F2]/98 backdrop-blur-2xl px-4 sm:px-6 pt-3 pb-8 space-y-2 shadow-2xl transition-all duration-300 max-h-[calc(100vh-4rem)] overflow-y-auto">
+      <!-- Mobile Dropdown Drawer with Polished Heritage Styling (Floats over page without pushing content down) -->
+      <div id="mobile-menu-drawer" class="xl:hidden hidden absolute top-full left-0 right-0 z-50 border-b border-[#D49B42]/30 bg-[#FAF7F2] shadow-2xl px-4 sm:px-6 pt-3 pb-8 space-y-2 transition-all duration-200 max-h-[calc(100vh-4rem)] overflow-y-auto">
         ${navItems.map(item => {
           const itemPath = item.href.replace('#', '');
           const isActive = isRouteMatching(itemPath, activeRoute);

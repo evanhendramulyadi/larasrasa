@@ -1,13 +1,13 @@
 import { renderNavbar, initNavbarInteractions, setActiveNavbarLink } from './components/navbar.js';
 import { renderFooter } from './components/footer.js';
 import { renderHomePage, initHomePageInteractions } from './pages/home.js';
-import { renderRecipesPage, initRecipesPageInteractions } from './pages/recipes.js';
+import { renderRecipesPage, initRecipesPageInteractions, resetRecipesPageState } from './pages/recipes.js';
 import { renderRecipeDetailPage, initRecipeDetailInteractions } from './pages/recipe-detail.js';
 import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-map.js';
-import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal } from './pages/spices.js';
+import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, resetSpicesPageState } from './pages/spices.js';
 import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
 import { renderRecommendationsPage, initRecommendationsInteractions, resetRecommendationsWizard } from './pages/recommendations.js';
-import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions } from './pages/ai-food-creator.js';
+import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions, resetAiFoodCreatorState } from './pages/ai-food-creator.js';
 import { openRecipeModal, closeRecipeModal } from './components/recipe-modal.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
@@ -90,7 +90,14 @@ export class Router {
   }
 
   async handleRouteChange() {
-    // 1. Run cleanups for previous view: close modals, reset scroll locks, close mobile drawer
+    // 1. Immediately clear any input text or textarea before destroying old page
+    if (this.app) {
+      this.app.querySelectorAll('input, textarea').forEach(el => {
+        el.value = '';
+      });
+    }
+
+    // 2. Run cleanups for previous view: close modals, reset scroll locks, close mobile drawer
     closeRecipeModal();
     closeSpiceModal();
 
@@ -113,12 +120,14 @@ export class Router {
       window._currentHeroShowcase = null;
     }
 
-    // 2. Parse current route
-    const { path, queryParams } = this.parseHash();
+    // 3. Reset all module states so each page always opens in its initial pristine condition
+    resetAiFoodCreatorState();
+    resetRecommendationsWizard();
+    resetRecipesPageState();
+    resetSpicesPageState();
 
-    if (path === '/rekomendasi') {
-      resetRecommendationsWizard();
-    }
+    // 4. Parse current route
+    const { path, queryParams } = this.parseHash();
 
     // Instant visual update for navbar active indicator
     setActiveNavbarLink(path);

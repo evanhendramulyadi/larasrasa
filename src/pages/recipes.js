@@ -14,6 +14,15 @@ let activeFilters = {
   sort: 'popular'
 };
 
+export function resetRecipesPageState() {
+  activeFilters = {
+    search: '',
+    region: 'semua',
+    flavor: 'semua',
+    sort: 'popular'
+  };
+}
+
 export async function renderRecipesPage(urlParams = {}) {
   // Reset filters to defaults or apply incoming URL params cleanly
   activeFilters = {
