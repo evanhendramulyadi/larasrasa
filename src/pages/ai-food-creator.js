@@ -470,27 +470,27 @@ function renderFormView(currentLang) {
           <!-- FREE NUMERIC SERVINGS INPUT & CUSTOM NOTES -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             
-            <!-- Fixed Standard 4 People Servings Info (No Configuration Needed) -->
+            <!-- Fixed Standard 4 Portions Servings Info (No Configuration Needed) -->
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <span class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
                   ${isEn ? 'Servings Scale (Fixed)' : 'Porsi Santapan (Standar Otomatis)'}
                 </span>
                 <span class="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  ${isEn ? '✓ 4 People (Family Scale)' : '✓ 4 Orang (Standar Keluarga)'}
+                  ${isEn ? '✓ 4 Portions' : '✓ 4 Porsi'}
                 </span>
               </div>
 
               <div class="p-4 rounded-2xl border border-[#D49B42]/35 bg-white flex items-center gap-3.5 shadow-2xs">
                 <div class="w-10 h-10 rounded-xl bg-[#1E120A] text-[#D49B42] flex items-center justify-center shrink-0 font-bold text-base">
-                  👥
+                  🍽️
                 </div>
                 <div>
-                  <strong class="text-sm text-[#120B07] font-bold block">${isEn ? '4 People (Family Standard)' : '4 Orang (Standar Santap Keluarga)'}</strong>
+                  <strong class="text-sm text-[#120B07] font-bold block">${isEn ? '4 Portions (Standard Serving)' : '4 Porsi (Takaran Standar)'}</strong>
                   <span class="text-xs text-[#5C3622] leading-tight block mt-0.5">
                     ${isEn 
-                      ? 'Ingredient measurements and spice ratios are calibrated automatically for 4 people.' 
-                      : 'Komposisi bumbu dan takaran bahan otomatis diselaraskan secara pas untuk santap 4 orang.'}
+                      ? 'Ingredient measurements and spice ratios are calibrated automatically for 4 portions.' 
+                      : 'Komposisi bumbu dan takaran bahan otomatis diselaraskan secara pas untuk 4 porsi.'}
                   </span>
                 </div>
               </div>
@@ -679,7 +679,7 @@ function renderResultView(recipe, currentLang) {
               <div class="space-y-1 text-xs text-[#5C3622]">
                 <p><strong>${isEn ? 'Creator:' : 'Pencipta:'}</strong> ${escapeHtml(formState.creatorName || (isEn ? 'Anonymous' : 'Anonim'))}</p>
                 ${formState.creatorNickname ? `<p><strong>${isEn ? 'Title:' : 'Gelar:'}</strong> ${escapeHtml(formState.creatorNickname)}</p>` : ''}
-                <p><strong>${isEn ? 'Servings:' : 'Porsi:'}</strong> ${formState.servings || 4} ${isEn ? 'People (Standard)' : 'Orang (Standar Kebutuhan)'}</p>
+                <p><strong>${isEn ? 'Servings:' : 'Porsi:'}</strong> ${formState.servings || 4} ${isEn ? 'Portions' : 'Porsi'}</p>
                 <p><strong>${isEn ? 'Method:' : 'Metode:'}</strong> ${escapeHtml(formState.cookingMethod)}</p>
                 <p><strong>${isEn ? 'Spice Warmth:' : 'Kepedasan:'}</strong> Level ${formState.spiceLevel}</p>
                 <p><strong>${isEn ? 'Ingredients Count:' : 'Jumlah Bahan:'}</strong> ${formState.selectedIngredientIds.length} bahan</p>
@@ -754,7 +754,7 @@ function renderResultView(recipe, currentLang) {
                 <span class="text-[#2E4D38] block text-[10px] font-bold uppercase tracking-wider">
                   ${isEn ? 'Servings' : 'Porsi'}
                 </span>
-                <strong class="text-[#120B07] font-bold text-sm block">${formState.servings || 4} ${isEn ? 'People' : 'Orang'}</strong>
+                <strong class="text-[#120B07] font-bold text-sm block">${formState.servings || 4} ${isEn ? 'Portions' : 'Porsi'}</strong>
               </div>
               <div class="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]/80 text-center space-y-1">
                 <span class="text-[#2E4D38] block text-[10px] font-bold uppercase tracking-wider">
@@ -781,7 +781,7 @@ function renderResultView(recipe, currentLang) {
                 </h3>
               </div>
               <span class="text-xs px-2.5 py-1 rounded-lg bg-[#FAF7F2] text-[#2E4D38] font-bold border border-[#D49B42]/30">
-                ${formState.servings || 4} ${isEn ? 'people scale' : 'orang'}
+                ${formState.servings || 4} ${isEn ? 'portions' : 'porsi'}
               </span>
             </div>
 
@@ -985,7 +985,7 @@ export function initAiFoodCreatorInteractions() {
   setupRadioGroup('cookingMethod', val => { formState.cookingMethod = val; });
   setupRadioGroup('spiceLevel', val => { formState.spiceLevel = parseInt(val, 10); });
 
-  // Standard Servings (Fixed 4 People)
+  // Standard Servings (Fixed 4 Portions)
   formState.servings = 4;
 
   // Form Submit: Render Empty Template Output

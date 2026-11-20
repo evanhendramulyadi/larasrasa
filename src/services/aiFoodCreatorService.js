@@ -300,8 +300,8 @@ export const aiFoodCreatorService = {
 
     // Narrative Description
     const description = isEn
-      ? `An original recipe concept envisioned by **${creatorName}**, marrying the traditional art of ${cookingMethod} with the aromatic warmth of ${keySpice1} and ${keySpice2}. Presenting a calibrated ${tasteProfile.replace('-', ' and ')} profile on the palate, this dish is portioned for ${servings} family servings.${customNotes ? ` Creator's personal vision: "${customNotes}".` : ''}`
-      : `Sebuah mahakarya resep baru yang dirancang khusus oleh **${creatorName}**, mengawinkan teknik olah ${cookingMethod} dengan kemegahan rempah ${keySpice1} dan ${keySpice2}. Menghadirkan karakter rasa ${tasteProfile.replace('-', ' ')} yang lembut di lidah, hidangan ini dirancang untuk ${servings} porsi santap bersama keluarga.${customNotes ? ` Sentuhan personal: "${customNotes}".` : ''}`;
+      ? `An original recipe concept envisioned by **${creatorName}**, marrying the traditional art of ${cookingMethod} with the aromatic warmth of ${keySpice1} and ${keySpice2}. Presenting a calibrated ${tasteProfile.replace('-', ' and ')} profile on the palate, this dish is portioned for ${servings} servings.${customNotes ? ` Creator's personal vision: "${customNotes}".` : ''}`
+      : `Sebuah mahakarya resep baru yang dirancang khusus oleh **${creatorName}**, mengawinkan teknik olah ${cookingMethod} dengan kemegahan rempah ${keySpice1} dan ${keySpice2}. Menghadirkan karakter rasa ${tasteProfile.replace('-', ' ')} yang lembut di lidah, hidangan ini dirancang untuk ${servings} porsi santap nikmat.${customNotes ? ` Sentuhan personal: "${customNotes}".` : ''}`;
 
     const chefTips = isEn
       ? `To achieve optimal essential oil extraction, toast dry whole spices (coriander and candlenuts) on an ungreased heavy pan until fragrant before crushing in a stone mortar. If using coconut milk, maintain a gentle low simmer so the coconut cream does not separate and the spiced oils emerge smoothly.`
@@ -1213,7 +1213,7 @@ export const aiFoodCreatorService = {
     const specY = 114;
     const specItems = [
       isEn ? `Method: ${(recipe.cookingMethod || '').toUpperCase()}` : `Metode: ${(recipe.cookingMethod || '').toUpperCase()}`,
-      isEn ? `Servings: ${recipe.servings} People` : `Porsi: ${recipe.servings} Orang`,
+      isEn ? `Servings: ${recipe.servings} Portions` : `Porsi: ${recipe.servings} Porsi`,
       isEn ? `Duration: ${recipe.totalTime}` : `Durasi: ${recipe.totalTime}`,
       isEn ? `Spice: Level ${recipe.spiceLevel}` : `Pedas: Level ${recipe.spiceLevel}`
     ];

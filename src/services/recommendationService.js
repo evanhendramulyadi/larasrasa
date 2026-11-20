@@ -6,7 +6,7 @@ import { API_CONFIG, apiRequest } from './api.js';
  * 
  * Sistem kurasi rekomendasi kuliner Jawa Tengah berbasis selera dan eksplorasi budaya.
  * Menghubungkan preferensi cita rasa, tipe santapan, dan kawasan budaya
- * untuk memperkenalkan hidangan tradisional autentik paling selaras (standar porsi 4 orang).
+ * untuk memperkenalkan hidangan tradisional autentik paling selaras (standar 4 porsi).
  */
 
 export const recommendationService = {
@@ -127,7 +127,7 @@ export const recommendationService = {
     const topReasons = scoredRecipes[0]?.matchReasons || [
       'Pilihan hidangan tradisional Jawa Tengah yang selaras dengan selera Anda',
       'Memiliki kekayaan sejarah dan filosofi dapur yang mendalam',
-      'Dilengkapi panduan takaran bumbu standar untuk 4 orang keluarga'
+      'Dilengkapi panduan takaran bumbu standar untuk 4 porsi'
     ];
     const alternatives = scoredRecipes.slice(1, 4).map(sr => sr.recipe);
 
@@ -156,7 +156,7 @@ export const recommendationService = {
   _generateNarrative(recipe, preferences) {
     const flavorText = preferences.flavor ? `cita rasa ${preferences.flavor}` : 'kehangatan rasa tradisional';
 
-    return `Berdasarkan selera yang Anda pilih, **${recipe.name}** adalah hidangan khas ${recipe.regionName} yang paling selaras untuk dinikmati hari ini. Kuliner ini menonjolkan harmoni ${flavorText} berpadu dengan rempah autentik leluhur. Selain memiliki cerita sejarah yang panjang dalam kebudayaan Jawa Tengah, resep ini juga telah terkalibrasi dengan takaran bahan yang pas untuk santap 4 orang keluarga.`;
+    return `Berdasarkan selera yang Anda pilih, **${recipe.name}** adalah hidangan khas ${recipe.regionName} yang paling selaras untuk dinikmati hari ini. Kuliner ini menonjolkan harmoni ${flavorText} berpadu dengan rempah autentik leluhur. Selain memiliki cerita sejarah yang panjang dalam kebudayaan Jawa Tengah, resep ini juga telah terkalibrasi dengan takaran bahan yang pas untuk 4 porsi.`;
   }
 };
 

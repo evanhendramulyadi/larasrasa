@@ -24,7 +24,7 @@ export function localizeRestaurant(restaurant) {
 
 export const restaurantService = {
   /**
-   * Mengambil daftar restoran legendaris terverifikasi dengan filter.
+   * Mengambil daftar restoran legendaris dengan filter.
    * Disiapkan untuk memanggil GET /api/restaurants jika mode Laravel aktif.
    */
   async getRestaurants(params = {}) {

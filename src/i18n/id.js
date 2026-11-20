@@ -25,7 +25,7 @@ export const id = {
     directions: 'Petunjuk Arah',
     openInMap: 'Buka di Peta',
     estBudget: 'Prakiraan Biaya',
-    verifiedSource: 'Pustaka Terverifikasi',
+    verifiedSource: 'Catatan Referensi',
     hours: 'Jam Buka',
     address: 'Alamat',
     city: 'Kota / Wilayah',
@@ -53,7 +53,7 @@ export const id = {
     titleStart: 'Menyelaraskan',
     titleAccent: 'Harmoni Rasa',
     titleEnd: '& Resep Warisan Bumi Jawa Tengah',
-    description: 'Dari gurih lembut santan areh Solo hingga segarnya kaldu kencur Kudus. LarasRasa merangkum resep autentik leluhur, kisah budaya, dan kehangatan tradisi memasak bagi keluarga Indonesia.',
+    description: 'Dari gurih lembut santan areh Solo hingga segarnya kaldu kencur Kudus. LarasRasa merangkum resep autentik leluhur, kisah budaya, dan kehangatan tradisi memasak warisan dapur Jawa.',
     ctaPrimary: 'Jelajahi Resep Pusaka',
     ctaSecondary: 'Makan Apa Hari Ini?',
     culturalPill: 'Rasa yang menyimpan cerita — Merawat dan melestarikan warisan dapur Jawa Tengah.',
@@ -87,7 +87,7 @@ export const id = {
   recipesSection: {
     badge: 'Khasanah Gastronomi Jawa Tengah',
     title: 'Koleksi Kuliner Pusaka Jawa Tengah',
-    description: 'Ensiklopedia kuliner lengkap dengan catatan sejarah budaya, asal-usul sentra tradisi, dan panduan resep standar 4 orang keluarga.',
+    description: 'Ensiklopedia kuliner lengkap dengan catatan sejarah budaya, asal-usul sentra tradisi, dan panduan resep terukur untuk 4 porsi.',
     viewAll: 'Lihat Semua Koleksi Kuliner',
     searchPlaceholder: 'Cari masakan atau kuliner (contoh: Soto, Selat, Rebung, Mangut, Garang Asem)...',
     sortBy: 'Urutkan Berdasarkan:',
@@ -111,15 +111,15 @@ export const id = {
     linkCopied: 'Tautan Berhasil Disalin! ✓',
     prepTime: 'Persiapan Bahan',
     cookTime: 'Waktu Memasak',
-    baseServings: 'Porsi Standar (4 Orang)',
+    baseServings: 'Takaran Standar (4 Porsi)',
     historyTitle: 'Sejarah & Asal-Usul Budaya',
     culturalValue: 'Nilai Tradisi & Filosofi Dapur',
     variationsTitle: 'Variasi Antar-Wilayah',
     factsTitle: 'Fakta Menarik & Rahasia Dapur',
     equipmentTitle: 'Peralatan Masak Tradisional',
     ingredientsTitle: 'Daftar Bahan & Komposisi Bumbu',
-    scaleNotice: 'Porsi Santapan: 4 Orang (Standar Kebutuhan)',
-    scaleSub: 'Gramasi bahan dan takaran bumbu telah disesuaikan untuk kebutuhan 4 orang',
+    scaleNotice: 'Takaran Saji: 4 Porsi',
+    scaleSub: 'Takaran bahan dan bumbu pas untuk 4 porsi sajian.',
     stepsTitle: 'Panduan Memasak Langkah Demi Langkah',
     stepsSub: 'Tandai setiap langkah yang telah selesai untuk memandu proses memasak Anda di dapur.',
     timerBadge: 'Waktu:',
@@ -208,7 +208,7 @@ export const id = {
     exploreRecipes: 'Jelajahi Resep Terkait'
   },
   restaurantsSection: {
-    badge: 'Tempat Makan Terverifikasi Lintas Generasi',
+    badge: 'Warung & Tempat Makan Legendaris',
     title: 'Restoran & Warung Legendaris Jawa Tengah',
     description: 'Menemukan saksi sejarah perjalanan kuliner Jawa Tengah dengan alamat nyata, koordinat presisi, dan cita rasa autentik warisan leluhur.',
     mapTitle: 'Peta Tempat Makan Bersejarah',
@@ -216,8 +216,8 @@ export const id = {
     searchPlaceholder: 'Cari warung atau restoran (contoh: Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'Kota / Wilayah:',
     allCities: 'Semua Kota',
-    integrityTitle: 'Integritas Data & Dokumentasi Sejarah',
-    integrityText: 'Seluruh titik lokasi, tahun berdiri, dan kisah sejarah kuliner legendaris dikurasi secara teliti berdasarkan pustaka cagar budaya Nusantara dan catatan riset LarasRasa.'
+    integrityTitle: 'Dokumentasi Sejarah Kuliner',
+    integrityText: 'Titik lokasi, tahun berdiri, dan kisah sejarah kuliner dirangkum dari catatan sejarah lokal dan tradisi tutur masyarakat.'
   },
   recommendations: {
     badge: 'Kurasi Selera Kuliner Jawa Tengah',
@@ -239,10 +239,10 @@ export const id = {
     processingSub: 'Mencocokkan selera rasa, suasana santap, dan kekayaan tradisi budaya kuliner Jawa Tengah.',
     resultBadge: 'Kuliner Pilihan Selaras',
     resultTitle: 'Khasanah Kuliner Jawa Tengah untuk Anda',
-    resultSub: 'Pilihan hidangan yang selaras dengan selera Anda, lengkap dengan catatan sejarah tradisi dan panduan resep standar 4 orang.',
+    resultSub: 'Pilihan hidangan yang selaras dengan selera Anda, lengkap dengan catatan sejarah tradisi dan panduan resep untuk 4 porsi.',
     matchBadge: 'Harmoni Rasa Paling Selaras',
     restartBtn: 'Pilih Selera Lain',
-    openRecipeBtn: 'Pelajari Sejarah & Resep (Porsi 4 Orang)',
+    openRecipeBtn: 'Pelajari Sejarah & Resep (4 Porsi)',
     alternativesTitle: 'Pilihan Kuliner Lain yang Juga Selaras',
     alternativesSub: 'Hidangan khas Jawa Tengah lain yang berbagi harmoni cita rasa serupa.',
     validationFlavor: 'Silakan pilih salah satu karakter rasa yang Anda idamkan.'
@@ -283,12 +283,12 @@ export const id = {
     payloadCopied: 'Payload JSON Berhasil Disalin! ✓'
   },
   footer: {
-    philosophy: 'Laras melambangkan keselarasan budi pekerti dan keseimbangan rasa; Rasa merangkum kekayaan indra dan kehangatan tradisi dapur Jawa Tengah. Dipersembahkan untuk keluarga Indonesia dan pencinta kuliner sejati.',
+    philosophy: 'Laras melambangkan keselarasan budi pekerti dan keseimbangan rasa; Rasa merangkum kekayaan indra dan kehangatan tradisi dapur Jawa Tengah. Dipersembahkan untuk siapa saja yang mencintai warisan rasa Nusantara.',
     javaneseMotto: 'Nguri-uri kabudayan lumantar raos lan bumbu nuswantara.',
     exploreTitle: 'Eksplorasi Kuliner',
     regionsTitle: 'Sentra Kuliner 8 Wilayah',
     commitmentTitle: 'Komitmen Kualitas',
-    commitmentDesc: 'Seluruh catatan sejarah, koordinat peta, dan takaran resep dikurasi secara faktual berdasarkan pustaka kuliner Nusantara dan arsip cagar budaya.',
+    commitmentDesc: 'Seluruh catatan sejarah, peta kuliner, dan takaran resep dirangkum dengan teliti agar keaslian rasa dan ceritanya tetap terjaga.',
     backendReadyBadge: 'Dedikasi Pelestarian: Merawat kemurnian bumbu dan sejarah kuliner Jawa Tengah untuk generasi penerus.',
     copyright: 'Kelompok 2 Web Development — PPLG SMK Pariwisata Metland School. Hak cipta dilindungi.'
   }

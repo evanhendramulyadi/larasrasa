@@ -358,7 +358,7 @@ function renderResultView(result) {
     : [
         isEn ? 'Signature Central Javanese flavor profile matching your craving' : 'Karakter bumbu rempah autentik khas Jawa Tengah yang paling selaras dengan selera',
         isEn ? 'Rich cultural heritage and gastronomic history from its culinary center' : 'Memiliki kekayaan cerita sejarah dan tradisi luhur dari sentra asalnya',
-        isEn ? 'Traditional recipe balanced with standard 4-person family proportions' : 'Resep terkalibrasi pas untuk santapan 4 orang keluarga'
+        isEn ? 'Traditional recipe proportioned for 4 servings' : 'Resep dengan takaran pas untuk 4 porsi'
       ];
 
   const primaryFlavorLabel = (primary.flavorProfiles || []).map(f => flavorMap[f] || f).join(' • ');
@@ -390,8 +390,8 @@ function renderResultView(result) {
           <!-- Criteria Recap Chips -->
           <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
             <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] shadow-xs">
-              <span>👥</span>
-              <span>4 ${isEn ? 'People' : 'Orang (Keluarga)'}</span>
+              <span>🍽️</span>
+              <span>4 ${isEn ? 'Portions' : 'Porsi'}</span>
             </span>
             ${chosenFlavorName ? `
               <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
@@ -456,7 +456,7 @@ function renderResultView(result) {
                     ${primary.mealType || 'Kuliner Tradisional'}
                   </span>
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
-                    👥 4 ${isEn ? 'People' : 'Orang'}
+                    🍽️ 4 ${isEn ? 'Portions' : 'Porsi'}
                   </span>
                 </div>
               </div>
@@ -477,7 +477,7 @@ function renderResultView(result) {
                 </span>
               ` : ''}
               <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#2E4D38] font-bold border border-[#2E4D38]/30 shadow-2xs">
-                ${isEn ? 'Standard 4 Servings' : 'Porsi Standar 4 Orang'}
+                ${isEn ? 'Standard 4 Portions' : 'Takaran Standar 4 Porsi'}
               </span>
             </div>
 
@@ -522,7 +522,7 @@ function renderResultView(result) {
               </div>
               <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
                 <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Servings' : 'Porsi Resep'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">4 ${isEn ? 'People' : 'Orang'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">4 ${isEn ? 'Portions' : 'Porsi'}</span>
               </div>
               <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
                 <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Tradition' : 'Kategori'}</span>

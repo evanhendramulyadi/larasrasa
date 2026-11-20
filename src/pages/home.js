@@ -333,8 +333,8 @@ export async function renderHomePage() {
                 </h2>
                 <p class="text-xs sm:text-base text-[#FAF7F2]/85 max-w-2xl leading-relaxed">
                   ${isEn 
-                    ? 'Input your culinary vision, choose authentic regional spices, calibrate for 4 people, and generate a standardized recipe template ready for backend integration.'
-                    : 'Pilih bahan rempah otentik Jawa Tengah, tentukan teknik memasak tradisional, sesuaikan porsi 4 orang keluarga, lan susun cithakan resep resmi siap sambung backend.'}
+                    ? 'Input your culinary vision, choose authentic regional spices, calibrate for 4 portions, and generate a standardized recipe template ready for backend integration.'
+                    : 'Pilih bahan rempah otentik Jawa Tengah, tentukan teknik memasak tradisional, atur takaran 4 porsi, lan susun cithakan resep resmi siap sambung backend.'}
                 </p>
                 <div class="pt-2">
                   <a href="#/ai-food-creator" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
@@ -351,7 +351,7 @@ export async function renderHomePage() {
                 <div class="space-y-2.5 text-[#FAF7F2]/85">
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
-                    <span><strong>${isEn ? 'Family Scale (4 People):' : 'Standar Porsi (4 Orang):'}</strong> ${isEn ? 'Calibrated for balanced family dining' : 'Disesuaikan dengan takaran saji 4 orang keluarga'}</span>
+                    <span><strong>${isEn ? 'Standard Scale (4 Portions):' : 'Standar Porsi (4 Porsi):'}</strong> ${isEn ? 'Calibrated for 4 standard portions' : 'Disesuaikan pas untuk takaran saji 4 porsi'}</span>
                   </div>
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>

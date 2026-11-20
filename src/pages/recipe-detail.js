@@ -6,7 +6,7 @@ import { i18n, t } from '../i18n/index.js';
 /**
  * Editorial Royal Heritage Cultural Culinary Detail View
  * Introduces Central Javanese culinary heritage, historical chronicles,
- * cultural lore, and authentic recipes calibrated for standard 4 people.
+ * cultural lore, and authentic recipes calibrated for 4 portions.
  */
 
 const STANDARD_SERVINGS = 4;
@@ -228,7 +228,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         </div>
 
         <p class="text-xs text-[#5C3622]">
-          ${isEn ? 'All ingredient measurements are naturally calibrated for 4 servings in Central Javanese culinary tradition.' : 'Seluruh takaran gramasi bumbu dan bahan telah terkalibrasi pas untuk 4 porsi dalam tradisi dapur keluarga Jawa Tengah.'}
+          ${isEn ? 'All ingredient measurements are naturally calibrated for 4 servings in Central Javanese culinary tradition.' : 'Seluruh takaran gramasi bumbu dan bahan telah terkalibrasi pas untuk 4 porsi dalam tradisi dapur Jawa Tengah.'}
         </p>
 
         <!-- Ingredients Table / Groups (Fixed 4 Servings) -->

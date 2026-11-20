@@ -24,7 +24,7 @@ export const en = {
     directions: 'Directions',
     openInMap: 'Open in Map',
     estBudget: 'Estimated Budget',
-    verifiedSource: 'Verified Source',
+    verifiedSource: 'Culinary Reference',
     hours: 'Opening Hours',
     address: 'Address',
     city: 'City / Region',
@@ -52,7 +52,7 @@ export const en = {
     titleStart: 'Harmonizing',
     titleAccent: 'Ancestral Flavors',
     titleEnd: '& Culinary Heritage of Central Java',
-    description: 'From the velvety richness of Solo coconut cream (areh) to the fragrant kencur broth of Kudus. LarasRasa brings together authentic recipes, cultural stories, and the warmth of cooking for Indonesian families.',
+    description: 'From the velvety richness of Solo coconut cream (areh) to the fragrant kencur broth of Kudus. LarasRasa brings together authentic recipes, cultural stories, and the warmth of Central Javanese hearth traditions.',
     ctaPrimary: 'Explore Authentic Recipes',
     ctaSecondary: 'Find Today\'s Recipe',
     culturalPill: 'Flavors carrying timeless stories and culinary wisdom.',
@@ -86,7 +86,7 @@ export const en = {
   recipesSection: {
     badge: 'Central Javanese Gastronomic Heritage',
     title: 'Iconic Central Javanese Culinary Collection',
-    description: 'An interactive culinary encyclopedia featuring historical chronicles, regional cultural origins, and authentic recipe guides calibrated for a standard 4-person family.',
+    description: 'An interactive culinary encyclopedia featuring historical chronicles, regional cultural origins, and authentic recipe guides proportioned for 4 servings.',
     viewAll: 'View All Culinary Collections',
     searchPlaceholder: 'Search dishes (e.g., Soto, Beef Steak, Bamboo Shoots, Coconut Milk)...',
     sortBy: 'Sort by:',
@@ -110,15 +110,15 @@ export const en = {
     linkCopied: 'Link Copied! ✓',
     prepTime: 'Prep Time',
     cookTime: 'Cooking Time',
-    baseServings: 'Base Servings (4 People)',
+    baseServings: 'Standard Serving (4 Portions)',
     historyTitle: 'History & Cultural Roots',
     culturalValue: 'Traditional Values & Heritage',
     variationsTitle: 'Regional Variations',
     factsTitle: 'Interesting Facts & Kitchen Wisdom',
     equipmentTitle: 'Required Cooking Equipment',
     ingredientsTitle: 'Ingredients & Spices',
-    scaleNotice: 'Serving Scale: 4 People (Family Standard)',
-    scaleSub: 'Ingredient ratios and spice measurements are calibrated for 4 people',
+    scaleNotice: 'Serving Size: 4 Portions',
+    scaleSub: 'Ingredient and spice measurements are proportioned for 4 servings.',
     stepsTitle: 'Step-by-Step Cooking Guide',
     stepsSub: 'Check off each completed step to track your cooking progress.',
     timerBadge: 'Time:',
@@ -207,7 +207,7 @@ export const en = {
     exploreRecipes: 'Explore Related Recipes'
   },
   restaurantsSection: {
-    badge: 'Verified Cross-Generational Eateries',
+    badge: 'Historic Culinary Establishments',
     title: 'Legendary Restaurants of Central Java',
     description: 'Discover living witnesses to Central Java’s culinary history with real street addresses, verified GPS coordinates, and timeless recipes.',
     mapTitle: 'Historic Restaurant Location Map',
@@ -215,8 +215,8 @@ export const en = {
     searchPlaceholder: 'Search eatery or restaurant (e.g., Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'City / Region:',
     allCities: 'All Cities',
-    integrityTitle: 'Data Integrity & Historical Verification',
-    integrityText: 'All establishment coordinates, founding years, and culinary chronicles are meticulously verified against Indonesian cultural archives and LarasRasa research.'
+    integrityTitle: 'Culinary History Documentation',
+    integrityText: 'Establishment locations, founding years, and culinary chronicles are gathered from local historical accounts and community traditions.'
   },
   recommendations: {
     badge: 'Central Javanese Taste Curation',
@@ -238,10 +238,10 @@ export const en = {
     processingSub: 'Matching your taste preferences, dining style, and Central Javanese cultural heritage.',
     resultBadge: 'Curated Heritage Match',
     resultTitle: 'Central Javanese Cuisine Tailored for You',
-    resultSub: 'A heritage dish harmonized with your palate, complete with historical lore and standard 4-person family proportions.',
+    resultSub: 'A heritage dish harmonized with your palate, complete with historical lore and standard 4-portion measurements.',
     matchBadge: 'Highly Harmonious',
     restartBtn: 'Choose Different Taste',
-    openRecipeBtn: 'Explore History & Recipe (4 Servings)',
+    openRecipeBtn: 'Explore Recipe (4 Portions)',
     alternativesTitle: 'Alternative Heritage Dishes That Also Fit',
     alternativesSub: 'Central Javanese specialties that share a harmonious flavor profile.',
     validationFlavor: 'Please select a flavor profile to continue.'
@@ -282,12 +282,12 @@ export const en = {
     payloadCopied: 'JSON Payload Copied! ✓'
   },
   footer: {
-    philosophy: 'Laras symbolizes moral harmony and balance of flavor; Rasa encapsulates sensory richness and hearth traditions of Central Java. Dedicated to Indonesian families and culinary connoisseurs.',
+    philosophy: 'Laras symbolizes moral harmony and balance of flavor; Rasa encapsulates sensory richness and hearth traditions of Central Java. Dedicated to everyone who cherishes authentic Indonesian culinary heritage.',
     javaneseMotto: 'Cherishing cultural heritage through Indonesian flavors and spices.',
     exploreTitle: 'Culinary Index',
     regionsTitle: '8 Culinary Regions',
     commitmentTitle: 'Quality Commitment',
-    commitmentDesc: 'All historical chronicles, map coordinates, and recipe proportions are factually curated against Indonesian cultural archives.',
+    commitmentDesc: 'All historical chronicles, culinary maps, and recipes are carefully curated to honor Central Javanese culinary traditions.',
     backendReadyBadge: 'Conservation Dedication: Preserving spice purity and culinary history for future generations.',
     copyright: 'Group 2 Web Development — PPLG SMK Pariwisata Metland School. All rights reserved.'
   }
