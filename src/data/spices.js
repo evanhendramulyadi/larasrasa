@@ -14,7 +14,7 @@ export const spices = [
     substitutes: 'Bawang merah shallot impor (meski aroma kurang tajam dan kadar air lebih tinggi).',
     modelColor: '#9E3852',
     accentColor: '#9E3852',
-    image: '/assets/images/ingredients/bawang-merah.jpg'
+    image: '/assets/images/ingredients/shallots.jpg'
   },
   {
     id: 'bawang-putih',
@@ -31,7 +31,7 @@ export const spices = [
     substitutes: 'Bawang putih honan (bawang putih biasa) atau bubuk bawang putih kering (meski varietas kating lokal tetap yang paling harum).',
     modelColor: '#E8E1D3',
     accentColor: '#BDB39C',
-    image: '/assets/images/ingredients/bawang-putih.jpg'
+    image: '/assets/images/ingredients/garlic.jpg'
   },
   {
     id: 'ketumbar',
@@ -48,7 +48,7 @@ export const spices = [
     substitutes: 'Ketumbar bubuk murni (sangrai sebentar sebelum dicampur adonan).',
     modelColor: '#A37C42',
     accentColor: '#C58A2B',
-    image: '/assets/images/ingredients/ketumbar.jpg'
+    image: '/assets/images/ingredients/coriander-seeds.jpg'
   },
   {
     id: 'kemiri',
@@ -65,7 +65,7 @@ export const spices = [
     substitutes: 'Kacang mete sangrai atau kacang macadamia.',
     modelColor: '#F3E8D0',
     accentColor: '#D9A441',
-    image: '/assets/images/ingredients/kemiri.jpg'
+    image: '/assets/images/ingredients/candlenuts.jpg'
   },
   {
     id: 'merica',
@@ -82,7 +82,7 @@ export const spices = [
     substitutes: 'Merica hitam tumbuk kasar atau lada putih bubuk murni.',
     modelColor: '#D9D4C7',
     accentColor: '#A69F8E',
-    image: '/assets/images/ingredients/merica.jpg'
+    image: '/assets/images/ingredients/white-peppercorns.jpg'
   },
   {
     id: 'kunyit',
@@ -99,7 +99,7 @@ export const spices = [
     substitutes: 'Kunyit bubuk murni kualitas tinggi.',
     modelColor: '#E59B28',
     accentColor: '#E59B28',
-    image: '/assets/images/ingredients/kunyit.jpg'
+    image: '/assets/images/ingredients/turmeric.jpg'
   },
   {
     id: 'jahe',
@@ -116,7 +116,7 @@ export const spices = [
     substitutes: 'Jahe merah (lebih pedas) atau jahe bubuk.',
     modelColor: '#D8B174',
     accentColor: '#B27344',
-    image: '/assets/images/ingredients/jahe.jpg'
+    image: '/assets/images/ingredients/ginger.jpg'
   },
   {
     id: 'lengkuas',
@@ -133,7 +133,7 @@ export const spices = [
     substitutes: 'Lengkuas kering atau bubuk (meski kesegaran aroma berkurang).',
     modelColor: '#C48D6C',
     accentColor: '#6B4226',
-    image: '/assets/images/ingredients/lengkuas.jpg'
+    image: '/assets/images/ingredients/galangal.jpg'
   },
   {
     id: 'kencur',
@@ -150,7 +150,7 @@ export const spices = [
     substitutes: 'Sulit digantikan; kencur memiliki profil aroma unik yang tidak ada padanannya.',
     modelColor: '#B38B6D',
     accentColor: '#8C5832',
-    image: '/assets/images/ingredients/kencur.jpg'
+    image: '/assets/images/ingredients/aromatic-ginger.jpg'
   },
   {
     id: 'serai',
@@ -167,7 +167,7 @@ export const spices = [
     substitutes: 'Kulit jeruk purut parut (hanya untuk aroma sitrun).',
     modelColor: '#8FA359',
     accentColor: '#656E52',
-    image: '/assets/images/ingredients/serai.jpg'
+    image: '/assets/images/ingredients/lemongrass.jpg'
   },
   {
     id: 'daun-salam',
@@ -184,7 +184,7 @@ export const spices = [
     substitutes: 'Bay leaf Eropa (namun aromanya lebih kuat mentol/eukaliptus, gunakan sedikit saja).',
     modelColor: '#5E6D4B',
     accentColor: '#5E6D4B',
-    image: '/assets/images/ingredients/daun-salam.jpg'
+    image: '/assets/images/ingredients/indonesian-bay-leaves.jpg'
   },
   {
     id: 'daun-jeruk',
@@ -201,7 +201,7 @@ export const spices = [
     substitutes: 'Parutan kulit jeruk nipis segar.',
     modelColor: '#366138',
     accentColor: '#366138',
-    image: '/assets/images/ingredients/daun-jeruk.jpg'
+    image: '/assets/images/ingredients/kaffir-lime-leaves.jpg'
   },
   {
     id: 'belimbing-wuluh',
@@ -218,7 +218,7 @@ export const spices = [
     substitutes: 'Tomat hijau asam muda atau perasan jeruk nipis.',
     modelColor: '#96B847',
     accentColor: '#96B847',
-    image: '/assets/images/ingredients/belimbing-wuluh.jpg'
+    image: '/assets/images/ingredients/bilimbi.jpg'
   },
   {
     id: 'gula-jawa',
@@ -235,7 +235,7 @@ export const spices = [
     substitutes: 'Gula aren murni atau brown sugar kelapa.',
     modelColor: '#5C3317',
     accentColor: '#4A2C1A',
-    image: '/assets/images/ingredients/gula-jawa.jpg'
+    image: '/assets/images/ingredients/coconut-palm-sugar.jpg'
   },
   {
     id: 'asam-jawa',
@@ -252,7 +252,7 @@ export const spices = [
     substitutes: 'Asam kandis atau belimbing wuluh muda (meski asam jawa memberi warna gelap dan kepekatan yang unik).',
     modelColor: '#7D4E2D',
     accentColor: '#7D4E2D',
-    image: '/assets/images/ingredients/asam-jawa.jpg'
+    image: '/assets/images/ingredients/tamarind.jpg'
   },
   {
     id: 'kecombrang',
@@ -269,7 +269,7 @@ export const spices = [
     substitutes: 'Kulit jeruk purut muda dan serai cincang sangat halus.',
     modelColor: '#D85C74',
     accentColor: '#D85C74',
-    image: '/assets/images/ingredients/kecombrang.jpg'
+    image: '/assets/images/ingredients/torch-ginger.jpg'
   },
   {
     id: 'cengkeh',
@@ -286,7 +286,7 @@ export const spices = [
     substitutes: 'Bunga lawang atau allspice bubuk.',
     modelColor: '#5C241C',
     accentColor: '#8C382A',
-    image: '/assets/images/ingredients/cengkeh.jpg'
+    image: '/assets/images/ingredients/cloves.jpg'
   },
   {
     id: 'kayu-manis',
@@ -303,7 +303,7 @@ export const spices = [
     substitutes: 'Kayu manis bubuk murni kualitas tinggi.',
     modelColor: '#8C4D26',
     accentColor: '#B26633',
-    image: '/assets/images/ingredients/kayu-manis.jpg'
+    image: '/assets/images/ingredients/cinnamon.jpg'
   },
   {
     id: 'pala',
@@ -320,6 +320,6 @@ export const spices = [
     substitutes: 'Bubuk pala murni atau sedikit kapulaga.',
     modelColor: '#4A2810',
     accentColor: '#7A441E',
-    image: '/assets/images/ingredients/pala.jpg'
+    image: '/assets/images/ingredients/nutmeg.jpg'
   }
 ];

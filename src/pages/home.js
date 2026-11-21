@@ -221,7 +221,7 @@ export async function renderHomePage() {
             <div class="lg:col-span-6 flex items-center justify-center">
               <div class="w-full aspect-4/3 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#D49B42]/40 shadow-xl relative group">
                 <img src="/assets/images/regions/semarang.jpg" 
-                     alt="Peta Rasa Jawa Tengah" 
+                     alt="${t('mapSection.mapTitle')}" 
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent flex flex-col justify-end p-6 sm:p-8">
                   <span class="text-xs uppercase tracking-widest text-[#D49B42] font-bold">${t('mapSection.badge')}</span>

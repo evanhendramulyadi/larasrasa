@@ -299,7 +299,7 @@ function renderFormView(currentLang) {
                 if (!item) return '';
                 return `
                   <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#D49B42]/45 text-xs font-bold text-[#120B07] shadow-2xs">
-                    <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${item.nameId}" class="w-4 h-4 rounded-full object-cover" onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
+                    <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${isEn ? (item.nameEn || item.nameId) : (item.nameId || item.nameEn)}" class="w-4 h-4 rounded-full object-cover" onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
                     <span>${isEn ? (item.nameEn || item.nameId) : item.nameId}</span>
                     <button type="button" data-remove-ingredient="${item.id}" class="text-[#C84C24] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
                   </span>
@@ -358,7 +358,7 @@ function renderFormView(currentLang) {
                   <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-2 bg-[#FAF7F2] border border-[#E8DEC8]">
                     <img 
                       src="${imgSrc}" 
-                      alt="${item.nameId}" 
+                      alt="${isEn ? (item.nameEn || item.nameId) : (item.nameId || item.nameEn)}" 
                       class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-300"
                       loading="lazy"
                       onerror="this.src='/assets/images/hero/hero-culinary.jpg'"

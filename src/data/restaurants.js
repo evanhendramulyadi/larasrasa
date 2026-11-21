@@ -227,7 +227,7 @@ export const restaurants = [
     description: 'Destinasi legendaris sate kambing muda batibul (bawah tiga bulan) di kota Tegal. Daging kambing dipanggang polosan di atas bara arang batok kelapa tanpa bumbu celup, menghasilkan tekstur daging yang empuk luar biasa dengan aroma harum gurih alami.',
     historicalContext: 'Mulai dirintis oleh keluarga Wendy pada era 1980-an dan menjadi rujukan utama pecinta kuliner sate kambing muda di jalur Pantura barat Jawa Tengah.',
     googleMapsUrl: 'https://maps.google.com/?q=-6.8682,109.1365',
-    image: '/assets/images/recipes/sate-buntel.jpg',
+    image: '/assets/images/recipes/solo-minced-satay.jpg',
     specialties: ['Sate Kambing Batibul', 'Garang Asem Kambing Bening', 'Sop Kaki Kambing', 'Tahu Aci Slawi']
   },
   {
@@ -248,7 +248,7 @@ export const restaurants = [
     description: 'Pelopor kehangatan hidangan mie ongklok di pusat kota Wonosobo. Mi kuning kenyal diaduk dalam keranjang bambu ongklok, diguyur kuah kental kaldu ebi dan tepung tapioka beraroma kucai pegunungan, ditemani sate sapi manis dan tempe kemul renyah.',
     historicalContext: 'Bapak Muhadi meracik bumbu kuah ebi kental sejak dekade 1980-an yang menjadi penawar dingin paling dicari para pendaki dan wisatawan Dataran Tinggi Dieng.',
     googleMapsUrl: 'https://maps.google.com/?q=-7.3621,109.9015',
-    image: '/assets/images/recipes/mie-ongklok.jpg',
+    image: '/assets/images/recipes/wonosobo-ongklok-noodles.jpg',
     specialties: ['Mie Ongklok Spesial', 'Sate Sapi Bumbu Manis', 'Tempe Kemul Kunyit Krispi', 'Geblek Singkong']
   }
 ];

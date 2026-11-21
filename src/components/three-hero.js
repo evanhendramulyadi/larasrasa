@@ -165,10 +165,10 @@ export class ThreeHeroShowcase {
       <div class="absolute inset-0 w-full h-full overflow-hidden group select-none bg-[#120B07]">
         <!-- High-res Gudeg Photograph -->
         <img 
-          src="/assets/images/hero/pusaka-gerabah-gudeg.jpg" 
-          alt="Gudeg Komplit Gerabah Kasongan" 
+          src="/assets/images/hero/heritage-claypot-gudeg.jpg" 
+          alt="${isEn ? 'Kasongan Earthenware Royal Gudeg' : 'Gudeg Komplit Gerabah Kasongan'}" 
           class="w-full h-full object-cover object-center filter brightness-[0.98] contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-103"
-          onerror="this.src='/assets/images/recipes/gudeg-komplit.jpg'"
+          onerror="this.src='/assets/images/recipes/royal-gudeg-komplit.jpg'"
         />
 
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
@@ -326,7 +326,7 @@ export class ThreeHeroShowcase {
         <!-- High-res Feast Photograph -->
         <img 
           src="/assets/images/hero/hero-culinary.jpg" 
-          alt="Jamuan Pusaka Jawa Tengah" 
+          alt="${isEn ? 'Central Javanese Heritage Banquet' : 'Jamuan Pusaka Jawa Tengah'}" 
           class="w-full h-full object-cover object-center filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-103"
         />
 
