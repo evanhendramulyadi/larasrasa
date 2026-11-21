@@ -532,7 +532,7 @@ function renderResultView(result) {
 
             <!-- Primary Action CTAs -->
             <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <a href="#/resep/${primary.slug}" 
+              <a href="${isEn ? `#/recipes/${primary.slug}` : `#/resep/${primary.slug}`}" 
                  class="flex-1 inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs sm:text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center">
                 <span>${t('recommendations.openRecipeBtn')}</span>
                 <span>&rarr;</span>
@@ -582,7 +582,7 @@ function renderResultView(result) {
           <span>&larr;</span>
           <span>${t('recommendations.restartBtn')}</span>
         </button>
-        <a href="#/resep" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#120B07] hover:bg-[#C84C24] text-white text-xs font-bold transition-all shadow-md text-center">
+        <a href="${isEn ? '#/recipes' : '#/resep'}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#120B07] hover:bg-[#C84C24] text-white text-xs font-bold transition-all shadow-md text-center">
           <span>${t('recipesSection.viewAll')}</span>
           <span>&rarr;</span>
         </a>

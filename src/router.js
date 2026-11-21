@@ -11,6 +11,7 @@ import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions, resetAiFoodCrea
 import { openRecipeModal, closeRecipeModal, getActiveRecipeModalSlug } from './components/recipe-modal.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
+import { translateHashRoute } from './utils/routes.js';
 
 /**
  * Client-Side Router for LarasRasa SPA
@@ -26,15 +27,30 @@ export class Router {
   }
 
   init() {
+    // Harmonize initial hash with active language on boot
+    const initialLang = i18n.getLanguage();
+    const initialHash = window.location.hash || '#/';
+    const harmonizedHash = translateHashRoute(initialHash, initialLang);
+    if (harmonizedHash !== initialHash) {
+      history.replaceState(null, '', harmonizedHash);
+    }
+
     window.addEventListener('hashchange', () => {
       const { path } = this.parseHash();
       setActiveNavbarLink(path);
       this.handleRouteChange();
     });
-    window.addEventListener('larasrasa:languagechange', () => {
+    window.addEventListener('larasrasa:languagechange', (e) => {
       const savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
       const activeRecipeSlug = getActiveRecipeModalSlug ? getActiveRecipeModalSlug() : null;
       const activeSpiceId = getActiveSpiceModalId ? getActiveSpiceModalId() : null;
+
+      const targetLang = e?.detail?.lang || i18n.getLanguage();
+      const currentHash = window.location.hash || '#/';
+      const translatedHash = translateHashRoute(currentHash, targetLang);
+      if (translatedHash !== currentHash) {
+        history.replaceState(null, '', translatedHash);
+      }
 
       this.handleRouteChange({
         isLanguageChange: true,
@@ -161,31 +177,31 @@ export class Router {
       pageHtml = await renderHomePage();
       postRenderAction = () => initHomePageInteractions();
       pageTitlePrefix = '';
-    } else if (path === '/resep') {
+    } else if (path === '/resep' || path === '/recipes') {
       pageHtml = await renderRecipesPage(queryParams);
       postRenderAction = () => initRecipesPageInteractions();
       pageTitlePrefix = t('nav.recipes');
-    } else if (path.startsWith('/resep/')) {
-      const slug = path.replace('/resep/', '');
+    } else if (path.startsWith('/resep/') || path.startsWith('/recipes/')) {
+      const slug = path.replace(/^\/(resep|recipes)\//, '');
       pageHtml = await renderRecipesPage(queryParams);
       postRenderAction = () => {
         initRecipesPageInteractions();
         openRecipeModal(slug);
       };
       pageTitlePrefix = t('nav.recipes');
-    } else if (path === '/peta-rasa') {
+    } else if (path === '/peta-rasa' || path === '/flavor-map') {
       pageHtml = await renderFlavorMapPage();
       postRenderAction = () => initFlavorMapInteractions();
       pageTitlePrefix = t('nav.flavorMap');
-    } else if (path === '/jelajah-rempah') {
+    } else if (path === '/jelajah-rempah' || path === '/spices') {
       pageHtml = await renderSpicesPage();
       postRenderAction = () => initSpicesPageInteractions();
       pageTitlePrefix = t('nav.spices');
-    } else if (path === '/restoran-legendaris') {
+    } else if (path === '/restoran-legendaris' || path === '/restaurants') {
       pageHtml = await renderLegendaryRestaurantsPage();
       postRenderAction = () => initLegendaryRestaurantsInteractions();
       pageTitlePrefix = t('nav.restaurants');
-    } else if (path === '/rekomendasi') {
+    } else if (path === '/rekomendasi' || path === '/recommendations') {
       pageHtml = await renderRecommendationsPage();
       pageTitlePrefix = t('nav.recommendations');
       const renderWizard = async () => {

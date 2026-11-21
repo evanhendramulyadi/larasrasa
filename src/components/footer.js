@@ -54,11 +54,11 @@ export function renderFooter() {
               <span>${isEn ? 'Culinary Index' : 'Ensiklopedia'}</span>
             </h3>
             <ul class="space-y-2 text-xs text-[#FAF7F2]/85 font-medium">
-              <li><a href="#/resep" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.recipes')}</a></li>
-              <li><a href="#/peta-rasa" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.flavorMap')}</a></li>
-              <li><a href="#/jelajah-rempah" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.spices')}</a></li>
-              <li><a href="#/restoran-legendaris" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.restaurants')}</a></li>
-              <li><a href="#/rekomendasi" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.recommendations')}</a></li>
+              <li><a href="${isEn ? '#/recipes' : '#/resep'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.recipes')}</a></li>
+              <li><a href="${isEn ? '#/flavor-map' : '#/peta-rasa'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.flavorMap')}</a></li>
+              <li><a href="${isEn ? '#/spices' : '#/jelajah-rempah'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.spices')}</a></li>
+              <li><a href="${isEn ? '#/restaurants' : '#/restoran-legendaris'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.restaurants')}</a></li>
+              <li><a href="${isEn ? '#/recommendations' : '#/rekomendasi'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.recommendations')}</a></li>
               <li><a href="#/ai-food-creator" class="hover:text-[#D49B42] text-[#D49B42] font-bold transition-colors flex items-center gap-1.5"><span>✨</span> ${t('nav.aiFoodCreator')}</a></li>
             </ul>
           </div>
@@ -70,14 +70,14 @@ export function renderFooter() {
               <span>${isEn ? '8 Culinary Regions' : '8 Sentra Wilayah'}</span>
             </h3>
             <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-xs text-[#FAF7F2]/80">
-              <a href="#/resep?region=semarang" class="hover:text-[#D49B42] transition-colors">• Kota Semarang</a>
-              <a href="#/resep?region=surakarta" class="hover:text-[#D49B42] transition-colors">• Solo (Surakarta)</a>
-              <a href="#/resep?region=kudus" class="hover:text-[#D49B42] transition-colors">• Kab. Kudus</a>
-              <a href="#/resep?region=banyumas" class="hover:text-[#D49B42] transition-colors">• Kab. Banyumas</a>
-              <a href="#/resep?region=pekalongan" class="hover:text-[#D49B42] transition-colors">• Pekalongan</a>
-              <a href="#/resep?region=magelang" class="hover:text-[#D49B42] transition-colors">• Magelang</a>
-              <a href="#/resep?region=tegal" class="hover:text-[#D49B42] transition-colors">• Kota/Kab Tegal</a>
-              <a href="#/resep?region=wonosobo" class="hover:text-[#D49B42] transition-colors">• Kab. Wonosobo</a>
+              <a href="${isEn ? '#/recipes?region=semarang' : '#/resep?region=semarang'}" class="hover:text-[#D49B42] transition-colors">• Kota Semarang</a>
+              <a href="${isEn ? '#/recipes?region=surakarta' : '#/resep?region=surakarta'}" class="hover:text-[#D49B42] transition-colors">• Solo (Surakarta)</a>
+              <a href="${isEn ? '#/recipes?region=kudus' : '#/resep?region=kudus'}" class="hover:text-[#D49B42] transition-colors">• Kab. Kudus</a>
+              <a href="${isEn ? '#/recipes?region=banyumas' : '#/resep?region=banyumas'}" class="hover:text-[#D49B42] transition-colors">• Kab. Banyumas</a>
+              <a href="${isEn ? '#/recipes?region=pekalongan' : '#/resep?region=pekalongan'}" class="hover:text-[#D49B42] transition-colors">• Pekalongan</a>
+              <a href="${isEn ? '#/recipes?region=magelang' : '#/resep?region=magelang'}" class="hover:text-[#D49B42] transition-colors">• Magelang</a>
+              <a href="${isEn ? '#/recipes?region=tegal' : '#/resep?region=tegal'}" class="hover:text-[#D49B42] transition-colors">• Kota/Kab Tegal</a>
+              <a href="${isEn ? '#/recipes?region=wonosobo' : '#/resep?region=wonosobo'}" class="hover:text-[#D49B42] transition-colors">• Kab. Wonosobo</a>
             </div>
             <p class="text-[10px] text-[#FAF7F2]/50 pt-0.5 italic">
               ${isEn ? 'Click any region to filter regional dishes.' : 'Pilih wewengkon kagem nyaring resep khas daerah.'}

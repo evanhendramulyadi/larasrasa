@@ -47,7 +47,7 @@ export async function renderHomePage() {
 
               <!-- Hero Action Buttons -->
               <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2.5 sm:gap-3 pt-0.5 sm:pt-1">
-                <a href="#/resep" 
+                <a href="${isEn ? '#/recipes' : '#/resep'}" 
                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 cursor-pointer border border-[#E05A30]">
                   <span>${t('hero.ctaPrimary')}</span>
                   <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
@@ -55,7 +55,7 @@ export async function renderHomePage() {
                   </svg>
                 </a>
                 
-                <a href="#/rekomendasi" 
+                <a href="${isEn ? '#/recommendations' : '#/rekomendasi'}" 
                    class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-5.5 sm:py-3 rounded-full text-xs sm:text-sm font-bold bg-white hover:bg-[#FAF7F2] text-[#120B07] transition-all border border-[#D49B42]/40 shadow-2xs hover:shadow-sm hover:-translate-y-0.5 cursor-pointer">
                   <svg class="w-4 h-4 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
@@ -120,7 +120,7 @@ export async function renderHomePage() {
               const fName = isEn ? (f.nameEn || f.name) : f.name;
               const fTagline = isEn ? (f.taglineEn || f.tagline) : f.tagline;
               return `
-              <a href="#/resep?flavor=${f.id}" 
+              <a href="${isEn ? '#/recipes' : '#/resep'}?flavor=${f.id}" 
                  class="group p-5 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/35 hover:border-[#C84C24] text-center transition-all duration-300 card-hover-lift flex flex-col items-center justify-between shadow-2xs">
                 <div class="w-13 h-13 rounded-2xl flex items-center justify-center mb-3.5 transition-transform group-hover:scale-110 shadow-xs" style="background-color: ${f.color}15; color: ${f.color}; border: 1px solid ${f.color}35;">
                   <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -162,7 +162,7 @@ export async function renderHomePage() {
                 ${t('recipesSection.description')}
               </p>
             </div>
-            <a href="#/resep" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all duration-300 shadow-sm shrink-0">
+            <a href="${isEn ? '#/recipes' : '#/resep'}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all duration-300 shadow-sm shrink-0">
               <span>${t('recipesSection.viewAll')}</span>
               <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -209,7 +209,7 @@ export async function renderHomePage() {
               </div>
 
               <div class="pt-2">
-                <a href="#/peta-rasa" 
+                <a href="${isEn ? '#/flavor-map' : '#/peta-rasa'}" 
                    class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
                   <span>${t('nav.flavorMap')} &rarr;</span>
                 </a>
@@ -274,7 +274,7 @@ export async function renderHomePage() {
                   </p>
                 </div>
                 <div class="pt-4 border-t border-[#E8DEC8] mt-4">
-                  <a href="#/jelajah-rempah" class="text-xs font-bold text-[#C84C24] hover:text-[#120B07] transition-colors flex items-center justify-between">
+                  <a href="${isEn ? '#/spices' : '#/jelajah-rempah'}" class="text-xs font-bold text-[#C84C24] hover:text-[#120B07] transition-colors flex items-center justify-between">
                     <span>${t('spicesSection.inspectBtn')}</span>
                     <span>&rarr;</span>
                   </a>
@@ -300,7 +300,7 @@ export async function renderHomePage() {
                 ${t('restaurantsSection.description')}
               </p>
             </div>
-            <a href="#/restoran-legendaris" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all shadow-sm shrink-0">
+            <a href="${isEn ? '#/restaurants' : '#/restoran-legendaris'}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all shadow-sm shrink-0">
               <span>${t('nav.restaurants')}</span>
               <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -386,7 +386,7 @@ export async function renderHomePage() {
             </div>
 
             <div class="pt-2">
-              <a href="#/rekomendasi" 
+              <a href="${isEn ? '#/recommendations' : '#/rekomendasi'}" 
                  class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
                 <span>${t('recommendations.submitBtn')}</span>
                 <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">

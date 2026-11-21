@@ -133,7 +133,8 @@ export function initRecipesPageInteractions() {
             flavor: 'semua',
             sort: 'popular'
           };
-          window.location.hash = '#/resep';
+          const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+          window.location.hash = isEn ? '#/recipes' : '#/resep';
         };
       }
     }

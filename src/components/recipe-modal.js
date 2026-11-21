@@ -331,7 +331,8 @@ export async function openRecipeModal(slug) {
   const shareText = document.getElementById('modal-share-text');
   if (shareBtn && shareText) {
     shareBtn.addEventListener('click', () => {
-      const shareUrl = `${window.location.origin}${window.location.pathname}#/resep/${slug}`;
+      const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+      const shareUrl = `${window.location.origin}${window.location.pathname}${isEn ? '#/recipes' : '#/resep'}/${slug}`;
       navigator.clipboard.writeText(shareUrl).then(() => {
         shareText.textContent = t('recipeDetail.linkCopied') || 'Tautan Disalin!';
         setTimeout(() => {

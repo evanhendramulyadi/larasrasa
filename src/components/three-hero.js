@@ -214,7 +214,7 @@ export class ThreeHeroShowcase {
             <button type="button" id="gudeg-popover-close" class="text-[#5C3622] hover:text-[#120B07] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
           </div>
           <div class="mt-2.5 pt-2 border-t border-[#E8DEC8] flex items-center justify-between">
-            <a href="#/resep/gudeg-komplit" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
+            <a href="${isEn ? '#/recipes/gudeg-komplit' : '#/resep/gudeg-komplit'}" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
               <span>${isEn ? 'View Full Recipe' : 'Lihat Resep Lengkap'}</span>
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -367,7 +367,7 @@ export class ThreeHeroShowcase {
             <button type="button" id="popover-close-btn" class="text-[#5C3622] hover:text-[#120B07] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
           </div>
           <div class="mt-2.5 pt-2 border-t border-[#E8DEC8] flex items-center justify-between">
-            <a id="popover-dish-link" href="#/resep" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
+            <a id="popover-dish-link" href="${isEn ? '#/recipes' : '#/resep'}" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
               <span>${t('recipesSection.viewRecipeBtn')}</span>
               <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -392,7 +392,7 @@ export class ThreeHeroShowcase {
       popTitle.textContent = dish.title;
       popDesc.textContent = dish.desc;
       popRegion.textContent = dish.region;
-      popLink.href = `#/resep/${dish.slug}`;
+      popLink.href = isEn ? `#/recipes/${dish.slug}` : `#/resep/${dish.slug}`;
       popover.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
       popover.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
 

@@ -1,4 +1,5 @@
 import { i18n, t } from '../i18n/index.js';
+import { ROUTE_DEFINITIONS } from '../utils/routes.js';
 
 /**
  * Ultra-Elevated Royal Javanese Heritage Navbar
@@ -14,19 +15,30 @@ export function isRouteMatching(itemPath, currentRoute) {
     return false;
   }
   const cleanCurrent = currentRoute.split('?')[0];
-  return cleanCurrent === itemPath || cleanCurrent.startsWith(itemPath + '/');
+  const cleanItem = itemPath.split('?')[0];
+
+  if (cleanCurrent === cleanItem) return true;
+
+  const def = ROUTE_DEFINITIONS.find(d => d.idPath === cleanItem || d.enPath === cleanItem);
+  if (def) {
+    if (cleanCurrent === def.idPath || cleanCurrent === def.enPath) return true;
+    if (cleanCurrent.startsWith(def.idPath + '/') || cleanCurrent.startsWith(def.enPath + '/')) return true;
+  }
+
+  return cleanCurrent.startsWith(cleanItem + '/');
 }
 
 export function renderNavbar(activeRoute = '/') {
   const currentLang = i18n.getLanguage();
+  const isEn = currentLang === 'en';
 
   const navItems = [
     { label: t('nav.home'), href: '#/' },
-    { label: t('nav.recipes'), href: '#/resep' },
-    { label: t('nav.flavorMap'), href: '#/peta-rasa' },
-    { label: t('nav.spices'), href: '#/jelajah-rempah' },
-    { label: t('nav.restaurants'), href: '#/restoran-legendaris' },
-    { label: t('nav.recommendations'), href: '#/rekomendasi' },
+    { label: t('nav.recipes'), href: isEn ? '#/recipes' : '#/resep' },
+    { label: t('nav.flavorMap'), href: isEn ? '#/flavor-map' : '#/peta-rasa' },
+    { label: t('nav.spices'), href: isEn ? '#/spices' : '#/jelajah-rempah' },
+    { label: t('nav.restaurants'), href: isEn ? '#/restaurants' : '#/restoran-legendaris' },
+    { label: t('nav.recommendations'), href: isEn ? '#/recommendations' : '#/rekomendasi' },
     { label: t('nav.aiFoodCreator'), href: '#/ai-food-creator', isSpecial: true }
   ];
 
@@ -105,7 +117,7 @@ export function renderNavbar(activeRoute = '/') {
             </div>
 
             <!-- Quick Concierge CTA Button -->
-            <a href="#/rekomendasi" 
+            <a href="${isEn ? '#/recommendations' : '#/rekomendasi'}" 
                class="whitespace-nowrap hidden 2xl:inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5 border border-[#E05A30]">
               <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>

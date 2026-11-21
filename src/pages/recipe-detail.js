@@ -21,7 +21,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
       <div class="max-w-4xl mx-auto px-4 py-24 text-center space-y-4">
         <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">${isEn ? 'Culinary Heritage Not Found' : 'Kuliner Tidak Ditemukan'}</h2>
         <p class="text-sm text-[#5C3622]">${isEn ? 'Sorry, the requested culinary chronicle could not be found.' : 'Mohon maaf, catatan kuliner yang Anda cari saat ini belum tersedia.'}</p>
-        <a href="#/resep" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120B07] text-white text-xs font-bold border border-[#D49B42]/40">
+        <a href="${isEn ? '#/recipes' : '#/resep'}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120B07] text-white text-xs font-bold border border-[#D49B42]/40">
           &larr; ${isEn ? 'Back to Culinary Catalog' : 'Kembali ke Khasanah Kuliner'}
         </a>
       </div>
@@ -46,7 +46,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         <div class="flex items-center gap-2 flex-wrap">
           <a href="#/" class="hover:text-[#120B07] transition-colors font-medium">${t('nav.home')}</a>
           <span>/</span>
-          <a href="#/resep" class="hover:text-[#120B07] transition-colors font-medium">${t('nav.recipes')}</a>
+          <a href="${isEn ? '#/recipes' : '#/resep'}" class="hover:text-[#120B07] transition-colors font-medium">${t('nav.recipes')}</a>
           <span>/</span>
           <span class="text-[#120B07] font-bold">${recipe.name}</span>
         </div>
@@ -61,7 +61,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             <span id="share-btn-text">${t('recipeDetail.shareBtn')}</span>
           </button>
 
-          <a href="#/resep" id="recipe-close-btn" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#D49B42]/40 hover:bg-[#C84C24] hover:text-white hover:border-[#C84C24] text-[#120B07] font-bold transition-all shadow-xs cursor-pointer" aria-label="Tutup Resep">
+          <a href="${isEn ? '#/recipes' : '#/resep'}" id="recipe-close-btn" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#D49B42]/40 hover:bg-[#C84C24] hover:text-white hover:border-[#C84C24] text-[#120B07] font-bold transition-all shadow-xs cursor-pointer" aria-label="Tutup Resep">
             <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
             </svg>
@@ -393,7 +393,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
 
       <!-- Bottom Action: Tutup Resep -->
       <div class="pt-6 border-t border-[#D49B42]/30 flex items-center justify-center">
-        <a href="#/resep" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#120B07] text-[#FAF7F2] hover:bg-[#C84C24] transition-all font-bold text-xs shadow-md border border-[#D49B42]/40 cursor-pointer">
+        <a href="${isEn ? '#/recipes' : '#/resep'}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#120B07] text-[#FAF7F2] hover:bg-[#C84C24] transition-all font-bold text-xs shadow-md border border-[#D49B42]/40 cursor-pointer">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
