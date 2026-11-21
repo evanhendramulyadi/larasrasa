@@ -907,7 +907,7 @@ export const recipeTranslationsEn = {
     nutritionNote: 'Estimated per warming bowl with broth and fried garlic.'
   },
   'sate-kambing-batibul-tegal': {
-    name: 'Tegal Batibul Young Mutton Satay with Sweet Soy & Fresh Chilies',
+    name: 'Sate Kambing Batibul Tegal (Young Mutton Satay with Sweet Soy)',
     mealType: 'Lunch / Hearty Dinner',
     difficulty: 'Medium',
     difficultyLevel: 'Intermediate',
@@ -932,7 +932,7 @@ export const recipeTranslationsEn = {
     nutritionNote: 'Estimated per standard 10-skewer portion with sweet soy and fresh vegetables.'
   },
   'tahu-aci-slawi-tegal': {
-    name: 'Crispy Slawi Yellow Tofu with Chewy Seasoned Tapioca & Garlic Chives',
+    name: 'Tahu Aci Slawi Tegal (Crispy Tofu with Chewy Tapioca & Chives)',
     mealType: 'Traditional Snack / Finger Food',
     difficulty: 'Easy',
     difficultyLevel: 'Beginner',
@@ -958,7 +958,7 @@ export const recipeTranslationsEn = {
     nutritionNote: 'Estimated per portion of 4 freshly fried tofu snacks.'
   },
   'kupat-glabed-tegal': {
-    name: 'Tegal Kupat Glabed with Rich Golden Coconut Gravy & Clam Satay',
+    name: 'Kupat Glabed Tegal (Rice Cakes in Golden Coconut Gravy)',
     mealType: 'Hearty Breakfast / Evening Supper',
     difficulty: 'Medium',
     difficultyLevel: 'Intermediate',
@@ -983,7 +983,7 @@ export const recipeTranslationsEn = {
     nutritionNote: 'Estimated per bowl complete with rice cakes, golden gravy, chicken, and clam satay.'
   },
   'tauto-pekalongan': {
-    name: 'Pekalongan Tauto Beef Soup with Sweet Fermented Tauco & Vermicelli',
+    name: 'Tauto Pekalongan (Beef Soup with Sweet Fermented Tauco)',
     mealType: 'Lunch / Evening Gathering',
     difficulty: 'Medium',
     difficultyLevel: 'Intermediate',
@@ -1007,7 +1007,7 @@ export const recipeTranslationsEn = {
     nutritionNote: 'Estimated per bowl with beef brisket, vermicelli, and savory broth.'
   },
   'sroto-sokaraja-banyumas': {
-    name: 'Banyumas Sroto Sokaraja with Crushed Peanut Sauce & Cantir Crackers',
+    name: 'Sroto Sokaraja Banyumas (Beef Soup with Sweet Peanut Sambal)',
     mealType: 'Lunch / Casual Gathering',
     difficulty: 'Medium',
     difficultyLevel: 'Intermediate',
@@ -1033,7 +1033,7 @@ export const recipeTranslationsEn = {
     nutritionNote: 'Estimated per bowl with ketupat, shredded chicken, peanut sauce, and cantir crackers.'
   },
   'tempe-kemul-wonosobo': {
-    name: 'Wonosobo Tempe Kemul Crispy Turmeric & Garlic Chive Tempeh Fritters',
+    name: 'Tempe Kemul Wonosobo (Crispy Turmeric & Chive Tempeh Fritters)',
     mealType: 'Traditional Snack / Mountain Warmth',
     difficulty: 'Easy',
     difficultyLevel: 'Beginner',
