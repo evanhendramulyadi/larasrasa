@@ -170,7 +170,8 @@ function renderRegionDetailContent(region) {
 
       <!-- CTA Action -->
       <div class="pt-2">
-        <a href="${isEn ? '#/recipes' : '#/resep'}?region=${region.id}" 
+        <a href="${isEn ? '#/recipes' : '#/resep'}" 
+           data-region-filter="${region.id}"
            class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-full text-xs font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all shadow-md border border-[#D49B42]/40">
           <span>${t('map.viewAllRecipes', { region: region.name })}</span>
           <svg class="w-4 h-4 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">

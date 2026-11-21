@@ -112,7 +112,8 @@ export function renderFooter() {
             </h3>
             <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-xs text-[#FAF7F2]/80">
               ${regions.map(r => `
-                <a href="${isEn ? `#/recipes?region=${r.id}` : `#/resep?region=${r.id}`}" 
+                <a href="${isEn ? `#/recipes` : `#/resep`}" 
+                   data-region-filter="${r.id}"
                    class="group flex items-center gap-1.5 hover:text-[#D49B42] transition-colors py-0.5">
                   <span class="text-[#D49B42]/70 group-hover:text-[#C84C24] transition-colors text-[10px]">&bull;</span>
                   <span class="truncate">${r.name}</span>

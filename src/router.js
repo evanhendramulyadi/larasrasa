@@ -1,7 +1,7 @@
 import { renderNavbar, initNavbarInteractions, setActiveNavbarLink } from './components/navbar.js';
 import { renderFooter } from './components/footer.js';
 import { renderHomePage, initHomePageInteractions } from './pages/home.js';
-import { renderRecipesPage, initRecipesPageInteractions, resetRecipesPageState, setPendingFlavorFilter } from './pages/recipes.js';
+import { renderRecipesPage, initRecipesPageInteractions, resetRecipesPageState, setPendingFlavorFilter, setPendingRegionFilter } from './pages/recipes.js';
 import { renderRecipeDetailPage, initRecipeDetailInteractions } from './pages/recipe-detail.js';
 import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-map.js';
 import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, openSpiceModal, getActiveSpiceModalId, resetSpicesPageState } from './pages/spices.js';
@@ -12,6 +12,52 @@ import { openRecipeModal, closeRecipeModal, getActiveRecipeModalSlug } from './c
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
 import { translateHashRoute } from './utils/routes.js';
+
+export function resolveNearestRoute(rawPath, isEn = false) {
+  const normalized = (rawPath || '').toLowerCase().replace(/\/+$/, '') || '/';
+
+  const validExactRoutes = [
+    '/',
+    '/resep', '/recipes',
+    '/peta-rasa', '/flavor-map',
+    '/jelajah-rempah', '/spices',
+    '/restoran-legendaris', '/restaurants',
+    '/rekomendasi', '/recommendations',
+    '/ai-food-creator'
+  ];
+
+  if (validExactRoutes.includes(normalized) || normalized.startsWith('/resep/') || normalized.startsWith('/recipes/')) {
+    return normalized;
+  }
+
+  // Nearest match for recipes
+  if (normalized.startsWith('/resep') || normalized.startsWith('/recipe')) {
+    return isEn ? '/recipes' : '/resep';
+  }
+  // Nearest match for flavor map
+  if (normalized.includes('peta') || normalized.includes('map')) {
+    return isEn ? '/flavor-map' : '/peta-rasa';
+  }
+  // Nearest match for spices
+  if (normalized.includes('rempah') || normalized.includes('spice')) {
+    return isEn ? '/spices' : '/jelajah-rempah';
+  }
+  // Nearest match for restaurants
+  if (normalized.includes('restoran') || normalized.includes('restaurant')) {
+    return isEn ? '/restaurants' : '/restoran-legendaris';
+  }
+  // Nearest match for recommendations
+  if (normalized.includes('rekomendasi') || normalized.includes('recommend')) {
+    return isEn ? '/recommendations' : '/rekomendasi';
+  }
+  // Nearest match for AI food creator
+  if (normalized.includes('creator') || normalized.includes('ai') || normalized.includes('studio')) {
+    return '/ai-food-creator';
+  }
+
+  // Fallback to Home as the nearest root
+  return '/';
+}
 
 /**
  * Client-Side Router for LarasRasa SPA
@@ -32,11 +78,14 @@ export class Router {
     }
     scrollToTop('instant');
 
-    // Harmonize initial hash with active language on boot
+    // Harmonize initial hash with active language on boot and resolve to nearest clean route
     const initialLang = i18n.getLanguage();
-    const initialHash = window.location.hash || '#/';
-    const harmonizedHash = translateHashRoute(initialHash, initialLang);
-    if (harmonizedHash !== initialHash) {
+    const initialRaw = window.location.hash || '#/';
+    const [initialPathPart] = initialRaw.split('?');
+    const isEn = initialLang === 'en';
+    const resolvedNearest = resolveNearestRoute(initialPathPart.replace(/^#/, ''), isEn);
+    const harmonizedHash = translateHashRoute(`#${resolvedNearest}`, initialLang);
+    if (harmonizedHash !== initialRaw) {
       history.replaceState(null, '', harmonizedHash);
     }
 
@@ -72,6 +121,14 @@ export class Router {
         const flavorId = flavorCard.getAttribute('data-flavor-spectrum');
         if (flavorId) {
           setPendingFlavorFilter(flavorId);
+        }
+      }
+
+      const regionCard = e.target.closest('[data-region-filter]');
+      if (regionCard) {
+        const regionId = regionCard.getAttribute('data-region-filter');
+        if (regionId) {
+          setPendingRegionFilter(regionId);
         }
       }
 
@@ -115,6 +172,14 @@ export class Router {
           }
         }
 
+        const regionCard = e.target.closest('[data-region-filter]');
+        if (regionCard && e.target === regionCard) {
+          const regionId = regionCard.getAttribute('data-region-filter');
+          if (regionId) {
+            setPendingRegionFilter(regionId);
+          }
+        }
+
         const spiceCard = e.target.closest('[data-spice-id]');
         if (spiceCard && e.target === spiceCard) {
           e.preventDefault();
@@ -149,6 +214,12 @@ export class Router {
       const searchParams = new URLSearchParams(queryPart);
       for (const [key, val] of searchParams.entries()) {
         queryParams[key] = val;
+      }
+      // If the URL contained query parameters (like ?flavor=pedas or ?region=...),
+      // immediately remove query parameters and normalize URL to the clean route
+      const cleanHash = `#${path}`;
+      if (window.location.hash !== cleanHash) {
+        history.replaceState(null, '', cleanHash);
       }
     }
 
@@ -203,8 +274,15 @@ export class Router {
       resetSpicesPageState();
     }
 
-    // 4. Parse current route
-    const { path, queryParams } = this.parseHash();
+    // 4. Parse current route & resolve nearest valid clean route
+    let { path, queryParams } = this.parseHash();
+    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+    const nearestPath = resolveNearestRoute(path, isEn);
+
+    if (nearestPath !== path) {
+      path = nearestPath;
+      history.replaceState(null, '', `#${nearestPath}`);
+    }
 
     // Instant visual update for navbar active indicator
     setActiveNavbarLink(path);
@@ -224,6 +302,19 @@ export class Router {
       pageTitlePrefix = t('nav.recipes');
     } else if (path.startsWith('/resep/') || path.startsWith('/recipes/')) {
       const slug = path.replace(/^\/(resep|recipes)\//, '').replace(/\/$/, '');
+      let recipe = null;
+      try {
+        recipe = await recipeService.getRecipeBySlug(slug);
+      } catch (err) {
+        recipe = null;
+      }
+      if (!recipe) {
+        // Nearest valid route is the recipe catalog
+        const fallbackPath = isEn ? '/recipes' : '/resep';
+        history.replaceState(null, '', `#${fallbackPath}`);
+        this.handleRouteChange();
+        return;
+      }
       pageHtml = await renderRecipesPage(queryParams);
       postRenderAction = () => {
         initRecipesPageInteractions();
