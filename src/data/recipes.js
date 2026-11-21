@@ -972,7 +972,7 @@ export const recipes = [
     estimatedCost: 'Rp 65.000 – Rp 95.000',
     image: '/assets/images/recipes/sate-buntel.jpg',
     intro: 'Sate Buntel Solo adalah kreasi kuliner sate daging kambing cincang berbumbu rempah pekat yang dibalut (dibuntel) dengan lembaran lemak tipis jala kambing, lalu dibakar di atas arang batok kelapa sambil diolesi kecap manis berempah. Dagingnya lumer juicy dengan aroma asap manis yang menggoda selera.',
-    history: 'Diciptakan pertama kali oleh Pak Min di kawasan Tambaksegaran Solo sekitar tahun 1948. Karena banyak orang tua dan bangsawan sepuh yang kesulitan mengunyah sate kambing tusuk biasa yang kenyal, terciptalah inovasi mencincang daging kambing muda lalu membuntelnya dengan lemak tipis agar tetap empuk dan tidak kering saat dibakar.',
+    history: 'Diciptakan pertama kali oleh Lim Hwa Youe di kawasan Tambak Segaran Solo pada tahun 1948. Karena banyak pelanggan sepuh dan bangsawan yang kesulitan mengunyah sate kambing tusuk biasa yang berserat kasar, terciptalah inovasi mencincang halus daging kambing muda lalu membuntelnya (membungkusnya) dengan lemak jala tipis agar tetap empuk, lembut, dan juicy saat dibakar di atas bara arang.',
     culturalBackground: 'Kawasan Pasar Kliwon dan Laweyan di Surakarta menjadi pusat pengolahan daging kambing paling terkemuka di Jawa Tengah dengan teknik marinasi rempah tanpa aroma prengus.',
     interestingFacts: [
       'Lemak pembungkus (lemur) berfungsi melindungi sari kaldu daging cincang agar tidak menetes keluar saat dibakar.',
@@ -1317,7 +1317,7 @@ export const recipes = [
     estimatedCost: 'Rp 50.000 – Rp 70.000',
     image: '/assets/images/recipes/nasi-gandul.jpg',
     intro: 'Nasi Gandul adalah kuliner legendaris khas Desa Gajahmati, Pati. Nasi hangat beralas daun pisang disiram kuah merah kecokelatan gurih manis santan berempah, disajikan bersama irisan daging sapi empuk, lidah, atau babat bacem.',
-    history: 'Dinamakan Gandul karena para penjual aslinya memikul dua bakul kuali di kanan-kiri yang bergelantungan (nggandul) menyusuri jalanan kota Pati menjajakan kuah kaldu rempah hangat.',
+    history: 'Berasal dari Desa Gajahmati di Kabupaten Pati sejak awal abad ke-20. Dinamakan Gandul karena para penjual aslinya memikul dua bakul kuali di kanan-kiri yang bergelantungan (nggandul) menyusuri jalanan kota Pati menjajakan kuah kaldu rempah hangat.',
     culturalBackground: 'Tradisi makan nasi gandul menggunakan sendok dari daun pisang yang dilipat dua (disebut suru), memberikan aroma wangi khas yang menyatu dengan kehangatan kuah santan kaya rempah.',
     interestingFacts: [
       'Desa Gajahmati di Pati diakui sebagai desa asal muasal terciptanya racikan bumbu nasi gandul sejak awal abad ke-20.',
@@ -1536,7 +1536,7 @@ export const recipes = [
     estimatedCost: 'Rp 28.000 – Rp 42.000',
     image: '/assets/images/recipes/mie-ongklok.jpg',
     intro: 'Mie Ongklok adalah sajian mi khas pegunungan Dieng, Wonosobo. Mi kuning kenyal dan irisan kol segar direbus menggunakan keranjang bambu kecil (ongklok), lalu diguyur kuah kental gurih manis berbahan kaldu ebi, gula jawa, dan tepung kanji bertabur kucai harum.',
-    history: 'Diciptakan oleh juru masak lokal Wonosobo pada pertengahan abad ke-20 untuk menghangatkan tubuh masyarakat di tengah sejuknya udara pegunungan Dieng. Teknik mencelup mi dengan keranjang bambu di dalam air mendidih menghasilkan bunyi khas "ongklok-ongklok".',
+    history: 'Dirintis oleh Kwa Tjin Hwat pada awal abad ke-20 dan dipopulerkan secara luas oleh Pak Muhadi sejak era 1960-an di Wonosobo untuk menghangatkan tubuh masyarakat di tengah sejuknya udara pegunungan Dieng. Dinamai dari teknik mencelup mi, kol, dan daun kucai menggunakan saringan keranjang bambu (ongklok) yang dikocok-kocok berulang kali di air mendidih.',
     culturalBackground: 'Menyantap mie ongklok di Wonosobo belum lengkap tanpa sate sapi bumbu kacang manis dan tempe kemul renyah bertabur daun kucai yang digoreng dadakan di samping gerobak.',
     interestingFacts: [
       'Alat keranjang bambu berongga tempat merebus mi dan sayuran disebut ongklok, yang menjadi nama sajian ini.',
@@ -1852,7 +1852,7 @@ export const recipes = [
     estimatedCost: 'Rp 15.000 – Rp 22.000',
     image: '/assets/images/recipes/getuk-trio.jpg',
     intro: 'Getuk Trio Magelang diolah dari singkong pilihan yang dikukus pulen merekah lalu ditumbuk halus bersama gula dan sedikit mentega. Tiga lapis warna alami (cokelat gula jawa, merah muda, dan putih krim) menyajikan kelembutan manis bersahabat bertabur kelapa parut kukus gurih.',
-    history: 'Diciptakan oleh masyarakat Magelang pada era penjajahan Jepang ketika beras sulit didapat dan singkong menjadi makanan pokok pengganti. Masyarakat berkreasi menumbuk singkong kukus dengan bumbu gula kelapa hingga lahirlah getuk yang lembut dan lezat.',
+    history: 'Berakar dari masa pendudukan Jepang (dekade 1940-an) ketika beras langka dan Mbah Ali Mohtar memelopori pengolahan singkong tumbuk sebagai makanan pokok pengganti (cikal bakal getuk Magelang). Kemudian pada tahun 1958, Hendra Samadhana menciptakan inovasi Getuk Trio berlapis tiga warna harmonis yang resmi dipasarkan pada 1963, melambangkan kebersamaan dan kelembutan rasa khas Magelang.',
     culturalBackground: 'Getuk adalah simbol kesahajaan dan kreativitas masyarakat Jawa dalam mengolah hasil bumi sederhana menjadi sajian istimewa berkelas perjamuan.',
     interestingFacts: [
       'Singkong yang cocok untuk getuk adalah varietas singkong mentega kuning yang empuk merekah (mempur) saat dikukus.',
@@ -2395,7 +2395,7 @@ export const recipes = [
     estimatedCost: 'Rp 45.000 – Rp 65.000',
     image: '/assets/images/recipes/sate-ambal.jpg',
     intro: 'Sate Ambal adalah sate ayam istimewa dari pesisir Ambal Kebumen yang terkenal karena bumbu cocolannya yang unik: bukan bumbu kacang atau kecap biasa, melainkan bumbu tempe kedelai kukus yang diulek halus lembut bersama rempah pala, ketumbar sangrai, dan gula kelapa alami.',
-    history: 'Diciptakan oleh masyarakat pesisir selatan Kebumen sejak awal dekade 1900-an. Memanfaatkan melimpahnya kedelai lokal dan tempe bungkus daun, para juru masak Ambal memadukan tempe rebus yang dihaluskan dengan bumbu gulai manis gurih sebagai saus pembungkus daging ayam kampung bakar.',
+    history: 'Berasal dari Desa Ambalresmi di pesisir selatan Kebumen yang dirintis secara turun-temurun sejak era Samikin dan Sabar di akhir abad ke-19, lalu dipopulerkan luas oleh Pak Kasman sejak tahun 1963 di sepanjang jalur Daendels. Memanfaatkan melimpahnya tempe bungkus daun lokal, terciptalah inovasi saus unik dari rebusan tempe kedelai yang dilumatkan lembut bersama rempah gulai manis gurih sebagai pendamping sate ayam kampung bakar.',
     culturalBackground: 'Tradisi memanggang sate di pesisir Ambal menggunakan batok kelapa kering memberikan aroma asap manis yang khas menyatu dengan lembutnya saus tempe.',
     interestingFacts: [
       'Daging ayam kampung dimarinasi selama 2 jam dengan bumbu rempah sebelum ditusuk dan dibakar di atas arang.',
@@ -2862,7 +2862,7 @@ export const recipes = [
       'Sate kerang bumbu kecap pedas adalah pendamping wajib yang selalu ditusukkan di samping mangkuk kupat glabed.',
       'Kerupuk mi kuning yang diremas di atas kuah memberikan tekstur kriuk sekaligus menyerap kuah santan hangat.'
     ],
-    regionalVariations: 'Di daerah Randugunting Tegal, ada variasi Kupat Blengong yang menggunakan daging itik manila (blengong) dengan kuah santan serupa.',
+    regionalVariations: 'Di daerah Randugunting Tegal, ada variasi Kupat Blengong yang menggunakan daging blengong (unggas hasil persilangan itik dan mentok) dengan kuah santan serupa.',
     equipment: ['Panci kuah santan', 'Cobek batu', 'Centong sayur', 'Piring cekung saji'],
     ingredientGroups: [
       {
