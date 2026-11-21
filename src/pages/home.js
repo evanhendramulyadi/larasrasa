@@ -250,7 +250,12 @@ export async function renderHomePage() {
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
             ${sampleSpices.map(s => `
-              <div class="group bg-[#FAF7F2] p-5 rounded-2xl border border-[#D49B42]/30 shadow-2xs hover:border-[#C84C24] transition-all card-hover-lift flex flex-col justify-between">
+              <div 
+                data-spice-id="${s.id}"
+                role="button"
+                tabindex="0"
+                aria-label="${s.name}"
+                class="spice-card group bg-[#FAF7F2] p-5 rounded-2xl border border-[#D49B42]/30 shadow-2xs hover:border-[#C84C24] transition-all card-hover-lift flex flex-col justify-between cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#C84C24]">
                 <div>
                   <div class="relative w-full h-40 rounded-xl overflow-hidden mb-3.5 bg-white border border-[#E8DEC8]">
                     <img src="${s.image}" 
@@ -274,13 +279,25 @@ export async function renderHomePage() {
                   </p>
                 </div>
                 <div class="pt-4 border-t border-[#E8DEC8] mt-4">
-                  <a href="${isEn ? '#/spices' : '#/jelajah-rempah'}" class="text-xs font-bold text-[#C84C24] hover:text-[#120B07] transition-colors flex items-center justify-between">
+                  <button type="button" 
+                          data-spice-id="${s.id}"
+                          class="w-full text-xs font-bold text-[#C84C24] group-hover:text-[#AE3E1B] transition-colors flex items-center justify-between cursor-pointer">
                     <span>${t('spicesSection.inspectBtn')}</span>
-                    <span>&rarr;</span>
-                  </a>
+                    <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                  </button>
                 </div>
               </div>
             `).join('')}
+          </div>
+
+          <div class="mt-10 text-center">
+            <a href="${isEn ? '#/spices' : '#/jelajah-rempah'}" 
+               class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all shadow-sm">
+              <span>${isEn ? 'Explore All 19 Heritage Spices' : 'Jelajahi Seluruh 19 Rempah Pusaka'}</span>
+              <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
           </div>
         </div>
       </section>
@@ -310,6 +327,41 @@ export async function renderHomePage() {
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             ${featuredRestaurants.map(r => renderRestaurantCard(r)).join('')}
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: QUICK CONCIERGE CTA (MAKANAN APA HARI INI) -->
+      <section class="w-full py-14 sm:py-20 bg-gradient-to-b from-[#FAF7F2] to-[#F5EFEB] border-b border-[#D49B42]/25">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="bg-white rounded-3xl p-8 sm:p-14 border border-[#D49B42]/40 shadow-xl text-center space-y-6">
+            <div class="w-16 h-16 rounded-3xl bg-[#120B07] text-[#D49B42] border-2 border-[#D49B42]/50 flex items-center justify-center mx-auto shadow-md">
+              <svg class="w-8 h-8 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+              </svg>
+            </div>
+
+            <div class="space-y-3">
+              <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] block">
+                ${t('recommendations.badge')}
+              </span>
+              <h2 class="font-editorial-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#120B07]">
+                ${t('recommendations.title')}
+              </h2>
+              <p class="text-sm sm:text-base text-[#5C3622] max-w-xl mx-auto leading-relaxed">
+                ${t('recommendations.subtitle')}
+              </p>
+            </div>
+
+            <div class="pt-2">
+              <a href="${isEn ? '#/recommendations' : '#/rekomendasi'}" 
+                 class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
+                <span>${t('recommendations.submitBtn')}</span>
+                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -358,41 +410,6 @@ export async function renderHomePage() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION: QUICK CONCIERGE CTA (MAKANAN APA HARI INI) -->
-      <section class="w-full py-14 sm:py-20 bg-gradient-to-b from-[#FAF7F2] to-[#F5EFEB]">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="bg-white rounded-3xl p-8 sm:p-14 border border-[#D49B42]/40 shadow-xl text-center space-y-6">
-            <div class="w-16 h-16 rounded-3xl bg-[#120B07] text-[#D49B42] border-2 border-[#D49B42]/50 flex items-center justify-center mx-auto shadow-md">
-              <svg class="w-8 h-8 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
-              </svg>
-            </div>
-
-            <div class="space-y-3">
-              <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] block">
-                ${t('recommendations.badge')}
-              </span>
-              <h2 class="font-editorial-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#120B07]">
-                ${t('recommendations.title')}
-              </h2>
-              <p class="text-sm sm:text-base text-[#5C3622] max-w-xl mx-auto leading-relaxed">
-                ${t('recommendations.subtitle')}
-              </p>
-            </div>
-
-            <div class="pt-2">
-              <a href="${isEn ? '#/recommendations' : '#/rekomendasi'}" 
-                 class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30]">
-                <span>${t('recommendations.submitBtn')}</span>
-                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </a>
             </div>
           </div>
         </div>

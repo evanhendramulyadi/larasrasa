@@ -65,8 +65,18 @@ export class Router {
       });
     });
 
-    // Delegated Recipe Card click & keyboard accessibility (triggers pop-up modal like rempah)
+    // Delegated Recipe & Spice Card click & keyboard accessibility (triggers pop-up modal like rempah)
     document.addEventListener('click', (e) => {
+      const spiceCard = e.target.closest('[data-spice-id]');
+      if (spiceCard) {
+        e.preventDefault();
+        const spiceId = spiceCard.getAttribute('data-spice-id');
+        if (spiceId) {
+          openSpiceModal(spiceId);
+        }
+        return;
+      }
+
       const card = e.target.closest('[data-recipe-slug]');
       if (card) {
         e.preventDefault();
@@ -89,6 +99,16 @@ export class Router {
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
+        const spiceCard = e.target.closest('[data-spice-id]');
+        if (spiceCard && e.target === spiceCard) {
+          e.preventDefault();
+          const spiceId = spiceCard.getAttribute('data-spice-id');
+          if (spiceId) {
+            openSpiceModal(spiceId);
+          }
+          return;
+        }
+
         const card = e.target.closest('[data-recipe-slug]');
         if (card && e.target === card) {
           e.preventDefault();

@@ -287,8 +287,12 @@ export function closeSpiceModal() {
 
 export function openSpiceModal(spiceId) {
   activeSpiceModalId = spiceId;
-  const root = document.getElementById('spice-modal-root');
-  if (!root) return;
+  let root = document.getElementById('spice-modal-root');
+  if (!root) {
+    root = document.createElement('div');
+    root.id = 'spice-modal-root';
+    document.body.appendChild(root);
+  }
 
   const localizedSpices = spices.map(localizeSpice);
   const spice = localizedSpices.find(s => s.id === spiceId);

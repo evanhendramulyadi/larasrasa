@@ -232,6 +232,7 @@ export function renderRecipeModal(rawRecipe) {
 let currentRecipeKeyDownHandler = null;
 let activeRecipeModalSlug = null;
 let previousRouteHash = null;
+let openedFromHome = false;
 
 export function getActiveRecipeModalSlug() {
   const root = document.getElementById('recipe-modal-root');
@@ -243,6 +244,9 @@ export function getActiveRecipeModalSlug() {
 
 export function closeRecipeModal(updateUrl = true) {
   activeRecipeModalSlug = null;
+  const wasOpenedFromHome = openedFromHome;
+  openedFromHome = false;
+
   const root = document.getElementById('recipe-modal-root');
   if (root) {
     root.innerHTML = '';
@@ -256,6 +260,12 @@ export function closeRecipeModal(updateUrl = true) {
   }
 
   if (!updateUrl) return;
+
+  // If opened while on Home, preserve Home route and do not modify URL
+  if (wasOpenedFromHome) {
+    previousRouteHash = null;
+    return;
+  }
 
   // If currently showing a recipe slug in the URL hash, return to standard recipes page (or previous hash)
   const currentHash = window.location.hash || '';
@@ -281,14 +291,22 @@ export async function openRecipeModal(slug) {
   activeRecipeModalSlug = slug;
 
   const currentHash = window.location.hash || '';
-  if (!currentHash.startsWith('#/recipes/') && !currentHash.startsWith('#/resep/')) {
-    previousRouteHash = currentHash || '#/';
-  }
+  const isHomeRoute = currentHash === '' || currentHash === '#' || currentHash === '#/' || currentHash.split('?')[0] === '#/';
 
-  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
-  const detailHash = `${isEn ? '#/recipes' : '#/resep'}/${slug}`;
-  if (window.location.hash !== detailHash) {
-    history.replaceState(null, '', detailHash);
+  if (isHomeRoute) {
+    openedFromHome = true;
+    previousRouteHash = '#/';
+  } else {
+    openedFromHome = false;
+    if (!currentHash.startsWith('#/recipes/') && !currentHash.startsWith('#/resep/')) {
+      previousRouteHash = currentHash || '#/';
+    }
+
+    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+    const detailHash = `${isEn ? '#/recipes' : '#/resep'}/${slug}`;
+    if (window.location.hash !== detailHash) {
+      history.replaceState(null, '', detailHash);
+    }
   }
 
   let root = document.getElementById('recipe-modal-root');
