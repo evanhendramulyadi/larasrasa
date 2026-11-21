@@ -101,8 +101,7 @@ function renderGeneratingState(currentLang) {
       </div>
 
       <div class="space-y-3">
-        <span class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-xs">
-          <span>✨</span>
+        <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-xs">
           <span>${isEn ? 'Culinary Synthesis in Progress' : 'Studio Sintesis Rasa LarasRasa'}</span>
         </span>
         <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">

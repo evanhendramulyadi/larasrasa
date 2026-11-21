@@ -21,10 +21,7 @@ export async function renderLegendaryRestaurantsPage() {
         <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/18 blur-3xl pointer-events-none"></div>
 
         <div class="relative z-10 space-y-3.5 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider shadow-xs">
-            <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
+          <div class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider shadow-xs">
             <span>${t('restaurantsSection.badge')}</span>
           </div>
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">

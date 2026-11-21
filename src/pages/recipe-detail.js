@@ -297,7 +297,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         <div class="bg-amber-50/70 p-7 rounded-3xl border border-amber-200/80 space-y-3.5 shadow-2xs">
           <h3 class="font-editorial-serif text-lg font-bold text-amber-950 flex items-center gap-2">
             <svg class="w-5 h-5 text-amber-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zM9 21h6"/>
             </svg>
             <span>${t('recipeDetail.tipsTitle')}</span>
           </h3>

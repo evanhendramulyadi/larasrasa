@@ -25,12 +25,7 @@ export async function renderFlavorMapPage() {
 
         <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div class="space-y-3.5 max-w-2xl">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider shadow-xs">
-              <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
-                <line x1="9" x2="9" y1="3" y2="18"/>
-                <line x1="15" x2="15" y1="6" y2="21"/>
-              </svg>
+            <div class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] uppercase tracking-wider shadow-xs">
               <span>${t('map.badge')}</span>
             </div>
             <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
