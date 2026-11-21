@@ -27,6 +27,11 @@ export class Router {
   }
 
   init() {
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    scrollToTop('instant');
+
     // Harmonize initial hash with active language on boot
     const initialLang = i18n.getLanguage();
     const initialHash = window.location.hash || '#/';
@@ -281,8 +286,11 @@ export class Router {
         if (document.body) document.body.scrollTop = savedScrollY;
       });
     } else {
-      // Scroll to top smoothly on actual page navigation
-      scrollToTop();
+      // Scroll to top instantly on actual page navigation or reload
+      scrollToTop('instant');
+      requestAnimationFrame(() => {
+        scrollToTop('instant');
+      });
     }
   }
 }
