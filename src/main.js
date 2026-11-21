@@ -1,20 +1,14 @@
 import './style.css';
 import { Router } from './router.js';
 
-// Ensure browser scroll restoration is disabled so refreshing always lands at top
+// Ensure browser scroll restoration is disabled so refreshing always lands at top instantly without animation
 if (typeof window !== 'undefined') {
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  window.scrollTo(0, 0);
-  window.addEventListener('beforeunload', () => {
-    window.scrollTo(0, 0);
-  });
-  window.addEventListener('load', () => {
-    window.scrollTo(0, 0);
-    if (document.documentElement) document.documentElement.scrollTop = 0;
-    if (document.body) document.body.scrollTop = 0;
-  });
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  if (document.documentElement) document.documentElement.scrollTop = 0;
+  if (document.body) document.body.scrollTop = 0;
 }
 
 /**
