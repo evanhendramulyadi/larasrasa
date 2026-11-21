@@ -121,6 +121,7 @@ export async function renderHomePage() {
               const fTagline = isEn ? (f.taglineEn || f.tagline) : f.tagline;
               return `
               <a href="${isEn ? '#/recipes' : '#/resep'}" 
+                 data-flavor-spectrum="${f.id}"
                  class="group p-5 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/35 hover:border-[#C84C24] text-center transition-all duration-300 card-hover-lift flex flex-col items-center justify-between shadow-2xs">
                 <div class="w-13 h-13 rounded-2xl flex items-center justify-center mb-3.5 transition-transform group-hover:scale-110 shadow-xs" style="background-color: ${f.color}15; color: ${f.color}; border: 1px solid ${f.color}35;">
                   <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

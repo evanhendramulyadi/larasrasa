@@ -1,7 +1,7 @@
 import { renderNavbar, initNavbarInteractions, setActiveNavbarLink } from './components/navbar.js';
 import { renderFooter } from './components/footer.js';
 import { renderHomePage, initHomePageInteractions } from './pages/home.js';
-import { renderRecipesPage, initRecipesPageInteractions, resetRecipesPageState } from './pages/recipes.js';
+import { renderRecipesPage, initRecipesPageInteractions, resetRecipesPageState, setPendingFlavorFilter } from './pages/recipes.js';
 import { renderRecipeDetailPage, initRecipeDetailInteractions } from './pages/recipe-detail.js';
 import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-map.js';
 import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, openSpiceModal, getActiveSpiceModalId, resetSpicesPageState } from './pages/spices.js';
@@ -67,6 +67,14 @@ export class Router {
 
     // Delegated Recipe & Spice Card click & keyboard accessibility (triggers pop-up modal like rempah)
     document.addEventListener('click', (e) => {
+      const flavorCard = e.target.closest('[data-flavor-spectrum]');
+      if (flavorCard) {
+        const flavorId = flavorCard.getAttribute('data-flavor-spectrum');
+        if (flavorId) {
+          setPendingFlavorFilter(flavorId);
+        }
+      }
+
       const spiceCard = e.target.closest('[data-spice-id]');
       if (spiceCard) {
         e.preventDefault();
@@ -99,6 +107,14 @@ export class Router {
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
+        const flavorCard = e.target.closest('[data-flavor-spectrum]');
+        if (flavorCard && e.target === flavorCard) {
+          const flavorId = flavorCard.getAttribute('data-flavor-spectrum');
+          if (flavorId) {
+            setPendingFlavorFilter(flavorId);
+          }
+        }
+
         const spiceCard = e.target.closest('[data-spice-id]');
         if (spiceCard && e.target === spiceCard) {
           e.preventDefault();

@@ -22,6 +22,12 @@ let activeFilters = {
   sort: 'popular'
 };
 
+let pendingFlavorFilter = null;
+
+export function setPendingFlavorFilter(flavor) {
+  pendingFlavorFilter = flavor;
+}
+
 export function resetRecipesPageState() {
   activeFilters = {
     search: '',
@@ -32,11 +38,21 @@ export function resetRecipesPageState() {
 }
 
 export async function renderRecipesPage(urlParams = {}) {
+  let flavor = urlParams.flavor;
+  if (pendingFlavorFilter) {
+    flavor = pendingFlavorFilter;
+    pendingFlavorFilter = null;
+  } else if (!flavor && activeFilters.flavor && activeFilters.flavor !== 'semua') {
+    flavor = activeFilters.flavor;
+  } else if (!flavor) {
+    flavor = 'semua';
+  }
+
   // Reset filters to defaults or apply incoming URL params cleanly
   activeFilters = {
     search: urlParams.search || '',
     region: urlParams.region || 'semua',
-    flavor: urlParams.flavor || 'semua',
+    flavor: flavor,
     sort: 'popular'
   };
 
