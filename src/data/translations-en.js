@@ -1164,7 +1164,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Thinly sliced and flash-fried into crispy Brebes shallot garnishes, or stone-pounded raw with garlic for spice pastes.',
     culturalWisdom: 'Brebes in Central Java is Indonesia’s largest shallot-growing capital. The smaller local variety has lower moisture and higher natural sugars, creating crisp fried shallots that retain their aroma for weeks.',
     substitutes: 'Imported shallots (though aroma is gentler and moisture is higher).',
-    iconicDishes: ['Kudus Chicken Soup', 'Solo Savory Coconut Rice', 'Garang Asem', 'Javanese Sweet Soy Beef']
+    iconicDishes: ['Kudus Chicken Soup', 'Solo Savory Coconut Rice', 'Garang Asem Kudus', 'Banyumas Mendoan']
   },
   'bawang-putih': {
     name: 'Garlic',
@@ -1175,7 +1175,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Bruised for simmering broths, ground raw into spice pastes, or fried into crisp golden garlic chips for Soto Kudus.',
     culturalWisdom: 'Northern coastal cuisine in Semarang was deeply enriched by Chinese Peranakan trade, establishing minced garlic as the foundational wok aromatic.',
     substitutes: 'Honan standard garlic or pure dehydrated garlic powder (though local kating garlic remains the most aromatic gold standard).',
-    iconicDishes: ['Semarang Spring Rolls', 'Kudus Chicken Soup', 'Tahu Gimbal Semarang', 'Banyumas Mendoan']
+    iconicDishes: ['Semarang Spring Rolls', 'Kudus Chicken Soup', 'Semarang Prawn Gimbal Tofu', 'Banyumas Mendoan']
   },
   'ketumbar': {
     name: 'Toasted Coriander Seeds',
@@ -1186,7 +1186,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Must be dry-roasted on low heat until golden and crackling before stone-grinding.',
     culturalWisdom: 'In Javanese culinary philosophy, coriander is known as "pangiket raos" (the flavor binder). Without toasted coriander, bacem and mendoan lose their soul.',
     substitutes: 'Pure coriander powder (lightly toasted in a dry pan before mixing).',
-    iconicDishes: ['Braised Sweet Tempeh', 'Banyumas Mendoan', 'Solo Minced Satay', 'Javanese Beef Jerky']
+    iconicDishes: ['Braised Sweet Tempeh', 'Banyumas Mendoan', 'Solo Minced Satay', 'Dieng Tempe Kemul']
   },
   'kemiri': {
     name: 'Toasted Candlenuts',
@@ -1197,7 +1197,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Must be thoroughly toasted or simmered to eliminate raw toxalbumins before grinding.',
     culturalWisdom: 'Candlenut is the ancient secret of Javanese royal kitchens for achieving luxurious, thick gravies without excessive coconut cream.',
     substitutes: 'Toasted raw cashew nuts or macadamia nuts.',
-    iconicDishes: ['Opor Chicken Liwet', 'Mangut Beong Magelang', 'Bacem Spice Paste', 'Selat Solo']
+    iconicDishes: ['Kudus Chicken Soup', 'Braised Sweet Tempeh', 'Javanese Boiled Noodles', 'Banyumas Sroto Sokaraja']
   },
   'merica': {
     name: 'Whole White Peppercorns',
@@ -1208,18 +1208,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Lightly toasted then stone-crushed with garlic at the start of broth spice preparation.',
     culturalWisdom: 'Surakarta royal cuisine and historic Magelang soup houses insisted on whole peppercorns freshly pulverized before cooking to preserve delicate essential oils.',
     substitutes: 'Cracked black pepper or pure ground white pepper.',
-    iconicDishes: ['Kudus Chicken Soup', 'Selat Solo', 'Timlo Solo Broth', 'Sop Senerek Magelang']
-  },
-  'kluwek': {
-    name: 'Fermented Pangium Seed (Kluwek)',
-    categoryName: 'Toasted Seeds & Dry Spices',
-    role: 'Imparts iconic obsidian-black color, deep savory fermented umami, and dark rustic character.',
-    aromaProfile: 'Deep, musky, roasted earthy aroma reminiscent of unsweetened artisanal dark cacao.',
-    flavorNote: 'Rich, savory, complex earthy umami with faint fermented acidity.',
-    preparationMethod: 'Crack open hard outer shell, scoop dark meat (sample to ensure no bitterness), steep in hot water, then pound smooth with spice paste.',
-    culturalWisdom: 'An ancient indigenous spice recorded in Old Javanese manuscripts. Through natural curing in ash, natural cyanogenic glycosides are neutralized, unlocking one of the world\'s most unique black seasonings.',
-    substitutes: 'Irreplaceable; a blend of charred candlenut and tamarind can mimic color but cannot recreate kluwek\'s fermented soul.',
-    iconicDishes: ['Pindang Kudus', 'Pindang Tetel Pekalongan', 'Brongkos Demak/Solo']
+    iconicDishes: ['Kudus Chicken Soup', 'Selat Solo', 'Timlo Solo Broth', 'Javanese Boiled Noodles']
   },
   'kunyit': {
     name: 'Fresh Turmeric Root',
@@ -1230,7 +1219,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Charred briefly over direct embers before peeling to purge raw grassy bitterness, then ground or grated.',
     culturalWisdom: 'The bright gold of turmeric symbolizes majesty, prosperity, and divine blessing in Javanese tumpeng celebrations.',
     substitutes: 'High-grade pure organic turmeric powder.',
-    iconicDishes: ['Solo Yellow Fragrant Rice', 'Mangut Beong Magelang', 'Tempe Kemul Wonosobo', 'Golden Opor']
+    iconicDishes: ['Kudus Chicken Soup', 'Banyumas Mendoan', 'Dieng Tempe Kemul', 'Banyumas Sroto Sokaraja']
   },
   'jahe': {
     name: 'Fresh Ginger Root (Emprit & Elephant)',
@@ -1241,7 +1230,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Bruised for infusing clear soups, or finely grated for braised beef sauces and warm herbal drinks.',
     culturalWisdom: 'Highland communities of Dieng and Merbabu incorporate charred ginger into daily broths to ward off alpine chill.',
     substitutes: 'Red ginger (more pungent heat) or pure ginger powder.',
-    iconicDishes: ['Kudus Chicken Soup', 'Selat Solo', 'Wedang Ronde Salatiga', 'Tongseng Mutton Stew']
+    iconicDishes: ['Kudus Chicken Soup', 'Garang Asem Kudus', 'Swike Purwodadi', 'Pekalongan Beef Tauto']
   },
   'lengkuas': {
     name: 'Greater Galangal (Laos)',
@@ -1252,7 +1241,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Crushed with a pestle for simmering, or finely grated for galangal-fried chicken crust.',
     culturalWisdom: 'Known as "Laos" in Central Java, it is inseparable from Indonesian Bay Leaf (Salam)—referred to playfully as inseparable lovers in Javanese pots.',
     substitutes: 'Dried galangal slices (soaked in warm water before use).',
-    iconicDishes: ['Garang Asem Kudus', 'Solo Savory Coconut Rice', 'Sayur Lodeh', 'Braised Sweet Tempeh']
+    iconicDishes: ['Garang Asem Kudus', 'Braised Sweet Tempeh', 'Central Javanese Gudeg', 'Solo Tengkleng Bone Soup']
   },
   'kencur': {
     name: 'Aromatic Ginger (Kaempferia Galanga)',
@@ -1263,7 +1252,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Peeled clean and pounded raw with garlic, shallots, and coriander.',
     culturalWisdom: 'The unmistakable magic of authentic Soto Kudus lies in a thumbnail of mature kencur ground directly into the spice paste.',
     substitutes: 'Difficult to replace; kencur has a distinct profile without any direct culinary equal.',
-    iconicDishes: ['Kudus Chicken Soup', 'Sambal Tumpang Boyolali/Solo', 'Spiced Coconut Urap Salad', 'Kencur Rice Crackers']
+    iconicDishes: ['Kudus Chicken Soup', 'Banyumas Mendoan', 'Kupat Tahu Magelang']
   },
   'serai': {
     name: 'Culinary Lemongrass (Serai Dapur)',
@@ -1274,7 +1263,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Bruise the white bulb until cracked, then tie into a knot so essential oils seep into simmering soups.',
     culturalWisdom: 'Lemongrass symbolizes purity of spirit and aromatic harmony in royal ritual offerings.',
     substitutes: 'Grated kaffir lime zest (for citrus aroma).',
-    iconicDishes: ['Solo Savory Coconut Rice', 'Kudus Chicken Soup', 'Garang Asem', 'Spiced Fish Mangut']
+    iconicDishes: ['Solo Savory Coconut Rice', 'Kudus Chicken Soup', 'Garang Asem Kudus', 'Solo Tengkleng Bone Soup']
   },
   'daun-salam': {
     name: 'Indonesian Bay Leaf (Daun Salam Nusantara)',
@@ -1285,7 +1274,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Torn gently along the central rib before dropping into sizzling aromatics or simmering stews.',
     culturalWisdom: 'Named "Salam" which means peace and safety. It symbolizes cooking with love to bring peace to the household.',
     substitutes: 'European bay laurel (use sparingly as it has much stronger eucalyptus notes).',
-    iconicDishes: ['Solo Savory Coconut Rice', 'Garang Asem', 'Braised Sweet Tempeh', 'Chayote Squash Stew']
+    iconicDishes: ['Solo Savory Coconut Rice', 'Garang Asem Kudus', 'Braised Sweet Tempeh', 'Central Javanese Gudeg']
   },
   'daun-jeruk': {
     name: 'Kaffir Lime Leaf (Daun Jeruk Purut)',
@@ -1296,7 +1285,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Remove the fibrous midrib to avoid bitterness; slice hair-thin for mendoan batter or tear whole for soups.',
     culturalWisdom: 'Shredding kaffir lime leaves as fine as silk threads is a hallmark skill of Banyumas tempeh and rempeyek masters.',
     substitutes: 'Freshly grated lime zest.',
-    iconicDishes: ['Banyumas Mendoan', 'Garang Asem Kudus', 'Crispy Anchovy Rempeyek', 'Shallot Sambal']
+    iconicDishes: ['Smoked Catfish Mangut', 'Solo Tengkleng Bone Soup', 'Banyumas Sroto Sokaraja']
   },
   'belimbing-wuluh': {
     name: 'Averrhoa Bilimbi (Sour Starfruit)',
@@ -1307,7 +1296,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Sliced into thick discs and folded inside banana leaf parcels before steaming.',
     culturalWisdom: 'Nearly every traditional Central Javanese garden hosts a bilimbi tree as a living home pharmacy and daily culinary resource.',
     substitutes: 'Unripe green sour tomatoes or fresh key lime juice.',
-    iconicDishes: ['Garang Asem Kudus', 'Pindang Serani Jepara', 'Semarang Sour Tamarind Beef']
+    iconicDishes: ['Garang Asem Kudus', 'Smoked Catfish Mangut']
   },
   'gula-jawa': {
     name: 'Artisanal Coconut Palm Sugar (Gula Jawa)',
@@ -1318,7 +1307,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Finely shaved with a sharp knife before dissolving into braising stocks for bacem and semur.',
     culturalWisdom: 'Banyumas and Cilacap are home to legendary coconut palm tappers. Pure molded sugar melts like fudge on the tongue.',
     substitutes: 'Pure unrefined coconut palm sugar or organic dark muscovado.',
-    iconicDishes: ['Braised Sweet Tempeh', 'Selat Solo', 'Kupat Tahu Magelang', 'Kudus Coconut Fudge']
+    iconicDishes: ['Braised Sweet Tempeh', 'Selat Solo', 'Kupat Tahu Magelang', 'Central Javanese Gudeg']
   },
   'asam-jawa': {
     name: 'Javanese Tamarind Pulp (Asam Jawa)',
@@ -1329,7 +1318,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Steeped in boiling water, kneaded to extract the pulp, then strained before adding to sauces or broths.',
     culturalWisdom: 'Tamarind trees have shaded royal palace squares and historic transit routes across Central Java for centuries. In Javanese lore, "asem" derives from "semsem", meaning delightfully captivating.',
     substitutes: 'Dried asam kandis or young sour starfruit (bilimbi).',
-    iconicDishes: ['Tahu Gimbal Semarang', 'Kupat Tahu Magelang', 'Javanese Sour Vegetable Soup', 'Suruh Beef Satay']
+    iconicDishes: ['Semarang Prawn Gimbal Tofu', 'Kupat Tahu Magelang', 'Braised Sweet Tempeh', 'Banyumas Sroto Sokaraja']
   },
   'kecombrang': {
     name: 'Torch Ginger Flower (Honje / Kecombrang)',
@@ -1340,7 +1329,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Pink flower petals are finely sliced and steamed together with young jackfruit and grated coconut.',
     culturalWisdom: 'Torch ginger is the non-negotiable identity of Pekalongan Megono. Without it, the dish would simply be ordinary urap.',
     substitutes: 'Finely minced lemongrass and kaffir lime zest.',
-    iconicDishes: ['Pekalongan Megono Rice', 'Torch Ginger Sambal', 'Pekalongan Pindang Tetel']
+    iconicDishes: ['Pekalongan Megono Rice']
   },
   'cengkeh': {
     name: 'Javanese Whole Cloves',
@@ -1351,7 +1340,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Dropped whole into simmering mutton broths, sweet soy beef stews (semur), or royal spiced fruit compotes.',
     culturalWisdom: 'The Spice Islands captivated global explorers largely through cloves. In Central Java, cloves were revered for elevating aristocratic broths and royal herbal infusions.',
     substitutes: 'Star anise or whole allspice berries.',
-    iconicDishes: ['Solo Tengkleng Bone Soup', 'Braised Beef Semur', 'Spiced Guava / Pineapple Compote', 'Warm Spiced Wedang']
+    iconicDishes: ['Selat Solo', 'Solo Tengkleng Bone Soup']
   },
   'kayu-manis': {
     name: 'Javanese Sweet Cinnamon',
@@ -1362,7 +1351,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Quills are simmered whole in braising broths so their essential oils extract slowly and gracefully.',
     culturalWisdom: 'Cinnamon symbolizes sweetness of character and the refined etiquette of Surakarta royal dining.',
     substitutes: 'High-grade pure ground cinnamon quill powder.',
-    iconicDishes: ['Selat Solo', 'Javanese Braised Ox Tongue', 'Solo Tengkleng Bone Soup', 'Wedang Ronde Salatiga']
+    iconicDishes: ['Solo Tengkleng Bone Soup']
   },
   'pala': {
     name: 'Whole Nutmeg & Mace (Fuli)',
@@ -1373,7 +1362,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Freshly grated with a fine nutmeg grater directly over simmering pots moments before serving.',
     culturalWisdom: 'The touch of freshly grated nutmeg is the enduring signature of royal Javanese-Dutch culinary heritage in Solo and Magelang.',
     substitutes: 'Fresh ground nutmeg powder or a pinch of green cardamom.',
-    iconicDishes: ['Selat Solo', 'Javanese Oxtail Soup', 'Braised Beef Semur', 'Asem-asem Daging Semarang']
+    iconicDishes: ['Selat Solo', 'Timlo Solo Broth', 'Solo Savory Coconut Rice']
   }
 };
 

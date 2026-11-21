@@ -227,7 +227,7 @@ function renderSpiceModal(spice) {
               </span>
               <div class="flex flex-wrap gap-1.5">
                 ${spice.iconicDishes.map(dish => `
-                  <span class="px-2.5 py-1 rounded-lg bg-white border border-[#D49B42]/35 text-xs font-semibold text-[#120B07] shadow-2xs">
+                  <span class="px-2.5 py-1 rounded-lg bg-white border border-[#D49B42]/35 text-xs font-semibold text-[#120B07] shadow-2xs select-none pointer-events-none cursor-default">
                     🍲 ${dish}
                   </span>
                 `).join('')}
