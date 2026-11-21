@@ -22,8 +22,8 @@ export async function renderHomePage() {
   return `
     <div class="w-full">
       
-      <!-- HERO SECTION: ONE-SCREEN VIEWPORT OPTIMIZED -->
-      <section class="relative overflow-hidden border-b border-[#D49B42]/30 bg-[#FAF7F2] py-8 sm:py-12 lg:py-0 lg:h-[calc(100svh-68px)] lg:min-h-[560px] lg:max-h-[840px] flex flex-col justify-center">
+      <!-- HERO SECTION: ONE-SCREEN VIEWPORT OPTIMIZED (FULL VIEWPORT ON MOBILE & DESKTOP) -->
+      <section class="relative overflow-hidden border-b border-[#D49B42]/30 bg-[#FAF7F2] min-h-[calc(100svh-68px)] min-h-[calc(100dvh-68px)] py-8 sm:py-12 lg:py-0 lg:h-[calc(100svh-68px)] lg:min-h-[560px] lg:max-h-[840px] flex flex-col justify-center">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
             
@@ -83,7 +83,7 @@ export async function renderHomePage() {
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRecipesSub')}</span>
                 </div>
                 <div class="p-2 sm:p-2.5 rounded-xl bg-white/95 border border-[#D49B42]/30 shadow-2xs overflow-hidden flex flex-col justify-between">
-                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#2E4D38] block leading-none mb-0.5">17</span>
+                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#2E4D38] block leading-none mb-0.5">${spices.length}</span>
                   <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsHeritage')}</span>
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsHeritageSub')}</span>
                 </div>
