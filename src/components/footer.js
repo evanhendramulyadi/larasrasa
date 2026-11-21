@@ -2,151 +2,162 @@ import { t, i18n } from '../i18n/index.js';
 
 /**
  * Rich & Informative Royal Heritage Footer Component
- * PjBL Project: SMK Pariwisata Metland School (PPLG - Kelompok 2 Web Development)
+ * PjBL Project: SMK Pariwisata Metland School (PPLG / IT - Kelompok 2)
  */
 export function renderFooter() {
-  const year = new Date().getFullYear();
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+
+  const navLinks = [
+    { label: t('nav.recipes'), href: isEn ? '#/recipes' : '#/resep' },
+    { label: t('nav.flavorMap'), href: isEn ? '#/flavor-map' : '#/peta-rasa' },
+    { label: t('nav.spices'), href: isEn ? '#/spices' : '#/jelajah-rempah' },
+    { label: t('nav.restaurants'), href: isEn ? '#/restaurants' : '#/restoran-legendaris' },
+    { label: t('nav.recommendations'), href: isEn ? '#/recommendations' : '#/rekomendasi' },
+    { label: t('nav.aiFoodCreator'), href: '#/ai-food-creator', isSpecial: true }
+  ];
+
+  const regions = [
+    { id: 'semarang', name: 'Kota Semarang' },
+    { id: 'surakarta', name: 'Surakarta (Solo)' },
+    { id: 'kudus', name: 'Kab. Kudus' },
+    { id: 'banyumas', name: 'Kab. Banyumas' },
+    { id: 'pekalongan', name: 'Kota Pekalongan' },
+    { id: 'magelang', name: 'Kab. Magelang' },
+    { id: 'tegal', name: 'Kota & Kab. Tegal' },
+    { id: 'wonosobo', name: 'Kab. Wonosobo' }
+  ];
+
+  const teamMembers = [
+    { name: 'Evan Hendra Mulyadi', role: isEn ? 'Web Developer & Lead' : 'Web Developer & Lead' },
+    { name: 'Keisha Nabilah Ar Rahmah', role: 'UI/UX Designer' },
+    { name: 'M. Azka Derin Sulaeman', role: isEn ? 'Flowchart & System Logic' : 'Flowchart & System Logic' },
+    { name: 'Darrel Satya Laksono', role: isEn ? 'Documentation & Proposal' : 'Penyusun Proposal & Dokumen' }
+  ];
 
   return `
     <footer class="bg-[#120B07] text-[#FAF7F2] border-t-2 border-[#D49B42]/50 mt-auto relative overflow-hidden">
-      <!-- Background subtle glow -->
-      <div class="absolute top-0 right-1/4 w-96 h-96 bg-[#D49B42]/5 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute bottom-0 left-10 w-80 h-80 bg-[#C84C24]/5 rounded-full blur-3xl pointer-events-none"></div>
+      <!-- Royal Heritage Ambient Background Glows -->
+      <div class="absolute -top-20 right-1/4 w-96 h-96 bg-[#D49B42]/8 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-20 left-10 w-96 h-96 bg-[#C84C24]/8 rounded-full blur-3xl pointer-events-none"></div>
 
-      <!-- Main Structured Footer Grid -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 pb-10 border-b border-[#FAF7F2]/10 items-start">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 relative z-10 space-y-12">
+        
+        <!-- Main Structured Grid: Symmetrical 6 + 6 Columns on Desktop -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 items-start">
           
-          <!-- Column 1: Brand Identity & Philosophy (3 cols) -->
-          <div class="lg:col-span-3 space-y-4">
+          <!-- Column 1 (4 cols): Brand Identity, Heritage Philosophy & Cultural Proverb -->
+          <div class="lg:col-span-4 space-y-4">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 flex items-center justify-center shrink-0">
+              <div class="w-11 h-11 rounded-2xl bg-white/5 border border-[#D49B42]/40 flex items-center justify-center p-2 shadow-xs shrink-0">
                 <img src="/assets/images/logo-larasrasa.png" 
                      alt="LarasRasa Logo" 
                      class="w-full h-full object-contain" />
               </div>
               <div>
-                <span class="font-editorial-serif text-2xl font-bold tracking-tight text-white block">
+                <span class="font-editorial-serif text-2xl font-bold tracking-tight text-white block leading-tight">
                   Laras<span class="text-[#C84C24]">Rasa</span>
                 </span>
-                <span class="text-[9px] text-[#D49B42] uppercase tracking-widest font-bold block mt-0.5">
+                <span class="text-[9.5px] text-[#D49B42] uppercase tracking-widest font-bold block mt-0.5">
                   ${isEn ? 'Central Javanese Culinary Heritage' : 'Pusaka Warisan Kuliner Jawa Tengah'}
                 </span>
               </div>
             </div>
 
-            <p class="text-xs text-[#FAF7F2]/80 leading-relaxed">
+            <p class="text-xs text-[#FAF7F2]/80 leading-relaxed max-w-sm">
               ${isEn 
                 ? 'Laras symbolizes moral harmony and flavor balance; Rasa encapsulates sensory richness and hearth traditions of Central Java.' 
                 : 'Laras melambangkan keselarasan budi pekerti dan keseimbangan rasa; Rasa merangkum kekayaan indra dan kehangatan tradisi dapur Jawa Tengah.'}
             </p>
 
-            <div class="p-3 rounded-xl bg-white/5 border border-[#D49B42]/30 text-[11px] text-[#D49B42] italic font-editorial-serif shadow-xs">
-              "Nguri-uri kabudayan lumantar raos lan bumbu nuswantara."
+            <!-- Philosophical Proverb Pill -->
+            <div class="p-3.5 rounded-2xl bg-white/[0.04] border border-[#D49B42]/30 space-y-1">
+              <p class="text-[11px] text-[#D49B42] italic font-editorial-serif font-semibold leading-snug">
+                "Nguri-uri kabudayan lumantar raos lan bumbu nuswantara."
+              </p>
+              <p class="text-[10px] text-[#FAF7F2]/60 leading-tight">
+                ${isEn 
+                  ? 'Preserving ancestral culture through taste and archipelago spices.' 
+                  : 'Melestarikan kebudayaan leluhur melalui citarasa dan rempah Nusantara.'}
+              </p>
             </div>
           </div>
 
-          <!-- Column 2: Culinary Encyclopedia Navigation (2 cols) -->
+          <!-- Column 2 (2 cols): Culinary Index / Directory -->
           <div class="lg:col-span-2 space-y-3.5">
-            <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-1.5 border-b border-[#D49B42]/30 flex items-center gap-2">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-2 border-b border-[#D49B42]/30 flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
               <span>${isEn ? 'Culinary Index' : 'Ensiklopedia'}</span>
             </h3>
-            <ul class="space-y-2 text-xs text-[#FAF7F2]/85 font-medium">
-              <li><a href="${isEn ? '#/recipes' : '#/resep'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.recipes')}</a></li>
-              <li><a href="${isEn ? '#/flavor-map' : '#/peta-rasa'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.flavorMap')}</a></li>
-              <li><a href="${isEn ? '#/spices' : '#/jelajah-rempah'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.spices')}</a></li>
-              <li><a href="${isEn ? '#/restaurants' : '#/restoran-legendaris'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.restaurants')}</a></li>
-              <li><a href="${isEn ? '#/recommendations' : '#/rekomendasi'}" class="hover:text-[#D49B42] transition-colors flex items-center gap-1.5"><span>›</span> ${t('nav.recommendations')}</a></li>
-              <li><a href="#/ai-food-creator" class="hover:text-[#D49B42] text-[#D49B42] font-bold transition-colors flex items-center gap-1.5"><span>✨</span> ${t('nav.aiFoodCreator')}</a></li>
+            <ul class="space-y-2.5 text-xs font-medium text-[#FAF7F2]/85">
+              ${navLinks.map(link => `
+                <li>
+                  <a href="${link.href}" 
+                     class="group flex items-center gap-2 hover:text-[#D49B42] transition-colors py-0.5">
+                    <span class="text-[#C84C24] group-hover:translate-x-0.5 transition-transform text-[11px]">›</span>
+                    <span class="${link.isSpecial ? 'text-[#D49B42] font-bold flex items-center gap-1' : ''}">
+                      ${link.isSpecial ? '<span class="text-[11px]">✨</span>' : ''}
+                      ${link.label}
+                    </span>
+                  </a>
+                </li>
+              `).join('')}
             </ul>
           </div>
 
-          <!-- Column 3: 8 Regional Culinary Centers (3 cols) -->
+          <!-- Column 3 (3 cols): 8 Sentra Wilayah (Balanced 2-col mini grid) -->
           <div class="lg:col-span-3 space-y-3.5">
-            <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-1.5 border-b border-[#D49B42]/30 flex items-center gap-2">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-2 border-b border-[#D49B42]/30 flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
               <span>${isEn ? '8 Culinary Regions' : '8 Sentra Wilayah'}</span>
             </h3>
-            <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 text-xs text-[#FAF7F2]/80">
-              <a href="${isEn ? '#/recipes?region=semarang' : '#/resep?region=semarang'}" class="hover:text-[#D49B42] transition-colors">• Kota Semarang</a>
-              <a href="${isEn ? '#/recipes?region=surakarta' : '#/resep?region=surakarta'}" class="hover:text-[#D49B42] transition-colors">• Solo (Surakarta)</a>
-              <a href="${isEn ? '#/recipes?region=kudus' : '#/resep?region=kudus'}" class="hover:text-[#D49B42] transition-colors">• Kab. Kudus</a>
-              <a href="${isEn ? '#/recipes?region=banyumas' : '#/resep?region=banyumas'}" class="hover:text-[#D49B42] transition-colors">• Kab. Banyumas</a>
-              <a href="${isEn ? '#/recipes?region=pekalongan' : '#/resep?region=pekalongan'}" class="hover:text-[#D49B42] transition-colors">• Pekalongan</a>
-              <a href="${isEn ? '#/recipes?region=magelang' : '#/resep?region=magelang'}" class="hover:text-[#D49B42] transition-colors">• Magelang</a>
-              <a href="${isEn ? '#/recipes?region=tegal' : '#/resep?region=tegal'}" class="hover:text-[#D49B42] transition-colors">• Kota/Kab Tegal</a>
-              <a href="${isEn ? '#/recipes?region=wonosobo' : '#/resep?region=wonosobo'}" class="hover:text-[#D49B42] transition-colors">• Kab. Wonosobo</a>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-2 text-xs text-[#FAF7F2]/80">
+              ${regions.map(r => `
+                <a href="${isEn ? `#/recipes?region=${r.id}` : `#/resep?region=${r.id}`}" 
+                   class="group flex items-center gap-1.5 hover:text-[#D49B42] transition-colors py-0.5">
+                  <span class="text-[#D49B42]/70 group-hover:text-[#C84C24] transition-colors text-[10px]">&bull;</span>
+                  <span class="truncate">${r.name}</span>
+                </a>
+              `).join('')}
             </div>
-            <p class="text-[10px] text-[#FAF7F2]/50 pt-0.5 italic">
-              ${isEn ? 'Click any region to filter regional dishes.' : 'Pilih wewengkon kagem nyaring resep khas daerah.'}
+            <p class="text-[10px] text-[#FAF7F2]/50 pt-1 italic leading-relaxed">
+              ${isEn 
+                ? 'Select any culinary region to filter authentic local dishes.' 
+                : 'Pilih wewengkon kagem nyaring resep khas daerah.'}
             </p>
           </div>
 
-          <!-- Column 4: PjBL IT Team & Academic Project (4 cols, balanced horizontally) -->
-          <div class="lg:col-span-4 space-y-3.5">
-            <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-1.5 border-b border-[#D49B42]/30 flex items-center gap-2">
+          <!-- Column 4 (3 cols): Proyek Pembelajaran (PjBL IT) Academic Card -->
+          <div class="lg:col-span-3 space-y-3.5">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-2 border-b border-[#D49B42]/30 flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-              <span>${isEn ? 'Academic Project (PjBL IT)' : 'Proyek Pembelajaran (PjBL IT)'}</span>
+              <span>${isEn ? 'Academic Project (PjBL)' : 'Karya Akademik (PjBL)'}</span>
             </h3>
-            <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/25 space-y-2.5">
-              <div class="flex items-center justify-between gap-2 flex-wrap">
+
+            <div class="p-4 rounded-2xl bg-white/[0.04] border border-[#D49B42]/30 space-y-3 shadow-inner">
+              <div class="space-y-1">
                 <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#C84C24] text-white font-bold text-[9px] uppercase tracking-wider">
-                  SMK Pariwisata Metland School — IT
+                  SMK Pariwisata Metland School
                 </span>
-                <span class="text-[10px] font-semibold text-[#D49B42]">
-                  ${isEn ? 'Group 2 • Semester 1 Blocking 2' : 'Kelompok 2 • Semester 1 Blocking 2'}
-                </span>
-              </div>
-
-              <div>
-                <p class="text-xs font-bold text-white leading-snug">
-                  ${isEn 
-                    ? 'Group 2 IT Department PjBL — Academic Year 2026/2027' 
-                    : 'Kelompok 2 PjBL Jurusan IT — Tahun Ajaran 2026/2027'}
+                <p class="text-[11px] font-bold text-white pt-1">
+                  ${isEn ? 'PPLG / IT • Group 2' : 'PPLG / IT • Kelompok 2'}
                 </p>
-                <p class="text-[11px] text-[#FAF7F2]/75 leading-relaxed mt-0.5">
-                  ${isEn 
-                    ? 'Group 2 is tasked with creating an interactive website about Central Java.' 
-                    : 'Kelompok 2 kebagian tugas membuat website tentang Jawa Tengah.'}
+                <p class="text-[10px] text-[#D49B42] font-semibold">
+                  ${isEn ? 'Semester 1 Blocking 2 • AY 2026/2027' : 'Semester 1 Blocking 2 • TA 2026/2027'}
                 </p>
               </div>
 
-              <!-- Team Members in a balanced 2-column grid -->
-              <div class="pt-2 border-t border-white/10">
-                <span class="text-[10px] font-bold text-[#D49B42] uppercase tracking-wider block mb-1.5">
-                  ${isEn ? 'Team Members:' : 'Anggota Kelompok:'}
+              <!-- Team Members in Clean, Harmonious Layout -->
+              <div class="pt-2 border-t border-white/10 space-y-1.5">
+                <span class="text-[9.5px] font-bold text-[#D49B42] uppercase tracking-wider block">
+                  ${isEn ? 'Team Contributors:' : 'Tim Pengembang:'}
                 </span>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-[#FAF7F2]/90 font-medium">
-                  <div class="flex items-start gap-1 leading-snug">
-                    <span class="text-[#D49B42] font-bold">&bull;</span>
-                    <div>
-                      <strong class="text-white block">Evan Hendra Mulyadi</strong>
-                      <span class="text-[#FAF7F2]/65 text-[10px] block">${isEn ? 'Web Developer & Leader' : 'Web Developer & Leader'}</span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-1 text-[11px]">
+                  ${teamMembers.map(m => `
+                    <div class="leading-tight py-0.5">
+                      <strong class="text-white block font-semibold text-[11px]">${m.name}</strong>
+                      <span class="text-[#FAF7F2]/65 text-[9.5px]">${m.role}</span>
                     </div>
-                  </div>
-                  <div class="flex items-start gap-1 leading-snug">
-                    <span class="text-[#D49B42] font-bold">&bull;</span>
-                    <div>
-                      <strong class="text-white block">Keisha Nabilah Ar Rahmah</strong>
-                      <span class="text-[#FAF7F2]/65 text-[10px] block">UI/UX Designer</span>
-                    </div>
-                  </div>
-                  <div class="flex items-start gap-1 leading-snug">
-                    <span class="text-[#D49B42] font-bold">&bull;</span>
-                    <div>
-                      <strong class="text-white block">M. Azka Derin Sulaeman</strong>
-                      <span class="text-[#FAF7F2]/65 text-[10px] block">Flowchart Designer</span>
-                    </div>
-                  </div>
-                  <div class="flex items-start gap-1 leading-snug">
-                    <span class="text-[#D49B42] font-bold">&bull;</span>
-                    <div>
-                      <strong class="text-white block">Darrel Satya Laksono</strong>
-                      <span class="text-[#FAF7F2]/65 text-[10px] block">${isEn ? 'Proposal Writer' : 'Pembuat Proposal'}</span>
-                    </div>
-                  </div>
+                  `).join('')}
                 </div>
               </div>
             </div>
@@ -155,14 +166,14 @@ export function renderFooter() {
         </div>
 
         <!-- Bottom Copyright & Back to Top Bar -->
-        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#FAF7F2]/60">
+        <div class="pt-6 border-t border-[#FAF7F2]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#FAF7F2]/60">
           <p class="text-center sm:text-left leading-relaxed">
-            &copy; 2026–Present ${isEn ? 'Group 2 IT Department PjBL Semester 1 Blocking 2 Academic Year 2026/2027.' : 'Kelompok 2 PjBL Jurusan IT Semester 1 Blocking 2 Tahun Ajaran 2026/2027.'} All Rights Reserved.
+            &copy; ${new Date().getFullYear()} LarasRasa &bull; ${isEn ? 'Group 2 IT Department PjBL Metland School. All Rights Reserved.' : 'PjBL Kelompok 2 PPLG SMK Pariwisata Metland School. Hak Cipta Dilindungi.'}
           </p>
-          <div class="flex items-center gap-4 text-xs">
+          <div class="flex items-center gap-5 shrink-0">
             <button type="button" 
                     id="footer-back-to-top"
-                    onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+                    onclick="window.scrollTo({top: 0, behavior: 'instant'}); if(document.documentElement) document.documentElement.scrollTop = 0;"
                     class="inline-flex items-center gap-1.5 text-xs text-[#D49B42] hover:text-white transition-colors font-bold cursor-pointer group"
                     aria-label="${isEn ? 'Back to top' : 'Kembali ke atas'}">
               <span>${isEn ? 'Back to Top' : 'Kembali ke Atas'}</span>
