@@ -75,7 +75,7 @@ export class Router {
       // Any navigation link click immediately closes open modals and resets state
       const navLink = e.target.closest('a[href^="#/"]');
       if (navLink) {
-        closeRecipeModal();
+        closeRecipeModal(false);
         closeSpiceModal();
         document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
@@ -129,7 +129,7 @@ export class Router {
 
     // 2. Run cleanups for previous view: close modals, reset scroll locks, close mobile drawer
     if (!isLanguageChange) {
-      closeRecipeModal();
+      closeRecipeModal(false);
       closeSpiceModal();
     }
 
@@ -182,7 +182,7 @@ export class Router {
       postRenderAction = () => initRecipesPageInteractions();
       pageTitlePrefix = t('nav.recipes');
     } else if (path.startsWith('/resep/') || path.startsWith('/recipes/')) {
-      const slug = path.replace(/^\/(resep|recipes)\//, '');
+      const slug = path.replace(/^\/(resep|recipes)\//, '').replace(/\/$/, '');
       pageHtml = await renderRecipesPage(queryParams);
       postRenderAction = () => {
         initRecipesPageInteractions();

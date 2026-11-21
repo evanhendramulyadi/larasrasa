@@ -241,7 +241,7 @@ export function getActiveRecipeModalSlug() {
   return null;
 }
 
-export function closeRecipeModal() {
+export function closeRecipeModal(updateUrl = true) {
   activeRecipeModalSlug = null;
   const root = document.getElementById('recipe-modal-root');
   if (root) {
@@ -254,6 +254,8 @@ export function closeRecipeModal() {
     window.removeEventListener('keydown', currentRecipeKeyDownHandler);
     currentRecipeKeyDownHandler = null;
   }
+
+  if (!updateUrl) return;
 
   // If currently showing a recipe slug in the URL hash, return to standard recipes page (or previous hash)
   const currentHash = window.location.hash || '';
@@ -317,7 +319,7 @@ export async function openRecipeModal(slug) {
   }
   currentRecipeKeyDownHandler = (e) => {
     if (e.key === 'Escape') {
-      closeRecipeModal();
+      closeRecipeModal(true);
     }
   };
   window.addEventListener('keydown', currentRecipeKeyDownHandler);
@@ -326,11 +328,11 @@ export async function openRecipeModal(slug) {
   const closeFooterBtn = document.getElementById('modal-close-footer-btn');
   const backdrop = document.getElementById('recipe-modal-backdrop');
 
-  if (closeBtn) closeBtn.addEventListener('click', closeRecipeModal);
-  if (closeFooterBtn) closeFooterBtn.addEventListener('click', closeRecipeModal);
+  if (closeBtn) closeBtn.addEventListener('click', () => closeRecipeModal(true));
+  if (closeFooterBtn) closeFooterBtn.addEventListener('click', () => closeRecipeModal(true));
   if (backdrop) {
     backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) closeRecipeModal();
+      if (e.target === backdrop) closeRecipeModal(true);
     });
   }
 
