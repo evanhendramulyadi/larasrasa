@@ -7,24 +7,17 @@ class I18nManager {
   constructor() {
     let saved = null;
     try {
-      if (typeof window !== 'undefined' && window.location && window.location.search) {
+      if (typeof localStorage !== 'undefined') {
+        saved = localStorage.getItem('larasrasa_lang');
+      }
+      if (!saved && typeof window !== 'undefined' && window.location && window.location.search) {
         const urlLang = new URLSearchParams(window.location.search).get('lang');
         if (urlLang === 'en' || urlLang === 'id') {
           saved = urlLang;
         }
       }
-      if (!saved && typeof localStorage !== 'undefined') {
-        saved = localStorage.getItem('larasrasa_lang');
-      }
-      if (!saved && typeof window !== 'undefined' && window.location && window.location.hash) {
-        const hash = window.location.hash;
-        if (hash.startsWith('#/recipes') || hash.startsWith('#/flavor-map') || hash.startsWith('#/spices') || hash.startsWith('#/restaurants') || hash.startsWith('#/recommendations')) {
-          saved = 'en';
-        } else if (hash.startsWith('#/resep') || hash.startsWith('#/peta-rasa') || hash.startsWith('#/jelajah-rempah') || hash.startsWith('#/restoran-legendaris') || hash.startsWith('#/rekomendasi')) {
-          saved = 'id';
-        }
-      }
     } catch (_) {}
+    // Default language is strictly 'id' (Bahasa Indonesia) on initial visit
     this.currentLang = (saved === 'en' || saved === 'id') ? saved : 'id';
     this.currentPagePrefix = '';
     if (typeof document !== 'undefined') {
