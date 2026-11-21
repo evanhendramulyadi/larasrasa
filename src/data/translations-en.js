@@ -1069,53 +1069,89 @@ recipeTranslationsEn['tahu-gimbal-semarang'] = recipeTranslationsEn['tahu-gimbal
 
 export const regionTranslationsEn = {
   'semarang': {
+    name: 'Semarang City',
+    type: 'City',
     tagline: 'Coastal Charisma with Crunchy Bamboo Shoots & Rich Savory Petis',
     description: 'As the capital of Central Java and a historic seaport, Semarang’s cuisine embodies a harmonious blend of Javanese, Chinese Peranakan, Arab, and European cultures. Flavors feature sweet-savory shrimp petis, local palm soy, and crunchy fresh bamboo shoots.',
     culturalIdentity: 'A historic crossroads of maritime trade along the northern coast (Pantura), blending indigenous Javanese traditions with Chinese and colonial culinary techniques.',
     culinaryTendencies: ['Sweet-Savory Sauces', 'Fresh Bamboo Shoots & Prawns', 'Savory Petis & Garlic', 'Crispy Tauco Fritters']
   },
   'surakarta': {
+    name: 'Surakarta (Solo) City',
+    type: 'City',
     tagline: 'Delicate Royal Flavors, Velvet Coconut Areh, & Palace Elegance',
     description: 'Surakarta is the historical heartland of the Mataram Kingdom, celebrated for refined, mild, and sophisticated cooking. Its cuisine features rich coconut cream curds (areh), tender braised meats, and aristocratic European-Javanese fusions like Selat Solo.',
     culturalIdentity: 'Noble heritage from the Kasunanan and Mangkunegaran palaces, prioritizing balance, polite restraint, and sweet-savory harmony.',
     culinaryTendencies: ['Velvet Coconut Areh', 'Mild Palm Sugar Braises', 'Tender Minced Meats', 'Warming Herbal Broths']
   },
   'kudus': {
+    name: 'Kudus Regency',
+    type: 'Regency',
     tagline: 'Aromatic Golden Broths & Refreshing Bilimbi Steamed Chicken',
     description: 'Kudus boasts culinary traditions rooted in religious tolerance dating back to Sunan Kudus in the 16th century, where beef was avoided out of respect for Hindu neighbors and replaced with buffalo and free-range chicken. Soto Kudus and Garang Asem are aromatic masterpieces.',
     culturalIdentity: 'The tolerant philosophy of Sunan Kudus created a distinctive heritage of buffalo meat dishes scented with fresh kencur and golden garlic chips.',
     culinaryTendencies: ['Clear Aromatic Broths', 'Generous Kencur & Fried Garlic', 'Tangy Bilimbi Fruit Acidity', 'Savory Melinjo Leaf Braises']
   },
   'banyumas': {
+    name: 'Banyumas Regency',
+    type: 'Regency',
     tagline: 'Supple Mendoan Tempeh, Savory Peanut Broths, & Sweet Fried Cassava',
     description: 'Nestled on the southwestern slopes of Mount Slamet, Banyumas is the home of Indonesia’s finest fermented soybean craftsmanship. Soft, half-fried Tempe Mendoan and hearty peanut-broth Sroto Sokaraja are beloved cultural staples.',
     culturalIdentity: 'The warm, unpretentious spirit of the "Banyumasan" folk, fond of casual gatherings at street-side stalls over hot tempeh and sweet tea.',
     culinaryTendencies: ['Soft Fried Soy Tempeh', 'Peanut Broth Soups', 'Fiery Sweet Soy Chili Dip', 'Caramelized Nira Palm Sugar']
   },
   'pekalongan': {
+    name: 'Pekalongan City & Regency',
+    type: 'City & Regency',
     tagline: 'Fragrant Torch Ginger Flowers, Fermented Tauco, & Savory Jackfruit',
     description: 'Renowned worldwide for its batik, Pekalongan is equally revered for Nasi Megono—finely minced young jackfruit steamed with fragrant torch ginger blossoms (kecombrang) and grated coconut, as well as Tauto, a beef soup spiced with fermented tauco.',
     culturalIdentity: 'A bustling coastal community of artisans and fishermen whose hospitality shines through fiber-rich meals scented with wild herbs.',
     culinaryTendencies: ['Strong Torch Ginger Aroma', 'Fermented Red Tauco Base', 'Earthy Kluwek Nut Broth', 'Finely Minced Jackfruit']
   },
   'magelang': {
+    name: 'Magelang City & Regency',
+    type: 'City & Regency',
     tagline: 'Refreshing Tidar Valley Tofu, River Fish Mangut, & Borobudur Cassava',
     description: 'Surrounded by majestic volcanic peaks (Merapi, Merbabu, Sumbing), Magelang offers refreshing, nourishing food. Kupat Tahu Magelang is famous for its light, sweet-savory garlic soy dressing scattered with roasted peanuts.',
     culturalIdentity: 'Proximity to the ancient Borobudur temple and fertile agricultural valleys producing sweet cassava and Progo river delicacies.',
     culinaryTendencies: ['Light Garlic Soy Broth', 'Coarse Roasted Peanuts', 'Fiery Yellow Bird’s Eye Chilies', 'Velvety Pounded Cassava']
   },
   'tegal': {
+    name: 'Tegal City & Regency',
+    type: 'City & Regency',
     tagline: 'Tender Young Lamb Skewers, Turmeric Coconut Broths, & Jasmine Tea',
     description: 'At the western gateway of Central Java, Tegal serves bold, hearty dishes. Tender mutton from young lambs (batibul) is grilled without gaminess, accompanied by fragrant jasmine tea brewed in clay pots with rock sugar.',
     culturalIdentity: 'Enterprising merchant spirit famed across Indonesia through the widespread Warteg (Warung Tegal) community.',
     culinaryTendencies: ['Tender Young Lamb Grills', 'Rich Turmeric Coconut Broths', 'Chewy Savory Tapioca Aci', 'Clay Pot Jasmine Tea']
   },
   'wonosobo': {
+    name: 'Wonosobo Regency',
+    type: 'Regency',
     tagline: 'Thick Comforting Starch Broths of the Misty Dieng Highlands',
     description: 'The cool mist of the Dieng volcanic plateau gave birth to deeply comforting food: Mie Ongklok, noodles blanched in bamboo baskets and blanketed in thick dried-shrimp and cassava starch gravy, eaten with sweet beef skewers.',
     culturalIdentity: 'Mountain heritage engineered to warm the body against alpine chill through piping-hot gravies and mountain chives.',
     culinaryTendencies: ['Thick Cassava Starch Gravy', 'Savory Dried Shrimp & Garlic', 'Fresh Mountain Chives', 'Carica Fruit Sweets']
   }
+};
+
+export const regionNameTranslationsEn = {
+  'Kota Semarang': 'Semarang City',
+  'Kabupaten Kudus': 'Kudus Regency',
+  'Kota Surakarta (Solo)': 'Surakarta (Solo) City',
+  'Kabupaten Banyumas': 'Banyumas Regency',
+  'Kota & Kab Pekalongan': 'Pekalongan City & Regency',
+  'Kota & Kab Magelang': 'Magelang City & Regency',
+  'Kota & Kab Tegal': 'Tegal City & Regency',
+  'Kabupaten Wonosobo': 'Wonosobo Regency',
+  'Kota Surakarta': 'Surakarta City',
+  'Solo': 'Solo City',
+  'Semarang': 'Semarang City',
+  'Kudus': 'Kudus Regency',
+  'Banyumas': 'Banyumas Regency',
+  'Pekalongan': 'Pekalongan City & Regency',
+  'Magelang': 'Magelang City & Regency',
+  'Tegal': 'Tegal City & Regency',
+  'Wonosobo': 'Wonosobo Regency'
 };
 
 export const spiceTranslationsEn = {

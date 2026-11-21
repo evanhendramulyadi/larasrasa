@@ -1,5 +1,5 @@
 import { recipes } from '../data/recipes.js';
-import { recipeTranslationsEn } from '../data/translations-en.js';
+import { recipeTranslationsEn, regionTranslationsEn, regionNameTranslationsEn } from '../data/translations-en.js';
 import { i18n } from '../i18n/index.js';
 import { API_CONFIG, apiRequest } from './api.js';
 
@@ -14,12 +14,16 @@ export function localizeRecipe(recipe) {
                 recipeTranslationsEn[recipe.id] || 
                 recipeTranslationsEn[baseKey] ||
                 recipeTranslationsEn[baseKey.replace(/^nasi-/, '')] ||
-                recipeTranslationsEn[key.replace(/^tempe-/, '')];
-  if (!trans) return { ...recipe };
+                recipeTranslationsEn[key.replace(/^tempe-/, '')] || {};
+
+  const enRegionName = regionNameTranslationsEn?.[recipe.regionName] || 
+                       (recipe.regionId && regionTranslationsEn?.[recipe.regionId]?.name) || 
+                       recipe.regionName;
 
   return {
     ...recipe,
     name: trans.name || recipe.name,
+    regionName: enRegionName,
     mealType: trans.mealType || recipe.mealType,
     difficulty: trans.difficulty || recipe.difficulty,
     difficultyLevel: trans.difficultyLevel || recipe.difficultyLevel,

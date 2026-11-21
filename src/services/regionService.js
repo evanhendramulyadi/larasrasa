@@ -1,5 +1,5 @@
 import { regions } from '../data/regions.js';
-import { regionTranslationsEn } from '../data/translations-en.js';
+import { regionTranslationsEn, regionNameTranslationsEn } from '../data/translations-en.js';
 import { i18n } from '../i18n/index.js';
 import { API_CONFIG, apiRequest } from './api.js';
 
@@ -9,14 +9,17 @@ export function localizeRegion(region) {
   if (lang !== 'en') return { ...region };
 
   const trans = regionTranslationsEn[region.id];
-  if (!trans) return { ...region };
+  const enName = trans?.name || regionNameTranslationsEn?.[region.name] || region.name;
+  const enType = trans?.type || (region.type === 'Kota' ? 'City' : (region.type === 'Kabupaten' ? 'Regency' : region.type));
 
   return {
     ...region,
-    tagline: trans.tagline || region.tagline,
-    description: trans.description || region.description,
-    culturalIdentity: trans.culturalIdentity || region.culturalIdentity,
-    culinaryTendencies: trans.culinaryTendencies || region.culinaryTendencies,
+    name: enName,
+    type: enType,
+    tagline: trans?.tagline || region.tagline,
+    description: trans?.description || region.description,
+    culturalIdentity: trans?.culturalIdentity || region.culturalIdentity,
+    culinaryTendencies: trans?.culinaryTendencies || region.culinaryTendencies,
   };
 }
 

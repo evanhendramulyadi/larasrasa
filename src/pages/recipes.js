@@ -1,7 +1,15 @@
 import { recipeService } from '../services/recipeService.js';
 import { renderFilterPanel } from '../components/filter-panel.js';
 import { renderRecipeCard } from '../components/recipe-card.js';
+import { regions } from '../data/regions.js';
+import { localizeRegion } from '../services/regionService.js';
 import { t, i18n } from '../i18n/index.js';
+
+function getDisplayRegionName(regionId) {
+  if (!regionId || regionId === 'semua') return '';
+  const r = regions.find(x => x.id === regionId);
+  return r ? localizeRegion(r).name : regionId;
+}
 
 /**
  * Editorial Royal Heritage Recipe Discovery Listing Page
@@ -65,7 +73,7 @@ export async function renderRecipesPage(urlParams = {}) {
         <div id="recipe-count-indicator" class="font-medium text-xs sm:text-sm">
           ${t('recipesSection.showingResults')} <strong class="text-[#120B07] font-bold">${recipesList.length}</strong> ${t('recipesSection.authenticRecipes')}
           ${activeFilters.flavor !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${activeFilters.flavor})</span>` : ''}
-          ${activeFilters.region !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${activeFilters.region})</span>` : ''}
+          ${activeFilters.region !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${getDisplayRegionName(activeFilters.region)})</span>` : ''}
         </div>
       </div>
 
@@ -134,7 +142,7 @@ export function initRecipesPageInteractions() {
       indicator.innerHTML = `
         ${t('recipesSection.showingResults')} <strong class="text-[#120B07] font-bold">${list.length}</strong> ${t('recipesSection.authenticRecipes')}
         ${activeFilters.flavor !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${activeFilters.flavor})</span>` : ''}
-        ${activeFilters.region !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${activeFilters.region})</span>` : ''}
+        ${activeFilters.region !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${getDisplayRegionName(activeFilters.region)})</span>` : ''}
       `;
     }
   }

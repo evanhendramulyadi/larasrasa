@@ -52,6 +52,16 @@ body {
   z-index: 50 !important;
 }
 
+/* Navigation Touch Stability: prevent double-tap zoom & text selection */
+.desktop-nav-link,
+.mobile-nav-link,
+nav a,
+nav button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
 /* Clean, Elegant Royal Ivory Canvas (Solid & Modern, No Noisy Dotted Slop) */
 body {
   background-color: #FAF7F2;

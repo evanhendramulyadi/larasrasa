@@ -64,11 +64,11 @@ export function renderNavbar(activeRoute = '/') {
                    data-nav-path="${itemPath}"
                    ${item.isSpecial ? 'data-special="true"' : ''}
                    ${isActive ? 'aria-current="page"' : ''}
-                   class="desktop-nav-link whitespace-nowrap px-2.5 2xl:px-3 py-1.5 text-xs 2xl:text-[13px] font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 ${
+                   class="desktop-nav-link whitespace-nowrap px-3 2xl:px-3.5 py-1.5 text-xs 2xl:text-[13px] font-semibold tracking-normal transition-colors duration-150 rounded-full shrink-0 flex items-center gap-1.5 select-none touch-manipulation ${
                      isActive
                        ? 'bg-[#1E120A] text-[#FAF7F2] ring-1 ring-[#D49B42]/45 shadow-sm'
                        : item.isSpecial
-                         ? 'text-[#C84C24] bg-[#FDF4EE] hover:bg-[#FBE8DD] border border-[#C84C24]/35 font-bold shadow-2xs hover:scale-102'
+                         ? 'text-[#C84C24] bg-[#FDF4EE] hover:bg-[#FBE8DD] border border-[#C84C24]/35 font-bold shadow-2xs'
                          : 'text-[#5C3622] hover:text-[#C84C24] hover:bg-[#EFE8DA]/80'
                    }">
                   ${item.isSpecial ? '<span class="text-xs">✨</span>' : ''}
@@ -180,13 +180,14 @@ export function setActiveNavbarLink(targetPath = '/') {
     const isSpecial = link.getAttribute('data-special') === 'true';
     const isActive = isRouteMatching(itemPath, normalized);
 
+    const baseClass = 'desktop-nav-link whitespace-nowrap px-3 2xl:px-3.5 py-1.5 text-xs 2xl:text-[13px] font-semibold tracking-normal transition-colors duration-150 rounded-full shrink-0 flex items-center gap-1.5 select-none touch-manipulation';
     if (isActive) {
-      link.className = 'desktop-nav-link whitespace-nowrap px-3 2xl:px-3.5 py-2 text-xs 2xl:text-sm font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 bg-[#1E120A] text-[#FAF7F2] ring-1 ring-[#D49B42]/45 shadow-sm';
+      link.className = `${baseClass} bg-[#1E120A] text-[#FAF7F2] ring-1 ring-[#D49B42]/45 shadow-sm`;
       link.setAttribute('aria-current', 'page');
     } else {
-      link.className = `desktop-nav-link whitespace-nowrap px-3 2xl:px-3.5 py-2 text-xs 2xl:text-sm font-semibold tracking-normal transition-all duration-200 rounded-full shrink-0 flex items-center gap-1.5 ${
+      link.className = `${baseClass} ${
         isSpecial
-          ? 'text-[#C84C24] bg-[#FDF4EE] hover:bg-[#FBE8DD] border border-[#C84C24]/35 font-bold shadow-2xs hover:scale-102'
+          ? 'text-[#C84C24] bg-[#FDF4EE] hover:bg-[#FBE8DD] border border-[#C84C24]/35 font-bold shadow-2xs'
           : 'text-[#5C3622] hover:text-[#C84C24] hover:bg-[#EFE8DA]/80'
       }`;
       link.removeAttribute('aria-current');
@@ -233,15 +234,22 @@ export function initNavbarInteractions() {
     // Close on clicking a link & immediately update active state
     const links = drawer.querySelectorAll('.mobile-nav-link');
     links.forEach(l => {
-      l.addEventListener('click', () => {
+      l.addEventListener('click', (e) => {
         const targetHref = l.getAttribute('href') || '';
         const targetPath = targetHref.replace('#', '') || '/';
-        setActiveNavbarLink(targetPath);
+        const currentPath = (window.location.hash || '#/').replace('#', '') || '/';
 
         drawer.classList.add('hidden');
         hamburgerIcon.classList.remove('hidden');
         closeIcon.classList.add('hidden');
         btn.setAttribute('aria-expanded', 'false');
+
+        if (targetPath === currentPath) {
+          e.preventDefault();
+          return;
+        }
+
+        setActiveNavbarLink(targetPath);
       });
     });
   }
@@ -249,8 +257,13 @@ export function initNavbarInteractions() {
   // Brand logo click handler to reset active nav link and close drawer
   const brandLogo = document.querySelector('a[aria-label="LarasRasa Beranda"]');
   if (brandLogo) {
-    brandLogo.addEventListener('click', () => {
-      setActiveNavbarLink('/');
+    brandLogo.addEventListener('click', (e) => {
+      const currentPath = (window.location.hash || '#/').replace('#', '') || '/';
+      if (currentPath === '/') {
+        e.preventDefault();
+      } else {
+        setActiveNavbarLink('/');
+      }
       if (drawer && !drawer.classList.contains('hidden')) {
         drawer.classList.add('hidden');
         if (hamburgerIcon) hamburgerIcon.classList.remove('hidden');
@@ -263,9 +276,16 @@ export function initNavbarInteractions() {
   // Instant active highlight on desktop menu clicks
   const desktopLinks = document.querySelectorAll('.desktop-nav-link');
   desktopLinks.forEach(link => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
       const targetHref = link.getAttribute('href') || '';
       const targetPath = targetHref.replace('#', '') || '/';
+      const currentPath = (window.location.hash || '#/').replace('#', '') || '/';
+
+      if (targetPath === currentPath) {
+        e.preventDefault();
+        return;
+      }
+
       setActiveNavbarLink(targetPath);
     });
   });
