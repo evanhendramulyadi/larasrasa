@@ -1,7 +1,7 @@
 export const spices = [
   {
     id: 'bawang-merah',
-    name: 'Bawang Merah Lokal',
+    name: 'Bawang Merah Lokal (Brebes)',
     latinName: 'Allium cepa var. aggregatum',
     category: 'aromatik',
     categoryName: 'Bumbu Aromatik Utama',
@@ -11,7 +11,7 @@ export const spices = [
     preparationMethod: 'Diiris tipis untuk digoreng menjadi taburan renyah (bawang goreng Brebes), atau diulek halus bersama bawang putih untuk bumbu dasar putih, kuning, dan merah.',
     iconicDishes: ['Soto Kudus', 'Nasi Liwet Solo', 'Garang Asem', 'Semur Jawa'],
     culturalWisdom: 'Brebes di Jawa Tengah adalah lumbung bawang merah terbesar nusantara. Bawang merah lokal berukuran kecil memiliki kadar air lebih rendah dan kandungan gula alami lebih tinggi, menghasilkan aroma gorengan yang jauh lebih tahan lama.',
-    substitutes: 'Bawang merah shallot impor (meski aroma kurang tajam).',
+    substitutes: 'Bawang merah shallot impor (meski aroma kurang tajam dan kadar air lebih tinggi).',
     modelColor: '#9E3852',
     accentColor: '#9E3852',
     image: '/assets/images/ingredients/bawang-merah.jpg'
@@ -22,13 +22,13 @@ export const spices = [
     latinName: 'Allium sativum',
     category: 'aromatik',
     categoryName: 'Bumbu Aromatik Utama',
-    role: 'Penyedia senyawa allicin yang memberi struktur rasa gurih kokoh dan wangi menyengat sedap.',
+    role: 'Penyedia senyawa allisin yang memberi struktur rasa gurih kokoh dan wangi menyengat sedap.',
     aromaProfile: 'Tajam khas sulfurik yang melunak menjadi aroma gurih hangat saat bersentuhan dengan minyak panas.',
     flavorNote: 'Tajam pedas saat mentah, gurih mendalam dan manis karamel saat matang.',
     preparationMethod: 'Dimemarkan untuk kuah kaldu, diulek mentah untuk bumbu halus, atau digoreng kering kecokelatan untuk taburan wajib Soto Kudus.',
     iconicDishes: ['Lumpia Semarang', 'Soto Kudus', 'Tahu Gimbal', 'Mendoan Banyumas'],
     culturalWisdom: 'Karakter kuliner pesisir Semarang sangat dipengaruhi tradisi Tionghoa yang menempatkan bawang putih cincang sebagai bumbu tumis nomor satu.',
-    substitutes: 'Bawang putih kating (lebih wangi) atau bubuk bawang putih kering.',
+    substitutes: 'Bawang putih honan (bawang putih biasa) atau bubuk bawang putih kering (meski varietas kating lokal tetap yang paling harum).',
     modelColor: '#E8E1D3',
     accentColor: '#BDB39C',
     image: '/assets/images/ingredients/bawang-putih.jpg'
@@ -66,6 +66,40 @@ export const spices = [
     modelColor: '#F3E8D0',
     accentColor: '#D9A441',
     image: '/assets/images/ingredients/kemiri.jpg'
+  },
+  {
+    id: 'merica',
+    name: 'Merica Butir (Lada Putih)',
+    latinName: 'Piper nigrum',
+    category: 'biji',
+    categoryName: 'Biji-bijian & Rempah Kering',
+    role: 'Penyumbang rasa pedas menggigit hangat yang jernih tanpa merusak kejernihan warna kuah kaldu soto dan selat.',
+    aromaProfile: 'Pedas menyengat tajam khas piperin alami yang segar saat baru ditumbuk.',
+    flavorNote: 'Pedas hangat kering yang menstimulasi lidah dan menghangatkan dada.',
+    preparationMethod: 'Disangrai sebentar lalu diulek halus bersama bawang putih pada tahap awal peracikan bumbu halus kaldu.',
+    iconicDishes: ['Soto Kudus', 'Selat Solo', 'Timlo Solo', 'Sop Senerek Magelang'],
+    culturalWisdom: 'Kuliner ningrat Keraton Surakarta dan sup tradisional Magelang selalu mengutamakan merica butiran yang baru diulek mendadak, karena merica bubuk kemasan cepat kehilangan aroma minyak atsirinya.',
+    substitutes: 'Merica hitam tumbuk kasar atau lada putih bubuk murni.',
+    modelColor: '#D9D4C7',
+    accentColor: '#A69F8E',
+    image: '/assets/images/ingredients/merica.jpg'
+  },
+  {
+    id: 'kluwek',
+    name: 'Kluwek (Kepayang Matang)',
+    latinName: 'Pangium edule',
+    category: 'biji',
+    categoryName: 'Biji-bijian & Rempah Kering',
+    role: 'Pemberi warna hitam pekat alami, rasa gurih nutty yang dalam (umami fermented), serta aroma tanah eksotis.',
+    aromaProfile: 'Aroma fermentasi tanah yang hangat, musky, gurih mirip kakao hitam pekat tanpa rasa manis.',
+    flavorNote: 'Gurih pekat, earthy umami, dengan sentuhan sedikit asam fermentasi yang lembut.',
+    preparationMethod: 'Pecahkan cangkang kerasnya, ambil daging hitam bagian dalam, pastikan tidak pahit (cicipi sedikit), lalu rendam air panas sebelum diulek halus bersama bumbu.',
+    iconicDishes: ['Pindang Kudus', 'Pindang Tetel Pekalongan', 'Brongkos Demak/Solo'],
+    culturalWisdom: 'Kluwek adalah warisan prasejarah Nusantara yang tercatat dalam susastra Jawa Kuno. Melalui teknik pemeraman dalam abu, racun asam sianida (glikosida sianogenik) dinetralkan menjadi bahan penyedap berkuah hitam legendaris.',
+    substitutes: 'Sulit digantikan; kombinasi kemiri bakar dan sedikit asam jawa hanya mendekati warna namun tidak menyamai cita rasa umami kluwek.',
+    modelColor: '#241E1C',
+    accentColor: '#4A3B32',
+    image: '/assets/images/ingredients/kluwek.jpg'
   },
   {
     id: 'kunyit',
@@ -128,7 +162,7 @@ export const spices = [
     aromaProfile: 'Sangat aromatik, minty, kamper herbal yang tajam dan tak tertandingi.',
     flavorNote: 'Pedas semilir, sedikit kebas di lidah, manis getir herbal.',
     preparationMethod: 'Dibersihkan kulitnya lalu diulek mentah bersama bawang putih dan ketumbar.',
-    iconicDishes: ['Soto Kudus', 'Sambal Tumpang Boyolali/Solo', 'Kencur Urap Sayur', 'Peyek Kencur'],
+    iconicDishes: ['Soto Kudus', 'Sambal Tumpang Boyolali/Solo', 'Urap Sayur Bumbu Kencur', 'Peyek Kencur'],
     culturalWisdom: 'Rahasia kelezatan Soto Kudus yang membedakannya dari soto Nusantara lainnya terletak pada sekerat kencur tua yang diulek ke bumbu halus.',
     substitutes: 'Sulit digantikan; kencur memiliki profil aroma unik yang tidak ada padanannya.',
     modelColor: '#B38B6D',
@@ -137,7 +171,7 @@ export const spices = [
   },
   {
     id: 'serai',
-    name: 'Serai Wangi',
+    name: 'Serai Dapur (Batang Serai)',
     latinName: 'Cymbopogon citratus',
     category: 'daun',
     categoryName: 'Daun & Batang Aromatik',
@@ -154,7 +188,7 @@ export const spices = [
   },
   {
     id: 'daun-salam',
-    name: 'Daun Salam Kering',
+    name: 'Daun Salam Nusantara',
     latinName: 'Syzygium polyanthum',
     category: 'daun',
     categoryName: 'Daun & Batang Aromatik',
@@ -196,7 +230,7 @@ export const spices = [
     aromaProfile: 'Asam segar bersih menyeruak seperti tetesan embun buah tropis.',
     flavorNote: 'Sangat asam segar berair dengan sedikit rasa manis buah di ujung lidah.',
     preparationMethod: 'Dipotong bulat setebal 1 cm, lalu dimasukkan ke dalam bungkusan daun pisang garang asem sebelum dikukus.',
-    iconicDishes: ['Garang Asem Kudus', 'Pindang Kudus', 'Asem-asem Daging Semarang'],
+    iconicDishes: ['Garang Asem Kudus', 'Pindang Serani Jepara', 'Asem-asem Daging Semarang'],
     culturalWisdom: 'Pohon belimbing wuluh hampir selalu ditanam di pekarangan rumah tradisional Jawa Tengah sebagai apotek hidup dan penyedia bumbu segar setiap hari.',
     substitutes: 'Tomat hijau asam muda atau perasan jeruk nipis.',
     modelColor: '#96B847',
@@ -219,6 +253,23 @@ export const spices = [
     modelColor: '#5C3317',
     accentColor: '#4A2C1A',
     image: '/assets/images/ingredients/gula-jawa.jpg'
+  },
+  {
+    id: 'asam-jawa',
+    name: 'Asam Jawa Asli',
+    latinName: 'Tamarindus indica',
+    category: 'asam',
+    categoryName: 'Asam & Manis Alami',
+    role: 'Pemberi rasa asam segar berkaramel yang memotong lemak dan mengikat rasa manis gurih pada kuah sayur dan saus kacang.',
+    aromaProfile: 'Asam manis buah tropis dengan aroma molase hangat yang khas.',
+    flavorNote: 'Asam tajam segar yang bersih di lidah dengan sensasi manis legit lembut.',
+    preparationMethod: 'Dilarutkan dengan air panas, diremas hingga sari asamnya keluar, lalu disaring sebelum dicampurkan ke dalam kuah atau juruh gula.',
+    iconicDishes: ['Tahu Gimbal Semarang', 'Kupat Tahu Magelang', 'Sayur Asem Jawa', 'Sate Sapi Suruh'],
+    culturalWisdom: 'Pohon asam jawa (asem) telah ratusan tahun menjadi peneduh jalan raya pos Daendels dan alun-alun keraton Jawa Tengah. Dalam filosofi Jawa, "asem" melambangkan pesona yang memikat hati ("semsem").',
+    substitutes: 'Asam kandis atau belimbing wuluh muda (meski asam jawa memberi warna gelap dan kepekatan yang unik).',
+    modelColor: '#7D4E2D',
+    accentColor: '#7D4E2D',
+    image: '/assets/images/ingredients/asam-jawa.jpg'
   },
   {
     id: 'kecombrang',
@@ -258,8 +309,8 @@ export const spices = [
     id: 'kayu-manis',
     name: 'Kayu Manis Jawa',
     latinName: 'Cinnamomum burmannii',
-    category: 'aromatik',
-    categoryName: 'Bumbu Aromatik Utama',
+    category: 'biji',
+    categoryName: 'Biji-bijian & Rempah Kering',
     role: 'Pemberi sentuhan wangi manis kayu yang lembut dan anggun pada kuah semur, gulai, dan wedangan.',
     aromaProfile: 'Manis semerbak, wangi kayu aromatik yang menenangkan hati dan menggugah selera makan.',
     flavorNote: 'Manis hangat bersahaja dengan sedikit getir pedas halus.',
@@ -289,4 +340,3 @@ export const spices = [
     image: '/assets/images/ingredients/pala.jpg'
   }
 ];
-

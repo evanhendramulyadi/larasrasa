@@ -23,7 +23,8 @@ export function localizeSpice(spice) {
     flavorNote: enTrans.flavorNote || spice.flavorNote,
     preparationMethod: enTrans.preparationMethod || spice.preparationMethod,
     culturalWisdom: enTrans.culturalWisdom || spice.culturalWisdom,
-    substitutes: enTrans.substitutes || spice.substitutes
+    substitutes: enTrans.substitutes || spice.substitutes,
+    iconicDishes: enTrans.iconicDishes || spice.iconicDishes
   };
 }
 
