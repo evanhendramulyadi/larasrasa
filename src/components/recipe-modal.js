@@ -1,6 +1,7 @@
 import { recipeService, localizeRecipe } from '../services/recipeService.js';
 import { getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { i18n, t } from '../i18n/index.js';
+import { setActiveNavbarLink } from './navbar.js';
 
 /**
  * Cultural Culinary Recipe Pop-up Modal Component
@@ -230,6 +231,7 @@ export function renderRecipeModal(rawRecipe) {
 
 let currentRecipeKeyDownHandler = null;
 let activeRecipeModalSlug = null;
+let previousRouteHash = null;
 
 export function getActiveRecipeModalSlug() {
   const root = document.getElementById('recipe-modal-root');
@@ -252,10 +254,41 @@ export function closeRecipeModal() {
     window.removeEventListener('keydown', currentRecipeKeyDownHandler);
     currentRecipeKeyDownHandler = null;
   }
+
+  // If currently showing a recipe slug in the URL hash, return to standard recipes page (or previous hash)
+  const currentHash = window.location.hash || '';
+  if (currentHash.startsWith('#/recipes/') || currentHash.startsWith('#/resep/')) {
+    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+    const defaultRecipesHash = isEn ? '#/recipes' : '#/resep';
+    const targetHash = (previousRouteHash && !previousRouteHash.startsWith('#/recipes/') && !previousRouteHash.startsWith('#/resep/'))
+      ? previousRouteHash
+      : defaultRecipesHash;
+    previousRouteHash = null;
+
+    if (window.location.hash !== targetHash) {
+      history.replaceState(null, '', targetHash);
+    }
+    const targetPath = targetHash.replace(/^#/, '').split('?')[0] || '/';
+    if (typeof setActiveNavbarLink === 'function') {
+      setActiveNavbarLink(targetPath);
+    }
+  }
 }
 
 export async function openRecipeModal(slug) {
   activeRecipeModalSlug = slug;
+
+  const currentHash = window.location.hash || '';
+  if (!currentHash.startsWith('#/recipes/') && !currentHash.startsWith('#/resep/')) {
+    previousRouteHash = currentHash || '#/';
+  }
+
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+  const detailHash = `${isEn ? '#/recipes' : '#/resep'}/${slug}`;
+  if (window.location.hash !== detailHash) {
+    history.replaceState(null, '', detailHash);
+  }
+
   let root = document.getElementById('recipe-modal-root');
   if (!root) {
     root = document.createElement('div');

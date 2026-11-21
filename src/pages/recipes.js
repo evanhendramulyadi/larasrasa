@@ -72,8 +72,6 @@ export async function renderRecipesPage(urlParams = {}) {
       <div class="flex items-center justify-between text-xs text-[#2E4D38] pb-3 border-b border-[#D49B42]/25">
         <div id="recipe-count-indicator" class="font-medium text-xs sm:text-sm">
           ${t('recipesSection.showingResults')} <strong class="text-[#120B07] font-bold">${recipesList.length}</strong> ${t('recipesSection.authenticRecipes')}
-          ${activeFilters.flavor !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${activeFilters.flavor})</span>` : ''}
-          ${activeFilters.region !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${getDisplayRegionName(activeFilters.region)})</span>` : ''}
         </div>
       </div>
 
@@ -142,8 +140,6 @@ export function initRecipesPageInteractions() {
     if (indicator) {
       indicator.innerHTML = `
         ${t('recipesSection.showingResults')} <strong class="text-[#120B07] font-bold">${list.length}</strong> ${t('recipesSection.authenticRecipes')}
-        ${activeFilters.flavor !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${activeFilters.flavor})</span>` : ''}
-        ${activeFilters.region !== 'semua' ? `<span class="ml-1.5 text-[#C84C24] font-bold">(${getDisplayRegionName(activeFilters.region)})</span>` : ''}
       `;
     }
   }
