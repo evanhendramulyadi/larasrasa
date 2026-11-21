@@ -4,11 +4,11 @@ import { renderHomePage, initHomePageInteractions } from './pages/home.js';
 import { renderRecipesPage, initRecipesPageInteractions, resetRecipesPageState } from './pages/recipes.js';
 import { renderRecipeDetailPage, initRecipeDetailInteractions } from './pages/recipe-detail.js';
 import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-map.js';
-import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, resetSpicesPageState } from './pages/spices.js';
+import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, openSpiceModal, getActiveSpiceModalId, resetSpicesPageState } from './pages/spices.js';
 import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
 import { renderRecommendationsPage, initRecommendationsInteractions, resetRecommendationsWizard } from './pages/recommendations.js';
 import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions, resetAiFoodCreatorState } from './pages/ai-food-creator.js';
-import { openRecipeModal, closeRecipeModal } from './components/recipe-modal.js';
+import { openRecipeModal, closeRecipeModal, getActiveRecipeModalSlug } from './components/recipe-modal.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
 
@@ -32,7 +32,16 @@ export class Router {
       this.handleRouteChange();
     });
     window.addEventListener('larasrasa:languagechange', () => {
-      this.handleRouteChange();
+      const savedScrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      const activeRecipeSlug = getActiveRecipeModalSlug ? getActiveRecipeModalSlug() : null;
+      const activeSpiceId = getActiveSpiceModalId ? getActiveSpiceModalId() : null;
+
+      this.handleRouteChange({
+        isLanguageChange: true,
+        savedScrollY,
+        activeRecipeSlug,
+        activeSpiceId
+      });
     });
 
     // Delegated Recipe Card click & keyboard accessibility (triggers pop-up modal like rempah)
@@ -89,17 +98,24 @@ export class Router {
     return { path, queryParams };
   }
 
-  async handleRouteChange() {
-    // 1. Immediately clear any input text or textarea before destroying old page
-    if (this.app) {
+  async handleRouteChange(options = {}) {
+    const isLanguageChange = options.isLanguageChange || false;
+    const savedScrollY = options.savedScrollY ?? (window.scrollY || document.documentElement.scrollTop || 0);
+    const activeRecipeSlug = options.activeRecipeSlug || null;
+    const activeSpiceId = options.activeSpiceId || null;
+
+    // 1. Immediately clear any input text or textarea before destroying old page (only on actual page navigation)
+    if (!isLanguageChange && this.app) {
       this.app.querySelectorAll('input, textarea').forEach(el => {
         el.value = '';
       });
     }
 
     // 2. Run cleanups for previous view: close modals, reset scroll locks, close mobile drawer
-    closeRecipeModal();
-    closeSpiceModal();
+    if (!isLanguageChange) {
+      closeRecipeModal();
+      closeSpiceModal();
+    }
 
     const drawer = document.getElementById('mobile-menu-drawer');
     const mobileBtn = document.getElementById('mobile-menu-btn');
@@ -112,19 +128,23 @@ export class Router {
       if (closeIcon) closeIcon.classList.add('hidden');
     }
 
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
+    if (!activeRecipeSlug && !activeSpiceId) {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
 
     if (window._currentHeroShowcase) {
       window._currentHeroShowcase.dispose();
       window._currentHeroShowcase = null;
     }
 
-    // 3. Reset all module states so each page always opens in its initial pristine condition
-    resetAiFoodCreatorState();
-    resetRecommendationsWizard();
-    resetRecipesPageState();
-    resetSpicesPageState();
+    // 3. Reset module states ONLY on actual route navigation, NOT on language translation
+    if (!isLanguageChange) {
+      resetAiFoodCreatorState();
+      resetRecommendationsWizard();
+      resetRecipesPageState();
+      resetSpicesPageState();
+    }
 
     // 4. Parse current route
     const { path, queryParams } = this.parseHash();
@@ -227,8 +247,27 @@ export class Router {
       requestAnimationFrame(() => postRenderAction());
     }
 
-    // 7. Scroll to top smoothly
-    scrollToTop();
+    // 7. Scroll handling & Modal preservation
+    if (isLanguageChange) {
+      if (activeRecipeSlug) {
+        openRecipeModal(activeRecipeSlug);
+      } else if (activeSpiceId) {
+        openSpiceModal(activeSpiceId);
+      }
+
+      window.scrollTo({ top: savedScrollY, left: 0, behavior: 'instant' });
+      if (document.documentElement) document.documentElement.scrollTop = savedScrollY;
+      if (document.body) document.body.scrollTop = savedScrollY;
+
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: savedScrollY, left: 0, behavior: 'instant' });
+        if (document.documentElement) document.documentElement.scrollTop = savedScrollY;
+        if (document.body) document.body.scrollTop = savedScrollY;
+      });
+    } else {
+      // Scroll to top smoothly on actual page navigation
+      scrollToTop();
+    }
   }
 }
 

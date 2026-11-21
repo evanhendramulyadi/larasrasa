@@ -263,8 +263,18 @@ function renderSpiceModal(spice) {
 }
 
 let currentSpiceKeyDownHandler = null;
+let activeSpiceModalId = null;
+
+export function getActiveSpiceModalId() {
+  const root = document.getElementById('spice-modal-root');
+  if (root && root.innerHTML.trim() !== '') {
+    return activeSpiceModalId;
+  }
+  return null;
+}
 
 export function closeSpiceModal() {
+  activeSpiceModalId = null;
   const root = document.getElementById('spice-modal-root');
   if (root) {
     root.innerHTML = '';
@@ -278,7 +288,8 @@ export function closeSpiceModal() {
   }
 }
 
-function openSpiceModal(spiceId) {
+export function openSpiceModal(spiceId) {
+  activeSpiceModalId = spiceId;
   const root = document.getElementById('spice-modal-root');
   if (!root) return;
 

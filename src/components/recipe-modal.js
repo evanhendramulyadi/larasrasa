@@ -229,8 +229,18 @@ export function renderRecipeModal(rawRecipe) {
 }
 
 let currentRecipeKeyDownHandler = null;
+let activeRecipeModalSlug = null;
+
+export function getActiveRecipeModalSlug() {
+  const root = document.getElementById('recipe-modal-root');
+  if (root && root.innerHTML.trim() !== '') {
+    return activeRecipeModalSlug;
+  }
+  return null;
+}
 
 export function closeRecipeModal() {
+  activeRecipeModalSlug = null;
   const root = document.getElementById('recipe-modal-root');
   if (root) {
     root.innerHTML = '';
@@ -245,6 +255,7 @@ export function closeRecipeModal() {
 }
 
 export async function openRecipeModal(slug) {
+  activeRecipeModalSlug = slug;
   let root = document.getElementById('recipe-modal-root');
   if (!root) {
     root = document.createElement('div');
