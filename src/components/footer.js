@@ -2,7 +2,7 @@ import { t, i18n } from '../i18n/index.js';
 
 /**
  * Rich & Informative Royal Heritage Footer Component
- * PjBL Project: SMK Pariwisata Metland School (PPLG / IT - Kelompok 2)
+ * PjBL Project: SMK Pariwisata Metland School (Information Technology Department • Group 2)
  */
 export function renderFooter() {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
@@ -27,13 +27,6 @@ export function renderFooter() {
     { id: 'wonosobo', name: 'Kab. Wonosobo' }
   ];
 
-  const teamMembers = [
-    { name: 'Evan Hendra Mulyadi', role: isEn ? 'Web Developer & Lead' : 'Web Developer & Lead' },
-    { name: 'Keisha Nabilah Ar Rahmah', role: 'UI/UX Designer' },
-    { name: 'M. Azka Derin Sulaeman', role: isEn ? 'Flowchart & System Logic' : 'Flowchart & System Logic' },
-    { name: 'Darrel Satya Laksono', role: isEn ? 'Documentation & Proposal' : 'Penyusun Proposal & Dokumen' }
-  ];
-
   return `
     <footer class="bg-[#120B07] text-[#FAF7F2] border-t-2 border-[#D49B42]/50 mt-auto relative overflow-hidden">
       <!-- Royal Heritage Ambient Background Glows -->
@@ -42,10 +35,10 @@ export function renderFooter() {
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 relative z-10 space-y-12">
         
-        <!-- Main Structured Grid: Symmetrical 6 + 6 Columns on Desktop -->
+        <!-- Main Structured Grid: Symmetrical 12 Columns on Desktop -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 items-start">
           
-          <!-- Column 1 (4 cols): Brand Identity, Heritage Philosophy & Cultural Proverb -->
+          <!-- Column 1 (4 cols): Brand Identity, Name Etymology (Laras & Rasa), & Cultural Proverb -->
           <div class="lg:col-span-4 space-y-4">
             <div class="flex items-center gap-3">
               <div class="w-11 h-11 rounded-2xl bg-white/5 border border-[#D49B42]/40 flex items-center justify-center p-2 shadow-xs shrink-0">
@@ -63,10 +56,11 @@ export function renderFooter() {
               </div>
             </div>
 
+            <!-- Etymology of Laras & Rasa -->
             <p class="text-xs text-[#FAF7F2]/80 leading-relaxed max-w-sm">
               ${isEn 
-                ? 'Laras symbolizes moral harmony and flavor balance; Rasa encapsulates sensory richness and hearth traditions of Central Java.' 
-                : 'Laras melambangkan keselarasan budi pekerti dan keseimbangan rasa; Rasa merangkum kekayaan indra dan kehangatan tradisi dapur Jawa Tengah.'}
+                ? 'LarasRasa combines two meaningful words: <strong>Laras</strong>, representing harmony, balance, and cultural values; and <strong>Rasa</strong>, representing taste, culinary experiences, and traditional culinary identity. Together, it reflects the harmony of flavors and cultural heritage found across Central Java.' 
+                : 'Nama LarasRasa memadukan dua makna luhur: <strong>Laras</strong> yang melambangkan harmoni, keseimbangan, serta nilai budaya; dan <strong>Rasa</strong> yang mencerminkan cita rasa, pengalaman bersantap, serta jati diri panganan tradisional. Keduanya berpadu merawat keharmonisan rasa dan warisan budaya Jawa Tengah.'}
             </p>
 
             <!-- Philosophical Proverb Pill -->
@@ -127,11 +121,11 @@ export function renderFooter() {
             </p>
           </div>
 
-          <!-- Column 4 (3 cols): Proyek Pembelajaran (PjBL IT) Academic Card -->
+          <!-- Column 4 (3 cols): Project Background & Group Contribution (PjBL IT) -->
           <div class="lg:col-span-3 space-y-3.5">
             <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-2 border-b border-[#D49B42]/30 flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-              <span>${isEn ? 'Academic Project (PjBL)' : 'Karya Akademik (PjBL)'}</span>
+              <span>${isEn ? 'Project Background (PjBL)' : 'Latar Belakang Proyek'}</span>
             </h3>
 
             <div class="p-4 rounded-2xl bg-white/[0.04] border border-[#D49B42]/30 space-y-3 shadow-inner">
@@ -139,28 +133,19 @@ export function renderFooter() {
                 <span class="inline-block px-2.5 py-0.5 rounded-full bg-[#C84C24] text-white font-bold text-[9px] uppercase tracking-wider">
                   SMK Pariwisata Metland School
                 </span>
-                <p class="text-[11px] font-bold text-white pt-1">
-                  ${isEn ? 'PPLG / IT • Group 2' : 'PPLG / IT • Kelompok 2'}
+                <p class="text-[11.5px] font-bold text-white pt-1">
+                  ${isEn ? 'Information Technology Department • Group 2' : 'Jurusan Pengembangan Perangkat Lunak & Gim (IT) • Kelompok 2'}
                 </p>
                 <p class="text-[10px] text-[#D49B42] font-semibold">
-                  ${isEn ? 'Semester 1 Blocking 2 • AY 2026/2027' : 'Semester 1 Blocking 2 • TA 2026/2027'}
+                  ${isEn ? 'Central Java Showcase Assignment' : 'Penugasan Eksplorasi Budaya Jawa Tengah'}
                 </p>
               </div>
 
-              <!-- Team Members in Clean, Harmonious Layout -->
-              <div class="pt-2 border-t border-white/10 space-y-1.5">
-                <span class="text-[9.5px] font-bold text-[#D49B42] uppercase tracking-wider block">
-                  ${isEn ? 'Team Contributors:' : 'Tim Pengembang:'}
-                </span>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-1 text-[11px]">
-                  ${teamMembers.map(m => `
-                    <div class="leading-tight py-0.5">
-                      <strong class="text-white block font-semibold text-[11px]">${m.name}</strong>
-                      <span class="text-[#FAF7F2]/65 text-[9.5px]">${m.role}</span>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
+              <p class="text-[11px] text-[#FAF7F2]/75 leading-relaxed pt-2 border-t border-white/10">
+                ${isEn 
+                  ? 'LarasRasa originated from a <strong>Project-Based Learning (PjBL)</strong> program conducted by the Information Technology Department at SMK Pariwisata Metland School. As part of this program, <strong>Group 2</strong> was assigned to develop a website showcasing Central Java (Jawa Tengah), conceptualizing LarasRasa to introduce and preserve the richness of Central Javanese cuisine, traditional recipes, and local culinary heritage.' 
+                  : 'LarasRasa lahir dari program <strong>Project-Based Learning (PjBL)</strong> yang diselenggarakan oleh Jurusan Teknologi Informasi / PPLG di SMK Pariwisata Metland School. Melalui penugasan ini, <strong>Kelompok 2</strong> dipercaya merancang situs bertema Jawa Tengah, dan menggagas LarasRasa sebagai wadah kuliner untuk memperkenalkan serta merawat kekayaan gastronomi dan resep pusaka daerah.'}
+              </p>
             </div>
           </div>
 
@@ -169,7 +154,7 @@ export function renderFooter() {
         <!-- Bottom Copyright & Back to Top Bar -->
         <div class="pt-6 border-t border-[#FAF7F2]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#FAF7F2]/60">
           <p class="text-center sm:text-left leading-relaxed">
-            &copy; ${new Date().getFullYear()} LarasRasa &bull; ${isEn ? 'Group 2 IT Department PjBL Metland School. All Rights Reserved.' : 'PjBL Kelompok 2 PPLG SMK Pariwisata Metland School. Hak Cipta Dilindungi.'}
+            &copy; 2026–Present Evan Hendra Mulyadi. All Rights Reserved.
           </p>
           <div class="flex items-center gap-5 shrink-0">
             <button type="button" 
