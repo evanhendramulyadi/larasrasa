@@ -8,6 +8,7 @@ import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, openSpic
 import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
 import { renderRecommendationsPage, initRecommendationsInteractions, resetRecommendationsWizard } from './pages/recommendations.js';
 import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions, resetAiFoodCreatorState } from './pages/ai-food-creator.js';
+import { renderAboutPage, initAboutPageInteractions } from './pages/about.js';
 import { openRecipeModal, closeRecipeModal, getActiveRecipeModalSlug } from './components/recipe-modal.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
@@ -23,7 +24,8 @@ export function resolveNearestRoute(rawPath, isEn = false) {
     '/jelajah-rempah', '/spices',
     '/restoran-legendaris', '/restaurants',
     '/rekomendasi', '/recommendations',
-    '/ai-food-creator'
+    '/ai-food-creator',
+    '/tentang', '/about'
   ];
 
   if (validExactRoutes.includes(normalized) || normalized.startsWith('/resep/') || normalized.startsWith('/recipes/')) {
@@ -53,6 +55,10 @@ export function resolveNearestRoute(rawPath, isEn = false) {
   // Nearest match for AI food creator
   if (normalized.includes('creator') || normalized.includes('ai') || normalized.includes('studio')) {
     return '/ai-food-creator';
+  }
+  // Nearest match for about / credits
+  if (normalized.includes('tentang') || normalized.includes('about') || normalized.includes('credit')) {
+    return isEn ? '/about' : '/tentang';
   }
 
   // Fallback to Home as the nearest root
@@ -351,6 +357,10 @@ export class Router {
       pageHtml = await renderAiFoodCreatorPage();
       postRenderAction = () => initAiFoodCreatorInteractions();
       pageTitlePrefix = t('nav.aiFoodCreator');
+    } else if (path === '/tentang' || path === '/about') {
+      pageHtml = await renderAboutPage();
+      postRenderAction = () => initAboutPageInteractions();
+      pageTitlePrefix = isEn ? 'About & Team' : 'Tentang & Tim';
     } else {
       pageTitlePrefix = '404';
       // 404 Fallback with bilingual & Javanese touch

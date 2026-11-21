@@ -7,7 +7,8 @@ export const ROUTE_DEFINITIONS = [
   { id: 'spices', idPath: '/jelajah-rempah', enPath: '/spices' },
   { id: 'restaurants', idPath: '/restoran-legendaris', enPath: '/restaurants' },
   { id: 'recommendations', idPath: '/rekomendasi', enPath: '/recommendations' },
-  { id: 'aiFoodCreator', idPath: '/ai-food-creator', enPath: '/ai-food-creator' }
+  { id: 'aiFoodCreator', idPath: '/ai-food-creator', enPath: '/ai-food-creator' },
+  { id: 'about', idPath: '/tentang', enPath: '/about' }
 ];
 
 /**

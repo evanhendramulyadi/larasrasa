@@ -2,7 +2,7 @@ import { t, i18n } from '../i18n/index.js';
 
 /**
  * Rich & Informative Royal Heritage Footer Component
- * PjBL Project: SMK Pariwisata Metland School (Information Technology Department • Group 2)
+ * PjBL Project: SMK Pariwisata Metland School (Information Technology Department • Kelompok 2)
  */
 export function renderFooter() {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
@@ -13,7 +13,8 @@ export function renderFooter() {
     { label: t('nav.spices'), href: isEn ? '#/spices' : '#/jelajah-rempah' },
     { label: t('nav.restaurants'), href: isEn ? '#/restaurants' : '#/restoran-legendaris' },
     { label: t('nav.recommendations'), href: isEn ? '#/recommendations' : '#/rekomendasi' },
-    { label: t('nav.aiFoodCreator'), href: '#/ai-food-creator', isSpecial: true }
+    { label: t('nav.aiFoodCreator'), href: '#/ai-food-creator', isSpecial: true },
+    { label: isEn ? 'About LarasRasa' : 'Tentang LarasRasa', href: isEn ? '#/about' : '#/tentang' }
   ];
 
   const regions = [
@@ -25,6 +26,13 @@ export function renderFooter() {
     { id: 'magelang', name: 'Kab. Magelang' },
     { id: 'tegal', name: 'Kota & Kab. Tegal' },
     { id: 'wonosobo', name: 'Kab. Wonosobo' }
+  ];
+
+  const teamMembers = [
+    { name: 'Evan Hendra Mulyadi', role: isEn ? 'Website Developer & Team Leader' : 'Website Developer & Team Leader', icon: '💻' },
+    { name: 'Keisha Nabilah Ar Rahmah', role: 'UI/UX Designer', icon: '🎨' },
+    { name: 'M. Azka Derin Sulaeman', role: 'Flowchart Designer', icon: '📊' },
+    { name: 'Darrel Satya Laksono', role: 'Proposal Writer', icon: '📝' }
   ];
 
   return `
@@ -121,11 +129,11 @@ export function renderFooter() {
             </p>
           </div>
 
-          <!-- Column 4 (3 cols): Project Background & Group Contribution (PjBL IT) -->
+          <!-- Column 4 (3 cols): Project Background & Group 2 Team Contributions (PjBL IT) -->
           <div class="lg:col-span-3 space-y-3.5">
             <h3 class="text-xs font-bold uppercase tracking-widest text-[#D49B42] pb-2 border-b border-[#D49B42]/30 flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-              <span>${isEn ? 'Project Background (PjBL)' : 'Latar Belakang Proyek'}</span>
+              <span>${isEn ? 'Project Background & Team' : 'Latar Belakang & Tim'}</span>
             </h3>
 
             <div class="p-4 rounded-2xl bg-white/[0.04] border border-[#D49B42]/30 space-y-3 shadow-inner">
@@ -134,27 +142,53 @@ export function renderFooter() {
                   SMK Pariwisata Metland School
                 </span>
                 <p class="text-[11.5px] font-bold text-white pt-1">
-                  ${isEn ? 'Information Technology Department • Group 2' : 'Jurusan Pengembangan Perangkat Lunak & Gim (IT) • Kelompok 2'}
+                  ${isEn ? 'IT Department • Group 2' : 'Jurusan IT (PPLG) • Kelompok 2'}
                 </p>
                 <p class="text-[10px] text-[#D49B42] font-semibold">
-                  ${isEn ? 'Central Java Showcase Assignment' : 'Penugasan Eksplorasi Budaya Jawa Tengah'}
+                  ${isEn ? 'Central Java Cultural Project Assignment' : 'Penugasan Website Budaya Jawa Tengah'}
                 </p>
               </div>
 
-              <p class="text-[11px] text-[#FAF7F2]/75 leading-relaxed pt-2 border-t border-white/10">
+              <!-- PjBL Narrative & Why LarasRasa -->
+              <p class="text-[10.5px] text-[#FAF7F2]/80 leading-relaxed pt-2 border-t border-white/10">
                 ${isEn 
-                  ? 'LarasRasa originated from a <strong>Project-Based Learning (PjBL)</strong> program conducted by the Information Technology Department at SMK Pariwisata Metland School. As part of this program, <strong>Group 2</strong> was assigned to develop a website showcasing Central Java (Jawa Tengah), conceptualizing LarasRasa to introduce and preserve the richness of Central Javanese cuisine, traditional recipes, and local culinary heritage.' 
-                  : 'LarasRasa lahir dari program <strong>Project-Based Learning (PjBL)</strong> yang diselenggarakan oleh Jurusan Teknologi Informasi / PPLG di SMK Pariwisata Metland School. Melalui penugasan ini, <strong>Kelompok 2</strong> dipercaya merancang situs bertema Jawa Tengah, dan menggagas LarasRasa sebagai wadah kuliner untuk memperkenalkan serta merawat kekayaan gastronomi dan resep pusaka daerah.'}
+                  ? 'LarasRasa originated from a <strong>Project-Based Learning (PjBL)</strong> program in the IT Department at SMK Pariwisata Metland School. <strong>Group 2</strong> was assigned to develop a website about Central Java, choosing LarasRasa to showcase and preserve authentic Javanese culinary heritage, recipes, and spices.' 
+                  : 'LarasRasa lahir dari program <strong>Project-Based Learning (PjBL)</strong> Jurusan IT di SMK Pariwisata Metland School. <strong>Kelompok 2</strong> mendapat tugas membuat website Jawa Tengah, dan memilih LarasRasa untuk mendokumentasikan serta melestarikan pusaka kuliner, resep otentik, dan rempah daerah.'}
               </p>
+
+              <!-- Team Members & Contributions -->
+              <div class="pt-2 border-t border-white/10 space-y-1.5">
+                <span class="text-[9.5px] font-bold text-[#D49B42] uppercase tracking-wider block">
+                  ${isEn ? 'Group 2 Contributors:' : 'Kontributor Kelompok 2:'}
+                </span>
+                <div class="grid grid-cols-1 gap-1 text-[11px]">
+                  ${teamMembers.map(m => `
+                    <div class="flex items-center justify-between py-0.5">
+                      <div class="flex items-center gap-1.5 truncate">
+                        <span class="text-[11px] shrink-0">${m.icon}</span>
+                        <strong class="text-white font-semibold text-[11px] truncate">${m.name}</strong>
+                      </div>
+                      <span class="text-[#D49B42] text-[9.5px] font-medium shrink-0 ml-2">${m.role}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="pt-2 border-t border-white/10 text-right">
+                <a href="${isEn ? '#/about' : '#/tentang'}" class="text-[10.5px] font-bold text-[#D49B42] hover:text-white transition-colors inline-flex items-center gap-1">
+                  <span>${isEn ? 'View Full Project Story' : 'Baca Kisah Selengkapnya'}</span>
+                  <span>&rarr;</span>
+                </a>
+              </div>
             </div>
           </div>
 
         </div>
 
-        <!-- Bottom Copyright & Back to Top Bar -->
+        <!-- Bottom Copyright & Back to Top Bar (CR) -->
         <div class="pt-6 border-t border-[#FAF7F2]/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#FAF7F2]/60">
           <p class="text-center sm:text-left leading-relaxed">
-            &copy; 2026–Present Evan Hendra Mulyadi. All Rights Reserved.
+            &copy; 2026–Present ${isEn ? 'Group 2' : 'Kelompok 2'}. All Rights Reserved.
           </p>
           <div class="flex items-center gap-5 shrink-0">
             <button type="button" 

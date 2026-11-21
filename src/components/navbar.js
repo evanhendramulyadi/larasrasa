@@ -39,7 +39,8 @@ export function renderNavbar(activeRoute = '/') {
     { label: t('nav.spices'), href: isEn ? '#/spices' : '#/jelajah-rempah' },
     { label: t('nav.restaurants'), href: isEn ? '#/restaurants' : '#/restoran-legendaris' },
     { label: t('nav.recommendations'), href: isEn ? '#/recommendations' : '#/rekomendasi' },
-    { label: t('nav.aiFoodCreator'), href: '#/ai-food-creator', isSpecial: true }
+    { label: t('nav.aiFoodCreator'), href: '#/ai-food-creator', isSpecial: true },
+    { label: isEn ? 'About' : 'Tentang', href: isEn ? '#/about' : '#/tentang' }
   ];
 
   return `
