@@ -30,7 +30,7 @@ export function localizeRecipe(recipe) {
     regionalVariations: trans.regionalVariations || recipe.regionalVariations,
     equipment: trans.equipment || recipe.equipment,
     ingredientGroups: trans.ingredientGroups || recipe.ingredientGroups,
-    steps: trans.steps || recipe.steps,
+    steps: trans.steps || recipe.steps || recipe.instructions,
     servingAdvice: trans.servingAdvice || recipe.servingAdvice,
     servingSuggestions: trans.servingAdvice || recipe.servingSuggestions,
     cookingTips: trans.chefTips 

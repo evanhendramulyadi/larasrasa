@@ -1243,7 +1243,7 @@ export const recipes = [
         ]
       }
     ],
-    instructions: [
+    steps: [
       {
         stepNumber: 1,
         title: 'Menata Daun Jati & Nangka di Kuali',
@@ -1354,7 +1354,7 @@ export const recipes = [
         ]
       }
     ],
-    instructions: [
+    steps: [
       {
         stepNumber: 1,
         title: 'Merebus Daging & Membuat Kaldu',
@@ -1463,7 +1463,7 @@ export const recipes = [
         ]
       }
     ],
-    instructions: [
+    steps: [
       {
         stepNumber: 1,
         title: 'Menumis Bumbu Halus Rempah',
@@ -1570,7 +1570,7 @@ export const recipes = [
         ]
       }
     ],
-    instructions: [
+    steps: [
       {
         stepNumber: 1,
         title: 'Membuat Kuah Kental Ebi Gurih',
@@ -1683,7 +1683,7 @@ export const recipes = [
         ]
       }
     ],
-    instructions: [
+    steps: [
       {
         stepNumber: 1,
         title: 'Merebus & Membersihkan Tulang Kambing',
@@ -1779,7 +1779,7 @@ export const recipes = [
         ]
       }
     ],
-    instructions: [
+    steps: [
       {
         stepNumber: 1,
         title: 'Mencampur Bahan Kering & Kelapa',
@@ -1880,7 +1880,7 @@ export const recipes = [
         ]
       }
     ],
-    instructions: [
+    steps: [
       {
         stepNumber: 1,
         title: 'Mengukus Singkong Hingga Merekah',
@@ -1983,7 +1983,7 @@ export const recipes = [
         ]
       }
     ],
-    instructions: [
+    steps: [
       {
         stepNumber: 1,
         title: 'Membuat Adonan Serabi Beras',
