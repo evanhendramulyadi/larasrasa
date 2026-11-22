@@ -135,8 +135,8 @@ export function renderRecipeModal(rawRecipe) {
                 </div>
                 <div class="flex flex-wrap gap-2">
                   ${recipe.equipment.map(eq => `
-                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs bg-white text-[#120B07] border border-[#D49B42]/30 font-medium shadow-2xs">
-                      <span class="text-[#C84C24] text-xs">🍳</span>
+                    <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs bg-white text-[#120B07] border border-[#D49B42]/30 font-medium shadow-2xs">
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24] shrink-0"></span>
                       <span>${eq}</span>
                     </span>
                   `).join('')}
@@ -312,22 +312,13 @@ export async function openRecipeModal(slug) {
   activeRecipeModalSlug = slug;
 
   const currentHash = window.location.hash || '';
-  const isHomeRoute = currentHash === '' || currentHash === '#' || currentHash === '#/' || currentHash.split('?')[0] === '#/';
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+  const defaultRecipesHash = isEn ? '#/recipes' : '#/resep';
 
-  if (isHomeRoute) {
-    openedFromHome = true;
-    previousRouteHash = '#/';
-  } else {
-    openedFromHome = false;
-    if (!currentHash.startsWith('#/recipes/') && !currentHash.startsWith('#/resep/')) {
-      previousRouteHash = currentHash || '#/';
-    }
-
-    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
-    const detailHash = `${isEn ? '#/recipes' : '#/resep'}/${slug}`;
-    if (window.location.hash !== detailHash) {
-      history.replaceState(null, '', detailHash);
-    }
+  // Keep hash at #/resep or #/recipes (or #/) so that refreshing the browser
+  // returns cleanly to the recipe catalog without staying on the modal
+  if (currentHash.startsWith('#/recipes/') || currentHash.startsWith('#/resep/')) {
+    history.replaceState(null, '', defaultRecipesHash);
   }
 
   let root = document.getElementById('recipe-modal-root');

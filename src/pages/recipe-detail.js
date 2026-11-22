@@ -244,7 +244,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             <div class="flex flex-wrap gap-2">
               ${recipe.equipment.map(eq => `
                 <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs bg-white text-[#120B07] border border-[#D49B42]/30 font-medium shadow-2xs">
-                  <span class="text-[#C84C24] text-xs">🍳</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24] shrink-0"></span>
                   <span>${eq}</span>
                 </span>
               `).join('')}

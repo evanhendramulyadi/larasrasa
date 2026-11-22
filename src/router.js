@@ -319,6 +319,8 @@ export class Router {
       postRenderAction = () => {
         initRecipesPageInteractions();
         openRecipeModal(slug);
+        const catalogPath = isEn ? '/recipes' : '/resep';
+        history.replaceState(null, '', `#${catalogPath}`);
       };
       pageTitlePrefix = t('nav.recipes');
     } else if (path === '/peta-rasa' || path === '/flavor-map') {
