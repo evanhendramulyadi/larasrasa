@@ -137,9 +137,8 @@ export function renderFooter() {
             <!-- Left Side (7 cols): Full PjBL Background Narrative -->
             <div class="lg:col-span-7 space-y-2.5">
               <div class="flex items-center gap-2">
-                <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#C84C24]/15 border border-[#C84C24]/40 text-[#D49B42] text-[10.5px] font-bold uppercase tracking-wider">
-                  <span>🎓</span>
-                  <span>${isEn ? 'PjBL IT • SMK Pariwisata Metland School' : 'Karya PjBL Jurusan IT • SMK Pariwisata Metland School'}</span>
+                <span class="inline-flex items-center px-3 py-0.5 rounded-full bg-[#C84C24]/15 border border-[#C84C24]/40 text-[#D49B42] text-[10.5px] font-bold uppercase tracking-wider">
+                  ${isEn ? 'PjBL IT • SMK Pariwisata Metland School' : 'Karya PjBL Jurusan IT • SMK Pariwisata Metland School'}
                 </span>
               </div>
               <h4 class="font-editorial-serif text-lg sm:text-xl font-bold text-white tracking-tight">
