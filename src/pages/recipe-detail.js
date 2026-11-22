@@ -253,7 +253,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         ` : ''}
 
         <!-- Ingredients Table / Groups (Fixed 4 Servings) -->
-        <div id="ingredients-display" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div id="ingredients-display" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
           ${renderIngredientsTable(recipe, STANDARD_SERVINGS)}
         </div>
       </section>
@@ -428,7 +428,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
 
 function renderIngredientsTable(recipe, targetServings = 4) {
   return (recipe.ingredientGroups || []).map(group => `
-    <div class="bg-white p-6 sm:p-7 rounded-3xl border border-[#D49B42]/30 space-y-3.5 shadow-xs">
+    <div class="bg-white p-6 sm:p-7 rounded-3xl border border-[#D49B42]/30 space-y-3.5 shadow-xs h-fit">
       <h3 class="font-editorial-serif text-base font-bold text-[#120B07] border-b border-[#D49B42]/25 pb-2.5 flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
         <span>${group.name}</span>

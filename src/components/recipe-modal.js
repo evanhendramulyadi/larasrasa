@@ -144,9 +144,9 @@ export function renderRecipeModal(rawRecipe) {
               </div>
             ` : ''}
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
               ${(recipe.ingredientGroups || []).map(group => `
-                <div class="p-4 rounded-2xl bg-white border border-[#D49B42]/30 shadow-2xs space-y-2.5">
+                <div class="p-4 rounded-2xl bg-white border border-[#D49B42]/30 shadow-2xs space-y-2.5 h-fit">
                   <h4 class="text-xs font-bold uppercase tracking-wider text-[#C84C24] border-b border-[#D49B42]/20 pb-1.5">
                     ${group.name}
                   </h4>
