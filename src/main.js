@@ -23,4 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const router = new Router(appContainer);
   router.init();
+
+  // Delegated smooth scroll for footer back to top button
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('#footer-back-to-top');
+    if (btn) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
+  });
 });

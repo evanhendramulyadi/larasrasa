@@ -190,7 +190,7 @@ export function renderFooter() {
           <div class="flex items-center gap-5 shrink-0">
             <button type="button" 
                     id="footer-back-to-top"
-                    onclick="window.scrollTo({top: 0, behavior: 'instant'}); if(document.documentElement) document.documentElement.scrollTop = 0;"
+                    onclick="window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });"
                     class="inline-flex items-center gap-1.5 text-xs text-[#D49B42] hover:text-white transition-colors font-bold cursor-pointer group"
                     aria-label="${isEn ? 'Back to top' : 'Kembali ke atas'}">
               <span>${isEn ? 'Back to Top' : 'Kembali ke Atas'}</span>

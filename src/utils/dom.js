@@ -30,12 +30,20 @@ export function render(container, htmlString, postRenderCallback = null) {
  * Scroll window immediately or smoothly to top
  */
 export function scrollToTop(behavior = 'instant') {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior
-  });
-  if (document.documentElement) document.documentElement.scrollTop = 0;
-  if (document.body) document.body.scrollTop = 0;
+  if (behavior === 'smooth') {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  } else {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  }
 }
 
