@@ -214,9 +214,7 @@ export const en = {
     mapHint: 'Click markers to open Google Maps turn-by-turn navigation',
     searchPlaceholder: 'Search eatery or restaurant (e.g., Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'City / Region:',
-    allCities: 'All Cities',
-    integrityTitle: 'Culinary History Documentation',
-    integrityText: 'Establishment locations, founding years, and culinary chronicles are gathered from local historical accounts and community traditions.'
+    allCities: 'All Cities'
   },
   recommendations: {
     badge: 'Central Javanese Taste Curation',

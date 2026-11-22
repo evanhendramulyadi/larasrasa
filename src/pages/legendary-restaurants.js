@@ -94,16 +94,6 @@ export async function renderLegendaryRestaurantsPage() {
         ${restaurantsList.map(r => renderRestaurantCard(r)).join('')}
       </div>
 
-      <!-- Heritage Integrity Card -->
-      <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-white via-[#FAF7F2] to-[#F5EFEB] border border-[#D49B42]/35 shadow-sm space-y-2">
-        <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">
-          ${t('restaurantsSection.integrityTitle')}
-        </h3>
-        <p class="text-xs text-[#5C3622] leading-relaxed">
-          ${t('restaurantsSection.integrityText')}
-        </p>
-      </div>
-
     </div>
   `;
 }

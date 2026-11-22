@@ -2,6 +2,7 @@ import { recipeService } from '../services/recipeService.js';
 import { restaurantService } from '../services/restaurantService.js';
 import { flavorProfiles } from '../data/flavorProfiles.js';
 import { spices } from '../data/spices.js';
+import { recipes } from '../data/recipes.js';
 import { localizeSpice } from '../services/spiceService.js';
 import { renderRecipeCard } from '../components/recipe-card.js';
 import { renderRestaurantCard } from '../components/restaurant-card.js';
@@ -78,7 +79,7 @@ export async function renderHomePage() {
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRegionsSub')}</span>
                 </div>
                 <div class="p-2 sm:p-2.5 rounded-xl bg-white/95 border border-[#D49B42]/30 shadow-2xs overflow-hidden flex flex-col justify-between">
-                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#D49B42] block leading-none mb-0.5">29</span>
+                  <span class="font-editorial-serif text-base sm:text-xl font-bold text-[#D49B42] block leading-none mb-0.5">${recipes.length}</span>
                   <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] block leading-tight truncate">${t('hero.statsRecipes')}</span>
                   <span class="text-[8.5px] sm:text-[9.5px] text-[#5C3622] block leading-tight truncate mt-0.5">${t('hero.statsRecipesSub')}</span>
                 </div>

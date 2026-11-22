@@ -215,9 +215,7 @@ export const id = {
     mapHint: 'Klik penanda (marker) untuk melihat rute navigasi Google Maps',
     searchPlaceholder: 'Cari warung atau restoran (contoh: Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'Kota / Wilayah:',
-    allCities: 'Semua Kota',
-    integrityTitle: 'Dokumentasi Sejarah Kuliner',
-    integrityText: 'Titik lokasi, tahun berdiri, dan kisah sejarah kuliner dirangkum dari catatan sejarah lokal dan tradisi tutur masyarakat.'
+    allCities: 'Semua Kota'
   },
   recommendations: {
     badge: 'Kurasi Selera Kuliner Jawa Tengah',
