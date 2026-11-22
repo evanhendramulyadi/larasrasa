@@ -116,7 +116,7 @@ export const en = {
     variationsTitle: 'Regional Variations',
     factsTitle: 'Interesting Facts & Kitchen Wisdom',
     equipmentTitle: 'Required Cooking Equipment',
-    ingredientsTitle: 'Ingredients & Spices',
+    ingredientsTitle: 'Tools, Ingredients & Spices',
     scaleNotice: 'Serving Size: 4 Portions',
     scaleSub: 'Ingredient and spice measurements are proportioned for 4 servings.',
     stepsTitle: 'Step-by-Step Cooking Guide',

@@ -216,7 +216,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           <div class="space-y-1">
             <span class="text-xs uppercase font-bold tracking-widest text-[#C84C24] flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-              <span>${isEn ? 'Ingredients & Spice Composition' : 'Komposisi Bumbu & Bahan Tradisional'}</span>
+              <span>${isEn ? 'Tools, Ingredients & Spice Composition' : 'Peralatan, Bahan & Komposisi Bumbu Tradisional'}</span>
             </span>
             <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">
               ${t('recipeDetail.ingredientsTitle')}
@@ -228,7 +228,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         </div>
 
         <p class="text-xs text-[#5C3622]">
-          ${isEn ? 'All ingredient measurements are naturally calibrated for 4 servings in Central Javanese culinary tradition.' : 'Seluruh takaran gramasi bumbu dan bahan telah terkalibrasi pas untuk 4 porsi dalam tradisi dapur Jawa Tengah.'}
+          ${isEn ? 'All equipment and ingredient measurements are calibrated for 4 servings in Central Javanese culinary tradition.' : 'Seluruh peralatan masak dan takaran bahan telah terkalibrasi pas untuk 4 porsi dalam tradisi dapur Jawa Tengah.'}
         </p>
 
         <!-- Cooking Equipment in Ingredients Section -->

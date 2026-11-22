@@ -117,7 +117,7 @@ export const id = {
     variationsTitle: 'Variasi Antar-Wilayah',
     factsTitle: 'Fakta Menarik & Rahasia Dapur',
     equipmentTitle: 'Peralatan Masak Tradisional',
-    ingredientsTitle: 'Daftar Bahan & Komposisi Bumbu',
+    ingredientsTitle: 'Daftar Alat, Bahan & Komposisi Bumbu',
     scaleNotice: 'Takaran Saji: 4 Porsi',
     scaleSub: 'Takaran bahan dan bumbu pas untuk 4 porsi sajian.',
     stepsTitle: 'Panduan Memasak Langkah Demi Langkah',
