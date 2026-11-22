@@ -299,7 +299,7 @@ function renderFormView(currentLang) {
                 if (!item) return '';
                 return `
                   <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#D49B42]/45 text-xs font-bold text-[#120B07] shadow-2xs">
-                    <img src="${item.image || `/assets/images/ingredients/${item.id}.jpg`}" alt="${isEn ? (item.nameEn || item.nameId) : (item.nameId || item.nameEn)}" class="w-4 h-4 rounded-full object-cover" onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
+                    <span class="text-sm select-none">${item.icon || '🌿'}</span>
                     <span>${isEn ? (item.nameEn || item.nameId) : item.nameId}</span>
                     <button type="button" data-remove-ingredient="${item.id}" class="text-[#C84C24] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
                   </span>
@@ -344,7 +344,6 @@ function renderFormView(currentLang) {
           <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 max-h-[32rem] overflow-y-auto p-1.5 custom-scrollbar">
             ${filteredIngredients.map(item => {
               const isSelected = formState.selectedIngredientIds.includes(item.id);
-              const imgSrc = item.image || `/assets/images/ingredients/${item.id}.jpg`;
               return `
                 <button 
                   type="button" 
@@ -355,16 +354,10 @@ function renderFormView(currentLang) {
                       : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8] hover:border-[#D49B42]'
                   }"
                 >
-                  <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-2 bg-[#FAF7F2] border border-[#E8DEC8]">
-                    <img 
-                      src="${imgSrc}" 
-                      alt="${isEn ? (item.nameEn || item.nameId) : (item.nameId || item.nameEn)}" 
-                      class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-300"
-                      loading="lazy"
-                      onerror="this.src='/assets/images/hero/hero-culinary.jpg'"
-                    />
+                  <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-2 ${isSelected ? 'bg-white/10' : 'bg-[#FAF7F2]'} border border-[#E8DEC8] flex items-center justify-center transition-colors">
+                    <span class="text-3xl sm:text-4xl group-hover:scale-110 transition-transform duration-300 select-none">${item.icon || '🌿'}</span>
                     <span class="absolute top-1.5 right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                      isSelected ? 'bg-[#C84C24] text-white shadow-xs' : 'bg-black/50 text-white backdrop-blur-xs'
+                      isSelected ? 'bg-[#C84C24] text-white shadow-xs' : 'bg-black/30 text-white backdrop-blur-xs'
                     }">
                       ${isSelected ? '✓' : '+'}
                     </span>
