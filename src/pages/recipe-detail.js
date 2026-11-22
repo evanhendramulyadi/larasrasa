@@ -231,6 +231,27 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           ${isEn ? 'All ingredient measurements are naturally calibrated for 4 servings in Central Javanese culinary tradition.' : 'Seluruh takaran gramasi bumbu dan bahan telah terkalibrasi pas untuk 4 porsi dalam tradisi dapur Jawa Tengah.'}
         </p>
 
+        <!-- Cooking Equipment in Ingredients Section -->
+        ${recipe.equipment && recipe.equipment.length > 0 ? `
+          <div class="p-5 rounded-3xl bg-[#FAF7F2] border border-[#D49B42]/35 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-editorial-serif text-sm font-bold uppercase tracking-wider text-[#120B07] flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+                <span>${t('recipeDetail.equipmentTitle') || 'Peralatan Masak Tradisional'}</span>
+              </h3>
+              <span class="text-xs text-[#5C3622] font-semibold">${recipe.equipment.length} ${isEn ? 'required tools' : 'peralatan wajib'}</span>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              ${recipe.equipment.map(eq => `
+                <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs bg-white text-[#120B07] border border-[#D49B42]/30 font-medium shadow-2xs">
+                  <span class="text-[#C84C24] text-xs">🍳</span>
+                  <span>${eq}</span>
+                </span>
+              `).join('')}
+            </div>
+          </div>
+        ` : ''}
+
         <!-- Ingredients Table / Groups (Fixed 4 Servings) -->
         <div id="ingredients-display" class="grid grid-cols-1 md:grid-cols-2 gap-6">
           ${renderIngredientsTable(recipe, STANDARD_SERVINGS)}

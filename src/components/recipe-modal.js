@@ -123,6 +123,27 @@ export function renderRecipeModal(rawRecipe) {
               </span>
             </div>
 
+            <!-- Cooking Equipment / Peralatan Masak Tradisional -->
+            ${recipe.equipment && recipe.equipment.length > 0 ? `
+              <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/35 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase tracking-wider text-[#120B07] flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
+                    <span>${t('recipeDetail.equipmentTitle') || 'Peralatan Masak Tradisional'}</span>
+                  </span>
+                  <span class="text-[10px] text-[#5C3622] font-semibold">${recipe.equipment.length} ${isEn ? 'tools' : 'peralatan'}</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  ${recipe.equipment.map(eq => `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs bg-white text-[#120B07] border border-[#D49B42]/30 font-medium shadow-2xs">
+                      <span class="text-[#C84C24] text-xs">🍳</span>
+                      <span>${eq}</span>
+                    </span>
+                  `).join('')}
+                </div>
+              </div>
+            ` : ''}
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               ${(recipe.ingredientGroups || []).map(group => `
                 <div class="p-4 rounded-2xl bg-white border border-[#D49B42]/30 shadow-2xs space-y-2.5">
