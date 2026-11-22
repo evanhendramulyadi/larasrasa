@@ -51,7 +51,7 @@ export const LOCAL_INGREDIENT_CATALOG = {
     { id: 'kol-segar', nameId: 'Kol Segar Iris Tipis', nameEn: 'Crisp Shredded Cabbage', icon: '🥬', category: 'vegetable', description: 'Tekstur renyah pelengkap sate buntel dan selat.' },
     { id: 'bawang-goreng', nameId: 'Bawang Merah Goreng Brebes', nameEn: 'Crispy Fried Shallots', icon: '🧅', category: 'vegetable', description: 'Taburan harum renyah dari bawang merah Brebes.' },
     { id: 'daun-kucai', nameId: 'Daun Kucai Segar (Khas Tegal & Dieng)', nameEn: 'Fresh Mountain Garlic Chives', icon: '🌿', category: 'vegetable', description: 'Aromatik wajib tahu aci Slawi dan tempe kemul Dieng.' },
-    { id: 'tauco-kedelai', nameId: 'Tauco Kedelai Fermentasi (Pekalongan)', nameEn: 'Fermented Sweet Tauco Paste', icon: '🥣', category: 'vegetable', description: 'Kedelai fermentasi manis gurih untuk kuah tauto dan swike.' },
+    { id: 'tauco-kedelai', nameId: 'Tauco Kedelai Fermentasi (Pekalongan)', nameEn: 'Fermented Sweet Tauco Paste', icon: '🥣', category: 'vegetable', description: 'Kedelai fermentasi manis gurih untuk kuah tauto Pekalongan.' },
     { id: 'kacang-tanah', nameId: 'Kacang Tanah Sangrai Giling', nameEn: 'Roasted Ground Peanuts', icon: '🥜', category: 'vegetable', description: 'Saus kacang legit untuk sroto Sokaraja dan kupat tahu Magelang.' }
   ]
 };

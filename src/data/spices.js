@@ -111,7 +111,7 @@ export const spices = [
     aromaProfile: 'Pedas segar beraroma sitrun dan kayu aromatik.',
     flavorNote: 'Pedas menggigit hangat yang menyegarkan tenggorokan.',
     preparationMethod: 'Dimemarkan untuk cemplungan sup/soto, atau diparut halus untuk kuah semur dan wedang ronde.',
-    iconicDishes: ['Soto Kudus Ayam Kampung', 'Garang Asem Ayam Kudus', 'Swike Purwodadi', 'Tauto Daging Sapi Pekalongan'],
+    iconicDishes: ['Soto Kudus Ayam Kampung', 'Garang Asem Ayam Kudus', 'Mie Ongklok Wonosobo', 'Tauto Daging Sapi Pekalongan'],
     culturalWisdom: 'Masyarakat dataran tinggi Dieng dan lereng Merbabu memanfaatkan jahe bakar dalam hampir semua rebusan kaldu untuk menjaga stamina tubuh.',
     substitutes: 'Jahe merah (lebih pedas) atau jahe bubuk.',
     modelColor: '#D8B174',

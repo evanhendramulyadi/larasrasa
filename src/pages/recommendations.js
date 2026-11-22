@@ -196,14 +196,14 @@ function renderStepContent(step) {
           id: 'kuah-santan',
           icon: '🥥',
           title: isEn ? 'Rich Coconut Stews & Curries' : 'Berkuah Santan Gurih & Medok',
-          desc: isEn ? 'Simmered seasoned coconut milk stews (Gudeg, Mangut Lele, Opor, Nasi Gandul, Nasi Liwet)' : 'Gudeg, opor ayam kampung, mangut lele asap, nasi gandul, atau nasi liwet berbalut areh gurih lembut',
+          desc: isEn ? 'Simmered seasoned coconut milk stews (Gudeg, Mangut Lele, Opor, Nasi Liwet)' : 'Gudeg, opor ayam kampung, mangut lele asap, atau nasi liwet berbalut areh gurih lembut',
           tag: isEn ? 'Rich & Savory' : 'Gurih Meresap'
         },
         {
           id: 'kering-bakar',
           icon: '🍢',
           title: isEn ? 'Grilled, Roasted & Caramelized' : 'Olahan Bakar, Panggang & Ungkep',
-          desc: isEn ? 'Charcoal skewered meats, slow-braised sweet bacem, and caramelized heritage specialties' : 'Sate buntel Solo, daging bacem legit manis, sate ambal, dan olahan ungkepan bumbu karamel sedap',
+          desc: isEn ? 'Charcoal skewered meats, slow-braised sweet bacem, and caramelized heritage specialties' : 'Sate buntel Solo, daging bacem legit manis, sate batibul Tegal, dan olahan ungkepan bumbu karamel sedap',
           tag: isEn ? 'Smoky & Sweet' : 'Aroma Bakaran'
         },
         {

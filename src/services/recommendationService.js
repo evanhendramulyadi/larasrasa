@@ -61,7 +61,7 @@ export const recommendationService = {
             score += 10;
           }
         } else if (preferences.dishType === 'kuah-santan') {
-          if (textToSearch.includes('santan') || textToSearch.includes('gudeg') || textToSearch.includes('opor') || textToSearch.includes('mangut') || textToSearch.includes('gandul') || textToSearch.includes('liwet') || textToSearch.includes('glabed')) {
+          if (textToSearch.includes('santan') || textToSearch.includes('gudeg') || textToSearch.includes('opor') || textToSearch.includes('mangut') || textToSearch.includes('liwet') || textToSearch.includes('glabed')) {
             score += 30;
             matchReasons.push('Kuah santan gurih lembut yang meresap sarat kehangatan dapur leluhur');
           } else {

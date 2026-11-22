@@ -505,46 +505,6 @@ export const recipeTranslationsEn = {
     ],
     nutritionNote: 'Estimated nutrition per serving with jackfruit, egg, and sambal krecek.'
   },
-  'nasi-gandul-pati': {
-    name: 'Nasi Gandul Pati (Spiced Beef Coconut Broth)',
-    mealType: 'Main Course / Dinner',
-    difficulty: 'Medium',
-    difficultyLevel: 'Intermediate',
-    intro: 'Nasi Gandul is the revered culinary gem of Pati, featuring tender braised beef shank and offal bathed in a reddish-brown spiced coconut broth with toasted coriander and kencur, served over warm rice on fresh banana leaves and eaten traditionally with a suru (folded banana leaf spoon).',
-    history: 'Originated in Gajahmati village, Pati. The name "Gandul" (dangling/hanging) comes from itinerant vendors carrying wooden shoulder poles where the broth cauldron dangled rhythmically as they walked through village lanes.',
-    culturalBackground: 'Eating with a folded banana leaf spoon (suru) prevents burning the lips and enhances the herbaceous aroma of the hot spiced broth.',
-    interestingFacts: [
-      'Authentic vendors slice braised beef briskly with kitchen scissors directly onto the rice at order time.',
-      'Accompanied by sweet-glazed crispy beef lung (paru goreng) and golden quail eggs.'
-    ],
-    regionalVariations: 'Pati vendors offer a choice of cuts including beef shank, tripe, liver, and brain.',
-    equipment: ['Clay soup pot', 'Kitchen cutting shears', 'Banana leaves'],
-    ingredientGroups: [
-      {
-        name: 'Beef & Aromatic Broth',
-        items: [
-          { name: 'Beef shank & brisket', amount: 600, unit: 'grams', notes: 'Tender cuts' },
-          { name: 'Coconut milk', amount: 1000, unit: 'ml', notes: 'Medium richness' },
-          { name: 'Palm sugar & sweet soy sauce', amount: 3, unit: 'tbsp', notes: 'For rich mahogany broth' },
-          { name: 'Lemongrass, bay leaves, & kencur', amount: 1, unit: 'batch', notes: 'Aromatic herbs' }
-        ]
-      }
-    ],
-    steps: [
-      { stepNumber: 1, title: 'Simmering Beef', instruction: 'Boil beef with aromatics until half-tender, then cut into bite-sized pieces.' },
-      { stepNumber: 2, title: 'Spicing the Broth', instruction: 'Sauté ground spices until fragrant, stir into the simmering broth with coconut milk and sweet soy sauce until glossy and savory.' },
-      { stepNumber: 3, title: 'Banana Leaf Plating', instruction: 'Line plate with banana leaf, mound hot rice, arrange beef cuts, and ladle piping hot broth over top.' }
-    ],
-    servingAdvice: 'Serve piping hot with crispy fried shallots, chili sambal, and a banana leaf spoon.',
-    chefTips: 'Simmer the beef on very low heat so that every fiber absorbs the aromatic kencur notes.',
-    commonMistakes: [
-      { mistake: 'Over-boiling coconut milk', solution: 'Stir regularly to prevent curdling until the broth turns silky smooth.' }
-    ],
-    substitutions: [
-      { ingredient: 'Beef Shank', substitute: 'Tender beef chuck or oxtail' }
-    ],
-    nutritionNote: 'Estimated nutrition per serving of rice with beef and spiced coconut broth.'
-  },
   'mangut-lele-asap': {
     name: 'Mangut Lele Asap (Smoked Catfish in Spicy Coconut Gravy)',
     mealType: 'Main Course / Lunch',
@@ -858,54 +818,6 @@ export const recipeTranslationsEn = {
     ],
     nutritionNote: 'Estimated per complete serving with fritters and ketupat.'
   },
-  'sate-ambal-kebumen': {
-    name: 'Sate Ambal Kebumen (Grilled Chicken Satay with Spiced Tempeh Sauce)',
-    mealType: 'Dinner / Signature Satay',
-    difficulty: 'Medium',
-    difficultyLevel: 'Intermediate',
-    intro: 'Sate Ambal is a unique coastal chicken satay from southern Kebumen. Its glory lies in the velvety, golden dipping sauce made from steamed fermented tempeh mashed silky-smooth with nutmeg, roasted coriander, and coconut palm sugar.',
-    history: 'Created by coastal fishing families along Kebumen’s southern beaches in the early 1900s, turning abundant local soybean tempeh into a luscious savoury cream that coats char-grilled chicken skewers.',
-    culturalBackground: 'Grilled over dry coconut shells along the historic Deandels beach highway.',
-    interestingFacts: [
-      'Free-range chicken is marinated for hours in sweet coriander marinade before touching the charcoal.',
-      'The tempeh sauce is naturally creamy, nutty, and velvety without peanuts.',
-      'Served with compressed rice cakes and fresh shallot slices.'
-    ],
-    regionalVariations: 'Some roadside stalls add steamed bird’s eye chilies directly into the tempeh puree for an extra kick.',
-    equipment: ['Coconut shell charcoal grill', 'Bamboo skewers', 'Stone mortar', 'Steamer'],
-    chefTips: 'Puree the steamed tempeh while still hot with warm coconut milk for the smoothest emulsion.',
-    commonMistakes: [
-      { mistake: 'Using un-steamed raw tempeh', solution: 'Raw tempeh produces an unappealing bitter, grassy taste; steaming is mandatory.' }
-    ],
-    substitutions: [
-      { ingredient: 'Chicken', substitute: 'Juicy chicken thighs or firm duck breast' }
-    ],
-    nutritionNote: 'Estimated per 10 skewers with velvety tempeh sauce.'
-  },
-  'swike-purwodadi': {
-    name: 'Swike Purwodadi (Fragrant Tauco & Ginger Braised Delicacy)',
-    mealType: 'Lunch / Warming Dinner',
-    difficulty: 'Easy',
-    difficultyLevel: 'Beginner Friendly',
-    intro: 'Swike Purwodadi is a legendary Chinese-Javanese heritage stew from Grobogan. Tender drumsticks simmered in a dark, umami-rich broth loaded with sweet fermented yellow soybean paste (tauco), crushed fiery ginger, crispy fried garlic, and a bright splash of fresh calamansi lime.',
-    history: 'Emanating from Purwodadi along the northern Pantura trade artery since the 19th century. Hokkien settlers named it "Swikee" (water chicken), while Javanese cooks elevated it with locally fermented Grobogan tauco.',
-    culturalBackground: 'Purwodadi is known across Indonesia as the capital of tauco-infused braises, cherished by travelers seeking warmth.',
-    interestingFacts: [
-      'Grobogan tauco has distinct whole soft beans with balanced sweetness and natural umami.',
-      'Crushed garlic is used twice: sautéed in the broth and deep-fried as a crunchy golden garnish.',
-      'A halal variation using tender free-range chicken drumettes is widely popular.'
-    ],
-    regionalVariations: 'Also served as garlic butter stir-fry, crispy batter-fried, or fiery rica-rica.',
-    equipment: ['Soup wok', 'Mortar & pestle', 'Vintage ceramic bowls'],
-    chefTips: 'Sauté the fermented tauco in hot oil before adding broth to unlock sweet nutty caramel notes.',
-    commonMistakes: [
-      { mistake: 'Adding too much salt early', solution: 'Fermented tauco already contains salt; always season at the end.' }
-    ],
-    substitutions: [
-      { ingredient: 'Frog Legs', substitute: 'Free-range chicken drumettes or wings' }
-    ],
-    nutritionNote: 'Estimated per warming bowl with broth and fried garlic.'
-  },
   'sate-kambing-batibul-tegal': {
     name: 'Sate Kambing Batibul Tegal (Young Mutton Satay with Sweet Soy)',
     mealType: 'Lunch / Hearty Dinner',
@@ -1143,9 +1055,6 @@ export const regionNameTranslationsEn = {
   'Kota & Kab Magelang': 'Magelang City & Regency',
   'Kota & Kab Tegal': 'Tegal City & Regency',
   'Kabupaten Wonosobo': 'Wonosobo Regency',
-  'Kabupaten Pati': 'Pati Regency',
-  'Kabupaten Kebumen': 'Kebumen Regency',
-  'Kabupaten Grobogan': 'Grobogan Regency',
   'Kota Surakarta': 'Surakarta City',
   'Solo': 'Solo City',
   'Semarang': 'Semarang City',
@@ -1233,7 +1142,7 @@ export const spiceTranslationsEn = {
     preparationMethod: 'Bruised for infusing clear soups, or finely grated for braised beef sauces and warm herbal drinks.',
     culturalWisdom: 'Highland communities of Dieng and Merbabu incorporate charred ginger into daily broths to ward off alpine chill.',
     substitutes: 'Red ginger (more pungent heat) or pure ginger powder.',
-    iconicDishes: ['Kudus Chicken Soup', 'Garang Asem Kudus', 'Swike Purwodadi', 'Pekalongan Beef Tauto']
+    iconicDishes: ['Kudus Chicken Soup', 'Garang Asem Kudus', 'Wonosobo Ongklok Noodles', 'Pekalongan Beef Tauto']
   },
   'lengkuas': {
     name: 'Greater Galangal (Laos)',
