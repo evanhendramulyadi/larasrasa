@@ -311,13 +311,30 @@ export const aiFoodCreatorService = {
     else if (dishCategory === 'kudapan') baseImage = RECIPE_IMAGE_POOL.kudapan;
 
     // Narrative Description in both ID and EN
-    const p1Id = `Sebuah olahan resep pusaka tradisi yang mengawinkan teknik olah ${cookingMethod} dengan kemegahan aroma rempah ${keySpice1} dan ${keySpice2}. Komposisi bumbu pawon ini diracik secara saksama agar bumbu meresap sempurna dan mengeluarkan sari rasa terbaik.`;
+    const p1Id = `Sebuah olahan resep pusaka tradisi yang mengawinkan teknik olah ${cookingMethod} dengan kemegahan aroma rempah ${keySpice1Id} dan ${keySpice2Id}. Komposisi bumbu pawon ini diracik secara saksama agar bumbu meresap sempurna dan mengeluarkan sari rasa terbaik.`;
     const p2Id = `Karakter rasa yang dihadirkan menonjolkan harmoni ${tasteProfile.replace('-', ' ')} yang gurih, mantap, dan lembut di lidah. Ditakar presisi untuk ${servings} porsi santapan hangat bersama keluarga tercinta.${customNotes ? ` Catatan selera khusus: "${customNotes}".` : ''}`;
     const p3Id = `Paling pas disajikan hangat mengepul bersama nasi putih pulen, lalapan segar, serta sambal pelengkap untuk menyempurnakan kelezatan cita rasa tradisi.`;
     const descriptionId = `${p1Id}\n\n${p2Id}\n\n${p3Id}`;
 
-    const p1En = `An authentic culinary creation marrying the heritage technique of ${cookingMethod} with the aromatic depth of ${keySpice1} and ${keySpice2}. Every spice proportion has been calibrated to draw out genuine warmth and rich flavors from the ingredients.`;
-    const p2En = `The flavor journey presents a distinct ${tasteProfile.replace('-', ' and ')} harmony that is smooth and comforting on the palate. Designed for ${servings} generous servings, this dish carries the timeless wisdom of traditional family meals.${customNotes ? ` Special flavor touch: "${customNotes}".` : ''}`
+    const cookingMethodNounEn = {
+      tumis: 'aromatic stir-frying',
+      ungkep: 'slow braising',
+      kukus: 'banana-leaf steaming',
+      bakar: 'charcoal grilling',
+      goreng: 'crisp frying'
+    }[cookingMethod] || 'traditional cooking';
+
+    const tasteProfileEnMap = {
+      'manis-gurih': 'sweet and savory',
+      'gurih-segar': 'savory and fresh',
+      'pedas-gurih': 'spicy and savory',
+      'asam-segar': 'tangy and fresh',
+      'pekat-rempah': 'rich aromatic spice'
+    };
+    const tasteProfileEn = tasteProfileEnMap[tasteProfile] || 'harmonious sweet and savory';
+
+    const p1En = `An authentic culinary creation marrying the heritage technique of ${cookingMethodNounEn} with the aromatic depth of ${keySpice1En} and ${keySpice2En}. Every spice proportion has been calibrated to draw out genuine warmth and rich flavors from the ingredients.`;
+    const p2En = `The flavor journey presents a distinct ${tasteProfileEn} harmony that is smooth and comforting on the palate. Designed for ${servings} generous servings, this dish carries the timeless wisdom of traditional family meals.${customNotes ? ` Special flavor touch: "${customNotes}".` : ''}`;
     const p3En = `Best served hot alongside fluffy white rice, fresh raw vegetables (lalapan), and authentic sambal for a complete traditional culinary experience.`;
     const descriptionEn = `${p1En}\n\n${p2En}\n\n${p3En}`;
 
@@ -903,7 +920,7 @@ export const aiFoodCreatorService = {
     );
 
     doc.text(
-      isEn ? 'Authentic Heritage Creation' : 'Kreasi Resep Pusaka Autentik',
+      'larasrasa.vercel.app',
       pageWidth - margin,
       curY + 4.5,
       { align: 'right' }
@@ -981,12 +998,6 @@ export const aiFoodCreatorService = {
       doc.line(margin, curY, pageWidth - margin, curY);
       curY += 6;
 
-      doc.setTextColor(200, 76, 36);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(7.5);
-      doc.text(isEn ? 'AUTHENTIC SPICE ENSEMBLE' : 'BAHAN REMPAH TRADISI', margin, curY);
-      curY += 4.5;
-
       doc.setTextColor(25, 25, 25);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(10.5);
@@ -1054,12 +1065,6 @@ export const aiFoodCreatorService = {
       doc.line(margin, curY, pageWidth - margin, curY);
       curY += 6;
 
-      doc.setTextColor(200, 76, 36);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(7.5);
-      doc.text(isEn ? 'CULINARY WORKFLOW' : 'TAHAPAN MEMASAK', margin, curY);
-      curY += 4.5;
-
       doc.setTextColor(25, 25, 25);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(10.5);
@@ -1126,7 +1131,7 @@ export const aiFoodCreatorService = {
       doc.setFontSize(7.5);
       doc.setTextColor(140, 130, 120);
       doc.text(
-        isEn ? 'LarasRasa • Traditional Culinary Intelligence' : 'LarasRasa • Menyelaraskan Rasa Warisan Leluhur',
+        'LarasRasa • larasrasa.vercel.app',
         margin,
         pageHeight - 7
       );

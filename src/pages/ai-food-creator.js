@@ -549,8 +549,8 @@ ${creatorLine}`
   // 3. Bahan & Bumbu Dapur / Ingredients
   if (recipe.ingredients && recipe.ingredients.length > 0) {
     const ingHeader = isEn 
-      ? `Bahan Rempah Tradisi\nIngredients & Kitchen Spices (${recipe.servings || 4} portions)` 
-      : `Bahan Rempah Tradisi\nBahan & Bumbu Dapur (${recipe.servings || 4} porsi)`;
+      ? `Ingredients & Kitchen Spices (${recipe.servings || 4} portions)` 
+      : `Bahan & Bumbu Dapur (${recipe.servings || 4} porsi)`;
     
     const ingLines = recipe.ingredients.map(i => {
       const name = isEn ? (i.nameEn || i.nameId || i.name) : (i.nameId || i.name);
@@ -580,8 +580,8 @@ ${creatorLine}`
   const stepsList = isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps);
   if (stepsList && stepsList.length > 0) {
     const stepsHeader = isEn 
-      ? `Tahapan Memasak\nStep-by-Step Cooking Guide (${stepsList.length} steps):` 
-      : `Tahapan Memasak\nPanduan Langkah Memasak (${stepsList.length} tahap):`;
+      ? `Step-by-Step Cooking Guide (${stepsList.length} steps):` 
+      : `Panduan Langkah Memasak (${stepsList.length} tahap):`;
 
     const formattedSteps = stepsList.map((st, idx) => {
       const stepNum = st.stepNumber || idx + 1;
@@ -594,6 +594,13 @@ ${creatorLine}`
 
     sections.push(`${stepsHeader}\n\n${formattedSteps}`);
   }
+
+  // 6. Tautan Web LarasRasa
+  sections.push(
+    isEn 
+      ? 'LarasRasa • Discover Authentic Heritage Recipes: https://larasrasa.vercel.app' 
+      : 'LarasRasa • Menyelaraskan Rasa Warisan Leluhur: https://larasrasa.vercel.app'
+  );
 
   return sections.join('\n\n');
 }
