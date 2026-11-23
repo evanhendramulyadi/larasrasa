@@ -143,7 +143,7 @@ export async function renderAiFoodCreatorPage() {
     return renderGeneratingState(currentLang);
   }
 
-  if (currentGeneratedRecipe) {
+  if (currentGeneratedRecipe && currentGeneratedRecipe.title && Array.isArray(currentGeneratedRecipe.ingredients) && currentGeneratedRecipe.ingredients.length > 0) {
     return renderResultView(currentGeneratedRecipe, currentLang);
   }
 
@@ -742,6 +742,9 @@ ${creatorLine}`
  * Output Result View: Pure AI text recipe with Frontend Certificate. Zero photos.
  */
 function renderResultView(recipe, currentLang) {
+  if (!recipe || !recipe.title) {
+    return renderFormView(currentLang);
+  }
   const isEn = currentLang === 'en';
   const creationDate = new Date(recipe.createdAt || Date.now()).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
     day: 'numeric',
@@ -1206,13 +1209,11 @@ export function initAiFoodCreatorInteractions() {
         if (!creditCheck.ok) {
           if (creditCheck.error === 'no_credits') {
             sessionAlert = { type: 'credit' };
-            await reRenderCurrentView(true);
-            return;
-          } else if (creditCheck.error === 'forbidden' || creditCheck.status === 403 || creditCheck.error === 'backend_error') {
+          } else {
             sessionAlert = { type: 'backend_error' };
-            await reRenderCurrentView(true);
-            return;
           }
+          await reRenderCurrentView(true);
+          return;
         }
       } catch (checkErr) {
         sessionAlert = { type: 'backend_error' };
@@ -1238,7 +1239,7 @@ export function initAiFoodCreatorInteractions() {
           minProcessingTime
         ]);
 
-        if (!recipe) {
+        if (!recipe || !recipe.title) {
           throw new Error('Empty recipe response');
         }
 
@@ -1274,12 +1275,17 @@ export function initAiFoodCreatorInteractions() {
         isGenerating = false;
         currentGeneratingPercent = 20;
         currentGeneratingStageIdx = 0;
+        currentGeneratedRecipe = null;
         if (err.code === 'CREDIT_EXHAUSTED') {
           sessionAlert = { type: 'credit' };
         } else {
           sessionAlert = { type: 'backend_error' };
         }
-        await reRenderCurrentView(true);
+        await reRenderCurrentView(false);
+        const alertEl = document.getElementById('ai-creator-session-alert') || document.getElementById('creator-name-box');
+        if (alertEl) {
+          alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
     };
