@@ -190,7 +190,7 @@ function renderFormView(currentLang) {
       <form id="ai-creator-form" class="space-y-8 max-w-4xl mx-auto">
         
         <!-- Input Nama Lengkap User (Pencipta Resep) -->
-        <div class="pawon-glass p-5 sm:p-6 rounded-3xl border ${nameError ? 'border-rose-400 bg-rose-50/20' : 'border-[#D49B42]/35'} shadow-xs space-y-2 transition-all">
+        <div id="creator-name-box" class="pawon-glass p-5 sm:p-6 rounded-3xl border ${nameError ? 'border-rose-400 bg-rose-50/20 ring-2 ring-rose-200' : 'border-[#D49B42]/35'} shadow-xs space-y-2 transition-all scroll-mt-24">
           <div class="flex items-center justify-between">
             <label for="creator-name-input" class="block text-xs font-bold ${nameError ? 'text-rose-700' : 'text-[#120B07]'} uppercase tracking-wider">
               ${isEn ? 'Your Full Name' : 'Nama Lengkap Anda'} <span class="text-[#C84C24]">*</span>
@@ -213,7 +213,7 @@ function renderFormView(currentLang) {
           />
           ${nameError ? `
             <p id="creator-name-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
-              <span>${isEn ? 'Please enter your full name.' : 'Nama lengkap wajib diisi.'}</span>
+              <span>${isEn ? 'Full name is required. Please fill in your name.' : 'Nama lengkap harus diisi sebelum meracik resep.'}</span>
             </p>
           ` : `
             <p class="text-[11px] text-[#5C3622]/80">
@@ -1036,6 +1036,11 @@ export function initAiFoodCreatorInteractions() {
         if (errEl) errEl.classList.add('hidden');
         nameInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-300', 'bg-rose-50/30');
         nameInput.classList.add('border-[#E8DEC8]');
+        const box = document.getElementById('creator-name-box');
+        if (box) {
+          box.classList.remove('border-rose-400', 'bg-rose-50/20', 'ring-2', 'ring-rose-200');
+          box.classList.add('border-[#D49B42]/35');
+        }
       }
     };
   }
@@ -1075,18 +1080,23 @@ export function initAiFoodCreatorInteractions() {
 
       if (!formState.creatorName.trim()) {
         nameError = true;
-        reRenderCurrentView();
+        await reRenderCurrentView();
+        const nameBox = document.getElementById('creator-name-box');
+        if (nameBox) {
+          nameBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         const input = document.getElementById('creator-name-input');
         if (input) {
-          input.focus();
-          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => {
+            input.focus({ preventScroll: true });
+          }, 450);
         }
         return;
       }
 
       if (formState.selectedIngredientIds.length < 5) {
         ingredientError = true;
-        reRenderCurrentView();
+        await reRenderCurrentView();
         const chipsBox = document.getElementById('ingredient-chips-box');
         if (chipsBox) {
           chipsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
