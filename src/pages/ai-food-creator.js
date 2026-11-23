@@ -756,7 +756,7 @@ function renderResultView(recipe, currentLang) {
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 animate-fade-in">
       
       <!-- Top Navigation & Action Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#D49B42]/30 no-print">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#D49B42]/30">
         <div class="space-y-1.5">
           <div class="flex items-center gap-2 flex-wrap">
             <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold shadow-2xs">
@@ -787,7 +787,7 @@ function renderResultView(recipe, currentLang) {
       </div>
 
       <!-- Action Toolbar (PDF, Copy) -->
-      <div class="flex flex-wrap items-center justify-center gap-3 pt-2 no-print">
+      <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
         <button 
           type="button" 
           id="download-recipe-pdf-btn"
@@ -956,7 +956,7 @@ function renderResultView(recipe, currentLang) {
         </div>
 
         <!-- Bottom Action CTA -->
-        <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#120B07] via-[#1E120A] to-[#120B07] border-2 border-[#D49B42]/45 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4 no-print">
+        <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-[#120B07] via-[#1E120A] to-[#120B07] border-2 border-[#D49B42]/45 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="text-left space-y-1">
             <h4 class="font-editorial-serif text-lg sm:text-xl font-bold text-white">
               ${isEn ? 'Ready to craft another heritage creation?' : 'Siap meracik kreasi olahan tradisi lainnya?'}

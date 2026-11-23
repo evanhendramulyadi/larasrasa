@@ -840,7 +840,7 @@ export const aiFoodCreatorService = {
   },
 
   /**
-   * Download printable recipe document as PDF using jsPDF.
+   * Download recipe document as PDF using jsPDF.
    * Clean, minimal, plain layout matching the exact on-screen recipe structure.
    */
   async generateRecipePdf(recipe, posterCanvas, isEn = false) {
