@@ -466,15 +466,15 @@ function renderResultView(result) {
                   </p>
                 ` : ''}
                 <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-semibold text-white">
-                  <span class="px-2.5 py-0.5 rounded-lg bg-[#C84C24]/85 backdrop-blur-xs border border-[#C84C24]/40 text-white font-semibold">
+                  <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20 text-white font-semibold">
                     ${primary.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
                   </span>
                   ${primaryFlavorLabel ? `
-                    <span class="px-2.5 py-0.5 rounded-lg bg-[#C84C24]/85 backdrop-blur-xs border border-[#C84C24]/40 text-white font-bold">
+                    <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20 text-white font-semibold">
                       ${primaryFlavorLabel}
                     </span>
                   ` : ''}
-                  <span class="px-2.5 py-0.5 rounded-lg bg-[#C84C24]/85 backdrop-blur-xs border border-[#C84C24]/40 text-white font-semibold">
+                  <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20 text-white font-semibold">
                     4 ${isEn ? 'Portions' : 'Porsi'}
                   </span>
                 </div>
