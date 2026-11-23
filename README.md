@@ -93,7 +93,7 @@ Ensure you have [Node.js](https://nodejs.org/) (version 18 or later) installed a
 
 ## 📄 Copyright & Ownership
 
-© 2026–Present Evan Hendra Mulyadi and Kelompok 2. All Rights Reserved.
+© 2026–Present Kelompok 2. All Rights Reserved.
 
 The web application codebase and technical implementation were developed by Kelompok 2 (Central Java Group), particularly the Information Technology / Software Engineering Team, as part of the Project-Based Learning (PjBL) program at SMK Pariwisata Metland School.
 
