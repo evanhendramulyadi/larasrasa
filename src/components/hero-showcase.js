@@ -6,7 +6,7 @@ import { openRecipeModal } from './recipe-modal.js';
  * Centerpiece showcase featuring Central Java's iconic guest feast dishes.
  * Interactive hotspot pins and quick-action menu chips with direct recipe popup modal access.
  */
-export class ThreeHeroShowcase {
+export class HeroShowcase {
   constructor(containerElement) {
     this.container = containerElement;
     this.activeDishId = 'nasi-liwet';

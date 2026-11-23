@@ -6,13 +6,13 @@ import { recipes } from '../data/recipes.js';
 import { localizeSpice } from '../services/spiceService.js';
 import { renderRecipeCard } from '../components/recipe-card.js';
 import { renderRestaurantCard } from '../components/restaurant-card.js';
-import { ThreeHeroShowcase } from '../components/three-hero.js';
+import { HeroShowcase } from '../components/hero-showcase.js';
 import { i18n, t } from '../i18n/index.js';
 
 /**
  * World-Class Royal Javanese Heritage Homepage
  * Clean architectural section bands with alternating contrast, generous breathing room,
- * interactive 3D centerpiece, and distinct culinary showcases.
+ * interactive centerpiece culinary feast showcase, and distinct culinary showcases.
  */
 export async function renderHomePage() {
   const isEn = i18n.getLanguage() === 'en';
@@ -430,9 +430,9 @@ export async function renderHomePage() {
 }
 
 export function initHomePageInteractions() {
-  const heroContainer = document.getElementById('hero-culinary-showcase') || document.getElementById('hero-3d-canvas');
+  const heroContainer = document.getElementById('hero-culinary-showcase');
   if (heroContainer) {
-    const showcase = new ThreeHeroShowcase(heroContainer);
+    const showcase = new HeroShowcase(heroContainer);
     showcase.init();
     window._currentHeroShowcase = showcase;
   }
