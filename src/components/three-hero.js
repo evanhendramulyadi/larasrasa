@@ -1,402 +1,226 @@
 import { t, i18n } from '../i18n/index.js';
+import { openRecipeModal } from './recipe-modal.js';
 
 /**
- * Premium Interactive Culinary Heritage Showcase
- * Mode 'gudeg': Authentic Gudeg Komplit in Kasongan earthenware clay (gerabah) with 5 culinary hotspots.
- * Mode 'feast': Traditional Central Javanese banquet with iconic regional dish hotspots.
+ * Hidangan Pusaka Jawa Tengah — 4 Menu Utama Jamuan Tamu Kehormatan
+ * Centerpiece showcase featuring Central Java's iconic guest feast dishes.
+ * Interactive hotspot pins and quick-action menu chips with direct recipe popup modal access.
  */
-
 export class ThreeHeroShowcase {
   constructor(containerElement) {
     this.container = containerElement;
-    this.currentMode = 'gudeg'; // 'gudeg' | 'feast'
+    this.activeDishId = 'nasi-liwet';
     this.isDisposed = false;
   }
 
   init() {
     if (!this.container) return;
-    this.renderOuterLayout();
-    this.switchMode(this.currentMode);
+    this.render();
+    this.bindEvents();
   }
 
-  renderOuterLayout() {
+  getDishes() {
+    return [
+      {
+        id: 'nasi-liwet',
+        num: 1,
+        title: t('hero.dishNasiLiwet'),
+        role: t('hero.dishNasiLiwetRole'),
+        desc: t('hero.dishNasiLiwetDesc'),
+        region: 'Kota Surakarta (Solo)',
+        slug: 'nasi-liwet-solo',
+        x: '48%',
+        y: '45%'
+      },
+      {
+        id: 'garang-asem',
+        num: 2,
+        title: t('hero.dishGarangAsem'),
+        role: t('hero.dishGarangAsemRole'),
+        desc: t('hero.dishGarangAsemDesc'),
+        region: 'Kabupaten Kudus',
+        slug: 'garang-asem-kudus',
+        x: '76%',
+        y: '50%'
+      },
+      {
+        id: 'soto-kudus',
+        num: 3,
+        title: t('hero.dishSotoKudus'),
+        role: t('hero.dishSotoKudusRole'),
+        desc: t('hero.dishSotoKudusDesc'),
+        region: 'Kabupaten Kudus',
+        slug: 'soto-kudus',
+        x: '36%',
+        y: '72%'
+      },
+      {
+        id: 'mendoan',
+        num: 4,
+        title: t('hero.dishMendoan'),
+        role: t('hero.dishMendoanRole'),
+        desc: t('hero.dishMendoanDesc'),
+        region: 'Kabupaten Banyumas',
+        slug: 'mendoan-banyumas',
+        x: '65%',
+        y: '72%'
+      }
+    ];
+  }
+
+  render() {
+    const dishes = this.getDishes();
     const isEn = i18n.getLanguage() === 'en';
 
     this.container.innerHTML = `
       <div class="relative w-full h-full flex flex-col justify-between overflow-hidden rounded-2xl sm:rounded-3xl bg-white border border-[#D49B42]/35 shadow-lg p-2.5 sm:p-3.5 transition-all duration-300">
         
-        <!-- Header Controls: Mode Selector & Status -->
-        <div class="flex items-center justify-between z-20 gap-2 mb-2 sm:mb-2.5 shrink-0">
-          <!-- Dual-Mode Tabs -->
-          <div class="inline-flex p-0.5 rounded-full bg-[#EFE8DA] border border-[#D49B42]/30 shadow-inner text-xs font-bold text-[#5C3622] shrink-0">
-            <button type="button" id="hero-tab-gudeg" class="px-2.5 sm:px-3 py-1 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer text-[10.5px] sm:text-xs shrink-0 font-bold">
-              <span>🏺</span>
-              <span>${t('hero.tab3d')}</span>
-            </button>
-            <button type="button" id="hero-tab-feast" class="px-2.5 sm:px-3 py-1 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer text-[10.5px] sm:text-xs shrink-0 font-bold">
-              <span>🍲</span>
-              <span>${t('hero.tabFeast')}</span>
-            </button>
+        <!-- Header Bar: Title, Badge & Royal Guest Note -->
+        <div class="z-20 shrink-0 mb-2">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#C84C24] shrink-0"></span>
+              <h3 class="font-editorial-serif text-sm sm:text-base font-bold text-[#120B07] leading-tight">
+                ${t('hero.pusakaTitle')}
+              </h3>
+            </div>
+            <span class="text-[9.5px] sm:text-[10px] font-bold text-[#C84C24] bg-[#FDF4EE] border border-[#C84C24]/20 px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-2xs">
+              ${t('hero.pusakaBadge')}
+            </span>
           </div>
-
-          <!-- Dynamic Hint / Action Badge -->
-          <div id="hero-showcase-hint" class="text-[10px] sm:text-[10.5px] font-bold text-[#5C3622] bg-white/95 px-2.5 py-1 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-xs hidden sm:flex items-center gap-1.5 whitespace-nowrap shrink-0">
-            <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24] shrink-0"></span>
-            <span id="hero-hint-text">${t('hero.canvasHint')}</span>
-          </div>
+          <!-- Guest Banquet Description -->
+          <p class="text-[10px] sm:text-[11px] text-[#5C3622] leading-relaxed mt-1">
+            ${t('hero.pusakaDesc')}
+          </p>
         </div>
 
-        <!-- Center Viewport Area (Full-bleed responsive canvas with zero empty bottom gap) -->
-        <div id="hero-viewport-area" class="w-full flex-1 relative rounded-xl sm:rounded-2xl overflow-hidden min-h-0 bg-[#120B07] border border-[#D49B42]/30 shadow-inner flex flex-col"></div>
+        <!-- Centerpiece Viewport with 4 Interactive Hotspot Pins -->
+        <div id="hero-viewport-area" class="w-full flex-1 relative rounded-xl sm:rounded-2xl overflow-hidden min-h-0 bg-[#120B07] border border-[#D49B42]/30 shadow-inner group select-none flex flex-col">
+          <img 
+            src="/assets/images/hero/hidangan-pusaka-jateng.jpg" 
+            alt="${t('hero.pusakaTitle')}" 
+            class="w-full h-full object-cover object-center filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-103"
+            onerror="this.src='/assets/images/hero/hero-culinary.jpg'"
+          />
 
-        <!-- Footer Caption Bar -->
-        <div id="hero-footer-caption" class="z-20 mt-2 sm:mt-2.5 flex items-center gap-2 text-xs text-[#5C3622] bg-[#FAF7F2] px-3 py-1.5 sm:py-2 rounded-xl border border-[#D49B42]/30 shadow-2xs shrink-0">
-          <span class="w-2 h-2 rounded-full bg-[#D49B42] shrink-0"></span>
-          <span class="font-bold text-[#120B07] text-[11px] sm:text-xs font-editorial-serif tracking-wide truncate" id="hero-caption-title">
-            ${t('hero.canvasTitle')}
-          </span>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-black/25 pointer-events-none"></div>
+
+          <!-- Hotspot Pins -->
+          ${dishes.map(dish => `
+            <div 
+              class="culinary-hotspot" 
+              data-dish-id="${dish.id}"
+              data-dish-slug="${dish.slug}"
+              style="top: ${dish.y}; left: ${dish.x};"
+              title="${dish.title} - ${dish.role}"
+              role="button"
+              tabindex="0"
+              aria-label="${dish.title}"
+            >
+              <div class="culinary-hotspot-pulse"></div>
+              <div class="culinary-hotspot-pin">
+                ${dish.num}
+              </div>
+            </div>
+          `).join('')}
+
+          <!-- Interactive Dish Popover Card -->
+          <div 
+            id="hero-dish-popover" 
+            class="absolute bottom-2 left-2 right-2 p-3 sm:p-3.5 rounded-xl bg-white/98 backdrop-blur-xl border border-[#D49B42]/60 shadow-xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
+          >
+            <div class="flex items-start justify-between gap-2.5">
+              <div class="min-w-0 pr-1">
+                <div class="flex items-center gap-1.5 mb-0.5 flex-wrap">
+                  <span id="popover-dish-region" class="inline-block text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#FDF4EE] px-2 py-0.5 rounded-md border border-[#C84C24]/20">
+                    Wilayah
+                  </span>
+                  <span id="popover-dish-role" class="inline-block text-[9px] sm:text-[9.5px] font-semibold text-[#5C3622] italic">
+                    Peran Jamuan
+                  </span>
+                </div>
+                <h4 id="popover-dish-title" class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07] leading-tight">
+                  Nama Hidangan
+                </h4>
+                <p id="popover-dish-desc" class="text-[11px] sm:text-xs text-[#5C3622] mt-1 leading-relaxed">
+                  Deskripsi
+                </p>
+              </div>
+              <button type="button" id="popover-close-btn" class="text-[#5C3622] hover:text-[#120B07] p-1 font-bold text-base cursor-pointer shrink-0" aria-label="Tutup">&times;</button>
+            </div>
+            
+            <div class="mt-2.5 pt-2 border-t border-[#E8DEC8] flex items-center justify-between gap-2">
+              <button 
+                type="button" 
+                id="popover-open-recipe-btn" 
+                class="text-xs font-bold text-white bg-[#C84C24] hover:bg-[#AE3E1B] px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+              >
+                <span>${t('hero.pusakaOpenRecipe')}</span>
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+              <span class="text-[10px] text-[#2E4D38] font-bold tracking-tight">
+                ${isEn ? 'Royal Heritage Recipe' : 'Resep Pusaka Teruji'}
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 4 Quick-Action Dish Chips (Clicking opens Recipe Modal directly) -->
+        <div class="grid grid-cols-2 gap-1.5 sm:gap-2 mt-2 shrink-0">
+          ${dishes.map(dish => `
+            <div 
+              data-recipe-slug="${dish.slug}"
+              data-dish-id="${dish.id}"
+              role="button"
+              tabindex="0"
+              class="hero-dish-card-chip flex items-center justify-between p-1.5 sm:p-2 rounded-xl bg-[#FAF7F2] hover:bg-[#FDF4EE] border border-[#D49B42]/30 hover:border-[#C84C24] transition-all cursor-pointer text-left group shadow-2xs"
+              title="${dish.title}"
+            >
+              <div class="min-w-0 pr-1">
+                <div class="flex items-center gap-1">
+                  <span class="text-[9px] font-bold text-[#C84C24] w-3.5 h-3.5 rounded-full bg-white flex items-center justify-center shrink-0 border border-[#C84C24]/30">${dish.num}</span>
+                  <span class="text-[10px] sm:text-[11px] font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors truncate block leading-tight">${dish.title}</span>
+                </div>
+                <span class="text-[8.5px] sm:text-[9px] text-[#5C3622] truncate block mt-0.5">${dish.region}</span>
+              </div>
+              <svg class="w-3.5 h-3.5 text-[#C84C24] shrink-0 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+          `).join('')}
         </div>
 
       </div>
     `;
-
-    // Wire mode buttons
-    const btnGudeg = this.container.querySelector('#hero-tab-gudeg');
-    const btnFeast = this.container.querySelector('#hero-tab-feast');
-
-    if (btnGudeg && btnFeast) {
-      btnGudeg.onclick = () => this.switchMode('gudeg');
-      btnFeast.onclick = () => this.switchMode('feast');
-    }
   }
 
-  switchMode(mode) {
-    this.currentMode = mode;
-    const isEn = i18n.getLanguage() === 'en';
-
-    const btnGudeg = this.container.querySelector('#hero-tab-gudeg');
-    const btnFeast = this.container.querySelector('#hero-tab-feast');
-    const hintEl = this.container.querySelector('#hero-hint-text');
-    const titleEl = this.container.querySelector('#hero-caption-title');
+  bindEvents() {
+    const dishes = this.getDishes();
     const viewport = this.container.querySelector('#hero-viewport-area');
+    const popover = this.container.querySelector('#hero-dish-popover');
+    const popTitle = this.container.querySelector('#popover-dish-title');
+    const popDesc = this.container.querySelector('#popover-dish-desc');
+    const popRegion = this.container.querySelector('#popover-dish-region');
+    const popRole = this.container.querySelector('#popover-dish-role');
+    const popOpenBtn = this.container.querySelector('#popover-open-recipe-btn');
+    const popClose = this.container.querySelector('#popover-close-btn');
 
-    if (!viewport) return;
-
-    const activeBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all bg-[#C84C24] text-white shadow-xs flex items-center gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
-    const inactiveBtnClass = 'px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full transition-all text-[#5C3622] hover:text-[#C84C24] flex items-center gap-1.5 cursor-pointer font-bold text-[11px] sm:text-xs shrink-0';
-
-    if (mode === 'gudeg') {
-      if (btnGudeg) btnGudeg.className = activeBtnClass;
-      if (btnFeast) btnFeast.className = inactiveBtnClass;
-      if (hintEl) hintEl.textContent = t('hero.canvasHint');
-      if (titleEl) titleEl.textContent = t('hero.canvasTitle');
-
-      this.renderGudegShowcase(viewport);
-    } else {
-      if (btnGudeg) btnGudeg.className = inactiveBtnClass;
-      if (btnFeast) btnFeast.className = activeBtnClass;
-      if (hintEl) hintEl.textContent = t('hero.canvasHint');
-      if (titleEl) titleEl.textContent = t('hero.feastTitle');
-
-      this.renderFeastShowcase(viewport);
-    }
-  }
-
-  /* -------------------------------------------------------------
-   * MODE 1: PUSAKA GERABAH & GUDEG KOMPLIT SHOWCASE
-   * ----------------------------------------------------------- */
-  renderGudegShowcase(viewport) {
-    const isEn = i18n.getLanguage() === 'en';
-
-    const hotspots = [
-      {
-        id: 'gori',
-        title: isEn ? 'Slow-braised Young Jackfruit (Gudeg)' : 'Gori / Nangka Muda Bacem',
-        desc: isEn 
-          ? 'Young jackfruit simmered for hours with coconut palm sugar, bay leaves, teak leaves, and aromatic spices until rich mahogany and melt-in-the-mouth.'
-          : 'Nangka muda serat padat yang diungkep perlahan bersama gula kelapa, daun jati, dan rempah aromatik hingga empuk meresap kecokelatan.',
-        role: isEn ? 'Core Dish' : 'Inti Masakan',
-        x: '43%',
-        y: '68%'
-      },
-      {
-        id: 'areh',
-        title: isEn ? 'Velvety Coconut Cream Curd (Areh)' : 'Areh Santan Kanil Gurih',
-        desc: isEn 
-          ? 'First-press coconut milk reduced over low firewood embers into a silky, savory cloud curd that balances sweet jackfruit.'
-          : 'Santan kelapa kental (kanil) perasan pertama yang dimasak perlahan hingga menghasilkan dadih putih gurih lembut penyeimbang rasa manis.',
-        role: isEn ? 'Savory Balance' : 'Penyeimbang Gurih',
-        x: '46%',
-        y: '57%'
-      },
-      {
-        id: 'ayam',
-        title: isEn ? 'Braised Free-range Chicken (Ayam Bacem)' : 'Ayam Kampung Opor Bacem',
-        desc: isEn 
-          ? 'Local free-range chicken drumstick braised with coriander, shallots, garlic, and coconut sugar until deeply infused.'
-          : 'Ayam kampung asli empuk bumbu bacem ketumbar sangrai, bawang merah, bawang putih, dan gula kelapa alami.',
-        role: isEn ? 'Signature Protein' : 'Lauk Utama',
-        x: '44%',
-        y: '42%'
-      },
-      {
-        id: 'telur',
-        title: isEn ? 'Marbled Braised Duck Egg (Telur Pindang)' : 'Telur Bebek Pindang Bacem',
-        desc: isEn 
-          ? 'Rich duck egg boiled and braised with shallot skins and guava leaves, producing a dark mahogany marbled gloss and dense yolk.'
-          : 'Telur bebek pilihan yang direbus dan dibacem bersama daun jambu biji, menghasilkan semburat cokelat marmer berkilau dan rasa gurih mantap.',
-        role: isEn ? 'Traditional Complement' : 'Lauk Tradisi',
-        x: '31%',
-        y: '56%'
-      },
-      {
-        id: 'krecek',
-        title: isEn ? 'Spicy Cattle Skin Stew (Sambal Krecek)' : 'Sambal Goreng Krecek Kulit Sapi',
-        desc: isEn 
-          ? 'Chewy dried cattle skin cracklings simmered in fiery red chili sauce with whole bird\'s eye chilies to cut through the sweetness.'
-          : 'Krecek kulit sapi kenyal gurih yang dimasak dalam kuah santan cabai merah dan rawit utuh, memberi sentuhan pedas menyegarkan.',
-        role: isEn ? 'Fiery Kick' : 'Aksen Pedas Segar',
-        x: '66%',
-        y: '64%'
-      }
-    ];
-
-    viewport.innerHTML = `
-      <div class="absolute inset-0 w-full h-full overflow-hidden group select-none bg-[#120B07]">
-        <!-- High-res Gudeg Photograph -->
-        <img 
-          src="/assets/images/hero/heritage-claypot-gudeg.jpg" 
-          alt="${isEn ? 'Kasongan Earthenware Royal Gudeg' : 'Gudeg Komplit Gerabah Kasongan'}" 
-          class="w-full h-full object-cover object-center filter brightness-[0.98] contrast-[1.04] transition-transform duration-700 ease-out group-hover:scale-103"
-          onerror="this.src='/assets/images/recipes/royal-gudeg-komplit.jpg'"
-        />
-
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none"></div>
-
-        <!-- Gerabah & Banana Leaf Heritage Badge -->
-        <div class="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 bg-[#120B07]/85 text-[#FAF7F2] px-2.5 py-1 rounded-full border border-[#D49B42]/40 backdrop-blur-md shadow-md text-[10px] font-bold">
-          <span class="text-[#D49B42] shrink-0">🏺</span>
-          <span>${isEn ? 'Plated on Kasongan Earthenware' : 'Disajikan di Gerabah Kasongan'}</span>
-        </div>
-
-        <!-- Hotspot Pins -->
-        ${hotspots.map((item, i) => `
-          <div 
-            class="culinary-hotspot" 
-            data-gudeg-id="${item.id}"
-            style="top: ${item.y}; left: ${item.x};"
-            title="${item.title}"
-          >
-            <div class="culinary-hotspot-pulse"></div>
-            <div class="culinary-hotspot-pin">
-              ${i + 1}
-            </div>
-          </div>
-        `).join('')}
-
-        <!-- Interactive Popover Card -->
-        <div 
-          id="gudeg-hotspot-popover" 
-          class="absolute bottom-2 left-2 right-2 p-3 sm:p-3.5 rounded-xl bg-white/98 backdrop-blur-xl border border-[#D49B42]/60 shadow-xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
-        >
-          <div class="flex items-start justify-between gap-2.5">
-            <div>
-              <span id="gudeg-popover-role" class="inline-block text-[9.5px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#FDF4EE] px-2 py-0.5 rounded-md mb-0.5 border border-[#C84C24]/20">
-                Peran Rasa
-              </span>
-              <h4 id="gudeg-popover-title" class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07] leading-tight">
-                Nama Elemen
-              </h4>
-              <p id="gudeg-popover-desc" class="text-[11px] sm:text-xs text-[#5C3622] mt-1 leading-relaxed">
-                Deskripsi
-              </p>
-            </div>
-            <button type="button" id="gudeg-popover-close" class="text-[#5C3622] hover:text-[#120B07] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
-          </div>
-          <div class="mt-2.5 pt-2 border-t border-[#E8DEC8] flex items-center justify-between">
-            <a href="${isEn ? '#/recipes/gudeg-komplit' : '#/resep/gudeg-komplit'}" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
-              <span>${isEn ? 'View Full Recipe' : 'Lihat Resep Lengkap'}</span>
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-            <span class="text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Kasongan Earthenware' : 'Gerabah Tradisional Kasongan'}</span>
-          </div>
-        </div>
-
-      </div>
-    `;
-
-    const popover = viewport.querySelector('#gudeg-hotspot-popover');
-    const popTitle = viewport.querySelector('#gudeg-popover-title');
-    const popDesc = viewport.querySelector('#gudeg-popover-desc');
-    const popRole = viewport.querySelector('#gudeg-popover-role');
-    const popClose = viewport.querySelector('#gudeg-popover-close');
-
-    const showHotspot = (item) => {
-      if (!popover) return;
-      popTitle.textContent = item.title;
-      popDesc.textContent = item.desc;
-      popRole.textContent = item.role;
-      popover.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
-      popover.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
-
-      viewport.querySelectorAll('.culinary-hotspot').forEach(pin => {
-        pin.classList.toggle('active', pin.getAttribute('data-gudeg-id') === item.id);
-      });
-    };
-
-    const hideHotspot = () => {
-      if (!popover) return;
-      popover.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
-      popover.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
-      viewport.querySelectorAll('.culinary-hotspot').forEach(pin => pin.classList.remove('active'));
-    };
-
-    viewport.querySelectorAll('.culinary-hotspot').forEach(pin => {
-      const id = pin.getAttribute('data-gudeg-id');
-      const item = hotspots.find(h => h.id === id);
-      if (item) {
-        pin.addEventListener('click', (e) => {
-          e.stopPropagation();
-          showHotspot(item);
-        });
-      }
-    });
-
-    popClose?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      hideHotspot();
-    });
-
-    viewport.addEventListener('click', (e) => {
-      if (!e.target.closest('#gudeg-hotspot-popover')) {
-        hideHotspot();
-      }
-    });
-  }
-
-  /* -------------------------------------------------------------
-   * MODE 2: INTERACTIVE BANQUET FEAST SHOWCASE
-   * ----------------------------------------------------------- */
-  renderFeastShowcase(viewport) {
-    const isEn = i18n.getLanguage() === 'en';
-
-    const dishes = [
-      {
-        id: 'nasi-liwet',
-        title: t('hero.dishNasiLiwet'),
-        desc: t('hero.dishNasiLiwetDesc'),
-        region: 'Surakarta (Solo)',
-        slug: 'nasi-liwet-solo',
-        x: '48%',
-        y: '48%'
-      },
-      {
-        id: 'garang-asem',
-        title: t('hero.dishGarangAsem'),
-        desc: t('hero.dishGarangAsemDesc'),
-        region: 'Pekalongan & Kudus',
-        slug: 'garang-asem-kudus',
-        x: '76%',
-        y: '54%'
-      },
-      {
-        id: 'soto-kudus',
-        title: t('hero.dishSotoKudus'),
-        desc: t('hero.dishSotoKudusDesc'),
-        region: 'Kudus',
-        slug: 'soto-kudus',
-        x: '38%',
-        y: '72%'
-      },
-      {
-        id: 'mendoan',
-        title: t('hero.dishMendoan'),
-        desc: t('hero.dishMendoanDesc'),
-        region: 'Banyumas',
-        slug: 'mendoan-banyumas',
-        x: '63%',
-        y: '72%'
-      }
-    ];
-
-    viewport.innerHTML = `
-      <div class="absolute inset-0 w-full h-full overflow-hidden group select-none bg-[#120B07]">
-        <!-- High-res Feast Photograph -->
-        <img 
-          src="/assets/images/hero/hero-culinary.jpg" 
-          alt="${isEn ? 'Central Javanese Heritage Banquet' : 'Jamuan Pusaka Jawa Tengah'}" 
-          class="w-full h-full object-cover object-center filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-103"
-        />
-
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/25 pointer-events-none"></div>
-
-        <!-- Hotspot Pins -->
-        ${dishes.map((dish, i) => `
-          <div 
-            class="culinary-hotspot" 
-            data-dish-id="${dish.id}"
-            style="top: ${dish.y}; left: ${dish.x};"
-            title="${dish.title}"
-          >
-            <div class="culinary-hotspot-pulse"></div>
-            <div class="culinary-hotspot-pin">
-              ${i + 1}
-            </div>
-          </div>
-        `).join('')}
-
-        <!-- Interactive Popover Card -->
-        <div 
-          id="feast-hotspot-popover" 
-          class="absolute bottom-2 left-2 right-2 p-3 sm:p-3.5 rounded-xl bg-white/98 backdrop-blur-xl border border-[#D49B42]/60 shadow-xl text-left transition-all duration-300 opacity-0 pointer-events-none translate-y-2 z-30 max-h-[85%] overflow-y-auto"
-        >
-          <div class="flex items-start justify-between gap-2.5">
-            <div>
-              <span id="popover-dish-region" class="inline-block text-[9.5px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#FDF4EE] px-2 py-0.5 rounded-md mb-0.5 border border-[#C84C24]/20">
-                Wilayah
-              </span>
-              <h4 id="popover-dish-title" class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07] leading-tight">
-                Nama Hidangan
-              </h4>
-              <p id="popover-dish-desc" class="text-[11px] sm:text-xs text-[#5C3622] mt-1 leading-relaxed">
-                Deskripsi
-              </p>
-            </div>
-            <button type="button" id="popover-close-btn" class="text-[#5C3622] hover:text-[#120B07] p-1 font-bold text-base cursor-pointer shrink-0">&times;</button>
-          </div>
-          <div class="mt-2.5 pt-2 border-t border-[#E8DEC8] flex items-center justify-between">
-            <a id="popover-dish-link" href="${isEn ? '#/recipes' : '#/resep'}" class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] flex items-center gap-1.5">
-              <span>${t('recipesSection.viewRecipeBtn')}</span>
-              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </a>
-            <span class="text-[10px] text-[#2E4D38] font-bold">${t('hero.canvasBadge')}</span>
-          </div>
-        </div>
-
-      </div>
-    `;
-
-    const popover = viewport.querySelector('#feast-hotspot-popover');
-    const popTitle = viewport.querySelector('#popover-dish-title');
-    const popDesc = viewport.querySelector('#popover-dish-desc');
-    const popRegion = viewport.querySelector('#popover-dish-region');
-    const popLink = viewport.querySelector('#popover-dish-link');
-    const popClose = viewport.querySelector('#popover-close-btn');
+    let currentActiveSlug = '';
 
     const showDish = (dish) => {
       if (!popover) return;
+      currentActiveSlug = dish.slug;
       popTitle.textContent = dish.title;
       popDesc.textContent = dish.desc;
       popRegion.textContent = dish.region;
-      popLink.href = isEn ? `#/recipes/${dish.slug}` : `#/resep/${dish.slug}`;
+      popRole.textContent = dish.role;
       popover.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
       popover.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
 
-      viewport.querySelectorAll('.culinary-hotspot').forEach(pin => {
+      viewport?.querySelectorAll('.culinary-hotspot').forEach(pin => {
         pin.classList.toggle('active', pin.getAttribute('data-dish-id') === dish.id);
       });
     };
@@ -405,10 +229,11 @@ export class ThreeHeroShowcase {
       if (!popover) return;
       popover.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
       popover.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
-      viewport.querySelectorAll('.culinary-hotspot').forEach(pin => pin.classList.remove('active'));
+      viewport?.querySelectorAll('.culinary-hotspot').forEach(pin => pin.classList.remove('active'));
     };
 
-    viewport.querySelectorAll('.culinary-hotspot').forEach(pin => {
+    // Hotspot pin click listener: show popover and allow quick opening
+    viewport?.querySelectorAll('.culinary-hotspot').forEach(pin => {
       const dishId = pin.getAttribute('data-dish-id');
       const dish = dishes.find(d => d.id === dishId);
       if (dish) {
@@ -416,17 +241,56 @@ export class ThreeHeroShowcase {
           e.stopPropagation();
           showDish(dish);
         });
+
+        // Keydown support for accessibility
+        pin.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            openRecipeModal(dish.slug);
+          }
+        });
       }
     });
 
+    // Popover "Buka Resep Lengkap" button
+    popOpenBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (currentActiveSlug) {
+        openRecipeModal(currentActiveSlug);
+      }
+    });
+
+    // Close button
     popClose?.addEventListener('click', (e) => {
       e.stopPropagation();
       hideDish();
     });
 
-    viewport.addEventListener('click', (e) => {
-      if (!e.target.closest('#feast-hotspot-popover')) {
+    // Click outside popover in viewport hides it
+    viewport?.addEventListener('click', (e) => {
+      if (!e.target.closest('#hero-dish-popover') && !e.target.closest('.culinary-hotspot')) {
         hideDish();
+      }
+    });
+
+    // 4 quick-action chips directly open the Recipe Modal popup
+    this.container.querySelectorAll('.hero-dish-card-chip').forEach(chip => {
+      const slug = chip.getAttribute('data-recipe-slug');
+      if (slug) {
+        chip.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openRecipeModal(slug);
+        });
+
+        chip.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.stopPropagation();
+            openRecipeModal(slug);
+          }
+        });
       }
     });
   }
