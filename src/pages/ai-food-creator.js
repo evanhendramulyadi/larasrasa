@@ -513,78 +513,89 @@ function renderFormView(currentLang) {
 }
 
 /**
- * Formats full recipe into a clean, flowing narrative composed of distinct paragraphs.
- * Dynamically formats in Indonesian or English depending on active language (currentLang).
- * Note: Dish title remains in authentic Indonesian per requirement.
+ * Formats full recipe into a clean, beautifully formatted text string.
+ * Matches the exact structure and sections of the on-screen display.
+ * Dynamically formats in Indonesian or English depending on active language.
  */
 function formatRecipeAsText(recipe, isEn = false) {
-  const paragraphs = [];
+  const sections = [];
 
-  const title = (recipe.title || '').trim().toUpperCase();
-  const creator = recipe.creatorName 
-    ? (isEn ? `by ${recipe.creatorName}` : `oleh ${recipe.creatorName}`) 
-    : (isEn ? 'by LarasRasa Culinary Hearth' : 'oleh Dapur Tradisi LarasRasa');
-  const servings = recipe.servings || 4;
-  const time = recipe.totalTime || (isEn ? '50 mins' : '50 Menit');
-  const method = recipe.cookingMethod || (isEn ? 'traditional' : 'tradisional');
-  const profile = (recipe.tasteProfile || '').replace('-', ' ');
+  const title = (recipe.title || '').trim();
+  const subtitle = isEn 
+    ? (recipe.subtitleEn || 'Authentic Heritage Recipe') 
+    : (recipe.subtitleId || 'Racikan Resep Dapur Tradisi');
+  const creator = recipe.creatorName || (isEn ? 'LarasRasa Culinary Hearth' : 'Dapur Tradisi LarasRasa');
+  const creatorLine = isEn ? `Recipe Creator: ${creator}` : `Pencipta Resep: ${creator}`;
+  const headerLine = isEn ? 'Calibrated by LarasRasa Culinary Intelligence' : 'Dikalibrasi oleh LarasRasa Culinary Intelligence';
 
-  // Paragraf 1: Judul dan Identitas Olahan
-  if (isEn) {
-    paragraphs.push(
-      `${title} (${creator}). This authentic heritage recipe is calibrated for ${servings} portions with an estimated cooking duration of ${time}. This dish brings together the authentic cooking technique of ${method} with a balanced ${profile} taste profile.`
-    );
-  } else {
-    paragraphs.push(
-      `${title} (${creator}). Resep pusaka tradisi ini diramu pas untuk ${servings} porsi dengan perkiraan waktu masak ${time}. Olahan ini memadukan teknik olah tradisi ${method} serta harmoni karakter rasa ${profile} yang autentik.`
-    );
-  }
+  // 1. Header & Title Block
+  sections.push(
+`${headerLine}
+${title}
+"${subtitle}"
 
-  // Paragraf 2: Narasi Karakter Rasa & Konsep Resep
+${creatorLine}`
+  );
+
+  // 2. Karakter Rasa & Konsep Olahan / Recipe Overview
   const descText = isEn 
     ? (recipe.descriptionEn || recipe.description || recipe.philosophy)
     : (recipe.descriptionId || recipe.description || recipe.philosophy);
   if (descText) {
-    paragraphs.push(descText.trim());
+    const overviewTitle = isEn ? 'Recipe Overview & Flavor Character' : 'Karakter Rasa & Konsep Olahan';
+    sections.push(`${overviewTitle}\n${descText.trim()}`);
   }
 
-  // Paragraf 3: Bahan dan Rempah Utama
+  // 3. Bahan & Bumbu Dapur / Ingredients
   if (recipe.ingredients && recipe.ingredients.length > 0) {
-    const ingList = recipe.ingredients
-      .map(i => {
-        const name = isEn ? (i.nameEn || i.nameId || i.name) : (i.nameId || i.name);
-        const unit = isEn ? (i.unitEn || i.unitId || i.unit || 'g') : (i.unitId || i.unit || 'g');
-        return `${name}${i.amount ? ` (${i.amount} ${unit})` : ''}`;
-      })
-      .join(', ');
-    paragraphs.push(
-      isEn
-        ? `Ingredients and kitchen spices prepared: ${ingList}.`
-        : `Reroncen bahan dan bumbu dapur yang disiapkan: ${ingList}.`
-    );
+    const ingHeader = isEn 
+      ? `Bahan Rempah Tradisi\nIngredients & Kitchen Spices (${recipe.servings || 4} portions)` 
+      : `Bahan Rempah Tradisi\nBahan & Bumbu Dapur (${recipe.servings || 4} porsi)`;
+    
+    const ingLines = recipe.ingredients.map(i => {
+      const name = isEn ? (i.nameEn || i.nameId || i.name) : (i.nameId || i.name);
+      const amt = i.amount ? `${i.amount} ` : '';
+      const unit = isEn ? (i.unitEn || i.unitId || i.unit || '') : (i.unitId || i.unit || '');
+      const note = (isEn ? (i.noteEn || i.noteId || i.note) : (i.noteId || i.note));
+      const noteStr = note ? ` (${note})` : '';
+      const measure = (amt || unit) ? ` - ${amt}${unit}`.trimEnd() : '';
+      return `• ${name}${measure}${noteStr}`;
+    }).join('\n');
+
+    sections.push(`${ingHeader}\n\n${ingLines}`);
   }
 
-  // Paragraf 4: Panduan Langkah Memasak dalam Bentuk Narasi Berurutan
+  // 4. Peralatan Dapur Tradisional / Equipment
+  if (recipe.equipment && recipe.equipment.length > 0) {
+    const eqHeader = isEn ? 'Traditional Kitchen Equipment:' : 'Peralatan Dapur Tradisional:';
+    const eqLines = recipe.equipment.map(eq => {
+      const label = typeof eq === 'object' ? (isEn ? (eq.labelEn || eq.labelId) : (eq.labelId || eq.labelEn)) : eq;
+      return `• ${label}`;
+    }).join('\n');
+
+    sections.push(`${eqHeader}\n\n${eqLines}`);
+  }
+
+  // 5. Panduan Langkah Memasak / Cooking Steps
   const stepsList = isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps);
   if (stepsList && stepsList.length > 0) {
-    const stepsNarration = stepsList
-      .map((st, idx) => {
-        const stepNum = st.stepNumber || idx + 1;
-        const sTitle = isEn ? (st.titleEn || st.titleId || st.title) : (st.titleId || st.title);
-        const sDesc = isEn 
-          ? (st.instructionEn || st.instructionId || st.instruction || st.descriptionEn || st.description)
-          : (st.instructionId || st.instruction || st.descriptionId || st.description);
-        return isEn ? `Step ${stepNum} (${sTitle}): ${sDesc}` : `Langkah ${stepNum} (${sTitle}): ${sDesc}`;
-      })
-      .join(' ');
-    paragraphs.push(
-      isEn
-        ? `Step-by-step cooking guide: ${stepsNarration}`
-        : `Tahapan pengolahan memasak: ${stepsNarration}`
-    );
+    const stepsHeader = isEn 
+      ? `Tahapan Memasak\nStep-by-Step Cooking Guide (${stepsList.length} steps):` 
+      : `Tahapan Memasak\nPanduan Langkah Memasak (${stepsList.length} tahap):`;
+
+    const formattedSteps = stepsList.map((st, idx) => {
+      const stepNum = st.stepNumber || idx + 1;
+      const sTitle = isEn ? (st.titleEn || st.titleId || st.title) : (st.titleId || st.title);
+      const sDesc = isEn 
+        ? (st.instructionEn || st.instructionId || st.instruction || st.descriptionEn || st.description)
+        : (st.instructionId || st.instruction || st.descriptionId || st.description);
+      return `${stepNum}. ${sTitle}\n${sDesc}`;
+    }).join('\n\n');
+
+    sections.push(`${stepsHeader}\n\n${formattedSteps}`);
   }
 
-  return paragraphs.join('\n\n');
+  return sections.join('\n\n');
 }
 
 /**
@@ -1047,7 +1058,7 @@ export function initAiFoodCreatorInteractions() {
           </svg>
           <span>${activeIsEn ? 'Preparing PDF...' : 'Menyiapkan PDF...'}</span>
         `;
-        await aiFoodCreatorService.generateRecipePdf(currentGeneratedRecipe);
+        await aiFoodCreatorService.generateRecipePdf(currentGeneratedRecipe, null, activeIsEn);
         downloadRecipeBtn.innerHTML = `
           <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M20 6L9 17l-5-5"/>
