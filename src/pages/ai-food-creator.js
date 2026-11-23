@@ -526,11 +526,12 @@ function formatRecipeAsText(recipe, isEn = false) {
     : (recipe.subtitleId || 'Racikan Resep Dapur Tradisi');
   const creator = recipe.creatorName || (isEn ? 'LarasRasa Culinary Hearth' : 'Dapur Tradisi LarasRasa');
   const creatorLine = isEn ? `Recipe Creator: ${creator}` : `Pencipta Resep: ${creator}`;
+  const versionInfo = isEn ? '(English Version)' : '(Indonesian Version)';
 
   // 1. Title Block
   sections.push(
 `${title}
-"${subtitle}"
+"${subtitle}" ${versionInfo}
 
 ${creatorLine}`
   );
@@ -685,9 +686,14 @@ function renderResultView(recipe, currentLang) {
             </h2>
 
             ${(isEn ? (recipe.subtitleEn || recipe.subtitleId || recipe.javaneseTitle) : (recipe.subtitleId || recipe.javaneseTitle)) ? `
-              <p class="font-serif italic text-base sm:text-lg text-[#C84C24]">
-                "${escapeHtml(isEn ? (recipe.subtitleEn || recipe.subtitleId || recipe.javaneseTitle) : (recipe.subtitleId || recipe.javaneseTitle))}"
-              </p>
+              <div class="flex items-center gap-2.5 flex-wrap">
+                <p class="font-serif italic text-base sm:text-lg text-[#C84C24]">
+                  "${escapeHtml(isEn ? (recipe.subtitleEn || recipe.subtitleId || recipe.javaneseTitle) : (recipe.subtitleId || recipe.javaneseTitle))}"
+                </p>
+                <span class="text-[10px] font-bold text-[#8C6D58] bg-[#FAF7F2] border border-[#E8DEC8] px-2 py-0.5 rounded-md">
+                  ${isEn ? 'English Version' : 'Indonesian Version'}
+                </span>
+              </div>
             ` : ''}
 
             <p class="text-xs text-[#5C3622]">

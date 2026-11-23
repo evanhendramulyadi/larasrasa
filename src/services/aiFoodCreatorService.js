@@ -914,7 +914,7 @@ export const aiFoodCreatorService = {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.text(
-      isEn ? 'Authentic Heritage Culinary Document' : 'Dokumen Resep Pusaka Autentik',
+      isEn ? 'Authentic Heritage Culinary Document • English Version' : 'Dokumen Resep Pusaka Autentik • Indonesian Version',
       margin,
       curY + 4.5
     );
@@ -941,14 +941,23 @@ export const aiFoodCreatorService = {
     doc.text(titleLines, margin, curY);
     curY += (titleLines.length * 7) + 2;
 
-    // Subtitle in quotes
+    // Subtitle in quotes with version info
     const subtitle = isEn 
       ? (recipe.subtitleEn || 'Authentic Heritage Recipe') 
       : (recipe.subtitleId || 'Racikan Resep Dapur Tradisi');
+    const versionLabel = isEn ? 'English Version' : 'Indonesian Version';
+
     doc.setTextColor(200, 76, 36);
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(10);
-    doc.text(`"${subtitle}"`, margin, curY);
+    const subText = `"${subtitle}"`;
+    doc.text(subText, margin, curY);
+
+    const subWidth = doc.getTextWidth(subText);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    doc.setTextColor(140, 120, 105);
+    doc.text(`(${versionLabel})`, margin + subWidth + 3, curY);
     curY += 6;
 
     // Creator Meta
@@ -1148,7 +1157,8 @@ export const aiFoodCreatorService = {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
 
-    doc.save(`larasrasa-${safeTitle}-resep.pdf`);
+    const langSuffix = isEn ? '-en' : '-id';
+    doc.save(`larasrasa-${safeTitle}-resep${langSuffix}.pdf`);
   },
 
   /**
