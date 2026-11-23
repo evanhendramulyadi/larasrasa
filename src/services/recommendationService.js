@@ -44,115 +44,151 @@ export const recommendationService = {
     const flavorObj = flavorProfiles.find(f => f.id === preferences.flavor);
     const flavorLabel = isEn ? (flavorObj?.nameEn || preferences.flavor) : (flavorObj?.name || preferences.flavor);
 
-    // Engine Penilaian Keselarasan Kuliner Budaya Jawa Tengah
+    // Engine Penilaian Keselarasan Kuliner Budaya Jawa Tengah yang Presisi & Terpersonalisasi
+    const dishCategories = {
+      'kuah-segar': {
+        exact: ['soto-kudus', 'timlo-solo', 'garang-asem-kudus', 'selat-solo', 'sroto-sokaraja-banyumas', 'tauto-pekalongan'],
+        partial: ['mie-ongklok-wonosobo', 'kupat-tahu-magelang']
+      },
+      'kuah-santan': {
+        exact: ['gudeg-komplit', 'nasi-liwet-solo', 'mangut-lele-asap', 'kupat-glabed-tegal'],
+        partial: ['sroto-sokaraja-banyumas', 'serabi-notosuman-solo']
+      },
+      'kering-bakar': {
+        exact: ['sate-buntel-solo', 'sate-kambing-batibul-tegal', 'tempe-bacem', 'tengkleng-kambing-solo', 'bakmi-jawa-godhog'],
+        partial: ['lumpia-semarang', 'mendoan-banyumas']
+      },
+      'kudapan-lauk': {
+        exact: ['mendoan-banyumas', 'lumpia-semarang', 'tahu-gimbal-semarang', 'serabi-notosuman-solo', 'wingko-babat-semarang', 'getuk-trio-magelang', 'tahu-aci-slawi-tegal', 'tempe-kemul-wonosobo', 'kupat-tahu-magelang', 'nasi-megono-pekalongan', 'tempe-bacem'],
+        partial: ['selat-solo', 'bakmi-jawa-godhog']
+      }
+    };
+
     const scoredRecipes = recipes.map(recipe => {
       let score = 0;
       const matchReasons = [];
       const regName = (isEn && regionTranslationsEn?.[recipe.regionId]?.name) || recipe.regionName;
 
-      // 1. Keselarasan Karakter Cita Rasa (Bobot utama: 40 poin)
+      // 1. Dimensi Karakter Cita Rasa (Bobot Maks: 44 Poin)
       const flavors = recipe.flavorProfiles || [];
-      if (flavors.length > 0 && flavors[0] === preferences.flavor) {
-        score += 40;
+      const flavorIndex = flavors.indexOf(preferences.flavor);
+      const ingText = (recipe.ingredients || []).map(i => (typeof i === 'string' ? i : (i.name || ''))).join(' ').toLowerCase();
+
+      if (flavorIndex === 0) {
+        score += 39;
+        // Nuansa bahan autentik khas Jawa Tengah
+        if (preferences.flavor === 'manis' && (ingText.includes('gula jawa') || ingText.includes('gula merah') || ingText.includes('kelapa') || ingText.includes('kecap'))) score += 3;
+        else if (preferences.flavor === 'gurih' && (ingText.includes('santan') || ingText.includes('bawang') || ingText.includes('kemiri'))) score += 3;
+        else if (preferences.flavor === 'pedas' && (ingText.includes('cabai') || ingText.includes('rawit'))) score += 3;
+        else if (preferences.flavor === 'segar' && (ingText.includes('belimbing') || ingText.includes('jeruk') || ingText.includes('tomat') || ingText.includes('kencur'))) score += 3;
+        else if (preferences.flavor === 'kaya-rempah' && (recipe.spices || []).length >= 5) score += 3;
+        else score += 1;
+
+        if (flavors.length > 1) score += 2;
+
         matchReasons.push(isEn
           ? `Primary ${flavorLabel} flavor character is prominently and authentically expressed`
-          : `Karakter rasa utama ${flavorLabel} sangat dominan dan autentik`);
-      } else if (flavors.includes(preferences.flavor)) {
-        score += 35;
+          : `Karakter rasa utama ${flavorLabel} sangat dominan, autentik, dan meresap sempurna`);
+      } else if (flavorIndex === 1) {
+        score += 32;
+        if (flavors.length > 2) score += 2;
         matchReasons.push(isEn
-          ? `Features a harmonious nuance of ${flavorLabel} flavor`
-          : `Menghadirkan sentuhan rasa ${flavorLabel} yang selaras`);
+          ? `Harmoniously infused with authentic ${flavorLabel} flavor notes`
+          : `Menghadirkan harmoni sentuhan rasa ${flavorLabel} yang memikat selera`);
+      } else if (flavorIndex > 1) {
+        score += 26;
+        matchReasons.push(isEn
+          ? `Subtle traditional background of ${flavorLabel} flavor`
+          : `Menghadirkan latar rasa tradisional ${flavorLabel} yang seimbang`);
       } else {
-        score += 5;
+        const compPairs = {
+          manis: ['gurih'],
+          gurih: ['manis', 'kaya-rempah'],
+          pedas: ['gurih', 'segar'],
+          segar: ['asam', 'gurih'],
+          asam: ['segar', 'pedas'],
+          'kaya-rempah': ['gurih', 'hangat']
+        };
+        const comp = compPairs[preferences.flavor] || [];
+        if (flavors.some(f => comp.includes(f))) score += 16;
+        else score += 7;
       }
 
-      // 2. Keselarasan Tipe Santapan & Pengalaman Menikmati (Bobot: 35 poin)
+      // 2. Dimensi Tipe Santapan & Pengalaman Makan (Bobot Maks: 36 Poin)
       if (preferences.dishType) {
-        const textToSearch = (recipe.name + ' ' + (recipe.mealType || '') + ' ' + (recipe.intro || '')).toLowerCase();
-        let dishMatch = false;
-        let dishSecondary = false;
+        const cat = dishCategories[preferences.dishType];
+        if (cat?.exact.includes(recipe.id)) {
+          score += 32;
+          const mt = (recipe.mealType || '').toLowerCase();
+          if (preferences.dishType === 'kudapan-lauk' && (mt.includes('kudapan') || mt.includes('camilan') || mt.includes('lauk'))) score += 2;
+          if (preferences.dishType === 'kuah-segar' && (mt.includes('soto') || mt.includes('sarapan') || mt.includes('sup'))) score += 2;
+          if (preferences.dishType === 'kuah-santan' && (mt.includes('tradisional') || mt.includes('utama'))) score += 2;
+          if (preferences.dishType === 'kering-bakar' && (mt.includes('bakar') || mt.includes('malam') || mt.includes('sate'))) score += 2;
 
-        if (preferences.dishType === 'kuah-segar') {
-          if (textToSearch.includes('soto') || textToSearch.includes('sup') || textToSearch.includes('asem') || textToSearch.includes('sroto') || textToSearch.includes('tauto')) {
-            dishMatch = true;
-          } else if (textToSearch.includes('kuah') || textToSearch.includes('selat') || textToSearch.includes('segar')) {
-            dishSecondary = true;
-          }
-        } else if (preferences.dishType === 'kuah-santan') {
-          if (textToSearch.includes('santan') || textToSearch.includes('gudeg') || textToSearch.includes('opor') || textToSearch.includes('mangut') || textToSearch.includes('liwet') || textToSearch.includes('glabed')) {
-            dishMatch = true;
-          } else if (textToSearch.includes('kuah') || textToSearch.includes('gurih')) {
-            dishSecondary = true;
-          }
-        } else if (preferences.dishType === 'kering-bakar') {
-          if (textToSearch.includes('sate') || textToSearch.includes('bakar') || textToSearch.includes('bacem') || textToSearch.includes('panggang') || textToSearch.includes('tengkleng')) {
-            dishMatch = true;
-          } else if (textToSearch.includes('goreng') || textToSearch.includes('ungkep')) {
-            dishSecondary = true;
-          }
-        } else if (preferences.dishType === 'kudapan-lauk') {
-          if (textToSearch.includes('mendoan') || textToSearch.includes('tahu') || textToSearch.includes('tempe') || textToSearch.includes('getuk') || textToSearch.includes('serabi') || textToSearch.includes('wingko') || textToSearch.includes('lumpia')) {
-            dishMatch = true;
-          } else if (textToSearch.includes('kudapan') || textToSearch.includes('camilan') || textToSearch.includes('lauk')) {
-            dishSecondary = true;
-          }
-        }
-
-        if (dishMatch) {
-          score += 35;
           matchReasons.push(isEn
             ? 'Serving format aligns precisely with your desired dining experience'
             : 'Format sajian tepat sesuai gaya santapan yang Anda inginkan');
-        } else if (dishSecondary) {
-          score += 22;
+        } else if (cat?.partial.includes(recipe.id)) {
+          score += 24;
           matchReasons.push(isEn
             ? 'Closely aligns with your texture and dining comfort preference'
-            : 'Mendekati preferensi tekstur dan pengalaman bersantap Anda');
+            : 'Mendekati preferensi tekstur dan kenyamanan santap Anda');
         } else {
-          score += 8;
+          const text = (recipe.name + ' ' + (recipe.mealType || '')).toLowerCase();
+          if (text.includes('kuah') || text.includes('lauk') || text.includes('sate') || text.includes('goreng')) score += 14;
+          else score += 6;
         }
       }
 
-      // 3. Keselarasan Eksplorasi Kawasan Budaya (Bobot: 25 poin)
+      // 3. Dimensi Eksplorasi Kawasan Budaya (Bobot Maks: 20 Poin)
       const regId = (recipe.regionId || '').toLowerCase();
       if (preferences.regionPreference === 'keraton') {
-        if (regId.includes('surakarta') || regId.includes('solo')) {
-          score += 25;
+        if (regId === 'surakarta' || regId.includes('solo')) {
+          score += 18;
+          if (recipe.javaneseName) score += 2;
           matchReasons.push(isEn
-            ? `Reflects the noble culinary heritage of Surakarta Royal Court (${regName})`
-            : `Mencerminkan warisan kuliner Keraton Surakarta (${recipe.regionName}) yang kaya tata krama rasa`);
+            ? `Reflects the noble culinary heritage of Surakarta Royal Court in ${regName}`
+            : `Mencerminkan warisan kuliner Keraton Surakarta khas Kota Surakarta (Solo) yang kaya tata krama rasa`);
+        } else if (['magelang', 'banyumas'].includes(regId)) {
+          score += 11;
+          matchReasons.push(isEn
+            ? `Shares culinary traditions of inland Central Java from ${regName}`
+            : `Memiliki kedekatan nilai tradisi dapur Jawa pedalaman khas ${recipe.regionName}`);
         } else {
-          score += 6;
+          score += 5;
         }
       } else if (preferences.regionPreference === 'pantura') {
-        if (regId.includes('semarang') || regId.includes('pekalongan') || regId.includes('tegal') || regId.includes('kudus')) {
-          score += 25;
+        if (['semarang', 'pekalongan', 'tegal', 'kudus'].includes(regId)) {
+          score += 18;
+          if (regId === 'semarang' || regId === 'kudus') score += 2;
           matchReasons.push(isEn
-            ? `Represents the vibrant coastal spice dynamics of Central Java's Pantura (${regName})`
-            : `Mewakili dinamika bumbu pesisir Pantura Jawa Tengah (${recipe.regionName})`);
+            ? `Represents the vibrant coastal spice dynamics of Pantura from ${regName}`
+            : `Mewakili dinamika bumbu pesisir Pantura khas ${recipe.regionName} yang kaya aroma rempah`);
         } else {
-          score += 6;
+          score += 5;
         }
       } else if (preferences.regionPreference === 'pegunungan') {
-        if (regId.includes('wonosobo') || regId.includes('magelang') || regId.includes('banyumas')) {
-          score += 25;
+        if (['wonosobo', 'magelang', 'banyumas'].includes(regId)) {
+          score += 18;
+          if (regId === 'wonosobo' || regId === 'banyumas') score += 2;
           matchReasons.push(isEn
-            ? `Brings forth the comforting hearth spices of highlands and valleys (${regName})`
-            : `Menghadirkan kehangatan rempah bumi pegunungan dan lembah (${recipe.regionName})`);
+            ? `Brings forth the comforting hearth spices of highlands and valleys in ${regName}`
+            : `Menghadirkan kehangatan rempah bumi pegunungan khas ${recipe.regionName}`);
         } else {
-          score += 6;
+          score += 5;
         }
       } else {
         // Semua Sentra Jawa Tengah
-        score += 22;
+        score += 16;
+        if (recipe.javaneseName) score += 2;
         matchReasons.push(isEn
           ? `Signature traditional culinary specialty from ${regName}`
-          : `Pusaka kuliner unggulan dari sentra ${recipe.regionName}`);
+          : `Pusaka kuliner unggulan khas ${recipe.regionName} yang sarat nilai tradisi`);
       }
 
       return {
         recipe,
-        score,
+        score: Math.min(Math.max(score, 50), 98),
         matchReasons
       };
     });
