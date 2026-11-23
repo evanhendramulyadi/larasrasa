@@ -411,7 +411,7 @@ function renderResultView(result) {
           <!-- Criteria Recap Chips (3 User Selected Inputs) -->
           <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
             ${chosenFlavorName ? `
-              <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-semibold text-[#D49B42] shadow-xs">
+              <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
                 <span>${chosenFlavorName}</span>
               </span>
             ` : ''}
@@ -434,11 +434,11 @@ function renderResultView(result) {
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           
           <!-- Left Column: Hero Macro Image Showcase (5 Cols) -->
-          <div class="lg:col-span-5 relative group">
-            <div class="relative aspect-4/3 lg:aspect-4/5 w-full rounded-3xl overflow-hidden bg-[#120B07] border border-[#D49B42]/30 shadow-md cursor-pointer" data-recipe-slug="${primary.slug}">
+          <div class="lg:col-span-5 relative">
+            <div class="relative aspect-4/3 lg:aspect-4/5 w-full rounded-3xl overflow-hidden bg-[#120B07] border border-[#D49B42]/30 shadow-md">
               <img src="${primary.image}" 
                    alt="${primary.name}" 
-                   class="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out" 
+                   class="w-full h-full object-cover" 
                    onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
               
@@ -465,10 +465,15 @@ function renderResultView(result) {
                     "${primary.javaneseName}"
                   </p>
                 ` : ''}
-                <div class="flex items-center gap-2 pt-1 text-[11px] font-semibold text-white/90">
+                <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-semibold text-white/90">
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
                     ${primary.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
                   </span>
+                  ${primaryFlavorLabel ? `
+                    <span class="px-2.5 py-0.5 rounded-lg bg-[#C84C24]/85 backdrop-blur-xs border border-[#C84C24]/40 text-white font-bold">
+                      ${primaryFlavorLabel}
+                    </span>
+                  ` : ''}
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
                     4 ${isEn ? 'Portions' : 'Porsi'}
                   </span>
@@ -478,29 +483,14 @@ function renderResultView(result) {
           </div>
 
           <!-- Right Column: Editorial Cultural Intro & Match Highlights (7 Cols) -->
-          <div class="lg:col-span-7 space-y-5">
-            
-            <!-- Category & Flavor Badges -->
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/30 shadow-2xs">
-                ${primary.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
-              </span>
-              ${primaryFlavorLabel ? `
-                <span class="text-xs px-3 py-1 rounded-full bg-[#FDF4EE] text-[#C84C24] font-bold border border-[#C84C24]/30 shadow-2xs">
-                  ${primaryFlavorLabel}
-                </span>
-              ` : ''}
-              <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#2E4D38] font-bold border border-[#2E4D38]/30 shadow-2xs">
-                ${isEn ? 'Standard 4 Portions' : 'Takaran Standar 4 Porsi'}
-              </span>
-            </div>
+          <div class="lg:col-span-7 space-y-6">
 
             <!-- Title & Regional Lore Excerpt -->
-            <div class="space-y-1.5">
+            <div class="space-y-2">
               <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07] leading-tight">
                 ${primary.name}
               </h2>
-              <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed line-clamp-3">
+              <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
                 ${primary.intro}
               </p>
             </div>
@@ -521,26 +511,6 @@ function renderResultView(result) {
                     <span>${h}</span>
                   </div>
                 `).join('')}
-              </div>
-            </div>
-
-            <!-- 4-Metric Cultural Summary (Sentra, Karakter, Porsi, Kategori) -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-center pt-1">
-              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Origin' : 'Sentra Asal'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">${primary.regionName}</span>
-              </div>
-              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Flavor' : 'Karakter'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${primaryFlavorLabel || (isEn ? 'Authentic' : 'Autentik')}</span>
-              </div>
-              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Servings' : 'Porsi Resep'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5">4 ${isEn ? 'Portions' : 'Porsi'}</span>
-              </div>
-              <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Tradition' : 'Kategori'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${primary.mealType || (isEn ? 'Traditional' : 'Tradisional')}</span>
               </div>
             </div>
 
