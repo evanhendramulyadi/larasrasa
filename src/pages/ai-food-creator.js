@@ -1187,7 +1187,7 @@ export function initAiFoodCreatorInteractions() {
 
   createAnotherBtns.forEach(btn => {
     btn.onclick = () => {
-      currentGeneratedRecipe = null;
+      resetAiFoodCreatorState();
       reRenderCurrentView();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
