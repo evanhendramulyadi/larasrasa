@@ -22,7 +22,7 @@ export function localizeRecipe(recipe) {
 
   return {
     ...recipe,
-    name: trans.name || recipe.name,
+    name: recipe.name,
     regionName: enRegionName,
     mealType: trans.mealType || recipe.mealType,
     difficulty: trans.difficulty || recipe.difficulty,

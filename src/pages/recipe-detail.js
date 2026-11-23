@@ -135,7 +135,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
         <div class="absolute bottom-5 left-6 right-6 text-white text-xs flex items-center justify-between">
           <span class="bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-[#D49B42]/50 font-bold">
-            📍 ${recipe.regionName}
+            ${recipe.regionName}
           </span>
           <span class="text-[11px] opacity-90 hidden sm:inline font-semibold">${isEn ? 'Central Javanese Gastronomic Heritage' : 'Pusaka Warisan Gastronomi Jawa Tengah'}</span>
         </div>

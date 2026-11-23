@@ -20,6 +20,7 @@ export class ThreeHeroShowcase {
   }
 
   getDishes() {
+    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
     return [
       {
         id: 'nasi-liwet',
@@ -27,7 +28,7 @@ export class ThreeHeroShowcase {
         title: t('hero.dishNasiLiwet'),
         role: t('hero.dishNasiLiwetRole'),
         desc: t('hero.dishNasiLiwetDesc'),
-        region: 'Kota Surakarta (Solo)',
+        region: isEn ? 'Surakarta (Solo) City' : 'Kota Surakarta (Solo)',
         slug: 'nasi-liwet-solo',
         x: '23%',
         y: '58%'
@@ -38,7 +39,7 @@ export class ThreeHeroShowcase {
         title: t('hero.dishGarangAsem'),
         role: t('hero.dishGarangAsemRole'),
         desc: t('hero.dishGarangAsemDesc'),
-        region: 'Kabupaten Kudus',
+        region: isEn ? 'Kudus Regency' : 'Kabupaten Kudus',
         slug: 'garang-asem-kudus',
         x: '50%',
         y: '43%'
@@ -49,7 +50,7 @@ export class ThreeHeroShowcase {
         title: t('hero.dishSotoKudus'),
         role: t('hero.dishSotoKudusRole'),
         desc: t('hero.dishSotoKudusDesc'),
-        region: 'Kabupaten Kudus',
+        region: isEn ? 'Kudus Regency' : 'Kabupaten Kudus',
         slug: 'soto-kudus',
         x: '76%',
         y: '56%'
@@ -60,7 +61,7 @@ export class ThreeHeroShowcase {
         title: t('hero.dishMendoan'),
         role: t('hero.dishMendoanRole'),
         desc: t('hero.dishMendoanDesc'),
-        region: 'Kabupaten Banyumas',
+        region: isEn ? 'Banyumas Regency' : 'Kabupaten Banyumas',
         slug: 'mendoan-banyumas',
         x: '51%',
         y: '77%'
@@ -130,10 +131,10 @@ export class ThreeHeroShowcase {
               <div class="min-w-0 pr-1">
                 <div class="flex items-center gap-1.5 mb-0.5 flex-wrap">
                   <span id="popover-dish-region" class="inline-block text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider text-[#C84C24] bg-[#FDF4EE] px-2 py-0.5 rounded-md border border-[#C84C24]/20">
-                    Wilayah
+                    ${isEn ? 'Region' : 'Wilayah'}
                   </span>
                   <span id="popover-dish-role" class="inline-block text-[9px] sm:text-[9.5px] font-semibold text-[#5C3622] italic">
-                    Peran Jamuan
+                    ${isEn ? 'Banquet Role' : 'Peran Jamuan'}
                   </span>
                 </div>
                 <h4 id="popover-dish-title" class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07] leading-tight">

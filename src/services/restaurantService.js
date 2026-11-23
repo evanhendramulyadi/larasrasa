@@ -13,12 +13,12 @@ export function localizeRestaurant(restaurant) {
 
   return {
     ...restaurant,
-    signatureDish: trans.signatureDish || restaurant.signatureDish,
+    signatureDish: restaurant.signatureDish,
     category: trans.category || restaurant.category,
     openingHours: trans.openingHours || restaurant.openingHours,
     description: trans.description || restaurant.description,
     historicalContext: trans.historicalContext || restaurant.historicalContext,
-    specialties: trans.specialties || restaurant.specialties,
+    specialties: restaurant.specialties,
   };
 }
 
