@@ -18,12 +18,16 @@ import { i18n, t } from '../i18n/index.js';
  * - 100% reactive bilingual support (ID with Javanese touch & EN)
  */
 
+function getRandomFiveIngredients() {
+  return [...ALL_INGREDIENTS].sort(() => 0.5 - Math.random()).slice(0, 5).map(i => i.id);
+}
+
 let activeTab = 'all'; // 'all', 'protein', 'spice', 'vegetable'
 let searchQuery = '';
 let formState = {
   creatorName: '',
   creatorNickname: '',
-  selectedIngredientIds: [],
+  selectedIngredientIds: getRandomFiveIngredients(),
   cookingMethod: 'ungkep',
   dishCategory: 'lauk',
   tasteProfile: 'manis-gurih',
@@ -49,7 +53,7 @@ export function resetAiFoodCreatorState() {
   formState = {
     creatorName: '',
     creatorNickname: '',
-    selectedIngredientIds: [],
+    selectedIngredientIds: getRandomFiveIngredients(),
     cookingMethod: 'ungkep',
     dishCategory: 'lauk',
     tasteProfile: 'manis-gurih',
@@ -189,7 +193,6 @@ function renderFormView(currentLang) {
       ${validationMessage ? `
         <div class="max-w-4xl mx-auto p-4 rounded-2xl bg-rose-50 border border-rose-300 text-rose-900 text-xs flex items-center justify-between shadow-xs animate-shake">
           <div class="flex items-center gap-2 font-semibold">
-            <span class="text-base">⚠️</span>
             <span>${validationMessage}</span>
           </div>
           <button type="button" id="dismiss-val-btn" class="text-rose-600 hover:text-rose-900 font-bold ml-2 text-sm cursor-pointer">&times;</button>
@@ -229,7 +232,7 @@ function renderFormView(currentLang) {
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E8DEC8]">
             <div class="space-y-0.5">
               <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-                ${isEn ? 'Langkah 1 • Select Regional Ingredients' : 'Langkah 1 • Pilih Bahan & Rempah Otentik Jawa'}
+                ${isEn ? 'Step 1 • Select Regional Ingredients' : 'Langkah 1 • Pilih Bahan & Rempah Otentik Jawa'}
               </h2>
               <p class="text-xs text-[#5C3622]">
                 ${isEn ? 'Select authentic Central Javanese ingredients and spices' : 'Pilih aneka bahan pokok dan bumbu dapur autentik khas Jawa Tengah'}
@@ -237,11 +240,9 @@ function renderFormView(currentLang) {
             </div>
             
             <div class="flex items-center gap-2">
-              ${selectedCount > 0 ? `
-                <button type="button" id="clear-all-ingredients-btn" class="text-xs font-bold text-rose-600 hover:text-rose-800 underline cursor-pointer">
-                  ${isEn ? 'Clear All' : 'Hapus Semua'}
-                </button>
-              ` : ''}
+              <button type="button" id="clear-all-ingredients-btn" class="text-xs font-bold text-rose-600 hover:text-rose-800 underline cursor-pointer">
+                ${isEn ? 'Clear All' : 'Hapus Semua'}
+              </button>
             </div>
           </div>
 
@@ -288,20 +289,44 @@ function renderFormView(currentLang) {
           </div>
 
           <!-- Ingredients Grid (Pure Text Names, Zero Photos/Emojis/Categories) -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 max-h-[30rem] overflow-y-auto p-1 custom-scrollbar">
-            ${filteredIngredients.map(item => {
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 max-h-[32rem] overflow-y-auto pt-3 pb-4 px-2 custom-scrollbar">
+            ${filteredIngredients.length === 0 ? `
+              <div class="col-span-full py-12 px-4 text-center space-y-3 bg-[#FAF7F2] rounded-3xl border border-dashed border-[#D49B42]/50">
+                <div class="w-12 h-12 rounded-full bg-[#120B07] text-[#D49B42] flex items-center justify-center mx-auto text-xl font-bold">
+                  🔍
+                </div>
+                <div class="space-y-1">
+                  <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07]">
+                    ${isEn ? 'Ingredient Not Found' : 'Bahan Tidak Ditemukan'}
+                  </h3>
+                  <p class="text-xs text-[#5C3622] max-w-sm mx-auto leading-relaxed">
+                    ${isEn 
+                      ? `No authentic ingredients match "${escapeHtml(searchQuery)}". Try searching for another keyword like Ayam, Bawang, or Cabai.` 
+                      : `Tidak ada bahan atau bumbu yang cocok dengan kata kunci "${escapeHtml(searchQuery)}". Silakan coba kata kunci lain seperti Ayam, Bawang, atau Cabai.`}
+                  </p>
+                </div>
+                <button 
+                  type="button" 
+                  id="clear-ingredient-search-btn" 
+                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] hover:bg-[#FAF7F2] shadow-2xs cursor-pointer transition-colors"
+                >
+                  <span>✕</span>
+                  <span>${isEn ? 'Clear Search Keyword' : 'Bersihkan Kata Kunci'}</span>
+                </button>
+              </div>
+            ` : filteredIngredients.map(item => {
               const isSelected = formState.selectedIngredientIds.includes(item.id);
               return `
                 <button 
                   type="button" 
                   data-ingredient-id="${item.id}"
-                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 cursor-pointer card-hover-lift ${
+                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 cursor-pointer card-hover-lift min-h-[3.75rem] ${
                     isSelected 
                       ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm' 
                       : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8] hover:border-[#D49B42]'
                   }"
                 >
-                  <strong class="text-xs sm:text-sm font-bold block truncate leading-snug flex-1">
+                  <strong class="text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight flex-1">
                     ${isEn ? (item.nameEn || item.nameId) : item.nameId}
                   </strong>
                   <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${
@@ -319,7 +344,7 @@ function renderFormView(currentLang) {
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6 border border-[#D49B42]/35 shadow-xs">
           <div class="pb-4 border-b border-[#E8DEC8] space-y-0.5">
             <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-              ${isEn ? 'Langkah 2 • Culinary Calibration & Portions' : 'Langkah 2 • Kalibrasi Karakter Rasa & Teknik Dapur'}
+              ${isEn ? 'Step 2 • Culinary Calibration & Portions' : 'Langkah 2 • Kalibrasi Karakter Rasa & Teknik Dapur'}
             </h2>
             <p class="text-xs text-[#5C3622]">
               ${isEn ? 'Calibrate cooking technique, flavor profile, and chili warmth level' : 'Tentukan metode olah bumbu, karakter rasa pusaka, dan tingkat kehangatan lombok'}
@@ -345,7 +370,7 @@ function renderFormView(currentLang) {
                       <input type="radio" name="cookingMethod" value="${m.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
                     </div>
                     <p class="text-[10px] ${isSelected ? 'text-[#D49B42]' : 'text-[#5C3622]'} mt-2 leading-relaxed">
-                      ${m.descId}
+                      ${isEn ? (m.descEn || m.descId) : m.descId}
                     </p>
                   </label>
                 `;
@@ -449,7 +474,7 @@ function renderFormView(currentLang) {
           <!-- Row 3: Custom Culinary Notes -->
           <div class="space-y-2 pt-2">
             <label for="custom-notes-input" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-              ${isEn ? 'Culinary Vision / Special Notes' : 'Catatan Selera Tambahan'}
+              ${isEn ? 'Culinary Vision / Special Notes (Optional)' : 'Catatan Selera Tambahan (Opsional)'}
             </label>
             <input 
               type="text" 
@@ -695,7 +720,7 @@ function renderResultView(recipe, currentLang) {
                 ${isEn ? 'Total Time' : 'Waktu Olah'}
               </span>
               <strong class="text-[#120B07] font-bold text-sm block">${recipe.totalTime || '45 Menit'}</strong>
-              <span class="text-[10px] text-[#5C3622] block">Prep: ${recipe.prepTime || '15m'} • Masak: ${recipe.cookTime || '30m'}</span>
+              <span class="text-[10px] text-[#5C3622] block">${isEn ? 'Prep:' : 'Persiapan:'} ${recipe.prepTime || (isEn ? '15m' : '15 menit')} • ${isEn ? 'Cook:' : 'Masak:'} ${recipe.cookTime || (isEn ? '30m' : '30 menit')}</span>
             </div>
             
             <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] text-center space-y-1">
@@ -719,7 +744,7 @@ function renderResultView(recipe, currentLang) {
                 ${isEn ? 'Difficulty' : 'Tingkat Olah'}
               </span>
               <strong class="text-[#120B07] font-bold text-sm block">${recipe.difficulty || (isEn ? 'Medium' : 'Sedang')}</strong>
-              <span class="text-[10px] text-[#5C3622] block">${recipe.calories ? recipe.calories.split('/')[0] : '360 kkal'}</span>
+              <span class="text-[10px] text-[#5C3622] block">${recipe.calories ? recipe.calories.split('/')[0] : (isEn ? '360 kcal' : '360 kkal')}</span>
             </div>
           </div>
         </div>
@@ -912,7 +937,16 @@ export function initAiFoodCreatorInteractions() {
       const txt = banner.querySelector('.toast-text');
       if (txt) txt.textContent = msg;
       banner.classList.remove('hidden');
+    } else {
+      reRenderCurrentView();
     }
+    setTimeout(() => {
+      if (toastMessage === msg) {
+        toastMessage = null;
+        const b = document.getElementById('live-toast-banner');
+        if (b) b.classList.add('hidden');
+      }
+    }, 3500);
   }
 
   // Dismiss Toast on Form
@@ -962,6 +996,12 @@ export function initAiFoodCreatorInteractions() {
     card.onclick = () => {
       const id = card.getAttribute('data-ingredient-id');
       if (formState.selectedIngredientIds.includes(id)) {
+        if (formState.selectedIngredientIds.length <= 5) {
+          showToast(isEn 
+            ? 'Minimum 5 ingredients required! Please select another ingredient first before removing.' 
+            : 'Minimal 5 bahan harus terpilih! Silakan pilih bahan lain terlebih dahulu jika ingin mengganti.');
+          return;
+        }
         formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
       } else {
         formState.selectedIngredientIds.push(id);
@@ -976,16 +1016,34 @@ export function initAiFoodCreatorInteractions() {
     pill.onclick = (e) => {
       e.stopPropagation();
       const id = pill.getAttribute('data-remove-ingredient');
+      if (formState.selectedIngredientIds.length <= 5) {
+        showToast(isEn 
+          ? 'Minimum 5 ingredients required! Please select another ingredient first before removing.' 
+          : 'Minimal 5 bahan harus terpilih! Silakan pilih bahan lain terlebih dahulu jika ingin mengganti.');
+        return;
+      }
       formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
       reRenderCurrentView();
     };
   });
 
-  // Clear All Ingredients
+  // Clear All Ingredients (Resets to 5 Random Authentic Ingredients)
   const clearAllBtn = document.getElementById('clear-all-ingredients-btn');
   if (clearAllBtn) {
     clearAllBtn.onclick = () => {
-      formState.selectedIngredientIds = [];
+      formState.selectedIngredientIds = getRandomFiveIngredients();
+      showToast(isEn 
+        ? 'Selected 5 fresh random ingredients.' 
+        : '5 bahan telah diacak ulang secara otomatis.');
+      reRenderCurrentView();
+    };
+  }
+
+  // Clear Ingredient Search Keyword
+  const clearSearchBtn = document.getElementById('clear-ingredient-search-btn');
+  if (clearSearchBtn) {
+    clearSearchBtn.onclick = () => {
+      searchQuery = '';
       reRenderCurrentView();
     };
   }

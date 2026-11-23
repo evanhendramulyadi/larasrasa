@@ -258,6 +258,7 @@ export const en = {
     subtitle: 'Select regional ingredients, calibrate traditional Central Javanese flavors, and set custom portions. LarasRasa AI synthesizes an authentic culinary creation complete with scaled measurements, step-by-step methods, and a downloadable recipe document.',
     step1Title: 'Step 1 • Select Authentic Central Javanese Ingredients',
     step1Count: 'selected ingredients',
+    step2Count: 'ingredients ready',
     step2Title: 'Step 2 • Calibrate Flavor Profile & Cooking Method',
     outputLangLabel: 'Recipe Output Language',
     outputLangDesc: 'Select target language for the synthesized recipe document',

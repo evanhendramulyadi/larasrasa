@@ -258,6 +258,7 @@ export const id = {
     subtitle: 'Pilih bahan favorit, atur karakter rasa tradisi Jawa Tengah, dan tentukan porsi secara bebas. Kecerdasan buatan LarasRasa akan meracik resep kuliner autentik lengkap dengan takaran bumbu presisi, panduan memasak bertahap, dan dokumen resep yang dapat diunduh.',
     step1Title: 'Langkah 1 • Pilih Bahan & Bumbu Autentik Jawa Tengah',
     step1Count: 'bahan dipilih',
+    step2Count: 'bahan siap diracik',
     step2Title: 'Langkah 2 • Kalibrasi Karakter Rasa & Teknik Dapur',
     outputLangLabel: 'Bahasa Output Resep',
     outputLangDesc: 'Pilih bahasa penyusunan dokumen resep hasil kreasi AI',

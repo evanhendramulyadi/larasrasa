@@ -3,6 +3,28 @@ import { recipeTranslationsEn, regionTranslationsEn, regionNameTranslationsEn } 
 import { i18n } from '../i18n/index.js';
 import { API_CONFIG, apiRequest } from './api.js';
 
+const mealTypeEnMap = {
+  'Makan Utama / Sarapan': 'Main Course / Breakfast',
+  'Makan Utama / Santap Malam': 'Main Course / Dinner',
+  'Makan Utama': 'Main Course',
+  'Kudapan / Camilan Tradisional': 'Traditional Snack / Treat',
+  'Kudapan / Lauk Pendamping': 'Side Dish / Traditional Snack',
+  'Makan Utama / Jamuan Ningrat': 'Main Course / Royal Banquet',
+  'Lauk Pendamping Tradisional': 'Traditional Side Dish',
+  'Makan Utama / Sarapan Pesisir': 'Main Course / Coastal Breakfast',
+  'Makan Utama / Kuliner Malam': 'Main Course / Night Feast',
+  'Makan Siang / Santap Sore': 'Lunch / Afternoon Dining',
+  'Makan Utama / Tradisional': 'Main Course / Traditional',
+  'Makan Utama / Hangat': 'Main Course / Warm Comfort',
+  'Camilan / Kudapan': 'Snack / Traditional Treat',
+  'Camilan Tradisional': 'Traditional Snack',
+  'Makan Malam / Santap Hangat': 'Dinner / Warm Comfort',
+  'Makan Siang / Santap Malam': 'Lunch / Dinner',
+  'Sarapan / Makan Siang': 'Breakfast / Lunch',
+  'Kudapan Tradisional / Camilan': 'Traditional Snack',
+  'Sarapan Pagi / Santap Malam': 'Breakfast / Dinner'
+};
+
 export function localizeRecipe(recipe) {
   if (!recipe) return recipe;
   const lang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
@@ -24,7 +46,7 @@ export function localizeRecipe(recipe) {
     ...recipe,
     name: recipe.name,
     regionName: enRegionName,
-    mealType: trans.mealType || recipe.mealType,
+    mealType: trans.mealType || mealTypeEnMap[recipe.mealType] || recipe.mealType,
     difficulty: trans.difficulty || recipe.difficulty,
     difficultyLevel: trans.difficultyLevel || recipe.difficultyLevel,
     intro: trans.intro || recipe.intro,
