@@ -192,7 +192,7 @@ function renderFormView(currentLang) {
         <!-- Input Nama Lengkap User (Pencipta Resep) -->
         <div id="creator-name-box" class="pawon-glass p-5 sm:p-6 rounded-3xl border ${nameError ? 'border-rose-400 bg-rose-50/20 ring-2 ring-rose-200' : 'border-[#D49B42]/35'} shadow-xs space-y-2 transition-all scroll-mt-24">
           <div class="flex items-center justify-between">
-            <label for="creator-name-input" class="block text-xs font-bold ${nameError ? 'text-rose-700' : 'text-[#120B07]'} uppercase tracking-wider">
+            <label for="creator-name-input" id="creator-name-label" class="block text-xs font-bold ${nameError ? 'text-rose-700' : 'text-[#120B07]'} uppercase tracking-wider transition-colors">
               ${isEn ? 'Your Full Name' : 'Nama Lengkap Anda'} <span class="text-[#C84C24]">*</span>
             </label>
             <span class="text-[10px] font-bold text-[#C84C24] bg-[#FDF4EE] px-2.5 py-0.5 rounded-full border border-[#C84C24]/30">
@@ -211,17 +211,14 @@ function renderFormView(currentLang) {
                 : 'border-[#E8DEC8] focus:ring-2 focus:ring-[#C84C24]'
             } focus:outline-hidden text-sm text-[#120B07] transition-all shadow-inner"
           />
-          ${nameError ? `
-            <p id="creator-name-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
-              <span>${isEn ? 'Full name is required. Please fill in your name.' : 'Nama lengkap harus diisi sebelum meracik resep.'}</span>
-            </p>
-          ` : `
-            <p class="text-[11px] text-[#5C3622]/80">
-              ${isEn 
-                ? 'Your name will be inscribed as the author of this original recipe in the document and downloadable PDF.' 
-                : 'Nama Anda akan dicantumkan sebagai peracik resep pada dokumen pusaka dan berkas unduhan PDF.'}
-            </p>
-          `}
+          <p id="creator-name-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake ${nameError ? '' : 'hidden'}">
+            <span>${isEn ? 'Full name is required. Please fill in your name.' : 'Nama lengkap harus diisi sebelum meracik resep.'}</span>
+          </p>
+          <p id="creator-name-help" class="text-[11px] text-[#5C3622]/80 ${nameError ? 'hidden' : ''}">
+            ${isEn 
+              ? 'Your name will be inscribed as the author of this original recipe in the document and downloadable PDF.' 
+              : 'Nama Anda akan dicantumkan sebagai peracik resep pada dokumen pusaka dan berkas unduhan PDF.'}
+          </p>
         </div>
         
         <!-- SECTION 1: Ingredient Selection -->
@@ -1030,12 +1027,19 @@ export function initAiFoodCreatorInteractions() {
   if (nameInput) {
     nameInput.oninput = (e) => {
       formState.creatorName = e.target.value;
-      if (nameError && e.target.value.trim().length > 0) {
-        nameError = false;
+      if (e.target.value.trim().length > 0) {
+        if (nameError) nameError = false;
+        const label = document.getElementById('creator-name-label');
+        if (label) {
+          label.classList.remove('text-rose-700');
+          label.classList.add('text-[#120B07]');
+        }
         const errEl = document.getElementById('creator-name-error');
         if (errEl) errEl.classList.add('hidden');
+        const helpEl = document.getElementById('creator-name-help');
+        if (helpEl) helpEl.classList.remove('hidden');
         nameInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-300', 'bg-rose-50/30');
-        nameInput.classList.add('border-[#E8DEC8]');
+        nameInput.classList.add('border-[#E8DEC8]', 'focus:ring-2', 'focus:ring-[#C84C24]');
         const box = document.getElementById('creator-name-box');
         if (box) {
           box.classList.remove('border-rose-400', 'bg-rose-50/20', 'ring-2', 'ring-rose-200');
