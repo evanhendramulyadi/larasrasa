@@ -1,6 +1,5 @@
 import { recommendationService } from '../services/recommendationService.js';
 import { flavorProfiles, getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
-import { renderRecipeCard } from '../components/recipe-card.js';
 import { t, i18n } from '../i18n/index.js';
 
 /**
@@ -124,14 +123,14 @@ function renderWizardView(step) {
         ${renderStepContent(step)}
 
         <!-- Navigation Buttons -->
-        <div class="pt-6 border-t border-[#E8DEC8] flex items-center justify-between">
+        <div class="pt-6 border-t border-[#E8DEC8] flex items-center gap-4 ${step > 1 ? 'justify-between' : 'justify-end'}">
           ${step > 1 ? `
-            <button id="wizard-prev-btn" type="button" class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs">
-              &larr; ${t('recommendations.prevBtn')}
+            <button id="wizard-prev-btn" type="button" class="flex-1 sm:flex-initial sm:w-52 inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-xs font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs">
+              &larr; <span>${t('recommendations.prevBtn')}</span>
             </button>
-          ` : `<div></div>`}
+          ` : ''}
 
-          <button id="wizard-next-btn" type="button" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-xs font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30]">
+          <button id="wizard-next-btn" type="button" class="${step > 1 ? 'flex-1 sm:flex-initial sm:w-52' : 'w-full sm:w-52'} inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-xs font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30]">
             <span>${step === TOTAL_STEPS ? t('recommendations.submitBtn') : t('recommendations.nextBtn')}</span>
             <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -223,28 +222,28 @@ function renderStepContent(step) {
             </h2>
             <p class="text-xs text-[#5C3622] mt-1">${t('recommendations.q2Sub')}</p>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+          <div class="space-y-3 pt-2">
             ${dishTypes.map(d => {
               const isChecked = currentAnswers.dishType === d.id;
               return `
-                <label class="wizard-option-card flex items-start gap-3.5 p-4 rounded-2xl border cursor-pointer transition-all duration-200 card-hover-lift ${
+                <label class="wizard-option-card flex items-start justify-between p-4 sm:p-5 rounded-2xl border cursor-pointer transition-all card-hover-lift ${
                   isChecked 
                     ? 'border-[#C84C24] bg-[#FDF4EE] shadow-md ring-2 ring-[#C84C24]/30' 
                     : 'border-[#D49B42]/30 bg-white hover:bg-[#FAF7F2]'
                 }">
-                  <input type="radio" name="dishType" value="${d.id}" class="sr-only" ${isChecked ? 'checked' : ''}/>
-                  <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 bg-white border border-[#D49B42]/35 shadow-2xs text-lg">
-                    ${d.icon}
-                  </div>
-                  <div class="space-y-1">
-                    <div class="flex items-center gap-2">
-                      <strong class="block text-sm text-[#120B07] font-bold">${d.title}</strong>
-                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#FAF7F2] text-[#C84C24] border border-[#D49B42]/30">
-                        ${d.tag}
-                      </span>
+                  <div class="flex items-start gap-3.5">
+                    <input type="radio" name="dishType" value="${d.id}" class="sr-only" ${isChecked ? 'checked' : ''}/>
+                    <div class="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 bg-white border border-[#D49B42]/35 shadow-2xs text-lg">
+                      ${d.icon}
                     </div>
-                    <span class="text-xs text-[#5C3622] leading-snug block">${d.desc}</span>
+                    <div class="space-y-0.5">
+                      <strong class="block text-sm text-[#120B07] font-bold">${d.title}</strong>
+                      <span class="text-xs text-[#5C3622] leading-relaxed block">${d.desc}</span>
+                    </div>
                   </div>
+                  <span class="text-[10px] font-bold text-[#C84C24] bg-[#FAF7F2] px-3 py-1.5 rounded-xl border border-[#D49B42]/35 shadow-2xs shrink-0 whitespace-nowrap ml-3">
+                    ${d.tag}
+                  </span>
                 </label>
               `;
             }).join('')}
@@ -551,32 +550,7 @@ function renderResultView(result) {
         </div>
       </div>
 
-      <!-- 3. Alternative Matches Section (If any) -->
-      ${result.alternatives && result.alternatives.length > 0 ? `
-        <div class="space-y-6 pt-4">
-          <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[#D49B42]/25 pb-3">
-            <div>
-              <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#C84C24]">
-                <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-                <span>${t('recommendations.alternativesTitle')}</span>
-              </div>
-              <h3 class="font-editorial-serif text-2xl font-bold text-[#120B07] mt-1">
-                ${isEn ? 'Other Harmonious Options' : 'Pilihan Kuliner Lain yang Juga Selaras'}
-              </h3>
-            </div>
-            <p class="text-xs text-[#5C3622] max-w-md">
-              ${t('recommendations.alternativesSub')}
-            </p>
-          </div>
-
-          <!-- Grid of Alternative Recipe Cards -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            ${result.alternatives.map(alt => renderRecipeCard(alt)).join('')}
-          </div>
-        </div>
-      ` : ''}
-
-      <!-- 4. Bottom Global Actions -->
+      <!-- 3. Bottom Global Actions -->
       <div class="pt-6 border-t border-[#E8DEC8] flex flex-col sm:flex-row items-center justify-center gap-4">
         <button id="wizard-restart-btn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-[#D49B42]/50 bg-white hover:bg-[#FAF7F2] text-[#120B07] text-xs font-bold transition-all shadow-xs cursor-pointer">
           <span>&larr;</span>
