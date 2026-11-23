@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { regionService } from '../services/regionService.js';
 import { i18n, t } from '../i18n/index.js';
 
