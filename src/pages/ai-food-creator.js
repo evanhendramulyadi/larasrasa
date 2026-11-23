@@ -870,33 +870,18 @@ function renderResultView(recipe, currentLang) {
               <!-- Steps List -->
               <div class="space-y-4 pt-1">
                 ${((isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps)) || []).map((step, idx) => `
-                  <div class="p-5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] space-y-2.5 text-xs hover:border-[#D49B42]/50 transition-colors">
-                    <div class="flex items-center justify-between flex-wrap gap-2">
-                      <div class="flex items-center gap-2">
-                        <span class="w-6 h-6 rounded-full bg-[#120B07] text-[#D49B42] font-bold text-xs flex items-center justify-center font-mono">
-                          ${step.stepNumber || idx + 1}
-                        </span>
-                        <strong class="text-[#120B07] font-bold font-editorial-serif text-sm sm:text-base">
-                          ${escapeHtml(isEn ? (step.titleEn || step.titleId || step.title) : (step.titleId || step.title))}
-                        </strong>
-                      </div>
-                      ${(isEn ? (step.techniqueEn || step.techniqueId || step.technique) : (step.techniqueId || step.technique)) ? `
-                        <div class="flex items-center gap-2">
-                          <span class="text-[10px] font-semibold text-[#C84C24] bg-[#FDF4EE] px-2.5 py-0.5 rounded-md border border-[#C84C24]/20">
-                            ${escapeHtml(isEn ? (step.techniqueEn || step.techniqueId || step.technique) : (step.techniqueId || step.technique))}
-                          </span>
-                        </div>
-                      ` : ''}
+                  <div class="p-5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] space-y-2 text-xs hover:border-[#D49B42]/50 transition-colors">
+                    <div class="flex items-center gap-2.5">
+                      <span class="w-6 h-6 rounded-full bg-[#120B07] text-[#D49B42] font-bold text-xs flex items-center justify-center font-mono shrink-0">
+                        ${step.stepNumber || idx + 1}
+                      </span>
+                      <strong class="text-[#120B07] font-bold font-editorial-serif text-sm sm:text-base">
+                        ${escapeHtml(isEn ? (step.titleEn || step.titleId || step.title) : (step.titleId || step.title))}
+                      </strong>
                     </div>
-                    <p class="text-[#5C3622] leading-relaxed text-xs sm:text-sm pl-8">
+                    <p class="text-[#5C3622] leading-relaxed text-xs sm:text-sm pl-8.5">
                       ${escapeHtml(isEn ? (step.instructionEn || step.instructionId || step.instruction || step.descriptionEn || step.description) : (step.instructionId || step.instruction || step.descriptionId || step.description))}
                     </p>
-                    ${(isEn ? (step.tipEn || step.tipId || step.tip) : (step.tipId || step.tip)) ? `
-                      <div class="mt-2 ml-8 p-3 rounded-xl bg-white border border-[#D49B42]/30 text-[11px] text-[#2E4D38] flex items-start gap-2">
-                        <span class="text-[#D49B42] font-bold">★</span>
-                        <span><strong>${isEn ? 'Technique Tip:' : 'Tips Olah:'}</strong> ${escapeHtml(isEn ? (step.tipEn || step.tipId || step.tip) : (step.tipId || step.tip))}</span>
-                      </div>
-                    ` : ''}
                   </div>
                 `).join('')}
               </div>
@@ -1127,11 +1112,11 @@ export function initAiFoodCreatorInteractions() {
             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          <span>${isEn ? 'Verifying & Formulating...' : 'Memverifikasi & Meracik...'}</span>
+          <span>${isEn ? 'Verifying...' : 'Memverifikasi...'}</span>
         `;
       }
 
-      // Backend Credit Check: Diam di tempat (tidak scroll), pop-up error muncul di bawah jika gagal
+      // Backend Credit Check: Verifikasi cepat, diam di tempat (tidak scroll) jika gagal
       try {
         const creditCheck = await aiFoodCreatorService.checkCredits();
         if (!creditCheck.ok) {
@@ -1151,33 +1136,35 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // 4. Panggil Backend untuk Meracik Resep (Tunggu apakah beneran bisa)
+      // Verifikasi Berhasil: LANGSUNG pindah ke halaman proses racik dan scroll ke atas
+      isGenerating = true;
+      await reRenderCurrentView(false);
+      window.scrollTo({ top: 150, behavior: 'smooth' });
+
+      // Jalankan proses racik resep dengan durasi proses yang cukup terasa (minimal 2.8 detik)
       try {
-        const recipe = await aiFoodCreatorService.generateRecipe({
-          ...formState,
-          outputLanguage: isEn ? 'en' : 'id'
-        });
+        const minProcessingTime = new Promise(resolve => setTimeout(resolve, 2800));
+        const [recipe] = await Promise.all([
+          aiFoodCreatorService.generateRecipe({
+            ...formState,
+            outputLanguage: isEn ? 'en' : 'id'
+          }),
+          minProcessingTime
+        ]);
 
         if (!recipe) {
           throw new Error('Empty recipe response');
         }
 
-        // HANYA JIKA BENAR-BENAR BISA: Baru tampilkan proses dan scroll ke atas
         currentGeneratedRecipe = recipe;
         localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
-
-        isGenerating = true;
-        await reRenderCurrentView(false);
-        window.scrollTo({ top: 150, behavior: 'smooth' });
-
-        await new Promise(resolve => setTimeout(resolve, 600));
 
         isGenerating = false;
         await reRenderCurrentView(false);
         window.scrollTo({ top: 100, behavior: 'smooth' });
 
       } catch (err) {
-        // GAGAL: Pop up error muncul di bawah, layar tetap diam di tempat
+        // Gagal saat generate: kembalikan ke form, diam di tempat, dan tampilkan notifikasi
         isGenerating = false;
         if (err.code === 'CREDIT_EXHAUSTED') {
           sessionAlert = { type: 'credit' };

@@ -109,7 +109,8 @@ PEDOMAN PERACIKAN RESEP:
 
 7. PANDUAN LANGKAH MEMASAK (5 TAHAP):
    - Terdiri dari tepat 5 tahapan memasak berurutan dari persiapan bumbu hingga penyajian.
-   - Setiap langkah memiliki stepNumber, judul langkah (titleId & titleEn), instruksi terperinci (instructionId & instructionEn) dengan perkiraan menit, serta teknik/tips pawon.
+   - Setiap nomor langkah HANYA memiliki stepNumber, judul langkah (titleId & titleEn), dan uraian instruksi (instructionId & instructionEn).
+   - DILARANG menyertakan kiat, tips olah, teknik terpisah, atau kartu tambahan di dalam langkah. Buat sangat simpel: hanya judul dan keterangan instruksi.
 
 FORMAT LUARAN HARUS MENGHASILKAN JSON VALID:
 {
@@ -138,18 +139,14 @@ FORMAT LUARAN HARUS MENGHASILKAN JSON VALID:
     {
       "stepNumber": 1,
       "titleId": "Persiapan Bahan & Penumbukan Bumbu Halus",
-      "instructionId": "Siapkan cobek batu. Selama sekitar 10 menit...",
-      "techniqueId": "Penumbukan Kasar",
-      "tipId": "Sangrai kemiri dan ketumbar terlebih dahulu"
+      "instructionId": "Siapkan cobek batu. Haluskan bawang merah, bawang putih, kemiri sangrai, dan ketumbar hingga lembut merata selama sekitar 10 menit..."
     }
   ],
   "stepsEn": [
     {
       "stepNumber": 1,
       "titleEn": "Ingredient Prep & Grinding Spice Paste",
-      "instructionEn": "Prepare a stone mortar. For about 10 minutes...",
-      "techniqueEn": "Stone Mortar Grinding",
-      "tipEn": "Toast candlenuts and coriander seeds first"
+      "instructionEn": "Prepare a stone mortar. Grind shallots, garlic, toasted candlenuts, and coriander seeds until uniformly smooth for about 10 minutes..."
     }
   ]
 }`;
@@ -1476,12 +1473,8 @@ export const aiFoodCreatorService = {
         const sDesc = isEn 
           ? (st.instructionEn || st.instructionId || st.instruction || st.descriptionEn || st.description)
           : (st.instructionId || st.instruction || st.descriptionId || st.description);
-        const technique = isEn ? (st.techniqueEn || st.techniqueId || st.technique) : (st.techniqueId || st.technique);
-        const tip = isEn ? (st.tipEn || st.tipId || st.tip) : (st.tipId || st.tip);
-
         const descLines = doc.splitTextToSize(sDesc, contentWidth - 6);
-        const tipLines = tip ? doc.splitTextToSize(`${isEn ? 'Technique Tip:' : 'Tips Olah:'} ${tip}`, contentWidth - 6) : [];
-        const needed = 6 + (descLines.length * 4.2) + (tipLines.length ? (tipLines.length * 3.8) + 2 : 0) + 4;
+        const needed = 6 + (descLines.length * 4.2) + 3;
 
         checkPageBreak(needed);
 
@@ -1490,13 +1483,6 @@ export const aiFoodCreatorService = {
         doc.setFontSize(9.5);
         doc.setTextColor(25, 25, 25);
         doc.text(`${stepNum}. ${sTitle}`, margin, curY);
-
-        if (technique) {
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(7.5);
-          doc.setTextColor(200, 76, 36);
-          doc.text(`[${technique}]`, pageWidth - margin, curY, { align: 'right' });
-        }
         curY += 4.8;
 
         // Step Instruction
@@ -1504,18 +1490,7 @@ export const aiFoodCreatorService = {
         doc.setFontSize(8.3);
         doc.setTextColor(55, 45, 40);
         doc.text(descLines, margin + 4, curY);
-        curY += (descLines.length * 4.2) + 1.5;
-
-        // Technique tip if exists
-        if (tipLines.length) {
-          doc.setFont('helvetica', 'italic');
-          doc.setFontSize(7.8);
-          doc.setTextColor(46, 77, 56);
-          doc.text(tipLines, margin + 4, curY);
-          curY += (tipLines.length * 3.8) + 1.5;
-        }
-
-        curY += 3.5;
+        curY += (descLines.length * 4.2) + 2.5;
       });
     }
 
