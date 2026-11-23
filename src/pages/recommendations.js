@@ -1,5 +1,6 @@
 import { recommendationService } from '../services/recommendationService.js';
 import { flavorProfiles, getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
+import { openRecipeModal } from '../components/recipe-modal.js';
 import { t, i18n } from '../i18n/index.js';
 
 /**
@@ -14,24 +15,22 @@ let wizardStep = 1;
 const TOTAL_STEPS = 3;
 
 let currentAnswers = {
-  flavor: '',
+  flavor: flavorProfiles[0]?.id || 'manis',
   dishType: 'kuah-segar',
   regionPreference: 'semua',
   servings: 4
 };
-let validationError = null;
 let activeResult = null;
 let isProcessing = false;
 
 export function resetRecommendationsWizard() {
   wizardStep = 1;
   currentAnswers = {
-    flavor: '',
+    flavor: flavorProfiles[0]?.id || 'manis',
     dishType: 'kuah-segar',
     regionPreference: 'semua',
     servings: 4
   };
-  validationError = null;
   activeResult = null;
   isProcessing = false;
 }
@@ -107,19 +106,6 @@ function renderWizardView(step) {
 
       <!-- Step Card Container -->
       <div class="pawon-glass p-6 sm:p-10 rounded-3xl border border-[#D49B42]/40 shadow-lg space-y-8">
-        
-        <!-- Inline Validation Alert (if any) -->
-        ${validationError ? `
-          <div id="wizard-validation-alert" class="p-4 rounded-2xl bg-rose-50 border border-rose-300 text-rose-900 text-xs flex items-center gap-3 animate-shake">
-            <svg class="w-5 h-5 text-rose-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="8" x2="12" y2="12"/>
-              <line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            <span class="font-bold">${validationError}</span>
-          </div>
-        ` : ''}
-
         ${renderStepContent(step)}
 
         <!-- Navigation Buttons -->
@@ -420,7 +406,7 @@ function renderResultView(result) {
           
           <!-- Left Column: Hero Macro Image Showcase (5 Cols) -->
           <div class="lg:col-span-5 relative group">
-            <div class="relative aspect-4/3 lg:aspect-4/5 w-full rounded-3xl overflow-hidden bg-[#120B07] border border-[#D49B42]/30 shadow-md">
+            <div class="relative aspect-4/3 lg:aspect-4/5 w-full rounded-3xl overflow-hidden bg-[#120B07] border border-[#D49B42]/30 shadow-md cursor-pointer" data-recipe-slug="${primary.slug}">
               <img src="${primary.image}" 
                    alt="${primary.name}" 
                    class="w-full h-full object-cover group-hover:scale-106 transition-transform duration-700 ease-out" 
@@ -529,37 +515,20 @@ function renderResultView(result) {
               </div>
             </div>
 
-            <!-- Primary Action CTAs -->
-            <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <a href="${isEn ? `#/recipes/${primary.slug}` : `#/resep/${primary.slug}`}" 
-                 class="flex-1 inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs sm:text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center">
+            <!-- Primary Action CTA -->
+            <div class="pt-2">
+              <button type="button" 
+                      id="open-recommendation-recipe-btn" 
+                      data-recipe-slug="${primary.slug}"
+                      class="w-full inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center cursor-pointer">
                 <span>${t('recommendations.openRecipeBtn')}</span>
-                <span>&rarr;</span>
-              </a>
-
-              <button id="wizard-restart-btn-spotlight" 
-                      type="button" 
-                      class="px-5 py-3.5 rounded-full text-xs font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs text-center flex items-center justify-center gap-1.5">
-                <span>↺</span>
-                <span>${t('recommendations.restartBtn')}</span>
+                <span class="text-base">&rarr;</span>
               </button>
             </div>
 
           </div>
 
         </div>
-      </div>
-
-      <!-- 3. Bottom Global Actions -->
-      <div class="pt-6 border-t border-[#E8DEC8] flex flex-col sm:flex-row items-center justify-center gap-4">
-        <button id="wizard-restart-btn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full border border-[#D49B42]/50 bg-white hover:bg-[#FAF7F2] text-[#120B07] text-xs font-bold transition-all shadow-xs cursor-pointer">
-          <span>&larr;</span>
-          <span>${t('recommendations.restartBtn')}</span>
-        </button>
-        <a href="${isEn ? '#/recipes' : '#/resep'}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#120B07] hover:bg-[#C84C24] text-white text-xs font-bold transition-all shadow-md text-center">
-          <span>${t('recipesSection.viewAll')}</span>
-          <span>&rarr;</span>
-        </a>
       </div>
 
     </div>
@@ -577,17 +546,18 @@ export function initRecommendationsInteractions(onRerender) {
         const name = radio.name;
         const val = radio.value;
         currentAnswers[name] = val;
-        validationError = null;
 
-        // Visual update
+        // Visual update preserving layout classes
         const siblings = document.querySelectorAll(`input[name="${name}"]`);
         siblings.forEach(s => {
           const parent = s.closest('.wizard-option-card');
           if (parent) {
             if (s.checked) {
-              parent.className = 'wizard-option-card flex items-start gap-3.5 p-4 rounded-2xl border cursor-pointer transition-all duration-200 card-hover-lift border-[#C84C24] bg-[#FDF4EE] shadow-md ring-2 ring-[#C84C24]/30';
+              parent.classList.add('border-[#C84C24]', 'bg-[#FDF4EE]', 'shadow-md', 'ring-2', 'ring-[#C84C24]/30');
+              parent.classList.remove('border-[#D49B42]/30', 'bg-white', 'hover:bg-[#FAF7F2]');
             } else {
-              parent.className = 'wizard-option-card flex items-start gap-3.5 p-4 rounded-2xl border cursor-pointer transition-all duration-200 card-hover-lift border-[#D49B42]/30 bg-white hover:bg-[#FAF7F2]';
+              parent.classList.remove('border-[#C84C24]', 'bg-[#FDF4EE]', 'shadow-md', 'ring-2', 'ring-[#C84C24]/30');
+              parent.classList.add('border-[#D49B42]/30', 'bg-white', 'hover:bg-[#FAF7F2]');
             }
           }
         });
@@ -599,13 +569,6 @@ export function initRecommendationsInteractions(onRerender) {
   const nextBtn = document.getElementById('wizard-next-btn');
   if (nextBtn) {
     nextBtn.addEventListener('click', async () => {
-      // Validate step 1
-      if (wizardStep === 1 && !currentAnswers.flavor) {
-        validationError = t('recommendations.validationFlavor');
-        if (typeof onRerender === 'function') onRerender();
-        return;
-      }
-
       if (wizardStep < TOTAL_STEPS) {
         wizardStep++;
         if (typeof onRerender === 'function') onRerender();
@@ -633,27 +596,19 @@ export function initRecommendationsInteractions(onRerender) {
     prevBtn.addEventListener('click', () => {
       if (wizardStep > 1) {
         wizardStep--;
-        validationError = null;
         if (typeof onRerender === 'function') onRerender();
       }
     });
   }
 
-  // Restart Button (Global & Spotlight)
-  const handleRestart = () => {
-    activeResult = null;
-    wizardStep = 1;
-    currentAnswers = { flavor: '', dishType: 'kuah-segar', regionPreference: 'semua', servings: 4 };
-    if (typeof onRerender === 'function') onRerender();
-  };
-
-  const restartBtn = document.getElementById('wizard-restart-btn');
-  if (restartBtn) {
-    restartBtn.addEventListener('click', handleRestart);
-  }
-
-  const restartBtnSpotlight = document.getElementById('wizard-restart-btn-spotlight');
-  if (restartBtnSpotlight) {
-    restartBtnSpotlight.addEventListener('click', handleRestart);
+  // Open Recipe In-Place Modal
+  const openRecipeBtn = document.getElementById('open-recommendation-recipe-btn');
+  if (openRecipeBtn) {
+    openRecipeBtn.addEventListener('click', () => {
+      const slug = openRecipeBtn.getAttribute('data-recipe-slug');
+      if (slug) {
+        openRecipeModal(slug);
+      }
+    });
   }
 }
