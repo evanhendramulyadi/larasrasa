@@ -276,7 +276,7 @@ export const en = {
     chefTipsTitle: 'Pawon Secrets & Chef Wisdom',
     safetyTitle: 'Food Safety & Heritage Storage Notes',
     backToStudioBtn: 'Back to Recipe Studio',
-    cooldownWarning: 'Recipe generation is limited to once every 10 minutes. Please wait {minutes} more minute(s) before crafting a new recipe.',
+    cooldownWarning: 'Recipe generation is limited to once every 10 minutes. Please wait {minutes} more minute before crafting a new recipe.',
     cooldownAlertTitle: 'Rate Limit Warning',
     errorNoCredits: 'Recipe creation credits are exhausted. Please contact the administrator for additional credits.',
     errorForbidden: 'Supabase service access denied (403 Forbidden). Please ensure Enforce JWT Verification is disabled in Supabase Dashboard to allow the publishable key.',

@@ -155,11 +155,12 @@ function renderFormView(currentLang) {
     if (!sessionAlert) return null;
     if (sessionAlert.type === 'cooldown') {
       const minutes = sessionAlert.minutes || 10;
+      const minuteUnit = minutes === 1 ? 'minute' : 'minutes';
       return {
         badge: isEn ? 'Rate Limit Notice' : 'Peringatan Batas Waktu',
         title: isEn ? 'Cooldown in Effect' : 'Batas Waktu Peracikan Resep',
         text: isEn 
-          ? `Recipe generation is limited to once every 10 minutes. Please wait ${minutes} more minute(s) before crafting a new recipe.`
+          ? `Recipe generation is limited to once every 10 minutes. Please wait ${minutes} more ${minuteUnit} before crafting a new recipe.`
           : `Batas peracikan resep adalah 10 menit sekali. Silakan tunggu ${minutes} menit lagi sebelum meracik resep baru.`,
         isWarning: true
       };
