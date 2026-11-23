@@ -1,4 +1,6 @@
-<img src="public/assets/images/larasrasa-logo.png" alt="LarasRasa Logo" width="100" style="background-color: #ffffff; border-radius: 20%;" />
+<p align="center">
+  <img src="public/assets/images/larasrasa-logo-rounded.png" alt="LarasRasa Logo" width="120">
+</p>
 
 # LarasRasa
 
