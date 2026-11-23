@@ -161,9 +161,7 @@ function renderRegionDetailContent(region) {
 
       <!-- Hidangan Andalan Sentra (Non-clickable, max 3, verified in recipes.js) -->
       <div class="space-y-2">
-        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07]">
-          ${isEn ? 'Signature Heritage Dishes:' : 'Hidangan Andalan Sentra:'}
-        </span>
+        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07]">${isEn ? 'Signature Heritage Dishes:' : 'Hidangan Andalan Sentra:'}</span>
         <div class="flex flex-wrap gap-2">
           ${(region.signatureDishes || []).slice(0, 3).map(dish => `
             <span class="px-3 py-1.5 rounded-xl text-xs bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/35 shadow-2xs inline-flex items-center gap-1.5 select-none pointer-events-none">
@@ -249,10 +247,7 @@ export async function initFlavorMapInteractions() {
         html: `
           <div class="flavor-map-marker-wrapper ${isActive ? 'is-active' : ''}">
             ${isActive ? '' : '<div class="marker-pulse-ring"></div>'}
-            <div class="marker-bubble">
-              ${isActive ? '' : '<span class="marker-dot inline-block w-2 h-2 rounded-full bg-[#C84C24] shrink-0 mr-1.5"></span>'}
-              <span class="marker-name">${displayName}</span>
-            </div>
+            <div class="marker-bubble"><span class="marker-name">${displayName}</span></div>
             <div class="marker-pointer"></div>
           </div>
         `,

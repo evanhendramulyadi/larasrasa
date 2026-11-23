@@ -59,9 +59,7 @@ export async function renderSpicesPage() {
           
           <!-- Mobile Dropdown Selector (khusus mobile, matching Sort & Region dropdown design) -->
           <div class="block md:hidden w-full">
-            <label for="spice-category-select-mobile" class="block text-xs font-bold uppercase tracking-wider text-[#5C3622] mb-2">
-              ${isEn ? 'Filter by Category:' : 'Kategori Rempah:'}
-            </label>
+            <label for="spice-category-select-mobile" class="block text-xs font-bold uppercase tracking-wider text-[#5C3622] mb-2">${isEn ? 'Filter by Category:' : 'Kategori Rempah:'}</label>
             <div class="relative w-full">
               <select id="spice-category-select-mobile" 
                       class="w-full py-3.5 pl-4 pr-10 rounded-2xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-bold text-[#120B07] shadow-xs focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] cursor-pointer appearance-none">

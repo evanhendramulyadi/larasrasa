@@ -169,7 +169,8 @@ body {
 .marker-bubble {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  text-align: center;
   padding: 5px 12px;
   border-radius: 9999px;
   background-color: #C84C24;
