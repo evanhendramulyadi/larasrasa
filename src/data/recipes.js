@@ -943,7 +943,7 @@ export const recipes = [
       note: 'Per porsi porsi sayur megono tanpa nasi putih.'
     },
     relatedRecipeIds: ['mendoan-banyumas', 'garang-asem-kudus', 'soto-kudus'],
-    legendaryRestaurantIds: ['mendoan-eco-21-purwokerto']
+    legendaryRestaurantIds: ['warung-megono-pak-bon-pekalongan']
   },
   {
     id: 'sate-buntel-solo',
@@ -2727,7 +2727,7 @@ export const recipes = [
       note: 'Per porsi semangkuk tauto daging sapi lengkap dengan bihun.'
     },
     relatedRecipeIds: ['nasi-megono-pekalongan', 'soto-kudus', 'garang-asem-kudus'],
-    legendaryRestaurantIds: ['soto-pak-darno', 'toko-oen-semarang']
+    legendaryRestaurantIds: ['warung-megono-pak-bon-pekalongan']
   },
   {
     id: 'sroto-sokaraja-banyumas',

@@ -1308,6 +1308,9 @@ export const restaurantTranslationsEn = {
   'sate-kambing-pak-manto-solo': {
     description: 'Established in 1990. Serves various Solo-style mutton and offal specialties, headlined by its iconic tengkleng rica-rica and sate buntel.'
   },
+  'warung-megono-pak-bon-pekalongan': {
+    description: 'Established in 1963. Serves warm sego megono (young jackfruit minced with seasoned grated coconut) accompanied by various coastal Pekalongan side dishes.'
+  },
   'mendoan-eco-21-purwokerto': {
     description: 'Established in 1990 in the Sawangan area, Purwokerto. Offers freshly fried tempe mendoan as well as take-home uncooked packages and other traditional Banyumas treats.'
   },
