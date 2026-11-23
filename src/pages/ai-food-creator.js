@@ -23,7 +23,7 @@ let searchQuery = '';
 let formState = {
   creatorName: '',
   creatorNickname: '',
-  selectedIngredientIds: ['ayam-kampung', 'bawang-merah', 'bawang-putih', 'kemiri', 'serai', 'daun-salam', 'gula-jawa'],
+  selectedIngredientIds: [],
   cookingMethod: 'ungkep',
   dishCategory: 'lauk',
   tasteProfile: 'manis-gurih',
@@ -49,7 +49,7 @@ export function resetAiFoodCreatorState() {
   formState = {
     creatorName: '',
     creatorNickname: '',
-    selectedIngredientIds: ['ayam-kampung', 'bawang-merah', 'bawang-putih', 'kemiri', 'serai', 'daun-salam', 'gula-jawa'],
+    selectedIngredientIds: [],
     cookingMethod: 'ungkep',
     dishCategory: 'lauk',
     tasteProfile: 'manis-gurih',
@@ -133,16 +133,8 @@ function renderGeneratingState(currentLang) {
 function renderFormView(currentLang) {
   const isEn = currentLang === 'en';
 
-  // Filter ingredients based on active category tab & search query
+  // Filter ingredients directly by search query (no category tabs)
   let filteredIngredients = ALL_INGREDIENTS;
-  if (activeTab === 'protein') {
-    filteredIngredients = INGREDIENT_CATALOG.proteins;
-  } else if (activeTab === 'spice') {
-    filteredIngredients = INGREDIENT_CATALOG.spices;
-  } else if (activeTab === 'vegetable') {
-    filteredIngredients = INGREDIENT_CATALOG.vegetables;
-  }
-
   if (searchQuery.trim().length > 0) {
     const q = searchQuery.toLowerCase().trim();
     filteredIngredients = filteredIngredients.filter(i => 
@@ -257,12 +249,16 @@ function renderFormView(currentLang) {
           <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-2">
             <div class="text-[11px] font-bold text-[#5C3622] uppercase tracking-wider flex items-center justify-between">
               <span>${isEn ? 'Selected Ingredients for Synthesis:' : 'Bahan yang Siap Masuk ke Racikan:'}</span>
-              <span class="text-[#2E4D38] font-bold">${selectedCount === 0 ? (isEn ? 'Select at least 1 ingredient' : 'Pilih minimal 1 bahan') : (isEn ? 'Ready to formulate' : 'Siap diracik')}</span>
+              <span class="font-bold ${selectedCount >= 5 ? 'text-emerald-700' : 'text-[#C84C24]'}">
+                ${selectedCount >= 5 
+                  ? (isEn ? `✓ ${selectedCount} ingredients ready` : `✓ ${selectedCount} bahan siap diracik`)
+                  : (isEn ? `Select at least 5 ingredients (${selectedCount}/5)` : `Pilih minimal 5 bahan (${selectedCount}/5)`)}
+              </span>
             </div>
             <div class="flex flex-wrap gap-1.5">
               ${selectedCount === 0 ? `
                 <span class="text-xs italic text-[#5C3622]">
-                  ${isEn ? 'No ingredients selected yet. Click any ingredient card below to add.' : 'Belum ada bahan yang dipilih. Klik kartu bahan atau rempah di bawah untuk menambahkan.'}
+                  ${isEn ? 'No ingredients selected yet. Click ingredients below to select (minimum 5 ingredients).': 'Belum ada bahan yang dipilih. Klik bahan-bahan di bawah untuk memilih (minimal 5 bahan).'}
                 </span>
               ` : formState.selectedIngredientIds.map(id => {
                 const item = ALL_INGREDIENTS.find(i => i.id === id);
@@ -277,60 +273,37 @@ function renderFormView(currentLang) {
             </div>
           </div>
 
-          <!-- Tabs & Search Bar -->
-          <div class="flex flex-col md:flex-row gap-3 items-stretch justify-between">
-            <div class="inline-flex p-1 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 overflow-x-auto text-xs font-bold text-[#5C3622]">
-              <button type="button" data-tab="all" class="px-4 py-2 rounded-xl transition-all cursor-pointer ${activeTab === 'all' ? 'bg-[#120B07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
-                ${isEn ? 'All Ingredients' : 'Semua Bahan'}
-              </button>
-              <button type="button" data-tab="protein" class="px-4 py-2 rounded-xl transition-all cursor-pointer ${activeTab === 'protein' ? 'bg-[#120B07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
-                ${isEn ? 'Proteins' : 'Protein & Pokok'}
-              </button>
-              <button type="button" data-tab="spice" class="px-4 py-2 rounded-xl transition-all cursor-pointer ${activeTab === 'spice' ? 'bg-[#120B07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
-                ${isEn ? 'Aromatic Spices' : 'Rempah Aromatik'}
-              </button>
-              <button type="button" data-tab="vegetable" class="px-4 py-2 rounded-xl transition-all cursor-pointer ${activeTab === 'vegetable' ? 'bg-[#120B07] text-[#FAF7F2] shadow-xs' : 'hover:text-[#C84C24]'}">
-                ${isEn ? 'Vegetables' : 'Sayur & Pelengkap'}
-              </button>
-            </div>
-
-            <!-- Instant Search Input -->
-            <div class="relative w-full md:w-64">
-              <input 
-                type="text" 
-                id="ingredient-search-input" 
-                placeholder="${isEn ? 'Search ingredients...' : 'Cari bahan atau rempah...'}" 
-                value="${escapeHtml(searchQuery)}"
-                class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white border border-[#E8DEC8] text-xs text-[#120B07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] shadow-inner"
-              />
-              <svg class="w-4 h-4 text-[#C84C24] absolute left-3.5 top-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-              </svg>
-            </div>
+          <!-- Instant Search Input (Single Clean Search Bar) -->
+          <div class="relative w-full">
+            <input 
+              type="text" 
+              id="ingredient-search-input" 
+              placeholder="${isEn ? 'Search ingredients or spices (e.g. Ayam, Kemiri, Bawang, Lengkuas)...' : 'Cari nama bahan atau rempah dapur (contoh: Ayam, Kemiri, Bawang, Serai)...'}" 
+              value="${escapeHtml(searchQuery)}"
+              class="w-full pl-11 pr-4 py-3 rounded-2xl bg-white border border-[#E8DEC8] text-xs sm:text-sm text-[#120B07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] shadow-inner"
+            />
+            <svg class="w-4 h-4 text-[#C84C24] absolute left-4 top-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
           </div>
 
-          <!-- Ingredients Grid (Pure Text Names, Zero Photos/Emojis) -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 max-h-[28rem] overflow-y-auto p-1 custom-scrollbar">
+          <!-- Ingredients Grid (Pure Text Names, Zero Photos/Emojis/Categories) -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 max-h-[30rem] overflow-y-auto p-1 custom-scrollbar">
             ${filteredIngredients.map(item => {
               const isSelected = formState.selectedIngredientIds.includes(item.id);
               return `
                 <button 
                   type="button" 
                   data-ingredient-id="${item.id}"
-                  class="group relative text-left p-3.5 rounded-2xl border transition-all flex items-center justify-between gap-2.5 cursor-pointer card-hover-lift ${
+                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 cursor-pointer card-hover-lift ${
                     isSelected 
                       ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm' 
                       : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8] hover:border-[#D49B42]'
                   }"
                 >
-                  <div class="space-y-0.5 min-w-0 flex-1">
-                    <strong class="text-xs font-bold block truncate leading-snug">
-                      ${isEn ? (item.nameEn || item.nameId) : item.nameId}
-                    </strong>
-                    <span class="text-[10px] uppercase tracking-wider block font-medium truncate ${isSelected ? 'text-[#D49B42]' : 'text-[#5C3622]/80'}">
-                      ${item.category}
-                    </span>
-                  </div>
+                  <strong class="text-xs sm:text-sm font-bold block truncate leading-snug flex-1">
+                    ${isEn ? (item.nameEn || item.nameId) : item.nameId}
+                  </strong>
                   <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${
                     isSelected ? 'bg-[#C84C24] text-white' : 'bg-black/10 text-[#5C3622] group-hover:bg-[#C84C24]/20'
                   }">
@@ -380,7 +353,7 @@ function renderFormView(currentLang) {
             </div>
           </div>
 
-          <!-- Taste Profile & Spice Level -->
+          <!-- Row 1: Regional Flavor & Standard Portions (2 Columns) -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <!-- Taste Profile -->
             <div class="space-y-2">
@@ -397,62 +370,12 @@ function renderFormView(currentLang) {
                   </option>
                 `).join('')}
               </select>
-            </div>
-
-            <!-- Spice Level (Tingkat Kehangatan Lombok) -->
-            <div class="space-y-2.5">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                <label class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-                  ${isEn ? 'Chili Warmth Level (Lombok)' : 'Tingkat Kehangatan Lombok (Kadar Pedas Cabai)'}
-                </label>
-                <span class="text-[11px] font-medium text-[#C84C24]">
-                  ${isEn ? 'Lombok = Javanese term for chili pepper' : 'Lombok = sebutan bahasa Jawa untuk cabai'}
-                </span>
-              </div>
-              <p class="text-[11px] text-[#5C3622]/90 leading-relaxed">
-                ${isEn 
-                  ? 'Determines the pungency of chili in the spice blend, from completely mild to fiery bird’s eye chili.' 
-                  : 'Mengatur takaran dan jenis cabai (lombok) pada bumbu, mulai dari tanpa pedas hingga pedas cabai rawit.'}
+              <p class="text-[11px] text-[#5C3622]/80">
+                ${isEn ? 'Calibrates the authentic regional nuance of Central Javanese cuisine.' : 'Menyesuaikan pakem harmoni rasa khas sentra kuliner Jawa Tengah.'}
               </p>
-              
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                ${[
-                  { id: 0, title: isEn ? 'No Spice' : 'Tanpa Pedas', desc: isEn ? 'Child friendly, no chili' : 'Ramah anak, tanpa cabai', badge: 'Level 0' },
-                  { id: 1, title: isEn ? 'Mild Warmth' : 'Hangat Lembut', desc: isEn ? 'Red chili aroma, subtle' : 'Cabai merah besar beraroma', badge: 'Level 1' },
-                  { id: 2, title: isEn ? 'Medium Hot' : 'Pedas Sedang', desc: isEn ? 'Curly chili, balanced' : 'Cabai keriting lauk harian', badge: 'Level 2' },
-                  { id: 3, title: isEn ? 'Fiery Hot' : 'Pedas Mantap', desc: isEn ? 'Bird’s eye chili kick' : 'Cabai rawit ulek mantap', badge: 'Level 3' }
-                ].map(sl => {
-                  const isSelected = formState.spiceLevel === sl.id;
-                  return `
-                    <label class="p-3.5 rounded-2xl border text-left text-xs font-bold cursor-pointer transition-all card-hover-lift flex flex-col justify-between ${
-                      isSelected 
-                        ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm' 
-                        : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8]'
-                    }">
-                      <input type="radio" name="spiceLevel" value="${sl.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
-                      <div class="flex items-center justify-between">
-                        <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md ${
-                          isSelected ? 'bg-[#C84C24] text-white' : 'bg-[#FAF7F2] text-[#C84C24]'
-                        }">${sl.badge}</span>
-                        <span class="text-xs ${isSelected ? 'text-[#D49B42]' : 'text-emerald-700'} font-bold">
-                          ${isSelected ? '●' : '○'}
-                        </span>
-                      </div>
-                      <div class="mt-2 space-y-0.5">
-                        <strong class="block text-xs font-bold ${isSelected ? 'text-white' : 'text-[#120B07]'}">${sl.title}</strong>
-                        <span class="block text-[10px] ${isSelected ? 'text-white/80' : 'text-[#5C3622]'} font-normal leading-tight">${sl.desc}</span>
-                      </div>
-                    </label>
-                  `;
-                }).join('')}
-              </div>
             </div>
-          </div>
 
-          <!-- FREE NUMERIC SERVINGS INPUT & CUSTOM NOTES -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-            
-            <!-- Fixed Standard 4 Portions Servings Info (No Configuration Needed) -->
+            <!-- Fixed Standard 4 Portions Servings Info -->
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <span class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
@@ -463,38 +386,82 @@ function renderFormView(currentLang) {
                 </span>
               </div>
 
-              <div class="p-4 rounded-2xl border border-[#D49B42]/35 bg-white flex items-center gap-3.5 shadow-2xs">
-                <div class="w-10 h-10 rounded-xl bg-[#1E120A] text-[#D49B42] flex items-center justify-center shrink-0 font-bold text-base">
+              <div class="p-3 rounded-2xl border border-[#D49B42]/35 bg-white flex items-center gap-3 shadow-2xs">
+                <div class="w-9 h-9 rounded-xl bg-[#1E120A] text-[#D49B42] flex items-center justify-center shrink-0 font-bold text-sm">
                   🍽️
                 </div>
                 <div>
-                  <strong class="text-sm text-[#120B07] font-bold block">${isEn ? '4 Portions (Standard Serving)' : '4 Porsi (Takaran Standar)'}</strong>
-                  <span class="text-xs text-[#5C3622] leading-tight block mt-0.5">
+                  <strong class="text-xs sm:text-sm text-[#120B07] font-bold block">${isEn ? '4 Portions (Standard Serving)' : '4 Porsi (Takaran Standar)'}</strong>
+                  <span class="text-[11px] text-[#5C3622] leading-tight block">
                     ${isEn 
-                      ? 'Ingredient measurements and spice ratios are calibrated automatically for 4 portions.' 
+                      ? 'Measurements and spice ratios are calibrated automatically for 4 portions.' 
                       : 'Komposisi bumbu dan takaran bahan otomatis diselaraskan secara pas untuk 4 porsi.'}
                   </span>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Custom Notes -->
-            <div class="space-y-2">
-              <label for="custom-notes-input" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-                ${isEn ? 'Culinary Vision / Special Notes' : 'Catatan Selera Tambahan'}
+          <!-- Row 2: Tingkat Kehangatan Lombok (Baris Sendiri & Lapang) -->
+          <div class="space-y-2.5 pt-2">
+            <div class="flex items-center justify-between">
+              <label class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
+                ${isEn ? 'Chili Warmth Level (Lombok)' : 'Tingkat Kehangatan Lombok'}
               </label>
-              <input 
-                type="text" 
-                id="custom-notes-input" 
-                name="customNotes"
-                value="${escapeHtml(formState.customNotes)}"
-                placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
-                class="w-full px-4 py-3.5 rounded-2xl bg-white border border-[#E8DEC8] text-xs text-[#120B07] focus:ring-2 focus:ring-[#C84C24] shadow-inner"
-              />
-              <p class="text-[11px] text-[#5C3622]/80">
-                ${isEn ? 'Personal preference or creative touch for the recipe formulation.' : 'Sentuhan pribadi atau catatan khusus untuk menyempurnakan racikan rasa.'}
-              </p>
+              <span class="text-[11px] text-[#5C3622]">
+                ${isEn ? '4 Warmth Scales' : '4 Skala Tingkat Pedas'}
+              </span>
             </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              ${[
+                { id: 0, title: isEn ? 'No Spice' : 'Tanpa Pedas', desc: isEn ? 'Child friendly, no chili' : 'Ramah anak, tanpa cabai', badge: 'Level 0' },
+                { id: 1, title: isEn ? 'Mild Warmth' : 'Hangat Lembut', desc: isEn ? 'Red chili aroma, subtle' : 'Cabai merah besar beraroma', badge: 'Level 1' },
+                { id: 2, title: isEn ? 'Medium Hot' : 'Pedas Sedang', desc: isEn ? 'Curly chili, balanced' : 'Cabai keriting lauk harian', badge: 'Level 2' },
+                { id: 3, title: isEn ? 'Fiery Hot' : 'Pedas Mantap', desc: isEn ? 'Bird’s eye chili kick' : 'Cabai rawit ulek mantap', badge: 'Level 3' }
+              ].map(sl => {
+                const isSelected = formState.spiceLevel === sl.id;
+                return `
+                  <label class="p-4 rounded-2xl border text-left text-xs font-bold cursor-pointer transition-all card-hover-lift flex flex-col justify-between ${
+                    isSelected 
+                      ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm' 
+                      : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8]'
+                  }">
+                    <input type="radio" name="spiceLevel" value="${sl.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
+                    <div class="flex items-center justify-between">
+                      <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md ${
+                        isSelected ? 'bg-[#C84C24] text-white' : 'bg-[#FAF7F2] text-[#C84C24]'
+                      }">${sl.badge}</span>
+                      <span class="text-xs ${isSelected ? 'text-[#D49B42]' : 'text-emerald-700'} font-bold">
+                        ${isSelected ? '●' : '○'}
+                      </span>
+                    </div>
+                    <div class="mt-3 space-y-0.5">
+                      <strong class="block text-xs font-bold ${isSelected ? 'text-white' : 'text-[#120B07]'}">${sl.title}</strong>
+                      <span class="block text-[10px] ${isSelected ? 'text-white/80' : 'text-[#5C3622]'} font-normal leading-tight">${sl.desc}</span>
+                    </div>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <!-- Row 3: Custom Culinary Notes -->
+          <div class="space-y-2 pt-2">
+            <label for="custom-notes-input" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
+              ${isEn ? 'Culinary Vision / Special Notes' : 'Catatan Selera Tambahan'}
+            </label>
+            <input 
+              type="text" 
+              id="custom-notes-input" 
+              name="customNotes"
+              value="${escapeHtml(formState.customNotes)}"
+              placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
+              class="w-full px-4 py-3.5 rounded-2xl bg-white border border-[#E8DEC8] text-xs sm:text-sm text-[#120B07] focus:ring-2 focus:ring-[#C84C24] shadow-inner"
+            />
+            <p class="text-[11px] text-[#5C3622]/80">
+              ${isEn ? 'Personal preference or creative touch for the recipe formulation.' : 'Sentuhan pribadi atau catatan khusus untuk menyempurnakan racikan rasa.'}
+            </p>
           </div>
         </section>
 
@@ -1075,12 +1042,12 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      if (formState.selectedIngredientIds.length === 0) {
+      if (formState.selectedIngredientIds.length < 5) {
         validationMessage = isEn 
-          ? 'Please select at least 1 ingredient or spice.' 
-          : 'Mangga pilih paling mboten 1 bahan utawi rempah.';
+          ? `Please select at least 5 ingredients or spices (currently selected: ${formState.selectedIngredientIds.length}/5).` 
+          : `Mangga pilih paling mboten 5 bahan utawi rempah (samangke: ${formState.selectedIngredientIds.length}/5).`;
         reRenderCurrentView();
-        window.scrollTo({ top: 400, behavior: 'smooth' });
+        window.scrollTo({ top: 350, behavior: 'smooth' });
         return;
       }
 

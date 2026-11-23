@@ -129,10 +129,10 @@ export const aiFoodCreatorService = {
       ? creatorName.trim()
       : (outputLanguage === 'en' ? 'LarasRasa Culinary Hearth' : 'Dapur Tradisi LarasRasa');
 
-    if (!Array.isArray(selectedIngredientIds) || selectedIngredientIds.length === 0) {
+    if (!Array.isArray(selectedIngredientIds) || selectedIngredientIds.length < 5) {
       throw new Error(outputLanguage === 'en'
-        ? 'Select at least 1 ingredient or spice to begin culinary synthesis.'
-        : 'Pilih minimal 1 bahan atau rempah untuk memulai penciptaan resep kuliner.');
+        ? 'Select at least 5 ingredients or spices to begin culinary synthesis.'
+        : 'Pilih minimal 5 bahan atau rempah untuk memulai penciptaan resep kuliner.');
     }
 
     // Try future Laravel REST AI endpoint if configured
