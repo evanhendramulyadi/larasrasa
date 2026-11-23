@@ -46,6 +46,7 @@ let currentGeneratedRecipe = null;
 let isGenerating = false;
 let validationMessage = null;
 let toastMessage = null;
+let nameError = false;
 
 export function resetAiFoodCreatorState() {
   activeTab = 'all';
@@ -71,6 +72,7 @@ export function resetAiFoodCreatorState() {
   isGenerating = false;
   validationMessage = null;
   toastMessage = null;
+  nameError = false;
 }
 
 export async function renderAiFoodCreatorPage() {
@@ -189,23 +191,13 @@ function renderFormView(currentLang) {
         </div>
       ` : ''}
 
-      <!-- Validation Error Banner -->
-      ${validationMessage ? `
-        <div class="max-w-4xl mx-auto p-4 rounded-2xl bg-rose-50 border border-rose-300 text-rose-900 text-xs flex items-center justify-between shadow-xs animate-shake">
-          <div class="flex items-center gap-2 font-semibold">
-            <span>${validationMessage}</span>
-          </div>
-          <button type="button" id="dismiss-val-btn" class="text-rose-600 hover:text-rose-900 font-bold ml-2 text-sm cursor-pointer">&times;</button>
-        </div>
-      ` : ''}
-
       <!-- Interactive Studio Form -->
       <form id="ai-creator-form" class="space-y-8 max-w-4xl mx-auto">
         
         <!-- Input Nama Lengkap User (Pencipta Resep) -->
-        <div class="pawon-glass p-5 sm:p-6 rounded-3xl border border-[#D49B42]/35 shadow-xs space-y-2">
+        <div class="pawon-glass p-5 sm:p-6 rounded-3xl border ${nameError ? 'border-rose-400 bg-rose-50/20' : 'border-[#D49B42]/35'} shadow-xs space-y-2 transition-all">
           <div class="flex items-center justify-between">
-            <label for="creator-name-input" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
+            <label for="creator-name-input" class="block text-xs font-bold ${nameError ? 'text-rose-700' : 'text-[#120B07]'} uppercase tracking-wider">
               ${isEn ? 'Your Full Name' : 'Nama Lengkap Anda'} <span class="text-[#C84C24]">*</span>
             </label>
             <span class="text-[10px] font-bold text-[#C84C24] bg-[#FDF4EE] px-2.5 py-0.5 rounded-full border border-[#C84C24]/30">
@@ -218,13 +210,23 @@ function renderFormView(currentLang) {
             name="creatorName"
             value="${escapeHtml(formState.creatorName)}"
             placeholder="${isEn ? 'e.g., Evan Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
-            class="w-full px-4 py-3 rounded-2xl bg-white border border-[#E8DEC8] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] text-sm text-[#120B07] transition-all shadow-inner"
+            class="w-full px-4 py-3 rounded-2xl bg-white border ${
+              nameError 
+                ? 'border-rose-500 ring-2 ring-rose-300 bg-rose-50/30' 
+                : 'border-[#E8DEC8] focus:ring-2 focus:ring-[#C84C24]'
+            } focus:outline-hidden text-sm text-[#120B07] transition-all shadow-inner"
           />
-          <p class="text-[11px] text-[#5C3622]/80">
-            ${isEn 
-              ? 'Your name will be inscribed as the author of this original recipe in the document and downloadable PDF.' 
-              : 'Nama Anda akan dicantumkan sebagai peracik resep pada dokumen pusaka dan berkas unduhan PDF.'}
-          </p>
+          ${nameError ? `
+            <p id="creator-name-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
+              <span>${isEn ? 'Please enter your full name.' : 'Nama lengkap wajib diisi.'}</span>
+            </p>
+          ` : `
+            <p class="text-[11px] text-[#5C3622]/80">
+              ${isEn 
+                ? 'Your name will be inscribed as the author of this original recipe in the document and downloadable PDF.' 
+                : 'Nama Anda akan dicantumkan sebagai peracik resep pada dokumen pusaka dan berkas unduhan PDF.'}
+            </p>
+          `}
         </div>
         
         <!-- SECTION 1: Ingredient Selection -->
@@ -959,15 +961,6 @@ export function initAiFoodCreatorInteractions() {
     };
   }
 
-  // Dismiss Validation
-  const dismissValBtn = document.getElementById('dismiss-val-btn');
-  if (dismissValBtn) {
-    dismissValBtn.onclick = () => {
-      validationMessage = null;
-      reRenderCurrentView();
-    };
-  }
-
   // Tabs for ingredients
   const tabBtns = document.querySelectorAll('[data-tab]');
   tabBtns.forEach(btn => {
@@ -997,9 +990,7 @@ export function initAiFoodCreatorInteractions() {
       const id = card.getAttribute('data-ingredient-id');
       if (formState.selectedIngredientIds.includes(id)) {
         if (formState.selectedIngredientIds.length <= 5) {
-          showToast(isEn 
-            ? 'Minimum 5 ingredients required! Please select another ingredient first before removing.' 
-            : 'Minimal 5 bahan harus terpilih! Silakan pilih bahan lain terlebih dahulu jika ingin mengganti.');
+          showToast(isEn ? 'Minimum 5 ingredients' : 'Minimal 5 bahan');
           return;
         }
         formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
@@ -1017,9 +1008,7 @@ export function initAiFoodCreatorInteractions() {
       e.stopPropagation();
       const id = pill.getAttribute('data-remove-ingredient');
       if (formState.selectedIngredientIds.length <= 5) {
-        showToast(isEn 
-          ? 'Minimum 5 ingredients required! Please select another ingredient first before removing.' 
-          : 'Minimal 5 bahan harus terpilih! Silakan pilih bahan lain terlebih dahulu jika ingin mengganti.');
+        showToast(isEn ? 'Minimum 5 ingredients' : 'Minimal 5 bahan');
         return;
       }
       formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
@@ -1032,9 +1021,7 @@ export function initAiFoodCreatorInteractions() {
   if (clearAllBtn) {
     clearAllBtn.onclick = () => {
       formState.selectedIngredientIds = getRandomFiveIngredients();
-      showToast(isEn 
-        ? 'Selected 5 fresh random ingredients.' 
-        : '5 bahan telah diacak ulang secara otomatis.');
+      showToast(isEn ? 'Minimum 5 ingredients' : 'Minimal 5 bahan');
       reRenderCurrentView();
     };
   }
@@ -1053,6 +1040,13 @@ export function initAiFoodCreatorInteractions() {
   if (nameInput) {
     nameInput.oninput = (e) => {
       formState.creatorName = e.target.value;
+      if (nameError && e.target.value.trim().length > 0) {
+        nameError = false;
+        const errEl = document.getElementById('creator-name-error');
+        if (errEl) errEl.classList.add('hidden');
+        nameInput.classList.remove('border-rose-500', 'ring-2', 'ring-rose-300', 'bg-rose-50/30');
+        nameInput.classList.add('border-[#E8DEC8]');
+      }
     };
   }
 
@@ -1089,27 +1083,23 @@ export function initAiFoodCreatorInteractions() {
     form.onsubmit = async (e) => {
       e.preventDefault();
 
-      
-
       if (!formState.creatorName.trim()) {
-        validationMessage = isEn 
-          ? 'Please enter your Full Name before generating the recipe.' 
-          : 'Mangga isi Nama Lengkap Anda sebelum meracik resep.';
+        nameError = true;
         reRenderCurrentView();
-        window.scrollTo({ top: 150, behavior: 'smooth' });
+        const input = document.getElementById('creator-name-input');
+        if (input) {
+          input.focus();
+          input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
 
       if (formState.selectedIngredientIds.length < 5) {
-        validationMessage = isEn 
-          ? `Please select at least 5 ingredients or spices (currently selected: ${formState.selectedIngredientIds.length}/5).` 
-          : `Mangga pilih paling mboten 5 bahan utawi rempah (samangke: ${formState.selectedIngredientIds.length}/5).`;
-        reRenderCurrentView();
-        window.scrollTo({ top: 350, behavior: 'smooth' });
+        showToast(isEn ? 'Minimum 5 ingredients' : 'Minimal 5 bahan');
         return;
       }
 
-      validationMessage = null;
+      nameError = false;
       isGenerating = true;
       reRenderCurrentView();
       window.scrollTo({ top: 150, behavior: 'smooth' });
