@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/assets/images/larasrasa-logo-rounded.png" alt="LarasRasa Logo" width="120">
+  <img src="public/assets/images/larasrasa-logo-rounded.png" alt="LarasRasa Logo" width="100">
 </p>
 
 # LarasRasa
