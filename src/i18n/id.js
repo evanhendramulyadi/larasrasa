@@ -102,8 +102,8 @@ export const id = {
     resetFilters: 'Atur Ulang Filter',
     showingResults: 'Menampilkan',
     authenticRecipes: 'kuliner autentik warisan',
-    emptyTitle: 'Tidak Ada Kuliner yang Cocok',
-    emptyDesc: 'Coba gunakan kata kunci lain atau pilih filter wilayah dan rasa untuk melihat hidangan lainnya.',
+    emptyTitle: 'Tidak Ditemukan',
+    emptyDesc: 'Tidak ada resep atau kuliner yang sesuai dengan pencarian Anda. Coba cari dengan kata kunci lain.',
     emptyResetBtn: 'Kembalikan Semua Filter',
     viewRecipeBtn: 'Pelajari Sejarah & Resep'
   },
@@ -218,6 +218,8 @@ export const id = {
     searchPlaceholder: 'Cari warung atau restoran (contoh: Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'Kota / Wilayah:',
     allCities: 'Semua Kota',
+    emptyTitle: 'Tidak Ditemukan',
+    emptyDesc: 'Tidak ada tempat makan atau restoran yang sesuai dengan pencarian Anda. Coba cari dengan kata kunci lain.',
     noticeTitle: 'Catatan Sejarah & Dokumentasi Usaha',
     noticeText: 'Tahun berdiri dan sejarah usaha di atas mengikuti informasi dari berbagai sumber pendukung; sebagian detail tahun merupakan perkiraan karena belum memiliki dokumentasi primer yang seragam.',
     noticeText2: 'Data dan informasi ini diriset serta diambil pada tahun 2026. Bisa saja pada saat Anda membaca ini restorannya sudah tidak ada lagi, jadi pastikan status operasional restoran jika ingin berkunjung. Tautan Google Maps yang mengarahkan Anda ketika mengklik tombol "Buka di Peta" akan terus berfungsi selama restoran masih terdaftar di Google Maps.'

@@ -102,8 +102,8 @@ export const en = {
     resetFilters: 'Reset Filters',
     showingResults: 'Showing',
     authenticRecipes: 'authentic heritage dishes',
-    emptyTitle: 'No Matching Dishes Found',
-    emptyDesc: 'Try different keywords or broaden your region and flavor filters to discover other dishes.',
+    emptyTitle: 'Not Found',
+    emptyDesc: 'No matching recipes found. Try searching with another keyword.',
     emptyResetBtn: 'Reset All Filters',
     viewRecipeBtn: 'Explore History & Recipe'
   },
@@ -218,6 +218,8 @@ export const en = {
     searchPlaceholder: 'Search eatery or restaurant (e.g., Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'City / Region:',
     allCities: 'All Cities',
+    emptyTitle: 'Not Found',
+    emptyDesc: 'No matching culinary establishments found. Try searching with another keyword.',
     noticeTitle: 'Historical Documentation & Business Records Notice',
     noticeText: 'The establishment years and business history above follow information from various supporting sources; some year details are approximations due to the absence of uniform primary documentation.',
     noticeText2: 'This data was researched and documented in 2026. It is possible that establishments may no longer be operating when you read this, so please verify the restaurant\'s operational status before visiting. The Google Maps link that directs you when clicking "Open Map" will continue to work as long as the restaurant remains listed on Google Maps.'

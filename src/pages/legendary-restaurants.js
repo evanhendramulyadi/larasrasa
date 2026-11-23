@@ -62,11 +62,6 @@ export async function renderLegendaryRestaurantsPage() {
               `).join('')}
             </select>
           </div>
-
-          <!-- Reset Button -->
-          <button id="restaurant-reset-btn" type="button" class="shrink-0 text-xs font-bold text-[#C84C24] hover:text-[#120B07] underline transition-colors cursor-pointer px-2">
-            ${t('common.reset')}
-          </button>
         </div>
 
         <!-- Status & Results Count Bar -->
@@ -88,7 +83,7 @@ export async function renderLegendaryRestaurantsPage() {
 
       <!-- Restaurant Cards Grid -->
       <div id="restaurants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        ${restaurantsList.map(r => renderRestaurantCard(r)).join('')}
+        ${restaurantsList.length > 0 ? restaurantsList.map(r => renderRestaurantCard(r)).join('') : renderRestaurantEmptyState()}
       </div>
 
       <!-- Historical Documentation & Business Records Reminder Card -->
@@ -108,10 +103,28 @@ export async function renderLegendaryRestaurantsPage() {
   `;
 }
 
+function renderRestaurantEmptyState() {
+  return `
+    <div class="col-span-full py-16 text-center space-y-4 bg-white rounded-3xl border-2 border-dashed border-[#D49B42]/40 p-8 shadow-xs">
+      <div class="w-16 h-16 rounded-3xl bg-[#FAF7F2] border border-[#D49B42]/40 text-[#C84C24] flex items-center justify-center mx-auto shadow-sm">
+        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+      </div>
+      <div class="space-y-1.5 max-w-md mx-auto">
+        <h3 class="font-editorial-serif text-2xl font-bold text-[#120B07]">${t('restaurantsSection.emptyTitle')}</h3>
+        <p class="text-sm text-[#5C3622] leading-relaxed">
+          ${t('restaurantsSection.emptyDesc')}
+        </p>
+      </div>
+    </div>
+  `;
+}
+
 export function initLegendaryRestaurantsInteractions() {
   const searchInput = document.getElementById('restaurant-search-input');
   const citySelect = document.getElementById('restaurant-city-select');
-  const resetBtn = document.getElementById('restaurant-reset-btn');
 
   async function updateResults() {
     const list = await restaurantService.getRestaurants(currentFilter);
@@ -120,12 +133,14 @@ export function initLegendaryRestaurantsInteractions() {
     const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
 
     if (grid) {
-      grid.innerHTML = list.map(r => renderRestaurantCard(r)).join('');
+      grid.innerHTML = list.length > 0 
+        ? list.map(r => renderRestaurantCard(r)).join('') 
+        : renderRestaurantEmptyState();
     }
     if (label) {
       label.innerHTML = isEn 
         ? `Showing <strong class="text-[#120B07]">${list.length}</strong> legendary culinary establishments`
-        : `Nampilaken <strong class="text-[#120B07]">${list.length}</strong> warung & restoran legendaris`;
+        : `Menampilkan <strong class="text-[#120B07]">${list.length}</strong> tempat makan & warung legendaris`;
     }
   }
 
@@ -143,15 +158,6 @@ export function initLegendaryRestaurantsInteractions() {
   if (citySelect) {
     citySelect.addEventListener('change', (e) => {
       currentFilter.city = e.target.value;
-      updateResults();
-    });
-  }
-
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      currentFilter = { city: 'semua', category: 'semua', search: '' };
-      if (searchInput) searchInput.value = '';
-      if (citySelect) citySelect.value = 'semua';
       updateResults();
     });
   }
