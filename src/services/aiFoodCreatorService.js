@@ -105,7 +105,9 @@ PEDOMAN PERACIKAN RESEP:
    - Setiap bahan menyertakan nama (nameId & nameEn), takaran (amount angka), satuan (unitId & unitEn), dan petunjuk persiapan (noteId & noteEn, contoh: "siap olah", "dihaluskan", "memarkan").
 
 6. PERALATAN DAPUR (EQUIPMENT):
-   - Daftar peralatan tradisional yang digunakan, dengan labelId dan labelEn.
+   - Tentukan seluruh peralatan dapur tradisional khas Jawa Tengah yang relevan dan dibutuhkan untuk memasak resep ini secara optimal.
+   - Jumlah peralatan BEBAS dan fleksibel (tidak dibatasi 2, bisa 2, 3, 4, atau lebih sesuai kebutuhan masakan, contoh: Wajan Penggorengan Cekung, Cobek Batu & Ulekan, Spatula Kayu, Panci Kukusan, Kuali Tanah Liat, dll).
+   - Setiap peralatan menyertakan labelId dan labelEn. DILARANG menyertakan emoji apa pun di nama peralatan.
 
 7. PANDUAN LANGKAH MEMASAK (5 TAHAP):
    - Terdiri dari tepat 5 tahapan memasak berurutan dari persiapan bumbu hingga penyajian.
@@ -132,8 +134,9 @@ FORMAT LUARAN HARUS MENGHASILKAN JSON VALID:
     }
   ],
   "equipment": [
-    { "labelId": "Wajan Penggorengan / Wok", "labelEn": "Cooking Wok" },
-    { "labelId": "Cobek Batu & Ulekan", "labelEn": "Stone Mortar & Pestle" }
+    { "labelId": "Wajan Penggorengan Cekung", "labelEn": "Deep Cooking Wok" },
+    { "labelId": "Cobek Batu & Ulekan", "labelEn": "Stone Mortar & Pestle" },
+    { "labelId": "Spatula Kayu", "labelEn": "Wooden Spatula" }
   ],
   "stepsId": [
     {
@@ -564,6 +567,43 @@ export const aiFoodCreatorService = {
   /**
    * Deterministic Culinary Intelligence Synthesizer
    */
+  _resolveDynamicEquipment(cookingMethod) {
+    const mortar = { id: 'cobek', labelId: 'Cobek Batu & Ulekan', labelEn: 'Stone Mortar & Pestle' };
+    const spatula = { id: 'spatula', labelId: 'Spatula Kayu', labelEn: 'Wooden Spatula' };
+
+    if (cookingMethod === 'kukus') {
+      return [
+        { id: 'dandang', labelId: 'Panci Kukusan (Dandang)', labelEn: 'Traditional Food Steamer' },
+        mortar,
+        spatula,
+        { id: 'mangkuk', labelId: 'Mangkuk Keramik Tradisional', labelEn: 'Ceramic Mixing Bowls' }
+      ];
+    }
+    if (cookingMethod === 'panggang') {
+      return [
+        { id: 'panggangan', labelId: 'Panggangan Arang Batok Kelapa', labelEn: 'Coconut Shell Charcoal Grill' },
+        { id: 'kipas', labelId: 'Kipas Bambu Tradisional', labelEn: 'Traditional Bamboo Hand Fan' },
+        mortar,
+        { id: 'kuas', labelId: 'Kuas Olesan Bumbu', labelEn: 'Basting Brush' }
+      ];
+    }
+    if (cookingMethod === 'ungkep' || cookingMethod === 'rebus') {
+      return [
+        { id: 'kuali', labelId: 'Kuali Tanah Liat / Panci Sup Tebal', labelEn: 'Clay Pot / Heavy Stockpot' },
+        mortar,
+        spatula,
+        { id: 'centong', labelId: 'Sendok Sayur Kayu', labelEn: 'Wooden Soup Ladle' }
+      ];
+    }
+    // Default tumis / goreng
+    return [
+      { id: 'wajan', labelId: 'Wajan Penggorengan Cekung', labelEn: 'Deep Cooking Wok' },
+      mortar,
+      spatula,
+      { id: 'saringan', labelId: 'Saringan Kawat Minyak', labelEn: 'Wire Skimmer' }
+    ];
+  },
+
   _synthesizeLocalRecipe(params) {
     const {
       creatorName,
@@ -767,14 +807,7 @@ export const aiFoodCreatorService = {
       baseImage,
       selectedIngredients: selectedIngredients.map(i => i.nameId),
       ingredients: scaledIngredients,
-      equipment: equipment.map(eq => {
-        const found = PREFERENCE_OPTIONS.equipmentList.find(e => e.id === eq);
-        return {
-          id: eq,
-          labelId: found ? found.labelId : eq,
-          labelEn: found ? found.labelEn : eq
-        };
-      }),
+      equipment: this._resolveDynamicEquipment(cookingMethod),
       steps,
       stepsId,
       stepsEn,

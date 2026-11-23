@@ -133,11 +133,13 @@ function renderGeneratingState(currentLang) {
 
       <div class="max-w-xs mx-auto pawon-glass p-4 rounded-2xl border border-[#D49B42]/35 text-xs text-[#5C3622] space-y-2 shadow-sm">
         <div class="flex items-center justify-between font-bold">
-          <span>${isEn ? 'Recipe Formulation & Culinary Document' : 'Peracikan Resep & Dokumen Kuliner'}</span>
-          <span class="text-[#C84C24] font-mono">100%</span>
+          <span id="generating-progress-stage" class="text-xs text-[#5C3622] transition-all">
+            ${isEn ? 'Harmonizing heritage spices...' : 'Menyelaraskan rempah tradisi...'}
+          </span>
+          <span id="generating-progress-percent" class="text-[#C84C24] font-mono">20%</span>
         </div>
         <div class="w-full bg-[#FAF7F2] h-2.5 rounded-full overflow-hidden border border-[#E8DEC8]">
-          <div class="bg-gradient-to-r from-[#D49B42] via-[#C84C24] to-[#2E4D38] h-full rounded-full animate-pulse" style="width: 100%"></div>
+          <div id="generating-progress-bar" class="bg-gradient-to-r from-[#D49B42] via-[#C84C24] to-[#2E4D38] h-full rounded-full transition-all duration-700 ease-out" style="width: 20%"></div>
         </div>
       </div>
     </div>
@@ -334,7 +336,10 @@ function renderFormView(currentLang) {
             ${filteredIngredients.length === 0 ? `
               <div class="col-span-full py-12 px-4 text-center space-y-3 bg-[#FAF7F2] rounded-3xl border border-dashed border-[#D49B42]/50">
                 <div class="w-12 h-12 rounded-full bg-[#120B07] text-[#D49B42] flex items-center justify-center mx-auto text-xl font-bold">
-                  🔍
+                  <svg class="w-5 h-5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
                 </div>
                 <div class="space-y-1">
                   <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07]">
@@ -453,8 +458,11 @@ function renderFormView(currentLang) {
               </div>
 
               <div class="p-3 rounded-2xl border border-[#D49B42]/35 bg-white flex items-center gap-3 shadow-2xs">
-                <div class="w-9 h-9 rounded-xl bg-[#1E120A] text-[#D49B42] flex items-center justify-center shrink-0 font-bold text-sm">
-                  🍽️
+                <div class="w-9 h-9 rounded-xl bg-[#1E120A] text-[#D49B42] flex items-center justify-center shrink-0">
+                  <svg class="w-5 h-5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="9"/>
+                    <circle cx="12" cy="12" r="5" stroke-dasharray="2 2"/>
+                  </svg>
                 </div>
                 <div>
                   <strong class="text-xs sm:text-sm text-[#120B07] font-bold block">${isEn ? '4 Portions (Standard Serving)' : '4 Porsi (Takaran Standar)'}</strong>
@@ -838,8 +846,8 @@ function renderResultView(recipe, currentLang) {
                   ${recipe.equipment.map(eq => {
                     const eqLabel = typeof eq === 'object' ? (isEn ? (eq.labelEn || eq.labelId) : (eq.labelId || eq.labelEn)) : eq;
                     return `
-                      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-[#E8DEC8] text-xs font-semibold text-[#120B07]">
-                        <span>🍳</span>
+                      <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#FAF7F2] border border-[#E8DEC8] text-xs font-semibold text-[#120B07]">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
                         <span>${escapeHtml(eqLabel)}</span>
                       </span>
                     `;
@@ -925,6 +933,39 @@ function renderResultView(recipe, currentLang) {
 export function initAiFoodCreatorInteractions() {
   const form = document.getElementById('ai-creator-form');
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+
+  if (isGenerating) {
+    if (window.__larasRasaProgressTimer) {
+      clearInterval(window.__larasRasaProgressTimer);
+    }
+    const progressBar = document.getElementById('generating-progress-bar');
+    const percentEl = document.getElementById('generating-progress-percent');
+    const stageEl = document.getElementById('generating-progress-stage');
+
+    const stages = isEn ? [
+      { pct: 28, text: 'Harmonizing heritage spices...' },
+      { pct: 54, text: 'Calibrating precise measurements...' },
+      { pct: 79, text: 'Formulating step-by-step cooking guide...' },
+      { pct: 93, text: 'Finalizing authentic recipe document...' }
+    ] : [
+      { pct: 28, text: 'Menyelaraskan rempah tradisi...' },
+      { pct: 54, text: 'Menghitung takaran bumbu presisi...' },
+      { pct: 79, text: 'Menyusun panduan langkah memasak...' },
+      { pct: 93, text: 'Menyempurnakan dokumen resep...' }
+    ];
+
+    let currentStageIdx = 0;
+    window.__larasRasaProgressTimer = setInterval(() => {
+      currentStageIdx++;
+      if (currentStageIdx < stages.length) {
+        const item = stages[currentStageIdx];
+        if (progressBar) progressBar.style.width = `${item.pct}%`;
+        if (percentEl) percentEl.textContent = `${item.pct}%`;
+        if (stageEl) stageEl.textContent = item.text;
+      }
+    }, 700);
+    return;
+  }
 
   // Tabs for ingredients
   const tabBtns = document.querySelectorAll('[data-tab]');
@@ -1159,11 +1200,29 @@ export function initAiFoodCreatorInteractions() {
         currentGeneratedRecipe = recipe;
         localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
 
+        if (window.__larasRasaProgressTimer) {
+          clearInterval(window.__larasRasaProgressTimer);
+          window.__larasRasaProgressTimer = null;
+        }
+
+        const progressBar = document.getElementById('generating-progress-bar');
+        const percentEl = document.getElementById('generating-progress-percent');
+        const stageEl = document.getElementById('generating-progress-stage');
+        if (progressBar) progressBar.style.width = '100%';
+        if (percentEl) percentEl.textContent = '100%';
+        if (stageEl) stageEl.textContent = isEn ? 'Heritage recipe formulated!' : 'Resep pusaka siap disajikan!';
+
+        await new Promise(resolve => setTimeout(resolve, 400));
+
         isGenerating = false;
         await reRenderCurrentView(false);
         window.scrollTo({ top: 100, behavior: 'smooth' });
 
       } catch (err) {
+        if (window.__larasRasaProgressTimer) {
+          clearInterval(window.__larasRasaProgressTimer);
+          window.__larasRasaProgressTimer = null;
+        }
         // Gagal saat generate: kembalikan ke form, diam di tempat, dan tampilkan notifikasi
         isGenerating = false;
         if (err.code === 'CREDIT_EXHAUSTED') {
