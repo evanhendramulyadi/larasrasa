@@ -1070,19 +1070,35 @@ export function initAiFoodCreatorInteractions() {
     form.onsubmit = async (e) => {
       e.preventDefault();
 
+      // 1. Error Nama Belum Diisi: Scroll ke atas ke bagian input nama
       if (!formState.creatorName.trim()) {
         nameError = true;
-        await reRenderCurrentView(true);
+        await reRenderCurrentView(false);
+        const nameBox = document.getElementById('creator-name-box');
+        if (nameBox) {
+          nameBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        const input = document.getElementById('creator-name-input');
+        if (input) {
+          setTimeout(() => {
+            input.focus({ preventScroll: true });
+          }, 450);
+        }
         return;
       }
 
+      // Validasi Bahan Minimal 5
       if (formState.selectedIngredientIds.length < 5) {
         ingredientError = true;
-        await reRenderCurrentView(true);
+        await reRenderCurrentView(false);
+        const chipsBox = document.getElementById('ingredient-chips-box');
+        if (chipsBox) {
+          chipsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
 
-      // 2. 10-Minute Cooldown Check
+      // 2. 10-Minute Cooldown Check: Diam di tempat (tidak scroll), pop-up warning muncul di bawah
       const lastGenTimestamp = localStorage.getItem(COOLDOWN_KEY);
       if (lastGenTimestamp) {
         const elapsed = Date.now() - parseInt(lastGenTimestamp, 10);
@@ -1097,7 +1113,7 @@ export function initAiFoodCreatorInteractions() {
         }
       }
 
-      // 3. Backend Credit Check
+      // 3. Backend Credit Check: Diam di tempat (tidak scroll), pop-up error muncul di bawah
       try {
         const creditCheck = await aiFoodCreatorService.checkCredits();
         if (!creditCheck.ok) {
@@ -1105,21 +1121,26 @@ export function initAiFoodCreatorInteractions() {
             sessionAlert = { type: 'credit' };
             await reRenderCurrentView(true);
             return;
-          } else if (creditCheck.error === 'forbidden' || creditCheck.status === 403) {
+          } else if (creditCheck.error === 'forbidden' || creditCheck.status === 403 || creditCheck.error === 'backend_error') {
             sessionAlert = { type: 'backend_error' };
             await reRenderCurrentView(true);
             return;
           }
         }
       } catch (checkErr) {
-        console.warn('Credit check error:', checkErr);
+        sessionAlert = { type: 'backend_error' };
+        await reRenderCurrentView(true);
+        return;
       }
 
+      // 4. Proses Berhasil Mulai: Scroll ke atas untuk melihat proses racik
       nameError = false;
       ingredientError = false;
       sessionAlert = null;
+      const formPositionAtSubmit = window.scrollY;
+
       isGenerating = true;
-      reRenderCurrentView(false);
+      await reRenderCurrentView(false);
       window.scrollTo({ top: 150, behavior: 'smooth' });
 
       try {
@@ -1139,7 +1160,9 @@ export function initAiFoodCreatorInteractions() {
         } else {
           sessionAlert = { type: 'backend_error' };
         }
-        await reRenderCurrentView(true);
+        await reRenderCurrentView(false);
+        // Gagal generate: diam di tempat di tombol racik, tidak nge-scroll ke atas
+        window.scrollTo({ top: formPositionAtSubmit, behavior: 'instant' });
         return;
       }
     };
