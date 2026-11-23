@@ -914,7 +914,7 @@ export const aiFoodCreatorService = {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
     doc.text(
-      isEn ? 'Calibrated by LarasRasa Culinary Intelligence' : 'Dikalibrasi oleh LarasRasa Culinary Intelligence',
+      isEn ? 'Authentic Heritage Culinary Document' : 'Dokumen Resep Pusaka Autentik',
       margin,
       curY + 4.5
     );
@@ -951,14 +951,13 @@ export const aiFoodCreatorService = {
     doc.text(`"${subtitle}"`, margin, curY);
     curY += 6;
 
-    // Creator & Portions Meta
+    // Creator Meta
     const creator = recipe.creatorName || (isEn ? 'LarasRasa Culinary Hearth' : 'Dapur Tradisi LarasRasa');
     const creatorText = isEn ? `Recipe Creator: ${creator}` : `Pencipta Resep: ${creator}`;
-    const metaText = `${creatorText}   •   ${recipe.servings || 4} ${isEn ? 'portions' : 'porsi'}   •   ${recipe.totalTime || (isEn ? '50 mins' : '50 Menit')}`;
     doc.setTextColor(85, 75, 70);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
-    doc.text(metaText, margin, curY);
+    doc.text(creatorText, margin, curY);
     curY += 8;
 
     // 3. Karakter Rasa & Konsep Olahan / Recipe Overview & Flavor Character

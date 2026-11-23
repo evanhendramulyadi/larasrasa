@@ -526,12 +526,10 @@ function formatRecipeAsText(recipe, isEn = false) {
     : (recipe.subtitleId || 'Racikan Resep Dapur Tradisi');
   const creator = recipe.creatorName || (isEn ? 'LarasRasa Culinary Hearth' : 'Dapur Tradisi LarasRasa');
   const creatorLine = isEn ? `Recipe Creator: ${creator}` : `Pencipta Resep: ${creator}`;
-  const headerLine = isEn ? 'Calibrated by LarasRasa Culinary Intelligence' : 'Dikalibrasi oleh LarasRasa Culinary Intelligence';
 
-  // 1. Header & Title Block
+  // 1. Title Block
   sections.push(
-`${headerLine}
-${title}
+`${title}
 "${subtitle}"
 
 ${creatorLine}`
@@ -682,12 +680,6 @@ function renderResultView(recipe, currentLang) {
         <!-- Story & Philosophy Card -->
         <div class="bg-white p-6 sm:p-10 rounded-3xl border-2 border-[#D49B42]/35 shadow-lg space-y-6">
           <div class="space-y-3 pb-6 border-b border-[#E8DEC8]">
-            <div class="flex items-center justify-between gap-3 flex-wrap">
-              <span class="text-xs text-[#5C3622]">
-                ${isEn ? 'Calibrated by LarasRasa Culinary Intelligence' : 'Dikalibrasi oleh LarasRasa Culinary Intelligence'}
-              </span>
-            </div>
-
             <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07] leading-tight">
               ${escapeHtml(recipe.title)}
             </h2>
