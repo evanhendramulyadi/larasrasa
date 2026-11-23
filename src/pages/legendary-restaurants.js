@@ -1,5 +1,7 @@
 import { restaurantService } from '../services/restaurantService.js';
 import { renderRestaurantCard } from '../components/restaurant-card.js';
+import { regions } from '../data/regions.js';
+import { localizeRegion } from '../services/regionService.js';
 import { t, i18n } from '../i18n/index.js';
 
 let currentFilter = {
@@ -55,14 +57,9 @@ export async function renderLegendaryRestaurantsPage() {
             <label class="text-xs font-bold uppercase tracking-wider text-[#5C3622] shrink-0">${t('restaurantsSection.cityFilter')}</label>
             <select id="restaurant-city-select" class="w-full md:w-auto py-3 px-4 rounded-2xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-bold text-[#120B07] focus:ring-2 focus:ring-[#C84C24] cursor-pointer">
               <option value="semua">${t('restaurantsSection.allCities')}</option>
-              <option value="Semarang" ${currentFilter.city === 'Semarang' ? 'selected' : ''}>Kota Semarang</option>
-              <option value="Surakarta" ${currentFilter.city === 'Surakarta' ? 'selected' : ''}>Solo (Surakarta)</option>
-              <option value="Kudus" ${currentFilter.city === 'Kudus' ? 'selected' : ''}>Kab. Kudus</option>
-              <option value="Banyumas" ${currentFilter.city === 'Banyumas' ? 'selected' : ''}>Banyumas (Purwokerto)</option>
-              <option value="Pekalongan" ${currentFilter.city === 'Pekalongan' ? 'selected' : ''}>Pekalongan</option>
-              <option value="Magelang" ${currentFilter.city === 'Magelang' ? 'selected' : ''}>Magelang</option>
-              <option value="Tegal" ${currentFilter.city === 'Tegal' ? 'selected' : ''}>Kota/Kab Tegal</option>
-              <option value="Wonosobo" ${currentFilter.city === 'Wonosobo' ? 'selected' : ''}>Kab. Wonosobo</option>
+              ${regions.map(r => `
+                <option value="${r.id}" ${currentFilter.city === r.id ? 'selected' : ''}>${localizeRegion(r).name}</option>
+              `).join('')}
             </select>
           </div>
 

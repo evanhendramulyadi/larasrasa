@@ -1,4 +1,6 @@
 import { restaurants } from '../data/restaurants.js';
+import { regions } from '../data/regions.js';
+import { localizeRegion } from './regionService.js';
 import { restaurantTranslationsEn } from '../data/translations-en.js';
 import { i18n } from '../i18n/index.js';
 import { API_CONFIG, apiRequest } from './api.js';
@@ -6,13 +8,17 @@ import { API_CONFIG, apiRequest } from './api.js';
 export function localizeRestaurant(restaurant) {
   if (!restaurant) return restaurant;
   const lang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
-  if (lang !== 'en') return { ...restaurant };
+  const region = regions.find(r => r.id === restaurant.regionId);
+  const localizedCity = (lang === 'en' && region) ? localizeRegion(region).name : restaurant.city;
+
+  if (lang !== 'en') return { ...restaurant, city: localizedCity };
 
   const trans = restaurantTranslationsEn[restaurant.id];
-  if (!trans) return { ...restaurant };
+  if (!trans) return { ...restaurant, city: localizedCity };
 
   return {
     ...restaurant,
+    city: localizedCity,
     signatureDish: restaurant.signatureDish,
     category: trans.category || restaurant.category,
     openingHours: trans.openingHours || restaurant.openingHours,

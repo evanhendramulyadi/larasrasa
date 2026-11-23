@@ -3,7 +3,7 @@ export const restaurants = [
     id: 'toko-oen-semarang',
     name: 'Toko Oen Semarang',
     yearEstablished: 1936,
-    city: 'Semarang',
+    city: 'Kota Semarang',
     regionId: 'semarang',
     address: 'Jl. Pemuda No. 52, Pandansari, Semarang Tengah, Kota Semarang 50138',
     coordinates: {
@@ -24,7 +24,7 @@ export const restaurants = [
     id: 'nasi-liwet-wongso-lemu-solo',
     name: 'Nasi Liwet Wongso Lemu',
     yearEstablished: 1950,
-    city: 'Surakarta (Solo)',
+    city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
     address: 'Jl. Teuku Umar, Keprabon, Kec. Banjarsari, Kota Surakarta 57131',
     coordinates: {
@@ -45,7 +45,7 @@ export const restaurants = [
     id: 'soto-kudus-pak-darno',
     name: 'Soto Ayam Kudus Pak Darno',
     yearEstablished: 1968,
-    city: 'Kudus',
+    city: 'Kabupaten Kudus',
     regionId: 'kudus',
     address: 'Jl. KH. Agus Salim No. 25, Panjunan, Kec. Kota Kudus, Kabupaten Kudus 59317',
     coordinates: {
@@ -66,7 +66,7 @@ export const restaurants = [
     id: 'garang-asem-sari-rasa-kudus',
     name: 'Garang Asem Sari Rasa Kudus',
     yearEstablished: 1985,
-    city: 'Kudus',
+    city: 'Kabupaten Kudus',
     regionId: 'kudus',
     address: 'Jl. AKBP Agil Kusumadya No. 20, Jati Kulon, Jati, Kabupaten Kudus 59346',
     coordinates: {
@@ -87,7 +87,7 @@ export const restaurants = [
     id: 'lunpia-gang-lombok-semarang',
     name: 'Lunpia Gang Lombok No. 1',
     yearEstablished: 1890,
-    city: 'Semarang',
+    city: 'Kota Semarang',
     regionId: 'semarang',
     address: 'Gang Lombok No. 1, Purwodinatan, Semarang Tengah (Samping Klenteng Tay Kak Sie), Kota Semarang 50137',
     coordinates: {
@@ -108,7 +108,7 @@ export const restaurants = [
     id: 'selat-solo-mbak-lies',
     name: 'Selat Solo Mbak Lies',
     yearEstablished: 1987,
-    city: 'Surakarta (Solo)',
+    city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
     address: 'Jl. Veteran, Gang II No. 42, Serengan, Kota Surakarta 57155',
     coordinates: {
@@ -129,7 +129,7 @@ export const restaurants = [
     id: 'sate-kambing-pak-manto-solo',
     name: 'Sate Kambing Pak Manto Solo',
     yearEstablished: 1990,
-    city: 'Surakarta (Solo)',
+    city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
     address: 'Jl. Honggowongso No. 36, Sriwedari, Kec. Laweyan, Kota Surakarta 57141',
     coordinates: {
@@ -150,7 +150,7 @@ export const restaurants = [
     id: 'warung-megono-pak-bon-pekalongan',
     name: 'Warung Makan Megono Pak Bon',
     yearEstablished: 1972,
-    city: 'Pekalongan',
+    city: 'Kota & Kab Pekalongan',
     regionId: 'pekalongan',
     address: 'Jl. Cempaka No. 1, Poncol, Pekalongan Timur, Kota Pekalongan 51122',
     coordinates: {
@@ -171,7 +171,7 @@ export const restaurants = [
     id: 'mendoan-echo-banyumas',
     name: 'Mendoan Echo Asli Banyumas',
     yearEstablished: 1983,
-    city: 'Banyumas (Purwokerto)',
+    city: 'Kabupaten Banyumas',
     regionId: 'banyumas',
     address: 'Jl. Mayjen Sutoyo No. 9, Sawangan, Purwokerto Barat, Kabupaten Banyumas 53132',
     coordinates: {
@@ -192,7 +192,7 @@ export const restaurants = [
     id: 'kupat-tahu-pojok-magelang',
     name: 'Kupat Tahu Pojok Magelang',
     yearEstablished: 1942,
-    city: 'Magelang',
+    city: 'Kota & Kab Magelang',
     regionId: 'magelang',
     address: 'Jl. Tentara Pelajar No. 14, Cacaban, Magelang Tengah, Kota Magelang 56121',
     coordinates: {
@@ -213,7 +213,7 @@ export const restaurants = [
     id: 'sate-kambing-wendys-tegal',
     name: 'Sate Kambing Muda Wendy\'s Tegal',
     yearEstablished: 1980,
-    city: 'Tegal',
+    city: 'Kota & Kab Tegal',
     regionId: 'tegal',
     address: 'Jl. Letjen Suprapto No. 59, Kraton, Kec. Tegal Barat, Kota Tegal 52112',
     coordinates: {
@@ -234,7 +234,7 @@ export const restaurants = [
     id: 'mie-ongklok-pak-muhadi-wonosobo',
     name: 'Mie Ongklok Pak Muhadi Wonosobo',
     yearEstablished: 1980,
-    city: 'Wonosobo',
+    city: 'Kabupaten Wonosobo',
     regionId: 'wonosobo',
     address: 'Jl. A. Yani No. 1, Tosari, Jaraksari, Kec. Wonosobo, Kabupaten Wonosobo 56314',
     coordinates: {
