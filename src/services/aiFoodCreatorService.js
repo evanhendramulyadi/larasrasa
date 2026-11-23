@@ -257,7 +257,7 @@ export const aiFoodCreatorService = {
           ok: false, 
           error: 'forbidden', 
           status: 403, 
-          message: 'Akses layanan Supabase ditolak (403 Forbidden).' 
+          message: 'Gagal terhubung ke server backend (403).' 
         };
       }
 
@@ -275,13 +275,12 @@ export const aiFoodCreatorService = {
 
       return { ok: true, credits: data.credits ?? 999 };
     } catch (err) {
-      console.warn('Supabase credit check connection error:', err);
-      // In browsers, a 403 Forbidden from Supabase Gateway without CORS headers triggers TypeError: Failed to fetch
+      console.warn('Backend credit check connection error:', err);
       return { 
         ok: false, 
         error: 'forbidden', 
         status: 403, 
-        message: 'Akses layanan Supabase ditolak (403 Forbidden).' 
+        message: 'Gagal terhubung ke server backend.' 
       };
     }
   },

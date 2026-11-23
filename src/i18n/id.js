@@ -279,8 +279,8 @@ export const id = {
     cooldownWarning: 'Batas peracikan resep adalah 10 menit sekali. Silakan tunggu {minutes} menit lagi sebelum meracik resep baru.',
     cooldownAlertTitle: 'Peringatan Batas Waktu',
     errorNoCredits: 'Kredit peracikan resep telah habis. Silakan hubungi pengelola untuk penambahan kredit.',
-    errorForbidden: 'Akses layanan Supabase ditolak (403 Forbidden). Pastikan Enforce JWT Verification dinonaktifkan di Dashboard Supabase untuk mengizinkan kunci publishable.',
-    errorGeneral: 'Gagal memproses peracikan resep dengan AI. Silakan periksa koneksi dan coba lagi.'
+    errorForbidden: 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.',
+    errorGeneral: 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.'
   },
   footer: {
     philosophy: 'Laras melambangkan keselarasan budi pekerti dan keseimbangan rasa; Rasa merangkum kekayaan indra dan kehangatan tradisi dapur Jawa Tengah. Dipersembahkan untuk siapa saja yang mencintai warisan rasa Nusantara.',

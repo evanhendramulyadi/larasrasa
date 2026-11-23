@@ -175,20 +175,20 @@ function renderFormView(currentLang) {
         isWarning: false
       };
     }
-    if (sessionAlert.type === 'forbidden') {
+    if (sessionAlert.type === 'forbidden' || sessionAlert.type === 'backend_error' || sessionAlert.type === 'error') {
       return {
-        badge: isEn ? 'Service Authorization Notice' : 'Pemberitahuan Otorisasi Layanan',
-        title: isEn ? 'Access Denied (403 Forbidden)' : 'Akses Ditolak (403 Forbidden)',
+        badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
+        title: isEn ? 'Backend Connection Notice' : 'Kendala Server Backend',
         text: isEn
-          ? 'Supabase service access denied (403 Forbidden). Please ensure Enforce JWT Verification is disabled in Supabase Dashboard to allow the publishable key.'
-          : 'Akses layanan Supabase ditolak (403 Forbidden). Pastikan Enforce JWT Verification dinonaktifkan di Dashboard Supabase untuk mengizinkan kunci publishable.',
+          ? 'Failed to load recipe from the service backend. Please check your connection or try again shortly.'
+          : 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.',
         isWarning: false
       };
     }
     return {
       badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
-      title: isEn ? 'Generation Error' : 'Kendala Peracikan',
-      text: sessionAlert.text || (isEn ? 'Failed to process recipe generation with AI. Please check your connection and try again.' : 'Gagal memproses peracikan resep dengan AI. Silakan periksa koneksi dan coba lagi.'),
+      title: isEn ? 'Backend Connection Notice' : 'Kendala Server Backend',
+      text: sessionAlert.text || (isEn ? 'Failed to load recipe from the service backend. Please check your connection or try again shortly.' : 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.'),
       isWarning: false
     };
   }
@@ -1072,27 +1072,13 @@ export function initAiFoodCreatorInteractions() {
 
       if (!formState.creatorName.trim()) {
         nameError = true;
-        await reRenderCurrentView();
-        const nameBox = document.getElementById('creator-name-box');
-        if (nameBox) {
-          nameBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        const input = document.getElementById('creator-name-input');
-        if (input) {
-          setTimeout(() => {
-            input.focus({ preventScroll: true });
-          }, 450);
-        }
+        await reRenderCurrentView(true);
         return;
       }
 
       if (formState.selectedIngredientIds.length < 5) {
         ingredientError = true;
-        await reRenderCurrentView();
-        const chipsBox = document.getElementById('ingredient-chips-box');
-        if (chipsBox) {
-          chipsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        await reRenderCurrentView(true);
         return;
       }
 
@@ -1106,34 +1092,22 @@ export function initAiFoodCreatorInteractions() {
             type: 'cooldown',
             minutes: remainingMinutes
           };
-          await reRenderCurrentView();
-          const alertEl = document.getElementById('ai-creator-session-alert');
-          if (alertEl) {
-            alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
+          await reRenderCurrentView(true);
           return;
         }
       }
 
-      // 3. Supabase Credit Check
+      // 3. Backend Credit Check
       try {
         const creditCheck = await aiFoodCreatorService.checkCredits();
         if (!creditCheck.ok) {
           if (creditCheck.error === 'no_credits') {
             sessionAlert = { type: 'credit' };
-            await reRenderCurrentView();
-            const alertEl = document.getElementById('ai-creator-session-alert');
-            if (alertEl) {
-              alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            await reRenderCurrentView(true);
             return;
           } else if (creditCheck.error === 'forbidden' || creditCheck.status === 403) {
-            sessionAlert = { type: 'forbidden' };
-            await reRenderCurrentView();
-            const alertEl = document.getElementById('ai-creator-session-alert');
-            if (alertEl) {
-              alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            sessionAlert = { type: 'backend_error' };
+            await reRenderCurrentView(true);
             return;
           }
         }
@@ -1145,7 +1119,7 @@ export function initAiFoodCreatorInteractions() {
       ingredientError = false;
       sessionAlert = null;
       isGenerating = true;
-      reRenderCurrentView();
+      reRenderCurrentView(false);
       window.scrollTo({ top: 150, behavior: 'smooth' });
 
       try {
@@ -1155,30 +1129,18 @@ export function initAiFoodCreatorInteractions() {
         });
         currentGeneratedRecipe = recipe;
         localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+        isGenerating = false;
+        await reRenderCurrentView(false);
+        window.scrollTo({ top: 100, behavior: 'smooth' });
       } catch (err) {
         isGenerating = false;
         if (err.code === 'CREDIT_EXHAUSTED') {
           sessionAlert = { type: 'credit' };
-        } else if (err.code === 'EDGE_FORBIDDEN') {
-          sessionAlert = { type: 'forbidden' };
         } else {
-          sessionAlert = { 
-            type: 'error',
-            text: isEn 
-              ? 'Failed to connect to Supabase Gemini Edge Function. Please verify that your Edge Function is deployed and accessible.'
-              : 'Gagal terhubung ke Supabase Gemini Edge Function. Pastikan fungsi Edge Function Supabase telah terpasang dan dapat diakses.'
-          };
+          sessionAlert = { type: 'backend_error' };
         }
-        await reRenderCurrentView();
-        const alertEl = document.getElementById('ai-creator-session-alert');
-        if (alertEl) {
-          alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+        await reRenderCurrentView(true);
         return;
-      } finally {
-        isGenerating = false;
-        reRenderCurrentView();
-        window.scrollTo({ top: 100, behavior: 'smooth' });
       }
     };
   }
@@ -1286,11 +1248,15 @@ function setupRadioGroup(name, onChange) {
   });
 }
 
-async function reRenderCurrentView() {
+async function reRenderCurrentView(preserveScroll = true) {
   const container = document.getElementById('page-main-content');
   if (container) {
+    const savedY = preserveScroll ? window.scrollY : null;
     container.innerHTML = await renderAiFoodCreatorPage();
     initAiFoodCreatorInteractions();
+    if (preserveScroll && savedY !== null) {
+      window.scrollTo({ top: savedY, behavior: 'instant' });
+    }
   }
 }
 
