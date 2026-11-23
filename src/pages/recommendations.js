@@ -465,16 +465,16 @@ function renderResultView(result) {
                     "${primary.javaneseName}"
                   </p>
                 ` : ''}
-                <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-semibold text-white">
-                  <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20 text-white font-semibold">
+                <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-semibold text-[#FAF7F2]">
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
                     ${primary.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
                   </span>
                   ${primaryFlavorLabel ? `
-                    <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20 text-white font-semibold">
+                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
                       ${primaryFlavorLabel}
                     </span>
                   ` : ''}
-                  <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20 text-white font-semibold">
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
                     4 ${isEn ? 'Portions' : 'Porsi'}
                   </span>
                 </div>
