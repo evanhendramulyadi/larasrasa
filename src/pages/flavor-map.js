@@ -104,7 +104,7 @@ function renderRegionDetailContent(region) {
       <!-- Region Image Banner -->
       <div class="relative rounded-2xl overflow-hidden aspect-16/9 bg-[#120B07]/10 border border-[#D49B42]/35 shadow-sm">
         <img src="${region.image}" 
-             alt="${region.name}" 
+             alt="${isEn ? `${region.name} Culinary Landscape` : `Lansekap Kuliner ${region.name}`}" 
              class="w-full h-full object-cover"
              onerror="this.onerror=null; this.src='/assets/images/regions/semarang.jpg';"/>
         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>

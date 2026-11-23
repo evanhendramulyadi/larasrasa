@@ -679,7 +679,7 @@ ${creatorLine}`
     sections.push(`${overviewTitle}\n${descText.trim()}`);
   }
 
-  // 3. Bahan & Bumbu Dapur / Ingredients
+  // 3. Ingredients & Seasonings
   if (recipe.ingredients && recipe.ingredients.length > 0) {
     const ingHeader = isEn 
       ? `Ingredients & Kitchen Spices (${recipe.servings || 4} portions)` 
@@ -698,7 +698,7 @@ ${creatorLine}`
     sections.push(`${ingHeader}\n\n${ingLines}`);
   }
 
-  // 4. Peralatan Dapur Tradisional / Equipment
+  // 4. Traditional Kitchen Equipment
   if (recipe.equipment && recipe.equipment.length > 0) {
     const eqHeader = isEn ? 'Traditional Kitchen Equipment:' : 'Peralatan Dapur Tradisional:';
     const eqLines = recipe.equipment.map(eq => {
@@ -709,7 +709,7 @@ ${creatorLine}`
     sections.push(`${eqHeader}\n\n${eqLines}`);
   }
 
-  // 5. Panduan Langkah Memasak / Cooking Steps
+  // 5. Step-by-Step Cooking Guide
   const stepsList = isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps);
   if (stepsList && stepsList.length > 0) {
     const stepsHeader = isEn 
@@ -1142,7 +1142,7 @@ export function initAiFoodCreatorInteractions() {
     form.onsubmit = async (e) => {
       e.preventDefault();
 
-      // 1. Error Nama Belum Diisi: Scroll ke atas ke bagian input nama
+      // 1. Author Name Validation: Scroll up to creator name input
       if (!formState.creatorName.trim()) {
         nameError = true;
         await reRenderCurrentView(false);
@@ -1159,7 +1159,7 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // Validasi Bahan Minimal 5
+      // 2. Minimum Ingredient Validation (at least 5 required)
       if (formState.selectedIngredientIds.length < 5) {
         ingredientError = true;
         await reRenderCurrentView(false);
@@ -1170,7 +1170,7 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // 2. 10-Minute Cooldown Check: Diam di tempat (tidak scroll), pop-up warning muncul di bawah
+      // 3. 10-Minute Cooldown Check: Keep scroll position and display notification
       const lastGenTimestamp = localStorage.getItem(COOLDOWN_KEY);
       if (lastGenTimestamp) {
         const elapsed = Date.now() - parseInt(lastGenTimestamp, 10);
@@ -1185,7 +1185,7 @@ export function initAiFoodCreatorInteractions() {
         }
       }
 
-      // 3. Update tombol racik ke status memverifikasi (diam di tempat di form)
+      // 4. Update submit button to verifying state (stay in place on form)
       nameError = false;
       ingredientError = false;
       sessionAlert = null;
@@ -1203,7 +1203,7 @@ export function initAiFoodCreatorInteractions() {
         `;
       }
 
-      // Backend Credit Check: Verifikasi cepat, diam di tempat (tidak scroll) jika gagal
+      // 5. Backend Credit Check: Fast verification, stay in place if failed
       try {
         const creditCheck = await aiFoodCreatorService.checkCredits();
         if (!creditCheck.ok) {
@@ -1221,14 +1221,14 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // Verifikasi Berhasil: LANGSUNG pindah ke halaman proses racik dan scroll ke atas
+      // 6. Verification Succeeded: Switch immediately to processing screen and scroll up
       isGenerating = true;
       currentGeneratingPercent = 20;
       currentGeneratingStageIdx = 0;
       await reRenderCurrentView(false);
       window.scrollTo({ top: 150, behavior: 'smooth' });
 
-      // Jalankan proses racik resep dengan durasi proses yang cukup terasa (minimal 2.8 detik)
+      // 7. Execute recipe generation with deliberate minimum duration (2.8s)
       try {
         const minProcessingTime = new Promise(resolve => setTimeout(resolve, 2800));
         const [recipe] = await Promise.all([
@@ -1271,7 +1271,7 @@ export function initAiFoodCreatorInteractions() {
           clearInterval(window.__larasRasaProgressTimer);
           window.__larasRasaProgressTimer = null;
         }
-        // Gagal saat generate: kembalikan ke form, diam di tempat, dan tampilkan notifikasi
+        // Generation Failure: Return to form, stay in place, and display notification
         isGenerating = false;
         currentGeneratingPercent = 20;
         currentGeneratingStageIdx = 0;

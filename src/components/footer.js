@@ -45,8 +45,8 @@ export function renderFooter() {
           <div class="lg:col-span-5 space-y-3.5">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-2xl bg-white/5 border border-[#D49B42]/40 flex items-center justify-center p-2 shadow-xs shrink-0">
-                <img src="/assets/images/logo-larasrasa.png" 
-                     alt="LarasRasa Logo" 
+                <img src="/assets/images/larasrasa-logo.png" 
+                     alt="${isEn ? 'LarasRasa Logo' : 'Logo LarasRasa'}" 
                      class="w-full h-full object-contain" />
               </div>
               <div>

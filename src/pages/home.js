@@ -267,7 +267,7 @@ export async function renderHomePage() {
                 <div>
                   <div class="relative w-full h-40 rounded-xl overflow-hidden mb-3.5 bg-white border border-[#E8DEC8]">
                     <img src="${s.image}" 
-                         alt="${s.name}" 
+                         alt="${s.name} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
                          class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
                          loading="lazy"
                          onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>

@@ -5,11 +5,11 @@ import { localizeRecipe } from '../services/recipeService.js';
 import { t, i18n } from '../i18n/index.js';
 
 /**
- * Rekomendasi Kuliner Jawa Tengah (Cultural Culinary Taste Matcher)
+ * Central Javanese Cultural Culinary Taste Matcher
  * 3-step cultural gastronomic curation:
- * Q1: Karakter Rasa (Flavor Profile)
- * Q2: Tipe Santapan (Dining Experience & Dish Style)
- * Q3: Kawasan Budaya (Regional Heritage Exploration)
+ * Q1: Flavor Profile Character
+ * Q2: Dining Experience & Dish Style
+ * Q3: Regional Heritage Exploration
  */
 
 let wizardStep = 1;
@@ -437,7 +437,7 @@ function renderResultView(result) {
           <div class="lg:col-span-5 relative">
             <div class="relative aspect-4/3 lg:aspect-4/5 w-full rounded-3xl overflow-hidden bg-[#120B07] border border-[#D49B42]/30 shadow-md">
               <img src="${primary.image}" 
-                   alt="${primary.name}" 
+                   alt="${primary.name} - ${isEn ? 'Recommended Heritage Dish' : 'Rekomendasi Kuliner Pusaka'}" 
                    class="w-full h-full object-cover" 
                    onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>

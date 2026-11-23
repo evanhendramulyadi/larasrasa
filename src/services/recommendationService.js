@@ -44,7 +44,7 @@ export const recommendationService = {
     const flavorObj = flavorProfiles.find(f => f.id === preferences.flavor);
     const flavorLabel = isEn ? (flavorObj?.nameEn || preferences.flavor) : (flavorObj?.name || preferences.flavor);
 
-    // Engine Penilaian Keselarasan Kuliner Budaya Jawa Tengah yang Presisi & Terpersonalisasi
+    // Precise and personalized Central Javanese cultural culinary harmony scoring engine
     const dishCategories = {
       'kuah-segar': {
         exact: ['soto-kudus', 'timlo-solo', 'garang-asem-kudus', 'selat-solo', 'sroto-sokaraja-banyumas', 'tauto-pekalongan'],
@@ -69,14 +69,14 @@ export const recommendationService = {
       const matchReasons = [];
       const regName = (isEn && regionTranslationsEn?.[recipe.regionId]?.name) || recipe.regionName;
 
-      // 1. Dimensi Karakter Cita Rasa (Bobot Maks: 44 Poin)
+      // 1. Flavor Character Profile Dimension (Max: 44 Points)
       const flavors = recipe.flavorProfiles || [];
       const flavorIndex = flavors.indexOf(preferences.flavor);
       const ingText = (recipe.ingredients || []).map(i => (typeof i === 'string' ? i : (i.name || ''))).join(' ').toLowerCase();
 
       if (flavorIndex === 0) {
         score += 39;
-        // Nuansa bahan autentik khas Jawa Tengah
+        // Authentic regional ingredient nuances
         if (preferences.flavor === 'manis' && (ingText.includes('gula jawa') || ingText.includes('gula merah') || ingText.includes('kelapa') || ingText.includes('kecap'))) score += 3;
         else if (preferences.flavor === 'gurih' && (ingText.includes('santan') || ingText.includes('bawang') || ingText.includes('kemiri'))) score += 3;
         else if (preferences.flavor === 'pedas' && (ingText.includes('cabai') || ingText.includes('rawit'))) score += 3;
@@ -114,7 +114,7 @@ export const recommendationService = {
         else score += 7;
       }
 
-      // 2. Dimensi Tipe Santapan & Pengalaman Makan (Bobot Maks: 36 Poin)
+      // 2. Dining Experience & Dish Style Dimension (Max: 36 Points)
       if (preferences.dishType) {
         const cat = dishCategories[preferences.dishType];
         if (cat?.exact.includes(recipe.id)) {
@@ -140,7 +140,7 @@ export const recommendationService = {
         }
       }
 
-      // 3. Dimensi Eksplorasi Kawasan Budaya (Bobot Maks: 20 Poin)
+      // 3. Cultural Zone Exploration Dimension (Max: 20 Points)
       const regId = (recipe.regionId || '').toLowerCase();
       if (preferences.regionPreference === 'keraton') {
         if (regId === 'surakarta' || regId.includes('solo')) {
@@ -178,7 +178,7 @@ export const recommendationService = {
           score += 5;
         }
       } else {
-        // Semua Sentra Jawa Tengah
+        // All Central Java Culinary Centers
         score += 16;
         if (recipe.javaneseName) score += 2;
         matchReasons.push(isEn

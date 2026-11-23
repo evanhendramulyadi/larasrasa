@@ -2,7 +2,7 @@ import { t, i18n } from '../i18n/index.js';
 import { openRecipeModal } from './recipe-modal.js';
 
 /**
- * Hidangan Pusaka Jawa Tengah — 4 Menu Utama Jamuan Tamu Kehormatan
+ * Central Javanese Heritage Feast — 4 Iconic Guest of Honor Banquet Dishes
  * Centerpiece showcase featuring Central Java's iconic guest feast dishes.
  * Interactive hotspot pins and quick-action menu chips with direct recipe popup modal access.
  */

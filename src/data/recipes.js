@@ -1179,7 +1179,7 @@ export const recipes = [
     legendaryRestaurantIds: ['tahu-gimbal-pak-edy-semarang', 'toko-oen-semarang']
   },
 
-  // 11. Gudeg Komplit Khas Jawa Tengah
+  // 11. Complete Central Javanese Gudeg (Gudeg Komplit)
   {
     id: 'gudeg-komplit',
     slug: 'gudeg-komplit',
@@ -1394,7 +1394,7 @@ export const recipes = [
     legendaryRestaurantIds: ['kupat-tahu-pojok-magelang', 'mendoan-echo-purwokerto']
   },
 
-  // 14. Mie Ongklok Khas Wonosobo
+  // 14. Mie Ongklok of Wonosobo
   {
     id: 'mie-ongklok-wonosobo',
     slug: 'mie-ongklok-wonosobo',
@@ -1500,7 +1500,7 @@ export const recipes = [
     legendaryRestaurantIds: ['kupat-tahu-pojok-magelang', 'mendoan-echo-purwokerto']
   },
 
-  // 15. Tengkleng Kambing Khas Pasar Klewer Solo
+  // 15. Solo Pasar Klewer Goat Tengkleng (Tengkleng Kambing)
   {
     id: 'tengkleng-kambing-solo',
     slug: 'tengkleng-kambing-solo',

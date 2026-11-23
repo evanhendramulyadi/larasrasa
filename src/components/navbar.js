@@ -52,8 +52,8 @@ export function renderNavbar(activeRoute = '/') {
              class="flex items-center gap-2.5 shrink-0 group rounded-2xl px-2 py-1 transition-all duration-200 outline-hidden hover:ring-2 hover:ring-[#C84C24]/80 focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] active:ring-2 active:ring-[#C84C24] cursor-pointer" 
              aria-label="LarasRasa Beranda">
             <div class="w-9 h-9 lg:w-10 lg:h-10 flex items-center justify-center shrink-0">
-              <img src="/assets/images/logo-larasrasa.png" 
-                   alt="LarasRasa Logo" 
+              <img src="/assets/images/larasrasa-logo.png" 
+                   alt="${currentLang === 'id' ? 'Logo LarasRasa' : 'LarasRasa Logo'}" 
                    class="w-full h-full object-contain" />
             </div>
             <div class="flex flex-col">

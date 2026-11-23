@@ -124,7 +124,7 @@ export async function renderSpicesPage() {
             <div>
               <div class="relative w-full aspect-4/3 rounded-2xl overflow-hidden mb-3 bg-[#FAF7F2] border border-[#E8DEC8]">
                 <img src="${spice.image}" 
-                     alt="${spice.name}" 
+                     alt="${spice.name} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
                      class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
                      loading="lazy"
                      onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
@@ -185,7 +185,7 @@ function renderSpiceModal(spice) {
         <!-- Modal Header with Macro Image (Shrink 0) -->
         <div class="relative w-full h-52 sm:h-60 shrink-0 overflow-hidden bg-[#120B07]">
           <img src="${spice.image}" 
-               alt="${spice.name}" 
+               alt="${spice.name} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
                class="w-full h-full object-cover filter brightness-[0.96] contrast-[1.05]"
                onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#120B07] via-black/40 to-transparent"></div>

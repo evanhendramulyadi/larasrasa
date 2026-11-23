@@ -40,7 +40,7 @@ export function renderRecipeModal(rawRecipe) {
         <!-- Modal Header with Food Photograph (Shrink 0) -->
         <div class="relative w-full h-52 sm:h-64 shrink-0 overflow-hidden bg-[#120B07]">
           <img src="${recipe.image}" 
-               alt="${recipe.name}" 
+               alt="${recipe.name} - ${isEn ? 'Traditional Recipe' : 'Resep Tradisional'}" 
                class="w-full h-full object-cover filter brightness-[0.96] contrast-[1.04]"
                onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg'"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#120B07] via-black/45 to-transparent"></div>

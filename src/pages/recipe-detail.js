@@ -132,7 +132,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
       <!-- 2. HERO PHOTOGRAPH -->
       <div class="relative rounded-3xl overflow-hidden border-2 border-[#D49B42]/40 shadow-2xl aspect-16/9 bg-[#120B07]/10">
         <img src="${recipe.image}" 
-             alt="${recipe.name}" 
+             alt="${recipe.name} - ${isEn ? 'Culinary Specialty' : 'Kuliner Khas'}" 
              class="w-full h-full object-cover"
              onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg';"/>
         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>

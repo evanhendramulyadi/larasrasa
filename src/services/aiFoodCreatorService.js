@@ -549,7 +549,7 @@ export const aiFoodCreatorService = {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // 1. Solid Pure Black / Dark Elegant Background Fill (Sesuai instruksi: kosongin hitam aja)
+    // 1. Solid Pure Black / Dark Elegant Background Fill (Clean minimal black fill)
     ctx.fillStyle = '#0F0C0A';
     ctx.fillRect(0, 0, width, height);
 
@@ -560,7 +560,7 @@ export const aiFoodCreatorService = {
     ctx.fillStyle = darkGrad;
     ctx.fillRect(0, 0, width, height);
 
-    // 2. Black Placeholder Center Box for Food Photograph (Kosongin hitam aja)
+    // 2. Black Placeholder Center Box for Food Photograph (Clean minimal black container)
     const photoBoxW = Math.round(width * 0.72);
     const photoBoxH = Math.round(photoBoxW * 0.58);
     const photoBoxX = Math.round((width - photoBoxW) / 2);
@@ -962,7 +962,7 @@ export const aiFoodCreatorService = {
       curY += 2;
     }
 
-    // 4. Bahan & Bumbu Dapur / Ingredients & Kitchen Spices
+    // 4. Ingredients & Kitchen Spices
     if (recipe.ingredients && recipe.ingredients.length > 0) {
       checkPageBreak(20);
       doc.setDrawColor(230, 225, 215);
@@ -1011,7 +1011,7 @@ export const aiFoodCreatorService = {
       curY += 3;
     }
 
-    // 5. Peralatan Dapur Tradisional / Traditional Kitchen Equipment
+    // 5. Traditional Kitchen Equipment
     if (recipe.equipment && recipe.equipment.length > 0) {
       checkPageBreak(14);
       doc.setTextColor(25, 25, 25);
@@ -1028,7 +1028,7 @@ export const aiFoodCreatorService = {
       curY += 7;
     }
 
-    // 6. Tahapan Memasak / Panduan Langkah Memasak
+    // 6. Step-by-Step Cooking Guide
     const stepsList = isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps) || [];
     if (stepsList.length > 0) {
       checkPageBreak(25);

@@ -38,7 +38,7 @@ export function renderRecipeCard(recipe) {
       <!-- Card Image Header with Zoom on Hover -->
       <div class="recipe-card-link relative block overflow-hidden aspect-4/3 bg-[#120B07]/10" aria-label="${recipe.name}">
         <img src="${recipe.image}" 
-             alt="${recipe.name}" 
+             alt="${recipe.name} - ${isEn ? 'Traditional Recipe' : 'Resep Tradisional'}" 
              loading="lazy"
              class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out" 
              onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg';"/>

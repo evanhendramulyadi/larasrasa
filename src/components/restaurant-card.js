@@ -12,7 +12,7 @@ export function renderRestaurantCard(restaurant) {
       <!-- Image Header -->
       <div class="relative aspect-16/10 bg-[#120B07]/10 overflow-hidden">
         <img src="${restaurant.image}" 
-             alt="${restaurant.name}" 
+             alt="${restaurant.name} - ${isEn ? 'Culinary Heritage Destination' : 'Destinasi Kuliner Pusaka'}" 
              loading="lazy"
              class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
              onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg';"/>
