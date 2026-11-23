@@ -45,17 +45,6 @@ export function renderRecipeCard(recipe) {
         
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-75 group-hover:opacity-60 transition-opacity"></div>
         
-        <!-- Regional Badge with Gold Pin -->
-        <div class="absolute top-3.5 left-3.5">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#120B07]/90 text-[#FAF7F2] backdrop-blur-md border border-[#D49B42]/50 shadow-md">
-            <svg class="w-3.5 h-3.5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-            <span>${recipe.regionName}</span>
-          </span>
-        </div>
-
         <!-- Meal Type Category Badge Overlay -->
         <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
           <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
