@@ -364,7 +364,11 @@ export const aiFoodCreatorService = {
       ingredients: scaledIngredients,
       equipment: equipment.map(eq => {
         const found = PREFERENCE_OPTIONS.equipmentList.find(e => e.id === eq);
-        return found ? found.labelId : eq;
+        return {
+          id: eq,
+          labelId: found ? found.labelId : eq,
+          labelEn: found ? found.labelEn : eq
+        };
       }),
       steps,
       stepsId,
@@ -446,18 +450,24 @@ export const aiFoodCreatorService = {
     }
 
     // Seasonings
-    items.push({ 
-      name: isEn ? 'Sea Salt & White Pepper' : 'Garam Laut & Merica Bubuk', 
-      amount: 1, 
-      unit: isEn ? 'tsp / to taste' : 'sdt / secukupnya', 
-      note: isEn ? 'adjust at final tasting' : 'koreksi rasa di akhir' 
-    });
-    items.push({ 
-      name: isEn ? 'Coconut / Cooking Oil' : 'Minyak Kelapa / Kelapa Sawit', 
-      amount: 2, 
-      unit: isEn ? 'tbsp' : 'sdm', 
-      note: isEn ? 'for sautéing aromatic spice paste' : 'untuk menumis bumbu halus' 
-    });
+    pushItem(
+      'Garam Laut & Merica Bubuk',
+      'Sea Salt & White Pepper',
+      1,
+      'sdt / secukupnya',
+      'tsp / to taste',
+      'koreksi rasa di akhir',
+      'adjust at final tasting'
+    );
+    pushItem(
+      'Minyak Kelapa / Kelapa Sawit',
+      'Coconut / Cooking Oil',
+      2,
+      'sdm',
+      'tbsp',
+      'untuk menumis bumbu halus',
+      'for sautéing aromatic spice paste'
+    );
 
     return items;
   },
@@ -888,11 +898,9 @@ export const aiFoodCreatorService = {
     doc.text('DOKUMEN RESEP PUSAKA • EDISI KREASI AUTENTIK', margin, 18);
     doc.text('LarasRasa • Menyelaraskan Rasa Warisan Leluhur', margin, 23);
 
-    // Verification Code
-    const verifyCode = `LR-AI-${Math.abs(recipe.id?.hashCode ? recipe.id.hashCode() : 98214)}-${new Date().getFullYear()}`;
     doc.setTextColor(196, 154, 88);
     doc.setFontSize(8);
-    doc.text(`KODE DOKUMEN: ${verifyCode}`, pageWidth - margin, 18, { align: 'right' });
+    doc.text('KREASI RESEP AUTENTIK', pageWidth - margin, 18, { align: 'right' });
 
     let curY = 38;
 
