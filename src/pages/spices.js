@@ -16,6 +16,7 @@ export function resetSpicesPageState() {
 }
 
 export async function renderSpicesPage() {
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
   const categories = [
     { id: 'semua', label: t('spicesSection.catAll') || 'Semua Rempah' },
     { id: 'aromatik', label: t('spicesSection.catAromatic') || 'Aromatik Pokok' },
@@ -52,29 +53,66 @@ export async function renderSpicesPage() {
         </div>
       </div>
 
-      <!-- Filter Category Controls (1 full-width row per filter on mobile -> 6 rows; flex wrap on desktop) -->
+      <!-- Filter Category Controls (Mobile dropdown & Desktop pills) -->
       <div class="space-y-4">
-        <div class="grid grid-cols-1 md:flex md:flex-wrap items-center gap-2.5 w-full">
-          ${categories.map(c => `
-            <button type="button" 
-                    data-spice-category="${c.id}"
-                    class="spice-cat-btn rempah-pill-btn w-full md:w-auto px-4 py-3 rounded-2xl md:rounded-full text-xs font-bold transition-all cursor-pointer text-center flex items-center justify-center truncate shadow-2xs ${
-                      c.id === activeCategory
-                        ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#C84C24]/30'
-                        : 'bg-white text-[#120B07] border border-[#D49B42]/35 hover:bg-[#FAF7F2]'
-                    }">
-              ${c.label}
-            </button>
-          `).join('')}
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          
+          <!-- Mobile Dropdown Selector (khusus mobile, matching Sort & Region dropdown design) -->
+          <div class="block md:hidden w-full">
+            <label for="spice-category-select-mobile" class="block text-xs font-bold uppercase tracking-wider text-[#5C3622] mb-2 flex items-center gap-1.5">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
+              <span>${isEn ? 'Filter by Category:' : 'Kategori Rempah:'}</span>
+            </label>
+            <div class="relative w-full">
+              <select id="spice-category-select-mobile" 
+                      class="w-full py-3.5 pl-4 pr-10 rounded-2xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-bold text-[#120B07] shadow-xs focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] cursor-pointer appearance-none">
+                ${categories.map(c => `
+                  <option value="${c.id}" ${c.id === activeCategory ? 'selected' : ''}>
+                    ${c.label}
+                  </option>
+                `).join('')}
+              </select>
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3.5 pointer-events-none text-[#C84C24]">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Desktop Category Pills (khusus desktop / tablet) -->
+          <div class="hidden md:flex md:flex-wrap items-center gap-2.5 w-auto">
+            ${categories.map(c => `
+              <button type="button" 
+                      data-spice-category="${c.id}"
+                      class="spice-cat-btn rempah-pill-btn px-4 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer text-center flex items-center justify-center truncate shadow-2xs ${
+                        c.id === activeCategory
+                          ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#C84C24]/30'
+                          : 'bg-white text-[#120B07] border border-[#D49B42]/35 hover:bg-[#FAF7F2]'
+                      }">
+                ${c.label}
+              </button>
+            `).join('')}
+          </div>
+
+          <!-- Counter for Desktop -->
+          <div class="hidden md:flex text-xs font-bold text-[#2E4D38] items-center gap-2 shrink-0">
+            <span class="inline-block w-2 h-2 rounded-full bg-[#C84C24]"></span>
+            <span><strong class="text-[#120B07] font-bold">${filteredSpices.length}</strong> ${t('spicesSection.availableCount')}</span>
+          </div>
+
         </div>
 
-        <!-- Result Counter & Full-Width Separator Line matching cards above and below -->
-        <div class="flex items-center justify-between text-xs text-[#2E4D38] pb-3 border-b border-[#D49B42]/25 w-full">
+        <!-- Result Counter & Full-Width Separator Line for Mobile -->
+        <div class="flex md:hidden items-center justify-between text-xs text-[#2E4D38] pb-3 border-b border-[#D49B42]/25 w-full">
           <div class="font-medium text-xs sm:text-sm flex items-center gap-2">
             <span class="inline-block w-2 h-2 rounded-full bg-[#C84C24] shrink-0"></span>
             <span><strong class="text-[#120B07] font-bold">${filteredSpices.length}</strong> ${t('spicesSection.availableCount')}</span>
           </div>
         </div>
+
+        <!-- Desktop Separator Line -->
+        <div class="hidden md:block border-b border-[#D49B42]/20"></div>
       </div>
 
       <!-- Full-Width Responsive Catalog Grid -->
@@ -344,6 +382,18 @@ export function initSpicesPageInteractions() {
       }
     });
   });
+
+  // Wire Mobile Category Dropdown
+  const mobileSelect = document.getElementById('spice-category-select-mobile');
+  if (mobileSelect) {
+    mobileSelect.addEventListener('change', (e) => {
+      const cat = e.target.value;
+      if (cat) {
+        activeCategory = cat;
+        window.dispatchEvent(new CustomEvent('larasrasa:languagechange'));
+      }
+    });
+  }
 
   const spiceCards = document.querySelectorAll('[data-spice-id]');
   spiceCards.forEach(card => {
