@@ -431,8 +431,12 @@ export const aiFoodCreatorService = {
     let textContent = '';
     if (typeof resultData === 'string') {
       textContent = resultData;
-    } else if (resultData.recipe && typeof resultData.recipe === 'object') {
-      return this._normalizeRecipeObject(resultData.recipe, payload, resolvedCreatorName);
+    } else if (resultData.recipe) {
+      if (typeof resultData.recipe === 'object') {
+        return this._normalizeRecipeObject(resultData.recipe, payload, resolvedCreatorName);
+      } else if (typeof resultData.recipe === 'string') {
+        textContent = resultData.recipe;
+      }
     } else if (resultData.title && (resultData.ingredients || resultData.stepsId)) {
       return this._normalizeRecipeObject(resultData, payload, resolvedCreatorName);
     } else if (resultData.candidates?.[0]?.content?.parts?.[0]?.text) {
