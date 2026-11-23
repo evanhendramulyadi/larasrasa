@@ -925,7 +925,7 @@ export const aiFoodCreatorService = {
     doc.setTextColor(48, 32, 24);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
-    doc.text('Kisah & Karakter Cita Rasa', textLeftMargin, curY + 4);
+    doc.text('Konsep & Karakter Rasa', textLeftMargin, curY + 4);
 
     doc.setTextColor(80, 50, 35);
     doc.setFont('helvetica', 'normal');

@@ -11,10 +11,10 @@ import { i18n, t } from '../i18n/index.js';
  * 
  * Interactive Culinary Studio:
  * - Creator identity & attribution input
- * - Searchable, categorized Central Javanese ingredient catalog with authentic photography
+ * - Searchable Central Javanese ingredient catalog
  * - Culinary calibration: traditional method, taste profile, spice warmth, portion scaling (standard 4 portions), custom notes
- * - Authentic recipe synthesis with scaled measurements, traditional techniques, and cultural lore
- * - Frontend Certificate of Culinary Creation with official digital seal & PDF download
+ * - Authentic recipe synthesis with scaled measurements, traditional techniques, and flavor calibration
+ * - Direct recipe document download (PDF)
  * - 100% reactive bilingual support (ID with Javanese touch & EN)
  */
 
@@ -174,8 +174,8 @@ function renderFormView(currentLang) {
           
           <p class="text-sm sm:text-base text-[#FAF7F2]/85 leading-relaxed">
             ${isEn
-              ? 'Select authentic regional ingredients, calibrate traditional flavors, set your custom portions, and generate an official recipe complete with a certificate of culinary creation.'
-              : 'Pilih bahan rempah autentik Jawa Tengah, tentukan watek rasa tradisi, atur porsi santapan bebas, lan terbitaken resep pusaka jangkep kaliyan piagam apresiasi resmi.'}
+              ? 'Select authentic Central Javanese ingredients, calibrate traditional flavors, and generate a complete recipe ready to download.'
+              : 'Pilih aneka bahan rempah khas Jawa Tengah, tentukan karakter rasa tradisi, dan racik dokumen resep lengkap yang siap diunduh.'}
           </p>
         </div>
       </div>
@@ -500,8 +500,8 @@ function renderFormView(currentLang) {
             </h3>
             <p class="text-xs text-[#FAF7F2]/80 max-w-lg">
               ${isEn 
-                ? 'LarasRasa AI will formulate calibrated measurements, culinary heritage lore, and step-by-step instructions.' 
-                : 'Kecerdasan buatan LarasRasa akan meracik takaran bumbu presisi, narasi sejarah, dan panduan olah pusaka siap unduh.'}
+                ? 'LarasRasa AI will formulate calibrated spice measurements, cooking techniques, and step-by-step instructions ready to download.' 
+                : 'Kecerdasan buatan LarasRasa akan meracik takaran bumbu presisi, teknik memasak, dan panduan olah lengkap yang siap diunduh.'}
             </p>
           </div>
 
@@ -531,7 +531,7 @@ function formatRecipeAsText(recipe, isEn) {
   const lines = [];
   lines.push('====================================================');
   lines.push('LARASRASA • PUSAKA RASA JAWA TENGAH');
-  lines.push(isEn ? `CERTIFIED RECIPE: ${(recipe.title || '').toUpperCase()}` : `DOKUMEN RESEP: ${(recipe.title || '').toUpperCase()}`);
+  lines.push(isEn ? `RECIPE DOCUMENT: ${(recipe.title || '').toUpperCase()}` : `DOKUMEN RESEP: ${(recipe.title || '').toUpperCase()}`);
   if (recipe.javaneseTitle) {
     lines.push(recipe.aksaraJawa ? `${recipe.javaneseTitle} (${recipe.aksaraJawa})` : recipe.javaneseTitle);
   }
@@ -545,9 +545,11 @@ function formatRecipeAsText(recipe, isEn) {
   lines.push(`${isEn ? 'Taste Profile' : 'Karakter Rasa'}: ${recipe.tasteProfile || ''}`);
   lines.push(`${isEn ? 'Registration ID' : 'Nomor Seri Registrasi'}: ${recipe.id || ''}`);
   lines.push('');
-  lines.push(isEn ? '--- PHILOSOPHY & CULINARY NARRATIVE ---' : '--- FILOSOFI & KISAH RASA TRADISI ---');
-  lines.push(recipe.philosophy || '');
-  lines.push('');
+  if (recipe.description || recipe.philosophy) {
+    lines.push(isEn ? '--- RECIPE OVERVIEW ---' : '--- RINGKASAN RESEP ---');
+    lines.push(recipe.description || recipe.philosophy || '');
+    lines.push('');
+  }
   lines.push(isEn ? `--- INGREDIENTS (${recipe.servings || 4} PORTIONS) ---` : `--- RERONCEN BAHAN & BUMBU (${recipe.servings || 4} PORSI) ---`);
   (recipe.ingredients || []).forEach(ing => {
     lines.push(`• ${ing.amount ? `${ing.amount} ${ing.unit || ''}` : ''} ${ing.name}${ing.note ? ` (${ing.note})` : ''}`);
@@ -705,15 +707,17 @@ function renderResultView(recipe, currentLang) {
             
           </div>
 
-          <!-- Cultural Philosophy Narrative -->
-          <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-2">
-            <span class="text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider block">
-              ${isEn ? 'Culinary Lore & Flavor Philosophy' : 'Filosofi Rasa & Kisah Budaya Dapur Tradisi'}
-            </span>
-            <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
-              ${escapeHtml(recipe.philosophy || '')}
-            </p>
-          </div>
+          ${(recipe.description || recipe.philosophy) ? `
+            <!-- Overview & Flavor Profile -->
+            <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-2">
+              <span class="text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider block">
+                ${isEn ? 'Recipe Overview & Flavor Character' : 'Karakter Rasa & Konsep Olahan'}
+              </span>
+              <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
+                ${escapeHtml(recipe.description || recipe.philosophy || '')}
+              </p>
+            </div>
+          ` : ''}
 
           <!-- 4 Recipe Metrics Grid -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
