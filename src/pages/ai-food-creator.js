@@ -47,6 +47,7 @@ let isGenerating = false;
 let validationMessage = null;
 let toastMessage = null;
 let nameError = false;
+let ingredientError = false;
 
 export function resetAiFoodCreatorState() {
   activeTab = 'all';
@@ -73,10 +74,15 @@ export function resetAiFoodCreatorState() {
   validationMessage = null;
   toastMessage = null;
   nameError = false;
+  ingredientError = false;
 }
 
 export async function renderAiFoodCreatorPage() {
   const currentLang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
+
+  if (!formState.selectedIngredientIds || formState.selectedIngredientIds.length < 5) {
+    formState.selectedIngredientIds = getRandomFiveIngredients();
+  }
 
   if (isGenerating) {
     return renderGeneratingState(currentLang);
@@ -180,17 +186,6 @@ function renderFormView(currentLang) {
         </div>
       </div>
 
-      <!-- Toast Feedback Message -->
-      ${toastMessage ? `
-        <div class="max-w-4xl mx-auto p-4 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs flex items-center justify-between shadow-xs">
-          <div class="flex items-center gap-2 font-medium">
-            <span>✓</span>
-            <span>${toastMessage}</span>
-          </div>
-          <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm cursor-pointer">&times;</button>
-        </div>
-      ` : ''}
-
       <!-- Interactive Studio Form -->
       <form id="ai-creator-form" class="space-y-8 max-w-4xl mx-auto">
         
@@ -231,33 +226,30 @@ function renderFormView(currentLang) {
         
         <!-- SECTION 1: Ingredient Selection -->
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6 border border-[#D49B42]/35 shadow-xs">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E8DEC8]">
-            <div class="space-y-0.5">
-              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-                ${isEn ? 'Step 1 • Select Regional Ingredients' : 'Langkah 1 • Pilih Bahan & Rempah Otentik Jawa'}
-              </h2>
-              <p class="text-xs text-[#5C3622]">
-                ${isEn ? 'Select authentic Central Javanese ingredients and spices' : 'Pilih aneka bahan pokok dan bumbu dapur autentik khas Jawa Tengah'}
-              </p>
-            </div>
-            
-            <div class="flex items-center gap-2">
-              <button type="button" id="clear-all-ingredients-btn" class="text-xs font-bold text-rose-600 hover:text-rose-800 underline cursor-pointer">
-                ${isEn ? 'Clear All' : 'Hapus Semua'}
-              </button>
-            </div>
+          <div class="space-y-0.5 pb-4 border-b border-[#E8DEC8]">
+            <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
+              ${isEn ? 'Step 1 • Select Regional Ingredients' : 'Langkah 1 • Pilih Bahan & Rempah Otentik Jawa'}
+            </h2>
+            <p class="text-xs text-[#5C3622]">
+              ${isEn ? 'Select authentic Central Javanese ingredients and spices (minimum 5 ingredients)' : 'Pilih aneka bahan pokok dan bumbu dapur autentik khas Jawa Tengah (minimal 5 bahan)'}
+            </p>
           </div>
 
           <!-- Active Ingredients Chips Bar -->
-          <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-2">
-            <div class="text-[11px] font-bold text-[#5C3622] uppercase tracking-wider flex items-center justify-between">
-              <span>${isEn ? 'Selected Ingredients for Synthesis:' : 'Bahan yang Siap Masuk ke Racikan:'}</span>
-              <span class="font-bold ${selectedCount >= 5 ? 'text-emerald-700' : 'text-[#C84C24]'}">
-                ${selectedCount >= 5 
-                  ? (isEn ? `✓ ${selectedCount} ingredients ready` : `✓ ${selectedCount} bahan siap diracik`)
-                  : (isEn ? `Select at least 5 ingredients (${selectedCount}/5)` : `Pilih minimal 5 bahan (${selectedCount}/5)`)}
+          <div id="ingredient-chips-box" class="p-4 rounded-2xl bg-[#FAF7F2] border ${ingredientError ? 'border-rose-400 bg-rose-50/25 ring-1 ring-rose-300' : 'border-[#D49B42]/30'} space-y-2 transition-all">
+            <div class="text-[11px] font-bold uppercase tracking-wider flex items-center justify-between">
+              <span class="${ingredientError ? 'text-rose-700' : 'text-[#5C3622]'}">
+                ${isEn ? 'Selected Ingredients (Min. 5):' : 'Bahan yang Siap Masuk ke Racikan (Min. 5):'}
+              </span>
+              <span class="font-bold ${ingredientError ? 'text-rose-600' : 'text-emerald-700'}">
+                ✓ ${selectedCount} ${isEn ? 'ingredients ready' : 'bahan siap diracik'}
               </span>
             </div>
+            ${ingredientError ? `
+              <p id="ingredient-min-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
+                <span>${isEn ? 'Minimum 5 ingredients must be selected.' : 'Minimal 5 bahan harus tetap dipilih.'}</span>
+              </p>
+            ` : ''}
             <div class="flex flex-wrap gap-1.5">
               ${selectedCount === 0 ? `
                 <span class="text-xs italic text-[#5C3622]">
@@ -510,8 +502,7 @@ function renderFormView(currentLang) {
             id="generate-recipe-submit-btn"
             class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C84C24] hover:bg-[#AE3E1B] text-[#FAF7F2] font-bold text-sm tracking-wide transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center justify-center gap-2.5 shrink-0 cursor-pointer border border-[#E05A30]"
           >
-            <span>✨</span>
-            <span>${isEn ? 'Synthesize Heritage Recipe' : 'Racik Resep Pusaka ✨'}</span>
+            <span>${isEn ? 'Synthesize Heritage Recipe' : 'Racik Resep Pusaka'}</span>
             <svg class="w-4 h-4 text-[#FAF7F2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -994,11 +985,14 @@ export function initAiFoodCreatorInteractions() {
       const id = card.getAttribute('data-ingredient-id');
       if (formState.selectedIngredientIds.includes(id)) {
         if (formState.selectedIngredientIds.length <= 5) {
-          showToast(isEn ? 'Minimum 5 ingredients' : 'Minimal 5 bahan');
+          ingredientError = true;
+          reRenderCurrentView();
           return;
         }
+        ingredientError = false;
         formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
       } else {
+        ingredientError = false;
         formState.selectedIngredientIds.push(id);
       }
       reRenderCurrentView();
@@ -1012,23 +1006,15 @@ export function initAiFoodCreatorInteractions() {
       e.stopPropagation();
       const id = pill.getAttribute('data-remove-ingredient');
       if (formState.selectedIngredientIds.length <= 5) {
-        showToast(isEn ? 'Minimum 5 ingredients' : 'Minimal 5 bahan');
+        ingredientError = true;
+        reRenderCurrentView();
         return;
       }
+      ingredientError = false;
       formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
       reRenderCurrentView();
     };
   });
-
-  // Clear All Ingredients (Resets to 5 Random Authentic Ingredients)
-  const clearAllBtn = document.getElementById('clear-all-ingredients-btn');
-  if (clearAllBtn) {
-    clearAllBtn.onclick = () => {
-      formState.selectedIngredientIds = getRandomFiveIngredients();
-      showToast(isEn ? 'Minimum 5 ingredients' : 'Minimal 5 bahan');
-      reRenderCurrentView();
-    };
-  }
 
   // Clear Ingredient Search Keyword
   const clearSearchBtn = document.getElementById('clear-ingredient-search-btn');
@@ -1099,11 +1085,17 @@ export function initAiFoodCreatorInteractions() {
       }
 
       if (formState.selectedIngredientIds.length < 5) {
-        showToast(isEn ? 'Minimum 5 ingredients' : 'Minimal 5 bahan');
+        ingredientError = true;
+        reRenderCurrentView();
+        const chipsBox = document.getElementById('ingredient-chips-box');
+        if (chipsBox) {
+          chipsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
 
       nameError = false;
+      ingredientError = false;
       isGenerating = true;
       reRenderCurrentView();
       window.scrollTo({ top: 150, behavior: 'smooth' });
