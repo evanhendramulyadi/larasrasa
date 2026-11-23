@@ -251,18 +251,18 @@ export const aiFoodCreatorService = {
     };
     const regionFlair = isEn ? (regionFlairMapEn[tasteProfile] || 'Central Javanese Style') : (regionFlairMapId[tasteProfile] || 'Khas Jawa Tengah');
 
-    const proteinName = isEn ? (proteinItem.nameEn || proteinItem.nameId) : proteinItem.nameId.replace('Daging ', '').replace(' Segar', '');
+    const proteinName = proteinItem.nameId.replace('Daging ', '').replace(' Segar', '');
+    const methodVerbId = methodVerbMapId[cookingMethod] || 'Olahan';
+    const regionFlairId = regionFlairMapId[tasteProfile] || 'Khas Jawa Tengah';
+    const keySpice1Clean = (keySpice1.split(' ')[0] || '').replace(/[^a-zA-Z]/g, '');
 
-    // Construct Title and Slug
-    const dishBaseName = isEn 
-      ? `${methodVerb} ${proteinName} with ${keySpice1.split(' ')[0]} (${regionFlair})`
-      : `${methodVerb} ${proteinName} ${keySpice1.split(' ')[0]} ${regionFlair}`;
-    
+    // Authentic regional dish name is NEVER translated to English as requested
+    const dishBaseName = `${methodVerbId} ${proteinName} ${keySpice1Clean} (${regionFlairId})`;
     const fullTitle = dishBaseName;
 
-    const javaneseTitle = isEn
-      ? `Central Javanese Hearth Recipe — ${dishBaseName}`
-      : `Racikan Dapur Tradisi — ${dishBaseName}`;
+    const subtitleId = 'Racikan Dapur Tradisi Jawa Tengah';
+    const subtitleEn = 'Authentic Central Javanese Heritage Creation';
+    const javaneseTitle = isEn ? subtitleEn : subtitleId;
 
     const slug = dishBaseName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -277,8 +277,10 @@ export const aiFoodCreatorService = {
     // Generate Ingredients list scaled with exact amounts
     const scaledIngredients = this._generateScaledIngredients(proteinItem, selectedIngredients, servings, dietary, isEn);
 
-    // Generate Step by Step
-    const steps = this._generateCookingSteps(methodVerb, proteinItem, selectedIngredients, servings, spiceLevel, tasteProfile, isEn);
+    // Generate Step by Step in both ID and EN for reactive translation
+    const stepsId = this._generateCookingSteps(methodVerbMapId[cookingMethod] || 'Olahan', proteinItem, selectedIngredients, servings, spiceLevel, tasteProfile, false);
+    const stepsEn = this._generateCookingSteps(methodVerbMapEn[cookingMethod] || 'Artisanal', proteinItem, selectedIngredients, servings, spiceLevel, tasteProfile, true);
+    const steps = isEn ? stepsEn : stepsId;
 
     // Pick appropriate base food image
     let baseImage = RECIPE_IMAGE_POOL.default;
@@ -292,28 +294,26 @@ export const aiFoodCreatorService = {
     else if (dishCategory === 'sayur') baseImage = RECIPE_IMAGE_POOL.sayur;
     else if (dishCategory === 'kudapan') baseImage = RECIPE_IMAGE_POOL.kudapan;
 
-    // Narrative Description (multiple rich paragraphs)
-    const p1 = isEn
-      ? `An authentic culinary creation marrying the heritage technique of ${cookingMethod} with the aromatic depth of ${keySpice1} and ${keySpice2}. Every spice proportion has been calibrated to draw out genuine Central Javanese warmth and rich flavors from the ingredients.`
-      : `Sebuah olahan resep pusaka tradisi yang mengawinkan teknik olah ${cookingMethod} dengan kemegahan aroma rempah ${keySpice1} dan ${keySpice2}. Komposisi bumbu pawon ini diracik secara saksama agar bumbu meresap sempurna dan mengeluarkan sari rasa terbaik.`;
+    // Narrative Description in both ID and EN
+    const p1Id = `Sebuah olahan resep pusaka tradisi yang mengawinkan teknik olah ${cookingMethod} dengan kemegahan aroma rempah ${keySpice1} dan ${keySpice2}. Komposisi bumbu pawon ini diracik secara saksama agar bumbu meresap sempurna dan mengeluarkan sari rasa terbaik.`;
+    const p2Id = `Karakter rasa yang dihadirkan menonjolkan harmoni ${tasteProfile.replace('-', ' ')} khas Jawa Tengah yang gurih, mantap, dan lembut di lidah. Ditakar presisi untuk ${servings} porsi santapan hangat bersama keluarga tercinta.${customNotes ? ` Catatan selera khusus: "${customNotes}".` : ''}`;
+    const p3Id = `Paling pas disajikan hangat mengepul bersama nasi putih pulen, lalapan segar, serta sambal pelengkap untuk menyempurnakan kelezatan cita rasa tradisi.`;
+    const descriptionId = `${p1Id}\n\n${p2Id}\n\n${p3Id}`;
 
-    const p2 = isEn
-      ? `The flavor journey presents a distinct ${tasteProfile.replace('-', ' and ')} harmony that is smooth and comforting on the palate. Designed for ${servings} generous servings, this dish carries the timeless wisdom of traditional family meals.${customNotes ? ` Special flavor touch: "${customNotes}".` : ''}`
-      : `Karakter rasa yang dihadirkan menonjolkan harmoni ${tasteProfile.replace('-', ' ')} khas Jawa Tengah yang gurih, mantap, dan lembut di lidah. Ditakar presisi untuk ${servings} porsi santapan hangat bersama keluarga tercinta.${customNotes ? ` Catatan selera khusus: "${customNotes}".` : ''}`;
+    const p1En = `An authentic culinary creation marrying the heritage technique of ${cookingMethod} with the aromatic depth of ${keySpice1} and ${keySpice2}. Every spice proportion has been calibrated to draw out genuine Central Javanese warmth and rich flavors from the ingredients.`;
+    const p2En = `The flavor journey presents a distinct ${tasteProfile.replace('-', ' and ')} harmony that is smooth and comforting on the palate. Designed for ${servings} generous servings, this dish carries the timeless wisdom of traditional family meals.${customNotes ? ` Special flavor touch: "${customNotes}".` : ''}`
+    const p3En = `Best served hot alongside fluffy white rice, fresh raw vegetables (lalapan), and authentic sambal for a complete Javanese culinary experience.`;
+    const descriptionEn = `${p1En}\n\n${p2En}\n\n${p3En}`;
 
-    const p3 = isEn
-      ? `Best served hot alongside fluffy white rice, fresh raw vegetables (lalapan), and authentic sambal for a complete Javanese culinary experience.`
-      : `Paling pas disajikan hangat mengepul bersama nasi putih pulen, lalapan segar, serta sambal pelengkap untuk menyempurnakan kelezatan cita rasa tradisi.`;
+    const description = isEn ? descriptionEn : descriptionId;
 
-    const description = `${p1}\n\n${p2}\n\n${p3}`;
+    const chefTipsId = `Untuk mendapatkan sari rasa optimal, sangrai rempah kering (ketumbar dan kemiri) di atas wajan tanah liat atau wajan tebal tanpa minyak hingga semerbak wangi sebelum diulek halus. Jika menggunakan santan atau kaldu, gunakan api lilin kecil agar santan tidak pecah dan minyak aromatik terbit perlahan.`;
+    const chefTipsEn = `To achieve optimal essential oil extraction, toast dry whole spices (coriander and candlenuts) on an ungreased heavy pan until fragrant before crushing in a stone mortar. If using coconut milk, maintain a gentle low simmer so the coconut cream does not separate and the spiced oils emerge smoothly.`;
+    const chefTips = isEn ? chefTipsEn : chefTipsId;
 
-    const chefTips = isEn
-      ? `To achieve optimal essential oil extraction, toast dry whole spices (coriander and candlenuts) on an ungreased heavy pan until fragrant before crushing in a stone mortar. If using coconut milk, maintain a gentle low simmer so the coconut cream does not separate and the spiced oils emerge smoothly.`
-      : `Untuk mendapatkan sari rasa optimal, sangrai rempah kering (ketumbar dan kemiri) di atas wajan tanah liat atau wajan tebal tanpa minyak hingga semerbak wangi sebelum diulek halus. Jika menggunakan santan atau kaldu, gunakan api lilin kecil agar santan tidak pecah dan minyak aromatik terbit perlahan.`;
-
-    const safetyNotes = isEn
-      ? `Ensure raw proteins are prepared hygienically and cooked to a safe internal temperature (minimum 74°C for poultry). Store leftovers in an airtight container under refrigeration and reheat thoroughly before savoring.`
-      : `Pastikan bahan protein dicuci bersih dan dimasak hingga matang merata (suhu internal minimal 74°C untuk unggas). Simpan sisa masakan dalam wadah tertutup di lemari pendingin dan hangatkan kembali secara menyeluruh sebelum disantap.`;
+    const safetyNotesId = `Pastikan bahan protein dicuci bersih dan dimasak hingga matang merata (suhu internal minimal 74°C untuk unggas). Simpan sisa masakan dalam wadah tertutup di lemari pendingin dan hangatkan kembali secara menyeluruh sebelum disantap.`;
+    const safetyNotesEn = `Ensure raw proteins are prepared hygienically and cooked to a safe internal temperature (minimum 74°C for poultry). Store leftovers in an airtight container under refrigeration and reheat thoroughly before savoring.`;
+    const safetyNotes = isEn ? safetyNotesEn : safetyNotesId;
 
     return {
       id: `ai-food-${Date.now()}`,
@@ -321,10 +321,14 @@ export const aiFoodCreatorService = {
       title: fullTitle,
       shortTitle: dishBaseName,
       javaneseTitle,
+      subtitleId,
+      subtitleEn,
       creatorName,
       creatorNickname: creatorNickname || creatorName,
       creatorCredit: isEn ? `Officially Created by: ${creatorName}` : `Diciptakan Resmi oleh: ${creatorName}`,
       description,
+      descriptionId,
+      descriptionEn,
       regionName: isEn ? 'Central Java (Original Creation)' : 'Jawa Tengah (Kreasi Mandiri)',
       servings,
       prepTime: isEn ? `${durationData.prep} Mins` : `${durationData.prep} Menit`,
@@ -347,8 +351,14 @@ export const aiFoodCreatorService = {
         return isEn ? (found ? found.labelEn : eq) : (found ? found.labelId : eq);
       }),
       steps,
+      stepsId,
+      stepsEn,
       chefTips,
+      chefTipsId,
+      chefTipsEn,
       safetyNotes,
+      safetyNotesId,
+      safetyNotesEn,
       createdAt: new Date().toISOString()
     };
   },
@@ -357,89 +367,66 @@ export const aiFoodCreatorService = {
     const items = [];
     const scale = servings / 4;
 
+    const pushItem = (nameId, nameEn, amount, unitId, unitEn, noteId, noteEn) => {
+      items.push({
+        name: isEn ? nameEn : nameId,
+        nameId,
+        nameEn,
+        amount,
+        unit: isEn ? unitEn : unitId,
+        unitId,
+        unitEn,
+        note: isEn ? noteEn : noteId,
+        noteId,
+        noteEn
+      });
+    };
+
     // Protein amount
-    const proteinName = isEn ? (protein.nameEn || protein.nameId) : protein.nameId;
+    const pNameId = protein.nameId;
+    const pNameEn = protein.nameEn || protein.nameId;
     if (protein.id.includes('daging') || protein.id.includes('ayam') || protein.id.includes('ikan')) {
-      items.push({ 
-        name: proteinName, 
-        amount: Math.round(500 * scale), 
-        unit: 'g', 
-        note: isEn ? 'cut into medium serving pieces' : 'potong sesuai selera' 
-      });
+      pushItem(pNameId, pNameEn, Math.round(500 * scale), 'g', 'g', 'potong sesuai selera', 'cut into medium serving pieces');
     } else if (protein.id.includes('tempe') || protein.id.includes('tahu')) {
-      items.push({ 
-        name: proteinName, 
-        amount: Math.max(1, Math.round(2 * scale)), 
-        unit: isEn ? 'blocks' : 'papan / blok', 
-        note: isEn ? 'cubed or sliced into slabs' : 'potong dadu atau iris lebar' 
-      });
+      pushItem(pNameId, pNameEn, Math.max(1, Math.round(2 * scale)), 'papan / blok', 'blocks', 'potong dadu atau iris lebar', 'cubed or sliced into slabs');
     } else if (protein.id.includes('telur')) {
-      items.push({ 
-        name: proteinName, 
-        amount: Math.max(2, Math.round(4 * scale)), 
-        unit: isEn ? 'pcs' : 'butir', 
-        note: isEn ? 'hard-boiled or fried' : 'rebus matang atau goreng mata sapi' 
-      });
+      pushItem(pNameId, pNameEn, Math.max(2, Math.round(4 * scale)), 'butir', 'pcs', 'rebus matang atau goreng mata sapi', 'hard-boiled or fried');
     } else {
-      items.push({ 
-        name: proteinName, 
-        amount: Math.round(350 * scale), 
-        unit: 'g', 
-        note: isEn ? 'cleaned and prepped' : 'siap olah' 
-      });
+      pushItem(pNameId, pNameEn, Math.round(350 * scale), 'g', 'g', 'siap olah', 'cleaned and prepped');
     }
 
     // Always essential aromatics
-    items.push({ 
-      name: isEn ? 'Brebes Red Shallots' : 'Bawang Merah Lokal Brebes', 
-      amount: Math.max(3, Math.round(6 * scale)), 
-      unit: isEn ? 'cloves' : 'siung', 
-      note: isEn ? 'peeled, 4 ground in paste, 2 sliced thin for frying' : 'kupas, 4 dihaluskan, 2 diiris tipis' 
-    });
-    items.push({ 
-      name: isEn ? 'Kating Garlic' : 'Bawang Putih Kating', 
-      amount: Math.max(2, Math.round(4 * scale)), 
-      unit: isEn ? 'cloves' : 'siung', 
-      note: isEn ? 'finely ground in spice paste' : 'haluskan bersama bumbu dasar' 
-    });
+    pushItem('Bawang Merah Lokal Brebes', 'Brebes Red Shallots', Math.max(3, Math.round(6 * scale)), 'siung', 'cloves', 'kupas, 4 dihaluskan, 2 diiris tipis', 'peeled, 4 ground in paste, 2 sliced thin for frying');
+    pushItem('Bawang Putih Kating', 'Kating Garlic', Math.max(2, Math.round(4 * scale)), 'siung', 'cloves', 'haluskan bersama bumbu dasar', 'finely ground in spice paste');
 
     // Include selected spices with precise measurements
     selectedList.forEach(item => {
-      const iName = isEn ? (item.nameEn || item.nameId) : item.nameId;
+      const iNameId = item.nameId;
+      const iNameEn = item.nameEn || item.nameId;
       if (item.category === 'spice' && !item.id.includes('bawang')) {
-        if (item.id === 'ketumbar') items.push({ name: isEn ? 'Toasted Coriander Seeds' : 'Ketumbar Sangrai', amount: (1 * scale).toFixed(1), unit: isEn ? 'tsp' : 'sdt', note: isEn ? 'crushed fine' : 'ulek halus' });
-        else if (item.id === 'kemiri') items.push({ name: isEn ? 'Toasted Candlenuts' : 'Kemiri Sangrai', amount: Math.max(2, Math.round(3 * scale)), unit: isEn ? 'pcs' : 'butir', note: isEn ? 'ground in paste' : 'haluskan' });
-        else if (item.id === 'lengkuas') items.push({ name: isEn ? 'Young Galangal' : 'Lengkuas Muda', amount: 3, unit: 'cm', note: isEn ? 'bruised lightly' : 'memarkan' });
-        else if (item.id === 'jahe') items.push({ name: isEn ? 'Fresh Ginger' : 'Jahe Emprit', amount: 2, unit: 'cm', note: isEn ? 'bruised' : 'memarkan' });
-        else if (item.id === 'kunyit') items.push({ name: isEn ? 'Roasted Turmeric' : 'Kunyit Bakar', amount: 2, unit: 'cm', note: isEn ? 'finely ground' : 'haluskan' });
-        else if (item.id === 'serai') items.push({ name: isEn ? 'Fragrant Lemongrass' : 'Serai Wangi', amount: Math.max(1, Math.round(2 * scale)), unit: isEn ? 'stalks' : 'batang', note: isEn ? 'bruised and knotted' : 'memarkan ikat simpul' });
-        else if (item.id === 'daun-salam') items.push({ name: isEn ? 'Indonesian Bay Leaves' : 'Daun Salam Kering', amount: Math.max(2, Math.round(3 * scale)), unit: isEn ? 'leaves' : 'lembar', note: isEn ? 'fresh or dried' : 'segar atau kering' });
-        else if (item.id === 'daun-jeruk') items.push({ name: isEn ? 'Kaffir Lime Leaves' : 'Daun Jeruk Purut', amount: Math.max(2, Math.round(4 * scale)), unit: isEn ? 'leaves' : 'lembar', note: isEn ? 'center rib removed' : 'buang tulang daunnya' });
-        else if (item.id === 'gula-jawa') items.push({ name: isEn ? 'Javanese Coconut Palm Sugar' : 'Gula Kelapa Jawa Asli', amount: Math.round(35 * scale), unit: 'g', note: isEn ? 'finely shaved' : 'sisir halus' });
-        else if (item.id === 'asam-jawa') items.push({ name: isEn ? 'Tamarind Pulp Water' : 'Air Asam Jawa Matang', amount: Math.max(1, Math.round(1.5 * scale)), unit: isEn ? 'tbsp' : 'sdm', note: isEn ? 'dissolved in warm water' : 'larutkan air hangat' });
-        else if (item.id === 'kencur') items.push({ name: isEn ? 'Fresh Kencur (Aromatic Ginger)' : 'Kencur Segar', amount: 2, unit: 'cm', note: isEn ? 'ground in spice paste' : 'ulek bersama bumbu' });
-        else if (item.id === 'kecombrang') items.push({ name: isEn ? 'Torch Ginger Flower' : 'Bunga Kecombrang', amount: 1, unit: isEn ? 'bud' : 'kuntum', note: isEn ? 'thinly sliced' : 'iris tipis memanjang' });
-        else items.push({ name: iName, amount: 1, unit: isEn ? 'portion as needed' : 'porsi secukupnya', note: isEn ? 'to taste' : 'sesuai selera' });
+        if (item.id === 'ketumbar') pushItem('Ketumbar Sangrai', 'Toasted Coriander Seeds', (1 * scale).toFixed(1), 'sdt', 'tsp', 'ulek halus', 'crushed fine');
+        else if (item.id === 'kemiri') pushItem('Kemiri Sangrai', 'Toasted Candlenuts', Math.max(2, Math.round(3 * scale)), 'butir', 'pcs', 'haluskan', 'ground in paste');
+        else if (item.id === 'lengkuas') pushItem('Lengkuas Muda', 'Young Galangal', 3, 'cm', 'cm', 'memarkan', 'bruised lightly');
+        else if (item.id === 'jahe') pushItem('Jahe Emprit', 'Fresh Ginger', 2, 'cm', 'cm', 'memarkan', 'bruised');
+        else if (item.id === 'kunyit') pushItem('Kunyit Bakar', 'Roasted Turmeric', 2, 'cm', 'cm', 'haluskan', 'finely ground');
+        else if (item.id === 'serai') pushItem('Serai Wangi', 'Fragrant Lemongrass', Math.max(1, Math.round(2 * scale)), 'batang', 'stalks', 'memarkan ikat simpul', 'bruised and knotted');
+        else if (item.id === 'daun-salam') pushItem('Daun Salam Kering', 'Indonesian Bay Leaves', Math.max(2, Math.round(3 * scale)), 'lembar', 'leaves', 'segar atau kering', 'fresh or dried');
+        else if (item.id === 'daun-jeruk') pushItem('Daun Jeruk Purut', 'Kaffir Lime Leaves', Math.max(2, Math.round(4 * scale)), 'lembar', 'leaves', 'buang tulang daunnya', 'center rib removed');
+        else if (item.id === 'gula-jawa') pushItem('Gula Kelapa Jawa Asli', 'Javanese Coconut Palm Sugar', Math.round(35 * scale), 'g', 'g', 'sisir halus', 'finely shaved');
+        else if (item.id === 'asam-jawa') pushItem('Air Asam Jawa Matang', 'Tamarind Pulp Water', Math.max(1, Math.round(1.5 * scale)), 'sdm', 'tbsp', 'larutkan air hangat', 'dissolved in warm water');
+        else if (item.id === 'kencur') pushItem('Kencur Segar', 'Fresh Kencur (Aromatic Ginger)', 2, 'cm', 'cm', 'ulek bersama bumbu', 'ground in spice paste');
+        else if (item.id === 'kecombrang') pushItem('Bunga Kecombrang', 'Torch Ginger Flower', 1, 'kuntum', 'bud', 'iris tipis memanjang', 'thinly sliced');
+        else pushItem(iNameId, iNameEn, 1, 'porsi secukupnya', 'portion as needed', 'sesuai selera', 'to taste');
       } else if (item.category === 'vegetable' && item.id !== 'santan-kelapa') {
-        items.push({ name: iName, amount: Math.round(100 * scale), unit: 'g', note: isEn ? 'cleaned and sliced' : 'bersihkan dan potong serasi' });
+        pushItem(iNameId, iNameEn, Math.round(100 * scale), 'g', 'g', 'bersihkan dan potong serasi', 'cleaned and sliced');
       }
     });
 
     // Coconut / broth liquid
     if (!dietary.includes('tanpa-santan')) {
-      items.push({ 
-        name: isEn ? 'Fresh Coconut Milk' : 'Santan Kelapa Segar', 
-        amount: Math.round(250 * scale), 
-        unit: 'ml', 
-        note: isEn ? 'first pressing for rich consistency' : 'perasan pertama untuk kekentalan pas' 
-      });
+      pushItem('Santan Kelapa Segar', 'Fresh Coconut Milk', Math.round(250 * scale), 'ml', 'ml', 'perasan pertama untuk kekentalan pas', 'first pressing for rich consistency');
     } else {
-      items.push({ 
-        name: isEn ? 'Clear Savory Stock' : 'Air Kaldu Gurih Bening', 
-        amount: Math.round(300 * scale), 
-        unit: 'ml', 
-        note: isEn ? 'natural vegetable or bone broth' : 'rebusan tulang / sayur alami' 
-      });
+      pushItem('Air Kaldu Gurih Bening', 'Clear Savory Stock', Math.round(300 * scale), 'ml', 'ml', 'rebusan tulang / sayur alami', 'natural vegetable or bone broth');
     }
 
     // Seasonings

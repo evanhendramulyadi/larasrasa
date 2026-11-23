@@ -537,14 +537,17 @@ function formatRecipeAsText(recipe, isEn) {
   }
 
   // Paragraf 2: Narasi Karakter Rasa & Konsep Resep
-  if (recipe.description || recipe.philosophy) {
-    paragraphs.push((recipe.description || recipe.philosophy).trim());
+  const descText = isEn 
+    ? (recipe.descriptionEn || recipe.description || recipe.philosophy)
+    : (recipe.descriptionId || recipe.description || recipe.philosophy);
+  if (descText) {
+    paragraphs.push(descText.trim());
   }
 
   // Paragraf 3: Bahan dan Rempah Utama
   if (recipe.ingredients && recipe.ingredients.length > 0) {
     const ingList = recipe.ingredients
-      .map(i => `${i.name}${i.amount ? ` (${i.amount} ${i.unit || ''})` : ''}`)
+      .map(i => `${isEn ? (i.nameEn || i.nameId || i.name) : (i.nameId || i.name)}${i.amount ? ` (${i.amount} ${isEn ? (i.unitEn || i.unitId || i.unit) : (i.unitId || i.unit)})` : ''}`)
       .join(', ');
     paragraphs.push(
       isEn 
@@ -554,20 +557,27 @@ function formatRecipeAsText(recipe, isEn) {
   }
 
   // Paragraf 4: Panduan Langkah Memasak dalam Bentuk Narasi Berurutan
-  if (recipe.steps && recipe.steps.length > 0) {
-    const stepsNarration = recipe.steps
-      .map((st, idx) => `Langkah ${st.stepNumber || idx + 1} (${st.title}): ${st.description}`)
+  const stepsList = isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps);
+  if (stepsList && stepsList.length > 0) {
+    const stepsNarration = stepsList
+      .map((st, idx) => {
+        const stepNum = st.stepNumber || idx + 1;
+        const sTitle = isEn ? (st.titleEn || st.title) : (st.titleId || st.title);
+        const sDesc = isEn ? (st.instructionEn || st.descriptionEn || st.instruction || st.description) : (st.instructionId || st.descriptionId || st.instruction || st.description);
+        return `${isEn ? 'Step' : 'Langkah'} ${stepNum} (${sTitle}): ${sDesc}`;
+      })
       .join(' ');
     paragraphs.push(
       isEn
-        ? `Cooking workflow: ${recipe.steps.map((st, idx) => `Step ${st.stepNumber || idx + 1} (${st.title}): ${st.description}`).join(' ')}`
+        ? `Cooking workflow: ${stepsNarration}`
         : `Tahapan pengolahan memasak: ${stepsNarration}`
     );
   }
 
   // Paragraf 5: Rahasia Dapur & Saran Penyajian
-  if (recipe.chefTips && recipe.chefTips.length > 0) {
-    const tips = Array.isArray(recipe.chefTips) ? recipe.chefTips.join(' ') : recipe.chefTips;
+  const tipsContent = isEn ? (recipe.chefTipsEn || recipe.chefTips) : (recipe.chefTipsId || recipe.chefTips);
+  if (tipsContent) {
+    const tips = Array.isArray(tipsContent) ? tipsContent.join(' ') : tipsContent;
     paragraphs.push(
       isEn
         ? `Chef hearth secrets: ${tips}`
@@ -688,67 +698,30 @@ function renderResultView(recipe, currentLang) {
               ${escapeHtml(recipe.title)}
             </h2>
 
-            ${recipe.javaneseTitle ? `
+            ${(recipe.subtitleEn || recipe.subtitleId || recipe.javaneseTitle) ? `
               <p class="font-serif italic text-base sm:text-lg text-[#C84C24]">
-                "${escapeHtml(recipe.javaneseTitle)}" ${recipe.aksaraJawa ? `<span class="text-sm font-mono text-[#2E4D38] ml-1">(${escapeHtml(recipe.aksaraJawa)})</span>` : ''}
+                "${escapeHtml(isEn ? (recipe.subtitleEn || recipe.javaneseTitle) : (recipe.subtitleId || recipe.javaneseTitle))}"
               </p>
             ` : ''}
 
             <p class="text-xs text-[#5C3622]">
               ${isEn ? 'Recipe Formulated by:' : 'Pencipta Resep:'} <strong class="text-[#120B07] font-bold">${escapeHtml(recipe.creatorName || (isEn ? 'LarasRasa Culinary Hearth' : 'Dapur Tradisi LarasRasa'))}</strong>
             </p>
-
-            
           </div>
 
-          ${(recipe.description || recipe.philosophy) ? `
+          ${(recipe.description || recipe.philosophy || recipe.descriptionId || recipe.descriptionEn) ? `
             <!-- Overview & Flavor Profile -->
             <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-3">
               <span class="text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider block">
                 ${isEn ? 'Recipe Overview & Flavor Character' : 'Karakter Rasa & Konsep Olahan'}
               </span>
               <div class="space-y-3 text-xs sm:text-sm text-[#5C3622] leading-relaxed">
-                ${(recipe.description || recipe.philosophy || '').split('\n\n').filter(Boolean).map(p => `
+                ${((isEn ? (recipe.descriptionEn || recipe.description) : (recipe.descriptionId || recipe.description)) || '').split('\n\n').filter(Boolean).map(p => `
                   <p>${escapeHtml(p.trim())}</p>
                 `).join('')}
               </div>
             </div>
           ` : ''}
-
-          <!-- 4 Recipe Metrics Grid -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] text-center space-y-1">
-              <span class="text-[#2E4D38] block text-[10px] font-bold uppercase tracking-wider">
-                ${isEn ? 'Total Time' : 'Waktu Olah'}
-              </span>
-              <strong class="text-[#120B07] font-bold text-sm block">${recipe.totalTime || '45 Menit'}</strong>
-              <span class="text-[10px] text-[#5C3622] block">${isEn ? 'Prep:' : 'Persiapan:'} ${recipe.prepTime || (isEn ? '15m' : '15 menit')} • ${isEn ? 'Cook:' : 'Masak:'} ${recipe.cookTime || (isEn ? '30m' : '30 menit')}</span>
-            </div>
-            
-            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] text-center space-y-1">
-              <span class="text-[#2E4D38] block text-[10px] font-bold uppercase tracking-wider">
-                ${isEn ? 'Portions' : 'Porsi Standar'}
-              </span>
-              <strong class="text-[#120B07] font-bold text-sm block">${recipe.servings || 4} ${isEn ? 'Portions' : 'Porsi'}</strong>
-              <span class="text-[10px] text-[#5C3622] block">${isEn ? 'Standard Table' : 'Takaran Pas Kuliner'}</span>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] text-center space-y-1">
-              <span class="text-[#2E4D38] block text-[10px] font-bold uppercase tracking-wider">
-                ${isEn ? 'Spice Warmth' : 'Tingkat Pedas'}
-              </span>
-              <strong class="text-[#C84C24] font-bold text-sm block">Level ${recipe.spiceLevel || 1} / 5</strong>
-              <span class="text-[10px] text-[#5C3622] block">${recipe.spiceLevel > 2 ? (isEn ? 'Warm & Fiery' : 'Hangat Menggigit') : (isEn ? 'Mild & Savory' : 'Lembut & Pas')}</span>
-            </div>
-
-            <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] text-center space-y-1">
-              <span class="text-[#2E4D38] block text-[10px] font-bold uppercase tracking-wider">
-                ${isEn ? 'Difficulty' : 'Tingkat Olah'}
-              </span>
-              <strong class="text-[#120B07] font-bold text-sm block">${recipe.difficulty || (isEn ? 'Medium' : 'Sedang')}</strong>
-              <span class="text-[10px] text-[#5C3622] block">${recipe.calories ? recipe.calories.split('/')[0] : (isEn ? '360 kcal' : '360 kkal')}</span>
-            </div>
-          </div>
         </div>
 
         <!-- Two-Column Details Grid: Ingredients & Steps -->
@@ -763,7 +736,7 @@ function renderResultView(recipe, currentLang) {
                 <div>
                   <span class="text-[10px] font-bold uppercase tracking-wider text-[#C84C24] block">${isEn ? 'Authentic Ensemble' : 'Reroncen Bahan'}</span>
                   <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">
-                    ${t('aiCreator.ingredientsTitle')}
+                    ${isEn ? 'Ingredients & Spice Ensemble' : 'Bahan & Bumbu Dapur'}
                   </h3>
                 </div>
                 <span class="text-xs px-2.5 py-1 rounded-lg bg-[#FAF7F2] text-[#2E4D38] font-bold border border-[#D49B42]/30">
@@ -778,12 +751,12 @@ function renderResultView(recipe, currentLang) {
                     <div class="flex items-center gap-2.5">
                       <span class="w-2 h-2 rounded-full bg-[#C84C24] shrink-0"></span>
                       <div>
-                        <span class="font-semibold block">${escapeHtml(ing.name)}</span>
-                        ${ing.note ? `<span class="text-[10px] text-[#5C3622] italic block">${escapeHtml(ing.note)}</span>` : ''}
+                        <span class="font-semibold block">${escapeHtml(isEn ? (ing.nameEn || ing.nameId || ing.name) : (ing.nameId || ing.name))}</span>
+                        ${(isEn ? (ing.noteEn || ing.noteId || ing.note) : (ing.noteId || ing.note)) ? `<span class="text-[10px] text-[#5C3622] italic block">${escapeHtml(isEn ? (ing.noteEn || ing.noteId || ing.note) : (ing.noteId || ing.note))}</span>` : ''}
                       </div>
                     </div>
                     <span class="font-mono text-[11px] font-bold text-[#120B07] bg-white px-2.5 py-1 rounded-lg border border-[#E8DEC8] shrink-0">
-                      ${ing.amount ? `${ing.amount} ${ing.unit || ''}` : '-'}
+                      ${ing.amount ? `${ing.amount} ${isEn ? (ing.unitEn || ing.unitId || ing.unit) : (ing.unitId || ing.unit)}` : '-'}
                     </span>
                   </div>
                 `).join('')}
@@ -808,19 +781,17 @@ function renderResultView(recipe, currentLang) {
             ` : ''}
 
             <!-- Chef Secrets & Pawon Tips -->
-            ${Array.isArray(recipe.chefTips) && recipe.chefTips.length > 0 ? `
+            ${(recipe.chefTips || recipe.chefTipsId || recipe.chefTipsEn) ? `
               <div class="bg-[#FAF7F2] p-5 sm:p-6 rounded-3xl border border-[#D49B42]/40 shadow-sm space-y-3 text-xs">
                 <div class="flex items-center gap-2 font-bold text-[#C84C24]">
                   <span class="text-base">💡</span>
-                  <span class="font-editorial-serif text-sm">${t('aiCreator.chefTipsTitle')}</span>
+                  <span class="font-editorial-serif text-sm">${isEn ? 'Secrets of the Hearth' : 'Wewadi Pawon Tradisi'}</span>
                 </div>
-                <div class="space-y-2 text-[#5C3622]">
-                  ${recipe.chefTips.map(tip => `
-                    <p class="flex items-start gap-2 leading-relaxed">
-                      <span class="text-[#D49B42] font-bold">•</span>
-                      <span>${escapeHtml(tip)}</span>
-                    </p>
-                  `).join('')}
+                <div class="space-y-2 text-[#5C3622] leading-relaxed">
+                  <p class="flex items-start gap-2">
+                    <span class="text-[#D49B42] font-bold">•</span>
+                    <span>${escapeHtml(isEn ? (recipe.chefTipsEn || recipe.chefTips) : (recipe.chefTipsId || recipe.chefTips))}</span>
+                  </p>
                 </div>
               </div>
             ` : ''}
@@ -836,17 +807,17 @@ function renderResultView(recipe, currentLang) {
                 <div>
                   <span class="text-[10px] font-bold uppercase tracking-wider text-[#C84C24] block">${isEn ? 'Culinary Workflow' : 'Urut-urutan Olah-olah'}</span>
                   <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">
-                    ${t('aiCreator.stepsTitle')}
+                    ${isEn ? 'Step-by-Step Cooking Guide' : 'Panduan Langkah Memasak'}
                   </h3>
                 </div>
                 <span class="text-xs text-[#5C3622]">
-                  ${(recipe.steps || []).length} ${isEn ? 'steps' : 'tahap'}
+                  ${(isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps) || []).length} ${isEn ? 'steps' : 'tahap'}
                 </span>
               </div>
 
               <!-- Steps List -->
               <div class="space-y-4 pt-1">
-                ${(recipe.steps || []).map((step, idx) => `
+                ${((isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps)) || []).map((step, idx) => `
                   <div class="p-5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] space-y-2.5 text-xs hover:border-[#D49B42]/50 transition-colors">
                     <div class="flex items-center justify-between flex-wrap gap-2">
                       <div class="flex items-center gap-2">
@@ -854,13 +825,13 @@ function renderResultView(recipe, currentLang) {
                           ${step.stepNumber || idx + 1}
                         </span>
                         <strong class="text-[#120B07] font-bold font-editorial-serif text-sm sm:text-base">
-                          ${escapeHtml(step.title)}
+                          ${escapeHtml(isEn ? (step.titleEn || step.title) : (step.titleId || step.title))}
                         </strong>
                       </div>
                       <div class="flex items-center gap-2">
-                        ${step.technique ? `
+                        ${(isEn ? (step.techniqueEn || step.technique) : (step.techniqueId || step.technique)) ? `
                           <span class="text-[10px] font-semibold text-[#C84C24] bg-[#FDF4EE] px-2.5 py-0.5 rounded-md border border-[#C84C24]/20">
-                            ${escapeHtml(step.technique)}
+                            ${escapeHtml(isEn ? (step.techniqueEn || step.technique) : (step.techniqueId || step.technique))}
                           </span>
                         ` : ''}
                         <span class="text-[10px] font-mono text-[#2E4D38] bg-white px-2.5 py-0.5 rounded-md border border-[#E8DEC8] font-bold">
@@ -869,12 +840,12 @@ function renderResultView(recipe, currentLang) {
                       </div>
                     </div>
                     <p class="text-[#5C3622] leading-relaxed text-xs sm:text-sm pl-8">
-                      ${escapeHtml(step.description)}
+                      ${escapeHtml(isEn ? (step.instructionEn || step.descriptionEn || step.instruction || step.description) : (step.instructionId || step.descriptionId || step.instruction || step.description))}
                     </p>
-                    ${step.tip ? `
+                    ${(isEn ? (step.tipEn || step.tip) : (step.tipId || step.tip)) ? `
                       <div class="mt-2 ml-8 p-3 rounded-xl bg-white border border-[#D49B42]/30 text-[11px] text-[#2E4D38] flex items-start gap-2">
                         <span class="text-[#D49B42] font-bold">★</span>
-                        <span><strong>${isEn ? 'Technique Tip:' : 'Pitedah Olah:'}</strong> ${escapeHtml(step.tip)}</span>
+                        <span><strong>${isEn ? 'Technique Tip:' : 'Pitedah Olah:'}</strong> ${escapeHtml(isEn ? (step.tipEn || step.tip) : (step.tipId || step.tip))}</span>
                       </div>
                     ` : ''}
                   </div>
@@ -883,14 +854,14 @@ function renderResultView(recipe, currentLang) {
             </div>
 
             <!-- Food Safety & Storage Notes Card -->
-            ${recipe.safetyNotes ? `
+            ${(recipe.safetyNotes || recipe.safetyNotesId || recipe.safetyNotesEn) ? `
               <div class="p-5 sm:p-6 rounded-3xl bg-[#FAF7F2] border border-[#D49B42]/35 space-y-2 text-xs">
                 <div class="flex items-center gap-2 font-bold text-[#2E4D38]">
                   <span class="text-base">🌿</span>
-                  <span class="font-editorial-serif text-sm">${t('aiCreator.safetyTitle')}</span>
+                  <span class="font-editorial-serif text-sm">${isEn ? 'Storage & Hygiene Guide' : 'Pitedah Karesikan & Panyimpenan'}</span>
                 </div>
                 <p class="text-[#5C3622] leading-relaxed">
-                  ${escapeHtml(recipe.safetyNotes)}
+                  ${escapeHtml(isEn ? (recipe.safetyNotesEn || recipe.safetyNotes) : (recipe.safetyNotesId || recipe.safetyNotes))}
                 </p>
               </div>
             ` : ''}
@@ -918,7 +889,7 @@ function renderResultView(recipe, currentLang) {
             <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            <span>${t('aiCreator.backToStudioBtn')}</span>
+            <span>${isEn ? 'Back to Recipe Studio' : 'Kembali ke Studio Racik'}</span>
           </button>
         </div>
 
