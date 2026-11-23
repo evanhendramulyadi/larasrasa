@@ -47,13 +47,63 @@ const COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes limit per session
 
 let currentGeneratedRecipe = null;
 let isGenerating = false;
+let currentGeneratingPercent = 20;
+let currentGeneratingStageIdx = 0;
 let validationMessage = null;
 let sessionAlert = null; // { type: 'cooldown' | 'credit' | 'forbidden' | 'error', minutes?: number }
 let toastMessage = null;
 let nameError = false;
 let ingredientError = false;
 
+const GENERATING_STAGES_ID = [
+  { pct: 28, text: 'Menyelaraskan rempah tradisi...' },
+  { pct: 54, text: 'Menghitung takaran bumbu presisi...' },
+  { pct: 79, text: 'Menyusun panduan langkah memasak...' },
+  { pct: 93, text: 'Menyempurnakan dokumen resep...' }
+];
+
+const GENERATING_STAGES_EN = [
+  { pct: 28, text: 'Harmonizing heritage spices...' },
+  { pct: 54, text: 'Calibrating precise measurements...' },
+  { pct: 79, text: 'Formulating step-by-step cooking guide...' },
+  { pct: 93, text: 'Finalizing authentic recipe document...' }
+];
+
+export function isAiFoodCreatorGenerating() {
+  return isGenerating;
+}
+
+export function updateAiFoodCreatorGeneratingLanguage(targetLang) {
+  const isEn = targetLang === 'en';
+  const badgeEl = document.getElementById('generating-badge');
+  if (badgeEl) {
+    badgeEl.textContent = isEn ? 'LarasRasa AI Culinary Experiment Studio' : 'Studio Eksperimen Kuliner AI LarasRasa';
+  }
+  const titleEl = document.getElementById('generating-title');
+  if (titleEl) {
+    titleEl.textContent = isEn ? 'Formulating Authentic Culinary Creation...' : 'Meracik Kreasi Resep Pusaka Otentik...';
+  }
+  const descEl = document.getElementById('generating-desc');
+  if (descEl) {
+    descEl.textContent = isEn
+      ? 'Harmonizing regional spices, calculating precise ingredient grammage, and formulating your authentic recipe document.'
+      : 'Menyelaraskan rempah tradisi, menghitung takaran bumbu presisi, dan menyusun dokumen resep pusaka autentik.';
+  }
+  const stageEl = document.getElementById('generating-progress-stage');
+  if (stageEl) {
+    const stages = isEn ? GENERATING_STAGES_EN : GENERATING_STAGES_ID;
+    const stage = stages[currentGeneratingStageIdx] || stages[0];
+    stageEl.textContent = stage.text;
+  }
+}
+
 export function resetAiFoodCreatorState() {
+  if (window.__larasRasaProgressTimer) {
+    clearInterval(window.__larasRasaProgressTimer);
+    window.__larasRasaProgressTimer = null;
+  }
+  currentGeneratingPercent = 20;
+  currentGeneratingStageIdx = 0;
   activeTab = 'all';
   searchQuery = '';
   formState = {
@@ -105,6 +155,9 @@ export async function renderAiFoodCreatorPage() {
  */
 function renderGeneratingState(currentLang) {
   const isEn = currentLang === 'en';
+  const stages = isEn ? GENERATING_STAGES_EN : GENERATING_STAGES_ID;
+  const currentStage = stages[currentGeneratingStageIdx] || stages[0];
+
   return `
     <div class="max-w-3xl mx-auto px-4 py-24 text-center space-y-6 animate-fade-in">
       <div class="relative w-24 h-24 mx-auto">
@@ -119,12 +172,12 @@ function renderGeneratingState(currentLang) {
 
       <div class="space-y-3">
         <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-xs">
-          <span>${isEn ? 'LarasRasa AI Culinary Experiment Studio' : 'Studio Eksperimen Kuliner AI LarasRasa'}</span>
+          <span id="generating-badge">${isEn ? 'LarasRasa AI Culinary Experiment Studio' : 'Studio Eksperimen Kuliner AI LarasRasa'}</span>
         </span>
-        <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
+        <h2 id="generating-title" class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
           ${isEn ? 'Formulating Authentic Culinary Creation...' : 'Meracik Kreasi Resep Pusaka Otentik...'}
         </h2>
-        <p class="text-xs sm:text-sm text-[#5C3622] max-w-md mx-auto leading-relaxed">
+        <p id="generating-desc" class="text-xs sm:text-sm text-[#5C3622] max-w-md mx-auto leading-relaxed">
           ${isEn 
             ? 'Harmonizing regional spices, calculating precise ingredient grammage, and formulating your authentic recipe document.'
             : 'Menyelaraskan rempah tradisi, menghitung takaran bumbu presisi, dan menyusun dokumen resep pusaka autentik.'}
@@ -134,12 +187,12 @@ function renderGeneratingState(currentLang) {
       <div class="max-w-xs mx-auto pawon-glass p-4 rounded-2xl border border-[#D49B42]/35 text-xs text-[#5C3622] space-y-2 shadow-sm">
         <div class="flex items-center justify-between font-bold">
           <span id="generating-progress-stage" class="text-xs text-[#5C3622] transition-all">
-            ${isEn ? 'Harmonizing heritage spices...' : 'Menyelaraskan rempah tradisi...'}
+            ${escapeHtml(currentStage.text)}
           </span>
-          <span id="generating-progress-percent" class="text-[#C84C24] font-mono">20%</span>
+          <span id="generating-progress-percent" class="text-[#C84C24] font-mono">${currentGeneratingPercent}%</span>
         </div>
         <div class="w-full bg-[#FAF7F2] h-2.5 rounded-full overflow-hidden border border-[#E8DEC8]">
-          <div id="generating-progress-bar" class="bg-gradient-to-r from-[#D49B42] via-[#C84C24] to-[#2E4D38] h-full rounded-full transition-all duration-700 ease-out" style="width: 20%"></div>
+          <div id="generating-progress-bar" class="bg-gradient-to-r from-[#D49B42] via-[#C84C24] to-[#2E4D38] h-full rounded-full transition-all duration-700 ease-out" style="width: ${currentGeneratingPercent}%"></div>
         </div>
       </div>
     </div>
@@ -936,29 +989,19 @@ export function initAiFoodCreatorInteractions() {
 
   if (isGenerating) {
     if (window.__larasRasaProgressTimer) {
-      clearInterval(window.__larasRasaProgressTimer);
+      return;
     }
     const progressBar = document.getElementById('generating-progress-bar');
     const percentEl = document.getElementById('generating-progress-percent');
     const stageEl = document.getElementById('generating-progress-stage');
 
-    const stages = isEn ? [
-      { pct: 28, text: 'Harmonizing heritage spices...' },
-      { pct: 54, text: 'Calibrating precise measurements...' },
-      { pct: 79, text: 'Formulating step-by-step cooking guide...' },
-      { pct: 93, text: 'Finalizing authentic recipe document...' }
-    ] : [
-      { pct: 28, text: 'Menyelaraskan rempah tradisi...' },
-      { pct: 54, text: 'Menghitung takaran bumbu presisi...' },
-      { pct: 79, text: 'Menyusun panduan langkah memasak...' },
-      { pct: 93, text: 'Menyempurnakan dokumen resep...' }
-    ];
-
-    let currentStageIdx = 0;
     window.__larasRasaProgressTimer = setInterval(() => {
-      currentStageIdx++;
-      if (currentStageIdx < stages.length) {
-        const item = stages[currentStageIdx];
+      const activeIsEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+      const stages = activeIsEn ? GENERATING_STAGES_EN : GENERATING_STAGES_ID;
+      currentGeneratingStageIdx++;
+      if (currentGeneratingStageIdx < stages.length) {
+        const item = stages[currentGeneratingStageIdx];
+        currentGeneratingPercent = item.pct;
         if (progressBar) progressBar.style.width = `${item.pct}%`;
         if (percentEl) percentEl.textContent = `${item.pct}%`;
         if (stageEl) stageEl.textContent = item.text;
@@ -1179,6 +1222,8 @@ export function initAiFoodCreatorInteractions() {
 
       // Verifikasi Berhasil: LANGSUNG pindah ke halaman proses racik dan scroll ke atas
       isGenerating = true;
+      currentGeneratingPercent = 20;
+      currentGeneratingStageIdx = 0;
       await reRenderCurrentView(false);
       window.scrollTo({ top: 150, behavior: 'smooth' });
 
@@ -1215,6 +1260,8 @@ export function initAiFoodCreatorInteractions() {
         await new Promise(resolve => setTimeout(resolve, 400));
 
         isGenerating = false;
+        currentGeneratingPercent = 20;
+        currentGeneratingStageIdx = 0;
         await reRenderCurrentView(false);
         window.scrollTo({ top: 100, behavior: 'smooth' });
 
@@ -1225,6 +1272,8 @@ export function initAiFoodCreatorInteractions() {
         }
         // Gagal saat generate: kembalikan ke form, diam di tempat, dan tampilkan notifikasi
         isGenerating = false;
+        currentGeneratingPercent = 20;
+        currentGeneratingStageIdx = 0;
         if (err.code === 'CREDIT_EXHAUSTED') {
           sessionAlert = { type: 'credit' };
         } else {

@@ -7,7 +7,13 @@ import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-m
 import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, openSpiceModal, getActiveSpiceModalId, resetSpicesPageState } from './pages/spices.js';
 import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
 import { renderRecommendationsPage, initRecommendationsInteractions, resetRecommendationsWizard } from './pages/recommendations.js';
-import { renderAiFoodCreatorPage, initAiFoodCreatorInteractions, resetAiFoodCreatorState } from './pages/ai-food-creator.js';
+import { 
+  renderAiFoodCreatorPage, 
+  initAiFoodCreatorInteractions, 
+  resetAiFoodCreatorState,
+  isAiFoodCreatorGenerating,
+  updateAiFoodCreatorGeneratingLanguage
+} from './pages/ai-food-creator.js';
 import { openRecipeModal, closeRecipeModal, getActiveRecipeModalSlug } from './components/recipe-modal.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
@@ -277,6 +283,37 @@ export class Router {
 
     // Instant visual update for navbar active indicator
     setActiveNavbarLink(path);
+
+    // Special handling for AI Food Creator while generating:
+    // When language changes mid-process, update texts and shell in-place without re-rendering or resetting progress!
+    if (isLanguageChange && (path === '/ai-food-creator') && isAiFoodCreatorGenerating()) {
+      const currentLang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
+      i18n.updateDocumentTitle(t('nav.aiFoodCreator'));
+      updateAiFoodCreatorGeneratingLanguage(currentLang);
+
+      const navEl = document.getElementById('main-header');
+      if (navEl) {
+        const temp = document.createElement('div');
+        temp.innerHTML = renderNavbar(path);
+        const newNav = temp.firstElementChild;
+        if (newNav) {
+          navEl.replaceWith(newNav);
+          initNavbarInteractions();
+        }
+      }
+
+      const footerEl = document.querySelector('footer');
+      if (footerEl) {
+        const temp = document.createElement('div');
+        temp.innerHTML = renderFooter();
+        const newFooter = temp.firstElementChild;
+        if (newFooter) {
+          footerEl.replaceWith(newFooter);
+        }
+      }
+
+      return;
+    }
 
     // 3. Match Route & Render Page Content
     let pageHtml = '';
