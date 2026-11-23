@@ -1155,31 +1155,25 @@ export function initAiFoodCreatorInteractions() {
         currentGeneratedRecipe = recipe;
         localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
       } catch (err) {
+        isGenerating = false;
         if (err.code === 'CREDIT_EXHAUSTED') {
           sessionAlert = { type: 'credit' };
-          isGenerating = false;
-          await reRenderCurrentView();
-          const alertEl = document.getElementById('ai-creator-session-alert');
-          if (alertEl) {
-            alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-          return;
         } else if (err.code === 'EDGE_FORBIDDEN') {
           sessionAlert = { type: 'forbidden' };
-          isGenerating = false;
-          await reRenderCurrentView();
-          const alertEl = document.getElementById('ai-creator-session-alert');
-          if (alertEl) {
-            alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-          return;
+        } else {
+          sessionAlert = { 
+            type: 'error',
+            text: isEn 
+              ? 'Failed to connect to Supabase Gemini Edge Function. Please verify that your Edge Function is deployed and accessible.'
+              : 'Gagal terhubung ke Supabase Gemini Edge Function. Pastikan fungsi Edge Function Supabase telah terpasang dan dapat diakses.'
+          };
         }
-        console.warn('Fallback to local synthesis:', err);
-        currentGeneratedRecipe = aiFoodCreatorService._synthesizeLocalRecipe({
-          ...formState,
-          outputLanguage: isEn ? 'en' : 'id'
-        });
-        localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+        await reRenderCurrentView();
+        const alertEl = document.getElementById('ai-creator-session-alert');
+        if (alertEl) {
+          alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
       } finally {
         isGenerating = false;
         reRenderCurrentView();

@@ -276,7 +276,13 @@ export const aiFoodCreatorService = {
       return { ok: true, credits: data.credits ?? 999 };
     } catch (err) {
       console.warn('Supabase credit check connection error:', err);
-      return { ok: false, error: 'network_error', message: err.message };
+      // In browsers, a 403 Forbidden from Supabase Gateway without CORS headers triggers TypeError: Failed to fetch
+      return { 
+        ok: false, 
+        error: 'forbidden', 
+        status: 403, 
+        message: 'Akses layanan Supabase ditolak (403 Forbidden).' 
+      };
     }
   },
 
@@ -375,12 +381,23 @@ export const aiFoodCreatorService = {
       } else {
         const errText = await response.text().catch(() => '');
         console.warn(`Supabase function status ${response.status}: ${errText}`);
+        if (response.status === 403) {
+          const forbiddenErr = new Error('EDGE_FORBIDDEN');
+          forbiddenErr.code = 'EDGE_FORBIDDEN';
+          throw forbiddenErr;
+        }
+        throw new Error(`Edge Function returned ${response.status}: ${errText}`);
       }
     } catch (err) {
       if (err.code === 'CREDIT_EXHAUSTED' || err.code === 'EDGE_FORBIDDEN') {
         throw err;
       }
-      console.warn('Supabase Edge Function relay error, utilizing Smart Culinary Intelligence Fallback:', err);
+      if (err.name === 'TypeError' || err.message?.includes('fetch')) {
+        const forbiddenErr = new Error('EDGE_FORBIDDEN');
+        forbiddenErr.code = 'EDGE_FORBIDDEN';
+        throw forbiddenErr;
+      }
+      throw err;
     }
 
     // Realistic processing pause (600ms) for professional AI feel
