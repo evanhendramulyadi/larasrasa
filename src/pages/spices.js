@@ -53,13 +53,13 @@ export async function renderSpicesPage() {
       </div>
 
       <!-- Filter Category Pills and Count Bar -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-2 border-b border-[#D49B42]/20">
+      <div class="flex flex-col md:flex-row items-center justify-center md:justify-between gap-4 pb-3 border-b border-[#D49B42]/20">
         <!-- Category Filter Pills -->
-        <div class="flex flex-wrap items-center gap-2">
+        <div class="w-full flex flex-wrap items-center justify-center md:justify-start gap-2 sm:gap-2.5 px-1 sm:px-0">
           ${categories.map(c => `
             <button type="button" 
                     data-spice-category="${c.id}"
-                    class="spice-cat-btn rempah-pill-btn px-4 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                    class="spice-cat-btn rempah-pill-btn px-4 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer whitespace-nowrap text-center ${
                       c.id === activeCategory
                         ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#C84C24]/30'
                         : 'bg-white text-[#120B07] border border-[#D49B42]/35 hover:bg-[#FAF7F2]'
@@ -69,7 +69,7 @@ export async function renderSpicesPage() {
           `).join('')}
         </div>
 
-        <div class="text-xs font-bold text-[#2E4D38] flex items-center gap-2 shrink-0">
+        <div class="text-xs font-bold text-[#2E4D38] flex items-center justify-center md:justify-start gap-2 shrink-0">
           <span class="inline-block w-2 h-2 rounded-full bg-[#C84C24]"></span>
           <span>${filteredSpices.length} ${t('spicesSection.availableCount')}</span>
         </div>

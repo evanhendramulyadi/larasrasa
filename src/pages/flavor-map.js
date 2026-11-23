@@ -12,6 +12,7 @@ let regionMarkers = {};
 let activeRegionId = 'semarang';
 
 export async function renderFlavorMapPage() {
+  const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
   const regions = await regionService.getRegions();
   const currentRegion = regions.find(r => r.id === activeRegionId) || regions[0];
 
