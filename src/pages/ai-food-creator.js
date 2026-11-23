@@ -374,7 +374,7 @@ function renderFormView(currentLang) {
             <!-- Taste Profile -->
             <div class="space-y-2">
               <label class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-                ${isEn ? 'Regional Flavor Balance' : 'Harmoni Rasa Jawa Tengah'}
+                ${isEn ? 'Flavor Character Balance' : 'Harmoni Karakter Rasa'}
               </label>
               <select 
                 id="taste-profile-select" 
@@ -387,7 +387,7 @@ function renderFormView(currentLang) {
                 `).join('')}
               </select>
               <p class="text-[11px] text-[#5C3622]/80">
-                ${isEn ? 'Calibrates the authentic regional nuance of Central Javanese cuisine.' : 'Menyesuaikan pakem harmoni rasa khas sentra kuliner Jawa Tengah.'}
+                ${isEn ? 'Calibrates authentic flavor balance and spice harmony.' : 'Menyesuaikan racikan harmoni rasa dan rempah tradisi.'}
               </p>
             </div>
 
@@ -527,7 +527,7 @@ function formatRecipeAsText(recipe) {
   const profile = (recipe.tasteProfile || '').replace('-', ' ');
 
   paragraphs.push(
-    `${title} (${creator}). Resep pusaka khas Jawa Tengah ini diramu pas untuk ${servings} porsi dengan perkiraan waktu masak ${time}. Olahan ini memadukan teknik olah tradisi ${method} serta harmoni karakter rasa ${profile} yang autentik.`
+    `${title} (${creator}). Resep pusaka tradisi ini diramu pas untuk ${servings} porsi dengan perkiraan waktu masak ${time}. Olahan ini memadukan teknik olah tradisi ${method} serta harmoni karakter rasa ${profile} yang autentik.`
   );
 
   // Paragraf 2: Narasi Karakter Rasa & Konsep Resep

@@ -39,11 +39,11 @@ export const PREFERENCE_OPTIONS = {
     { id: 'sambal', labelId: 'Sambal & Pendamping Bumbu', labelEn: 'Sambal & Condiments' }
   ],
   tasteProfiles: [
-    { id: 'manis-gurih', labelId: 'Manis Gurih Harmonis (Khas Solo & Mataraman)', labelEn: 'Sweet & Savory (Solo/Mataraman)' },
-    { id: 'gurih-segar', labelId: 'Gurih Segar Berkaldu (Khas Kudus & Semarang)', labelEn: 'Savory & Fresh Broth (Kudus/Semarang)' },
-    { id: 'pedas-gurih', labelId: 'Pedas Gurih Mantap (Khas Pantura & Banyumas)', labelEn: 'Spicy & Savory (Pantura/Banyumas)' },
+    { id: 'manis-gurih', labelId: 'Manis Gurih Harmonis', labelEn: 'Harmonious Sweet & Savory' },
+    { id: 'gurih-segar', labelId: 'Gurih Segar Berkaldu', labelEn: 'Savory & Fresh Broth' },
+    { id: 'pedas-gurih', labelId: 'Pedas Gurih Mantap', labelEn: 'Spicy & Savory Rich' },
     { id: 'asam-segar', labelId: 'Asam Segar Belimbing & Tomat Hijau', labelEn: 'Tangy Fresh Bilimbi & Green Tomato' },
-    { id: 'pekat-rempah', labelId: 'Pekat Kaya Rempah Keraton', labelEn: 'Rich Spiced Royal Palace' }
+    { id: 'pekat-rempah', labelId: 'Pekat Kaya Rempah Tradisi', labelEn: 'Rich Spiced Heritage' }
   ],
   spiceLevels: [
     { id: 0, labelId: 'Tanpa Pedas (Ramah Anak)', labelEn: 'Mild (Child Friendly)', icon: '🟢' },
@@ -237,13 +237,13 @@ export const aiFoodCreatorService = {
 
     // Regional style flair
     const regionFlairMapId = {
-      'manis-gurih': 'Khas Solo Mataraman',
-      'gurih-segar': 'Khas Pesisir Kudus',
-      'pedas-gurih': 'Khas Banyumasan',
+      'manis-gurih': 'Manis Gurih Tradisi',
+      'gurih-segar': 'Gurih Segar Berkaldu',
+      'pedas-gurih': 'Pedas Gurih Mantap',
       'asam-segar': 'Segar Belimbing Wuluh',
-      'pekat-rempah': 'Pusaka Kraton Jawa'
+      'pekat-rempah': 'Pusaka Rempah Tradisi'
     };
-    const regionFlair = regionFlairMapId[tasteProfile] || 'Khas Jawa Tengah';
+    const regionFlair = regionFlairMapId[tasteProfile] || 'Racikan Tradisi';
 
     const proteinName = proteinItem.nameId.replace('Daging ', '').replace(' Segar', '');
     const methodVerbId = methodVerbMapId[cookingMethod] || 'Olahan';
@@ -289,13 +289,13 @@ export const aiFoodCreatorService = {
 
     // Narrative Description in both ID and EN
     const p1Id = `Sebuah olahan resep pusaka tradisi yang mengawinkan teknik olah ${cookingMethod} dengan kemegahan aroma rempah ${keySpice1} dan ${keySpice2}. Komposisi bumbu pawon ini diracik secara saksama agar bumbu meresap sempurna dan mengeluarkan sari rasa terbaik.`;
-    const p2Id = `Karakter rasa yang dihadirkan menonjolkan harmoni ${tasteProfile.replace('-', ' ')} khas Jawa Tengah yang gurih, mantap, dan lembut di lidah. Ditakar presisi untuk ${servings} porsi santapan hangat bersama keluarga tercinta.${customNotes ? ` Catatan selera khusus: "${customNotes}".` : ''}`;
+    const p2Id = `Karakter rasa yang dihadirkan menonjolkan harmoni ${tasteProfile.replace('-', ' ')} yang gurih, mantap, dan lembut di lidah. Ditakar presisi untuk ${servings} porsi santapan hangat bersama keluarga tercinta.${customNotes ? ` Catatan selera khusus: "${customNotes}".` : ''}`;
     const p3Id = `Paling pas disajikan hangat mengepul bersama nasi putih pulen, lalapan segar, serta sambal pelengkap untuk menyempurnakan kelezatan cita rasa tradisi.`;
     const descriptionId = `${p1Id}\n\n${p2Id}\n\n${p3Id}`;
 
-    const p1En = `An authentic culinary creation marrying the heritage technique of ${cookingMethod} with the aromatic depth of ${keySpice1} and ${keySpice2}. Every spice proportion has been calibrated to draw out genuine Central Javanese warmth and rich flavors from the ingredients.`;
+    const p1En = `An authentic culinary creation marrying the heritage technique of ${cookingMethod} with the aromatic depth of ${keySpice1} and ${keySpice2}. Every spice proportion has been calibrated to draw out genuine warmth and rich flavors from the ingredients.`;
     const p2En = `The flavor journey presents a distinct ${tasteProfile.replace('-', ' and ')} harmony that is smooth and comforting on the palate. Designed for ${servings} generous servings, this dish carries the timeless wisdom of traditional family meals.${customNotes ? ` Special flavor touch: "${customNotes}".` : ''}`
-    const p3En = `Best served hot alongside fluffy white rice, fresh raw vegetables (lalapan), and authentic sambal for a complete Javanese culinary experience.`;
+    const p3En = `Best served hot alongside fluffy white rice, fresh raw vegetables (lalapan), and authentic sambal for a complete traditional culinary experience.`;
     const descriptionEn = `${p1En}\n\n${p2En}\n\n${p3En}`;
 
     const description = descriptionId;
@@ -322,7 +322,7 @@ export const aiFoodCreatorService = {
       description,
       descriptionId,
       descriptionEn,
-      regionName: 'Jawa Tengah (Kreasi Mandiri)',
+      regionName: 'Kreasi Dapur Tradisi',
       servings,
       prepTime: `${durationData.prep} Menit`,
       cookTime: `${durationData.cook} Menit`,
@@ -860,8 +860,8 @@ export const aiFoodCreatorService = {
     doc.setTextColor(250, 246, 239);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
-    doc.text('DOKUMEN RESEP PUSAKA JAWA TENGAH • EDISI KREASI', margin, 18);
-    doc.text('LarasRasa • Menyelaraskan Rasa Warisan Leluhur Jawa Tengah', margin, 23);
+    doc.text('DOKUMEN RESEP PUSAKA • EDISI KREASI AUTENTIK', margin, 18);
+    doc.text('LarasRasa • Menyelaraskan Rasa Warisan Leluhur', margin, 23);
 
     // Verification Code
     const verifyCode = `LR-AI-${Math.abs(recipe.id.hashCode ? recipe.id.hashCode() : 98214)}-${new Date().getFullYear()}`;
@@ -887,7 +887,7 @@ export const aiFoodCreatorService = {
     doc.setFontSize(9);
     const creatorLabel = (recipe.creatorName && !recipe.creatorName.includes('LarasRasa') && !recipe.creatorName.includes('Dapur'))
       ? `DICIPTAKAN OLEH: ${recipe.creatorName.toUpperCase()}`
-      : `RESEP KREASI PUSAKA JAWA TENGAH`;
+      : `RESEP KREASI PUSAKA AUTENTIK`;
     doc.text(creatorLabel, margin + 5, curY + 6.5);
     doc.setTextColor(101, 67, 50);
     doc.setFont('helvetica', 'normal');
