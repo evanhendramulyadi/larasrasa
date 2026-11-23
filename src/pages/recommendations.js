@@ -17,7 +17,7 @@ const TOTAL_STEPS = 3;
 let currentAnswers = {
   flavor: flavorProfiles[0]?.id || 'manis',
   dishType: 'kuah-segar',
-  regionPreference: 'semua',
+  regionPreference: 'keraton',
   servings: 4
 };
 let activeResult = null;
@@ -28,7 +28,7 @@ export function resetRecommendationsWizard() {
   currentAnswers = {
     flavor: flavorProfiles[0]?.id || 'manis',
     dishType: 'kuah-segar',
-    regionPreference: 'semua',
+    regionPreference: 'keraton',
     servings: 4
   };
   activeResult = null;
@@ -356,6 +356,16 @@ function renderResultView(result) {
         <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-[#D49B42]/15 blur-3xl pointer-events-none"></div>
         <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-[#C84C24]/18 blur-3xl pointer-events-none"></div>
 
+        <!-- Close Button (X) Top-Right -->
+        <button type="button" 
+                id="result-close-top-btn" 
+                class="absolute top-4 right-4 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center backdrop-blur-md border border-white/20 transition-all cursor-pointer shadow-md hover:scale-105" 
+                aria-label="${t('spicesSection.closeModal') || 'Tutup'}">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
         <div class="relative z-10 space-y-4">
           <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/35 shadow-xs">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
@@ -515,14 +525,23 @@ function renderResultView(result) {
               </div>
             </div>
 
-            <!-- Primary Action CTA -->
-            <div class="pt-2">
+            <!-- Action CTAs -->
+            <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <button type="button" 
                       id="open-recommendation-recipe-btn" 
                       data-recipe-slug="${primary.slug}"
-                      class="w-full inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center cursor-pointer">
+                      class="flex-1 inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs sm:text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center cursor-pointer">
                 <span>${t('recommendations.openRecipeBtn')}</span>
                 <span class="text-base">&rarr;</span>
+              </button>
+
+              <button type="button" 
+                      id="result-close-action-btn" 
+                      class="sm:w-36 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#FAF7F2] text-[#120B07] text-xs sm:text-sm font-bold border border-[#D49B42]/40 transition-all shadow-xs cursor-pointer text-center">
+                <svg class="w-4 h-4 text-[#C84C24]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <span>${t('spicesSection.closeModal') || 'Tutup'}</span>
               </button>
             </div>
 
@@ -542,17 +561,17 @@ export function initRecommendationsInteractions(onRerender) {
     card.addEventListener('click', () => {
       const radio = card.querySelector('input[type="radio"]');
       if (radio) {
-        radio.checked = true;
         const name = radio.name;
         const val = radio.value;
         currentAnswers[name] = val;
 
-        // Visual update preserving layout classes
+        // Visual update preserving layout classes & explicitly setting checked state
         const siblings = document.querySelectorAll(`input[name="${name}"]`);
         siblings.forEach(s => {
+          s.checked = (s === radio);
           const parent = s.closest('.wizard-option-card');
           if (parent) {
-            if (s.checked) {
+            if (s === radio) {
               parent.classList.add('border-[#C84C24]', 'bg-[#FDF4EE]', 'shadow-md', 'ring-2', 'ring-[#C84C24]/30');
               parent.classList.remove('border-[#D49B42]/30', 'bg-white', 'hover:bg-[#FAF7F2]');
             } else {
@@ -561,6 +580,16 @@ export function initRecommendationsInteractions(onRerender) {
             }
           }
         });
+      }
+    });
+  });
+
+  // Listen directly to radio change as fallback
+  const radios = document.querySelectorAll('.wizard-option-card input[type="radio"]');
+  radios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.checked) {
+        currentAnswers[radio.name] = radio.value;
       }
     });
   });
@@ -610,5 +639,28 @@ export function initRecommendationsInteractions(onRerender) {
         openRecipeModal(slug);
       }
     });
+  }
+
+  // Close Result View Handlers
+  const handleCloseResult = () => {
+    activeResult = null;
+    wizardStep = 1;
+    currentAnswers = {
+      flavor: flavorProfiles[0]?.id || 'manis',
+      dishType: 'kuah-segar',
+      regionPreference: 'keraton',
+      servings: 4
+    };
+    if (typeof onRerender === 'function') onRerender();
+  };
+
+  const closeTopBtn = document.getElementById('result-close-top-btn');
+  if (closeTopBtn) {
+    closeTopBtn.addEventListener('click', handleCloseResult);
+  }
+
+  const closeActionBtn = document.getElementById('result-close-action-btn');
+  if (closeActionBtn) {
+    closeActionBtn.addEventListener('click', handleCloseResult);
   }
 }
