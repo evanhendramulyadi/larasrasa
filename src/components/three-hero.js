@@ -29,8 +29,8 @@ export class ThreeHeroShowcase {
         desc: t('hero.dishNasiLiwetDesc'),
         region: 'Kota Surakarta (Solo)',
         slug: 'nasi-liwet-solo',
-        x: '26%',
-        y: '29%'
+        x: '23%',
+        y: '58%'
       },
       {
         id: 'garang-asem',
@@ -40,8 +40,8 @@ export class ThreeHeroShowcase {
         desc: t('hero.dishGarangAsemDesc'),
         region: 'Kabupaten Kudus',
         slug: 'garang-asem-kudus',
-        x: '74%',
-        y: '29%'
+        x: '50%',
+        y: '43%'
       },
       {
         id: 'soto-kudus',
@@ -51,8 +51,8 @@ export class ThreeHeroShowcase {
         desc: t('hero.dishSotoKudusDesc'),
         region: 'Kabupaten Kudus',
         slug: 'soto-kudus',
-        x: '26%',
-        y: '71%'
+        x: '76%',
+        y: '56%'
       },
       {
         id: 'mendoan',
@@ -62,8 +62,8 @@ export class ThreeHeroShowcase {
         desc: t('hero.dishMendoanDesc'),
         region: 'Kabupaten Banyumas',
         slug: 'mendoan-banyumas',
-        x: '74%',
-        y: '71%'
+        x: '51%',
+        y: '77%'
       }
     ];
   }
