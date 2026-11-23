@@ -114,10 +114,10 @@ function renderGeneratingState(currentLang) {
 
       <div class="space-y-3">
         <span class="inline-flex items-center px-4 py-1.5 rounded-full bg-[#FAF7F2] border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] uppercase tracking-wider shadow-xs">
-          <span>${isEn ? 'Culinary Synthesis in Progress' : 'Studio Sintesis Rasa LarasRasa'}</span>
+          <span>${isEn ? 'LarasRasa AI Culinary Experiment Studio' : 'Studio Eksperimen Kuliner AI LarasRasa'}</span>
         </span>
         <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07]">
-          ${isEn ? 'Synthesizing Authentic Culinary Creation...' : 'Meracik Kreasi Resep Pusaka Autentik...'}
+          ${isEn ? 'Formulating Authentic Culinary Creation...' : 'Meracik Kreasi Resep Pusaka Otentik...'}
         </h2>
         <p class="text-xs sm:text-sm text-[#5C3622] max-w-md mx-auto leading-relaxed">
           ${isEn 
@@ -128,7 +128,7 @@ function renderGeneratingState(currentLang) {
 
       <div class="max-w-xs mx-auto pawon-glass p-4 rounded-2xl border border-[#D49B42]/35 text-xs text-[#5C3622] space-y-2 shadow-sm">
         <div class="flex items-center justify-between font-bold">
-          <span>${isEn ? 'Culinary Synthesis & Recipe Document' : 'Sintesis Rasa & Dokumen Resep'}</span>
+          <span>${isEn ? 'Recipe Formulation & Culinary Document' : 'Peracikan Resep & Dokumen Kuliner'}</span>
           <span class="text-[#C84C24] font-mono">100%</span>
         </div>
         <div class="w-full bg-[#FAF7F2] h-2.5 rounded-full overflow-hidden border border-[#E8DEC8]">
@@ -485,7 +485,7 @@ function renderFormView(currentLang) {
         <div class="p-6 sm:p-10 rounded-3xl bg-gradient-to-r from-[#120B07] via-[#1E120A] to-[#120B07] border-2 border-[#D49B42]/45 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-5">
           <div class="text-left space-y-1.5">
             <h3 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#FAF7F2]">
-              ${isEn ? 'Ready to synthesize your heritage recipe?' : 'Siap meracik kreasi resep pusaka Anda?'}
+              ${isEn ? 'Ready to craft your heritage recipe?' : 'Siap meracik kreasi resep pusaka Anda?'}
             </h3>
             <p class="text-xs text-[#FAF7F2]/80 max-w-lg">
               ${isEn 
@@ -499,7 +499,7 @@ function renderFormView(currentLang) {
             id="generate-recipe-submit-btn"
             class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C84C24] hover:bg-[#AE3E1B] text-[#FAF7F2] font-bold text-sm tracking-wide transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center justify-center gap-2.5 shrink-0 cursor-pointer border border-[#E05A30]"
           >
-            <span>${isEn ? 'Synthesize Heritage Recipe' : 'Racik Resep Pusaka'}</span>
+            <span>${isEn ? 'Craft Heritage Recipe' : 'Racik Resep Pusaka'}</span>
             <svg class="w-4 h-4 text-[#FAF7F2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>

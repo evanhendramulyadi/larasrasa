@@ -1277,11 +1277,11 @@ export const aiFoodCreatorService = {
     doc.setTextColor(48, 32, 24);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
-    doc.text(isEn ? 'AI Synthesis Specialist' : 'Spesialis Sintesis AI', pageWidth - 65, sigY + 5, { align: 'center' });
+    doc.text(isEn ? 'AI Culinary Specialist' : 'Spesialis Kuliner AI', pageWidth - 65, sigY + 5, { align: 'center' });
     doc.setTextColor(101, 67, 50);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
-    doc.text(isEn ? 'Flavor Engineering Studio' : 'Laboratorium Rekayasa Rasa', pageWidth - 65, sigY + 9, { align: 'center' });
+    doc.text(isEn ? 'Culinary Experiment Studio' : 'Laboratorium Eksperimen Rasa', pageWidth - 65, sigY + 9, { align: 'center' });
 
     // 12. Verification Code & Issue Date Bar
     const numId = Math.abs(recipe.id?.split('').reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0) || 849201) % 900000 + 100000;
