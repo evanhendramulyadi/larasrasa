@@ -110,14 +110,14 @@ function renderWizardView(step) {
         ${renderStepContent(step)}
 
         <!-- Navigation Buttons -->
-        <div class="pt-6 border-t border-[#E8DEC8] flex items-center gap-4 ${step > 1 ? 'justify-between' : 'justify-end'}">
+        <div class="pt-6 border-t border-[#E8DEC8] flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 ${step > 1 ? 'sm:justify-between' : 'sm:justify-end'}">
           ${step > 1 ? `
-            <button id="wizard-prev-btn" type="button" class="flex-1 sm:flex-initial sm:w-64 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs whitespace-nowrap">
+            <button id="wizard-prev-btn" type="button" class="w-full sm:w-64 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs whitespace-nowrap">
               &larr; <span>${t('recommendations.prevBtn')}</span>
             </button>
           ` : ''}
 
-          <button id="wizard-next-btn" type="button" class="${step > 1 ? 'flex-1 sm:flex-initial sm:w-64' : 'w-full sm:w-64'} inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30] whitespace-nowrap">
+          <button id="wizard-next-btn" type="button" class="w-full sm:w-64 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30] whitespace-nowrap">
             <span>${step === TOTAL_STEPS ? t('recommendations.submitBtn') : t('recommendations.nextBtn')}</span>
             <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -405,23 +405,20 @@ function renderResultView(result) {
             ${t('recommendations.resultSub')}
           </p>
           
-          <!-- Criteria Recap Chips -->
+          <!-- Criteria Recap Chips (3 User Selected Inputs) -->
           <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
-            <span class="inline-flex items-center px-3.5 py-1 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-bold text-[#D49B42] shadow-xs">
-              <span>4 ${isEn ? 'Portions' : 'Porsi'}</span>
-            </span>
             ${chosenFlavorName ? `
-              <span class="inline-flex items-center px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
+              <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-[#D49B42]/40 text-xs font-semibold text-[#D49B42] shadow-xs">
                 <span>${chosenFlavorName}</span>
               </span>
             ` : ''}
             ${chosenDishTypeName ? `
-              <span class="inline-flex items-center px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
+              <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
                 <span>${chosenDishTypeName}</span>
               </span>
             ` : ''}
             ${chosenRegionName ? `
-              <span class="inline-flex items-center px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
+              <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
                 <span>${chosenRegionName}</span>
               </span>
             ` : ''}
