@@ -17,7 +17,7 @@ export const restaurants = [
     regionId: 'surakarta',
     description: 'Berdiri pada tahun 1950. Menjual hidangan khas Solo berupa nasi liwet gurih dengan beragam lauk kampung.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJB0OZbWIWei4R-uruTK1Smbo',
-    image: '/assets/images/restaurants/wongso-lemu.jpg'
+    image: '/assets/images/restaurants/nasi-liwet-bu-wongso-lemu.jpeg'
   },
   {
     id: 'soto-ayam-pak-darno-semarang',
@@ -27,7 +27,7 @@ export const restaurants = [
     regionId: 'semarang',
     description: 'Berdiri sejak 1980-an. Menjual soto ayam khas Semarang beserta aneka sate dan gorengan pelengkap. Meskipun disajikan dalam mangkuk kecil seperti soto Kudus, warung ini menyajikan soto bergaya Semarang.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ14pzBlGLcC4Rh-m-8CVMBx0',
-    image: '/assets/images/restaurants/soto-pak-darno.jpg'
+    image: '/assets/images/restaurants/soto-ayam-pak-darno.jpg'
   },
   {
     id: 'garang-asem-sari-rasa-kudus',
@@ -37,7 +37,7 @@ export const restaurants = [
     regionId: 'kudus',
     description: 'Berdiri pada tahun 1977, dirintis oleh Ibu Sriati. Garang asem ayam kampung khas Kudus mulai diperkenalkan sebagai menu pada tahun 1986, beserta aneka masakan Jawa lainnya.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJOUBgru3EcC4R5q8BFN5Lnd8',
-    image: '/assets/images/restaurants/sari-rasa-kudus.jpg'
+    image: '/assets/images/restaurants/rm-gasasa-sari-rasa.jpg'
   },
   {
     id: 'lunpia-gang-lombok-semarang',
@@ -47,7 +47,7 @@ export const restaurants = [
     regionId: 'semarang',
     description: 'Mulai dirintis sejak abad ke-19. Menjual lumpia khas Semarang, baik varian basah maupun goreng.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJn406fqr0cC4RG0y566UNjY0',
-    image: '/assets/images/restaurants/lumpia-gang-lombok.jpg'
+    image: '/assets/images/restaurants/lunpia-gang-lombok.jpg'
   },
   {
     id: 'selat-solo-mbak-lies',
@@ -57,7 +57,7 @@ export const restaurants = [
     regionId: 'surakarta',
     description: 'Berdiri sejak tahun 1987. Menjual berbagai kuliner khas Solo bergaya perpaduan Jawa dan Belanda, dengan menu utama Selat Solo.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ4-fKX6kXei4RbOfyhZ81GeY',
-    image: '/assets/images/restaurants/selat-mbak-lies.jpg'
+    image: '/assets/images/restaurants/warung-selat-mbak-lies.jpeg'
   },
   {
     id: 'sate-kambing-pak-manto-solo',
@@ -67,7 +67,7 @@ export const restaurants = [
     regionId: 'surakarta',
     description: 'Berdiri pada tahun 1990. Menjual beragam olahan daging dan jeroan kambing khas Solo, dengan menu ikonik berupa tengkleng rica-rica dan sate buntel.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJiez_A30Wei4REcQvSaDbGpE',
-    image: '/assets/images/restaurants/pak-manto.jpg'
+    image: '/assets/images/restaurants/sate-pak-manto.jpg'
   },
   {
     id: 'warung-megono-pak-bon-pekalongan',
@@ -77,7 +77,7 @@ export const restaurants = [
     regionId: 'pekalongan',
     description: 'Berdiri sejak tahun 1963. Menjual sego megono, yaitu nasi hangat dengan cacahan nangka muda berbumbu kelapa, beserta aneka lauk pendamping khas Pekalongan.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJe8JEHDMkcC4RPqRrgK5do4Q',
-    image: '/assets/images/restaurants/megono-pak-bon.jpg'
+    image: '/assets/images/restaurants/warung-nasi-megono-pak-bon.jpg'
   },
   {
     id: 'mendoan-eco-21-purwokerto',
@@ -87,7 +87,7 @@ export const restaurants = [
     regionId: 'banyumas',
     description: 'Berdiri sejak tahun 1990 di kawasan Sawangan, Purwokerto, Banyumas. Menjual tempe mendoan matang maupun paket mentah, beserta aneka oleh-oleh khas Banyumas lainnya.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJoy_Yt4VeZS4RI7Cj7pAdZO8',
-    image: '/assets/images/restaurants/mendoan-echo.jpg'
+    image: '/assets/images/restaurants/pusat-oleh-oleh-eco21.png'
   },
   {
     id: 'kupat-tahu-pojok-magelang',
@@ -97,7 +97,7 @@ export const restaurants = [
     regionId: 'magelang',
     description: 'Berdiri pada tahun 1942. Menjual kupat tahu khas Magelang sebagai menu utamanya.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJUe-TyF6Pei4R0LNN4lJvfuw',
-    image: '/assets/images/restaurants/kupat-tahu-pojok.jpg'
+    image: '/assets/images/restaurants/kupat-tahu-pojok-magelang.jpg'
   },
   {
     id: 'sate-kambing-wendys-tegal',
@@ -107,7 +107,7 @@ export const restaurants = [
     regionId: 'tegal',
     description: 'Mulai dirintis pada tahun 1984. Menjual berbagai olahan daging kambing muda (balibul, yaitu kambing berusia di bawah 5 bulan) khas Tegal.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ-2SWiXq3by4R0YPMzNT5zZg',
-    image: '/assets/images/recipes/sate-kambing-batibul.jpg'
+    image: '/assets/images/restaurants/sate-mendo-wendys.jpg'
   },
   {
     id: 'mie-ongklok-pak-muhadi-wonosobo',
@@ -117,6 +117,6 @@ export const restaurants = [
     regionId: 'wonosobo',
     description: 'Berdiri sejak tahun 1966. Berfokus menjual mie ongklok khas Wonosobo beserta sate sapi sebagai menu pendamping utamanya.',
     googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ7d58eQChei4RZdoHbvwQ5Dk',
-    image: '/assets/images/recipes/mie-ongklok.jpg'
+    image: '/assets/images/restaurants/mie-ongklok-pak-muhadi.jpg'
   }
 ];
