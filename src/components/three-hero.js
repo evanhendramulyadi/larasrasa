@@ -29,8 +29,8 @@ export class ThreeHeroShowcase {
         desc: t('hero.dishNasiLiwetDesc'),
         region: 'Kota Surakarta (Solo)',
         slug: 'nasi-liwet-solo',
-        x: '48%',
-        y: '45%'
+        x: '25%',
+        y: '25%'
       },
       {
         id: 'garang-asem',
@@ -40,8 +40,8 @@ export class ThreeHeroShowcase {
         desc: t('hero.dishGarangAsemDesc'),
         region: 'Kabupaten Kudus',
         slug: 'garang-asem-kudus',
-        x: '76%',
-        y: '50%'
+        x: '75%',
+        y: '25%'
       },
       {
         id: 'soto-kudus',
@@ -51,8 +51,8 @@ export class ThreeHeroShowcase {
         desc: t('hero.dishSotoKudusDesc'),
         region: 'Kabupaten Kudus',
         slug: 'soto-kudus',
-        x: '36%',
-        y: '72%'
+        x: '25%',
+        y: '75%'
       },
       {
         id: 'mendoan',
@@ -62,8 +62,8 @@ export class ThreeHeroShowcase {
         desc: t('hero.dishMendoanDesc'),
         region: 'Kabupaten Banyumas',
         slug: 'mendoan-banyumas',
-        x: '65%',
-        y: '72%'
+        x: '75%',
+        y: '75%'
       }
     ];
   }
@@ -78,12 +78,9 @@ export class ThreeHeroShowcase {
         <!-- Header Bar: Title, Badge & Royal Guest Note -->
         <div class="z-20 shrink-0 mb-2">
           <div class="flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-[#C84C24] shrink-0"></span>
-              <h3 class="font-editorial-serif text-sm sm:text-base font-bold text-[#120B07] leading-tight">
-                ${t('hero.pusakaTitle')}
-              </h3>
-            </div>
+            <h3 class="font-editorial-serif text-sm sm:text-base font-bold text-[#120B07] leading-tight">
+              ${t('hero.pusakaTitle')}
+            </h3>
             <span class="text-[9.5px] sm:text-[10px] font-bold text-[#C84C24] bg-[#FDF4EE] border border-[#C84C24]/20 px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-2xs">
               ${t('hero.pusakaBadge')}
             </span>
