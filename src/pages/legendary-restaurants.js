@@ -92,24 +92,16 @@ export async function renderLegendaryRestaurantsPage() {
       </div>
 
       <!-- Historical Documentation & Business Records Reminder Card -->
-      <div class="p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-white via-[#FAF7F2] to-[#F5EFEB] border border-[#D49B42]/40 shadow-xs flex items-start gap-4">
-        <div class="w-10 h-10 rounded-2xl bg-[#D49B42]/15 border border-[#D49B42]/30 flex items-center justify-center shrink-0 mt-0.5 text-[#C84C24]">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 16v-4M12 8h.01"/>
-          </svg>
-        </div>
-        <div class="space-y-2">
-          <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07]">
-            ${t('restaurantsSection.noticeTitle')}
-          </h3>
-          <p class="text-xs sm:text-[13px] text-[#5C3622] leading-relaxed">
-            ${t('restaurantsSection.noticeText')}
-          </p>
-          <p class="text-xs sm:text-[13px] text-[#5C3622]/90 leading-relaxed pt-1 border-t border-[#E8DEC8]/60">
-            ${t('restaurantsSection.noticeText2')}
-          </p>
-        </div>
+      <div class="p-6 sm:p-7 rounded-3xl bg-gradient-to-r from-white via-[#FAF7F2] to-[#F5EFEB] border border-[#D49B42]/40 shadow-xs space-y-2">
+        <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07]">
+          ${t('restaurantsSection.noticeTitle')}
+        </h3>
+        <p class="text-xs sm:text-[13px] text-[#5C3622] leading-relaxed">
+          ${t('restaurantsSection.noticeText')}
+        </p>
+        <p class="text-xs sm:text-[13px] text-[#5C3622]/90 leading-relaxed pt-1 border-t border-[#E8DEC8]/60">
+          ${t('restaurantsSection.noticeText2')}
+        </p>
       </div>
 
     </div>
