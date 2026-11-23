@@ -168,10 +168,10 @@ function renderFormView(currentLang) {
     if (sessionAlert.type === 'credit') {
       return {
         badge: isEn ? 'Credit Limit Notice' : 'Pemberitahuan Kuota Resep',
-        title: isEn ? 'Credits Exhausted' : 'Kredit Peracikan Habis',
+        title: isEn ? 'Global Credits Exhausted' : 'Kredit Global Habis',
         text: isEn
-          ? 'Recipe creation credits are exhausted. Please contact the administrator for additional credits.'
-          : 'Kredit peracikan resep telah habis. Silakan hubungi pengelola untuk penambahan kredit.',
+          ? 'Global recipe creation credits are currently exhausted. Please wait until credits become available again.'
+          : 'Kredit peracikan resep global telah habis. Silakan tunggu sampai kuota kredit tersedia kembali.',
         isWarning: false
       };
     }

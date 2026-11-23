@@ -249,7 +249,7 @@ export const aiFoodCreatorService = {
       });
 
       if (response.status === 402 || response.status === 429) {
-        return { ok: false, error: 'no_credits', message: 'Kredit peracikan resep telah habis.' };
+        return { ok: false, error: 'no_credits', message: 'Kredit peracikan resep global telah habis. Silakan tunggu sampai kuota kredit tersedia kembali.' };
       }
 
       if (response.status === 403) {

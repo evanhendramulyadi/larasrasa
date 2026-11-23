@@ -278,7 +278,7 @@ export const en = {
     backToStudioBtn: 'Back to Recipe Studio',
     cooldownWarning: 'Recipe generation is limited to once every 10 minutes. Please wait {minutes} more minute before crafting a new recipe.',
     cooldownAlertTitle: 'Rate Limit Warning',
-    errorNoCredits: 'Recipe creation credits are exhausted. Please contact the administrator for additional credits.',
+    errorNoCredits: 'Global recipe creation credits are currently exhausted. Please wait until credits become available again.',
     errorForbidden: 'Failed to load recipe from the service backend. Please check your connection or try again shortly.',
     errorGeneral: 'Failed to load recipe from the service backend. Please check your connection or try again shortly.'
   },

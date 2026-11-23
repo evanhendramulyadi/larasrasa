@@ -278,7 +278,7 @@ export const id = {
     backToStudioBtn: 'Kembali ke Studio Racik',
     cooldownWarning: 'Batas peracikan resep adalah 10 menit sekali. Silakan tunggu {minutes} menit lagi sebelum meracik resep baru.',
     cooldownAlertTitle: 'Peringatan Batas Waktu',
-    errorNoCredits: 'Kredit peracikan resep telah habis. Silakan hubungi pengelola untuk penambahan kredit.',
+    errorNoCredits: 'Kredit peracikan resep global telah habis. Silakan tunggu sampai kuota kredit tersedia kembali.',
     errorForbidden: 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.',
     errorGeneral: 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.'
   },
