@@ -17,15 +17,15 @@ import { i18n } from '../i18n/index.js';
 export const LOCAL_INGREDIENT_CATALOG = {
   proteins: [
     { id: 'ayam-kampung', nameId: 'Daging Ayam Kampung', nameEn: 'Free-range Chicken', icon: '🍗', category: 'protein', description: 'Ayam kampung asli dengan kaldu gurih alami.' },
-    { id: 'daging-sapi', nameId: 'Daging Sapi Has / Sengkel', nameEn: 'Selected Beef Cut', icon: '🥩', category: 'protein', description: 'Potongan daging sapi cocok untuk ungkep atau semur.' },
+    { id: 'daging-sapi', nameId: 'Daging Sapi', nameEn: 'Selected Beef Cut', icon: '🥩', category: 'protein', description: 'Potongan daging sapi cocok untuk ungkep atau semur.' },
     { id: 'daging-kambing', nameId: 'Daging Kambing Muda', nameEn: 'Tender Young Mutton', icon: '🍖', category: 'protein', description: 'Kambing muda empuk untuk sate buntel atau tengkleng.' },
-    { id: 'ikan-bandeng', nameId: 'Ikan Bandeng Segar', nameEn: 'Fresh Milkfish', icon: '🐟', category: 'protein', description: 'Ikan air payau khas pesisir utara Semarang & Juwana.' },
+    { id: 'ikan-bandeng', nameId: 'Ikan Bandeng Segar', nameEn: 'Fresh Milkfish', icon: '🐟', category: 'protein', description: 'Ikan air payau segar berkaldu gurih.' },
     { id: 'udang-jerbung', nameId: 'Udang Jerbung Segar', nameEn: 'Fresh Wild Prawns', icon: '🦐', category: 'protein', description: 'Udang laut gurih untuk gimbal atau oseng gurih.' },
-    { id: 'tempe-kedelai', nameId: 'Tempe Kedelai Asli', nameEn: 'Traditional Soybean Tempeh', icon: '🥢', category: 'protein', description: 'Kedelai fermentasi kapang alami khas Banyumas & Solo.' },
+    { id: 'tempe-kedelai', nameId: 'Tempe Kedelai Asli', nameEn: 'Traditional Soybean Tempeh', icon: '🥢', category: 'protein', description: 'Kedelai fermentasi kapang alami khas tradisi.' },
     { id: 'tahu-kuning', nameId: 'Tahu Kuning Sutra', nameEn: 'Silken Yellow Tofu', icon: '🧈', category: 'protein', description: 'Tahu lembut berpori yang menyerap kuah bumbu.' },
-    { id: 'telur-bebek', nameId: 'Telur Bebek / Ayam Kampung', nameEn: 'Duck / Farm Eggs', icon: '🥚', category: 'protein', description: 'Telur gurih untuk bacem, pindang, atau dadar lezat.' },
+    { id: 'telur-bebek', nameId: 'Telur Bebek', nameEn: 'Duck Eggs', icon: '🥚', category: 'protein', description: 'Telur gurih untuk bacem, pindang, atau dadar lezat.' },
     { id: 'beras-pulen', nameId: 'Beras Pulen Wangi Jawa', nameEn: 'Fragrant Javanese Rice', icon: '🍚', category: 'staple', description: 'Beras pilihan penunjang nasi liwet pulen.' },
-    { id: 'mi-telur', nameId: 'Mi Telur / Bihun Kenyal', nameEn: 'Egg / Rice Vermicelli', icon: '🍜', category: 'staple', description: 'Mi kenyal pelengkap soto dan mie ongklok.' }
+    { id: 'mi-telur', nameId: 'Mi Telur', nameEn: 'Egg Noodles', icon: '🍜', category: 'staple', description: 'Mi kenyal pelengkap soto dan mie ongklok.' }
   ],
   spices: spices.map(s => ({
     id: s.id,

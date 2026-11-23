@@ -245,11 +245,34 @@ export const aiFoodCreatorService = {
     };
     const regionFlair = regionFlairMapId[tasteProfile] || 'Racikan Tradisi';
 
-    const proteinName = proteinItem.nameId.replace('Daging ', '').replace(' Segar', '');
+    const proteinMap = {
+      'daging-sapi': 'Sapi',
+      'ayam-kampung': 'Ayam',
+      'daging-kambing': 'Kambing',
+      'ikan-bandeng': 'Bandeng',
+      'udang-jerbung': 'Udang',
+      'tempe-kedelai': 'Tempe',
+      'tahu-kuning': 'Tahu',
+      'telur-bebek': 'Telur',
+      'beras-pulen': 'Nasi',
+      'mi-telur': 'Mi'
+    };
+    let proteinName = proteinMap[proteinItem.id];
+    if (!proteinName) {
+      proteinName = (proteinItem.nameId || '')
+        .replace(/^Daging\s+/i, '')
+        .replace(/^Ikan\s+/i, '')
+        .replace(/\s+Segar$/i, '')
+        .replace(/\s+Asli$/i, '')
+        .split('/')[0]
+        .split('&')[0]
+        .split(' atau ')[0]
+        .trim();
+    }
     const methodVerbId = methodVerbMapId[cookingMethod] || 'Olahan';
     const keySpice1Clean = (keySpice1Id.split(' ')[0] || '').replace(/[^a-zA-Z]/g, '');
 
-    // Authentic regional dish name WITHOUT region suffix as requested: "gausah pake wilayah"
+    // Single concise dish name without slashes, 'atau', or regional identifiers
     const dishBaseName = `${methodVerbId} ${proteinName} ${keySpice1Clean}`.trim();
     const fullTitle = dishBaseName;
 
@@ -843,7 +866,9 @@ export const aiFoodCreatorService = {
     const margin = 16;
     const contentWidth = pageWidth - (margin * 2);
 
-    // --- Page 1: Official Recipe Document & Overview ---
+    // ==========================================
+    // --- PAGE 1: DOKUMEN RESEP PUSAKA & BAHAN ---
+    // ==========================================
 
     // Top Header Banner
     doc.setFillColor(48, 32, 24); // #302018 Deep Espresso
@@ -864,7 +889,7 @@ export const aiFoodCreatorService = {
     doc.text('LarasRasa • Menyelaraskan Rasa Warisan Leluhur', margin, 23);
 
     // Verification Code
-    const verifyCode = `LR-AI-${Math.abs(recipe.id.hashCode ? recipe.id.hashCode() : 98214)}-${new Date().getFullYear()}`;
+    const verifyCode = `LR-AI-${Math.abs(recipe.id?.hashCode ? recipe.id.hashCode() : 98214)}-${new Date().getFullYear()}`;
     doc.setTextColor(196, 154, 88);
     doc.setFontSize(8);
     doc.text(`KODE DOKUMEN: ${verifyCode}`, pageWidth - margin, 18, { align: 'right' });
@@ -875,7 +900,7 @@ export const aiFoodCreatorService = {
     doc.setTextColor(48, 32, 24);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(18);
-    const titleLines = doc.splitTextToSize(recipe.title, contentWidth);
+    const titleLines = doc.splitTextToSize(recipe.title || '', contentWidth);
     doc.text(titleLines, margin, curY);
     curY += (titleLines.length * 7) + 2;
 
@@ -891,43 +916,30 @@ export const aiFoodCreatorService = {
     doc.text(creatorLabel, margin + 5, curY + 6.5);
     doc.setTextColor(101, 67, 50);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Porsi: ${recipe.servings || 4} | Durasi: ${recipe.totalTime || '45 Menit'} | Tingkat: ${recipe.difficulty || 'Sedang'}`, pageWidth - margin - 5, curY + 6.5, { align: 'right' });
-    curY += 15;
+    doc.text(`Porsi: ${recipe.servings || 4} | Durasi: ${recipe.totalTime || '50 Menit'}`, pageWidth - margin - 5, curY + 6.5, { align: 'right' });
+    curY += 16;
 
-    // Embed poster thumbnail if canvas provided
-    let textLeftMargin = margin;
-    let textWidth = contentWidth;
-
-    if (posterCanvas) {
-      try {
-        const posterImgData = posterCanvas.toDataURL('image/jpeg', 0.85);
-        const thumbW = 55;
-        const thumbH = (posterCanvas.height / posterCanvas.width) * thumbW;
-        doc.addImage(posterImgData, 'JPEG', margin, curY, thumbW, thumbH);
-        textLeftMargin = margin + thumbW + 6;
-        textWidth = contentWidth - thumbW - 6;
-      } catch (e) {
-        console.warn('Canvas thumbnail embed bypassed:', e);
-      }
-    }
-
-    // Story / Narrative Block
+    // Overview & Character Story Section
     doc.setTextColor(48, 32, 24);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
-    doc.text('Konsep & Karakter Rasa', textLeftMargin, curY + 4);
+    doc.text('Karakter Rasa & Konsep Olahan', margin, curY);
+    curY += 5;
 
     doc.setTextColor(80, 50, 35);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
-    const rawStory = (recipe.description || recipe.philosophy || '').replace(/\*\*/g, '');
-    const descLines = doc.splitTextToSize(rawStory, textWidth);
-    doc.text(descLines, textLeftMargin, curY + 10);
+    const rawStory = (recipe.descriptionId || recipe.description || recipe.philosophy || '').replace(/\*\*/g, '');
+    const paragraphs = rawStory.split('\n\n').filter(Boolean);
+    paragraphs.forEach(p => {
+      const pLines = doc.splitTextToSize(p.trim(), contentWidth);
+      doc.text(pLines, margin, curY);
+      curY += (pLines.length * 4.4) + 3;
+    });
 
-    const descHeight = (descLines.length * 4.5);
-    curY = posterCanvas ? Math.max(curY + 70, curY + descHeight + 15) : (curY + descHeight + 15);
+    curY += 3;
 
-    // --- Ingredients Section ---
+    // Ingredients Section
     doc.setDrawColor(229, 217, 197);
     doc.line(margin, curY, pageWidth - margin, curY);
     curY += 6;
@@ -936,36 +948,47 @@ export const aiFoodCreatorService = {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
     doc.text('Daftar Bahan & Takaran Presisi', margin, curY);
-    curY += 6;
+    curY += 7;
 
     // Two column ingredient layout
-    const colWidth = (contentWidth - 6) / 2;
+    const colWidth = (contentWidth - 8) / 2;
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
 
-    recipe.ingredients.forEach((ing, i) => {
+    const ingList = recipe.ingredients || [];
+    ingList.forEach((ing, i) => {
       const col = i % 2;
       const row = Math.floor(i / 2);
-      const ingX = margin + (col * (colWidth + 6));
-      const ingY = curY + (row * 6);
+      const ingX = margin + (col * (colWidth + 8));
+      const ingY = curY + (row * 6.5);
 
-      // Check if near page bottom
-      if (ingY > pageHeight - 20) return;
+      if (ingY > pageHeight - 18) return;
 
       doc.setTextColor(184, 92, 56);
       doc.text('•', ingX, ingY);
       doc.setTextColor(48, 32, 24);
       doc.setFont('helvetica', 'bold');
-      doc.text(`${ing.amount} ${ing.unit}`, ingX + 4, ingY);
+      const amtStr = ing.amount ? `${ing.amount} ${ing.unitId || ing.unit || 'g'}` : '-';
+      doc.text(amtStr, ingX + 4, ingY);
       doc.setFont('helvetica', 'normal');
       doc.setTextColor(80, 50, 35);
-      const noteStr = ing.note ? ` (${ing.note})` : '';
+      const noteStr = (ing.noteId || ing.note) ? ` (${ing.noteId || ing.note})` : '';
       const maxTextWidth = colWidth - 28;
-      const ingLabel = doc.splitTextToSize(`${ing.name}${noteStr}`, maxTextWidth)[0] || ing.name;
-      doc.text(` ${ingLabel}`, ingX + 24, ingY);
+      const ingLabel = doc.splitTextToSize(`${ing.nameId || ing.name}${noteStr}`, maxTextWidth)[0] || (ing.nameId || ing.name);
+      doc.text(` ${ingLabel}`, ingX + 26, ingY);
     });
 
-    // --- Page 2: Cooking Steps & Kitchen Secrets ---
+    // Page 1 Footer
+    doc.setDrawColor(229, 217, 197);
+    doc.line(margin, pageHeight - 12, pageWidth - margin, pageHeight - 12);
+    doc.setTextColor(140, 120, 105);
+    doc.setFontSize(7.5);
+    doc.text(`Diterbitkan melalui LarasRasa AI Food Creator • Tanggal: ${new Date().toLocaleDateString('id-ID')}`, margin, pageHeight - 7);
+    doc.text('Dokumen Resep Pusaka • Halaman 1 dari 2', pageWidth - margin, pageHeight - 7, { align: 'right' });
+
+    // ==========================================
+    // --- PAGE 2: PANDUAN LANGKAH MEMASAK ---
+    // ==========================================
     doc.addPage();
 
     // Top mini header
@@ -974,94 +997,67 @@ export const aiFoodCreatorService = {
     doc.setTextColor(196, 154, 88);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
-    doc.text(`LARASRASA • PANDUAN LANGKAH: ${recipe.shortTitle.toUpperCase()}`, margin, 8);
+    doc.text(`LARASRASA • PANDUAN LANGKAH MEMASAK: ${(recipe.shortTitle || recipe.title || '').toUpperCase()}`, margin, 8);
 
-    curY = 22;
+    curY = 24;
 
     doc.setTextColor(48, 32, 24);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(13);
     doc.text('Tahapan Pengolahan Masakan', margin, curY);
-    curY += 8;
+    curY += 9;
 
-    recipe.steps.forEach((step) => {
+    const stepsList = recipe.stepsId || recipe.steps || [];
+    stepsList.forEach((step, idx) => {
+      const stepNum = step.stepNumber || idx + 1;
+
+      // Step number circle
       doc.setFillColor(184, 92, 56);
-      doc.circle(margin + 3, curY + 2, 3, 'F');
+      doc.circle(margin + 3.5, curY + 2.5, 3.5, 'F');
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(7.5);
-      doc.text(step.stepNumber.toString(), margin + 2.2, curY + 3.2);
+      doc.setFontSize(8);
+      doc.text(stepNum.toString(), margin + 2.6, curY + 3.7);
 
+      // Step title
       doc.setTextColor(48, 32, 24);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9.5);
-      doc.text(step.title, margin + 9, curY + 3);
-      curY += 6;
+      doc.setFontSize(10);
+      const stepTitle = step.titleId || step.title || `Langkah ${stepNum}`;
+      doc.text(stepTitle, margin + 10, curY + 3.5);
+      curY += 7;
 
+      // Step instruction
       doc.setTextColor(70, 50, 40);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8.5);
-      const stepTextLines = doc.splitTextToSize(step.instruction || step.description || '', contentWidth - 9);
-      doc.text(stepTextLines, margin + 9, curY);
-      curY += (stepTextLines.length * 4.2) + 2;
+      const stepInstruction = step.instructionId || step.descriptionId || step.instruction || step.description || '';
+      const stepTextLines = doc.splitTextToSize(stepInstruction, contentWidth - 10);
+      doc.text(stepTextLines, margin + 10, curY);
+      curY += (stepTextLines.length * 4.3) + 2;
 
       // Sensory hint
       if (step.sensoryMilestone) {
         doc.setTextColor(119, 123, 82); // Muted olive
         doc.setFont('helvetica', 'italic');
         doc.setFontSize(8);
-        doc.text(`Isyarat Panca Indera: "${step.sensoryMilestone}"`, margin + 9, curY);
-        curY += 7;
+        doc.text(`Isyarat Panca Indera: "${step.sensoryMilestone}"`, margin + 10, curY);
+        curY += 6;
       }
+
+      curY += 5;
     });
 
-    curY += 4;
-
-    // Chef Secrets Box
-    doc.setFillColor(250, 246, 239);
-    doc.roundedRect(margin, curY, contentWidth, 26, 2, 2, 'F');
-    doc.setDrawColor(196, 154, 88);
-    doc.roundedRect(margin, curY, contentWidth, 26, 2, 2, 'S');
-
-    doc.setTextColor(184, 92, 56);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
-    doc.text('★ Rahasia Dapur Chef:', margin + 4, curY + 6);
-
-    doc.setTextColor(80, 50, 35);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(8);
-    const rawTips = Array.isArray(recipe.chefTips) ? recipe.chefTips.join('\n• ') : (recipe.chefTips || '');
-    const tipLines = doc.splitTextToSize(rawTips, contentWidth - 8);
-    doc.text(tipLines, margin + 4, curY + 11);
-    curY += 32;
-
-    // Food Safety & Storage Box
-    doc.setFillColor(245, 245, 240);
-    doc.roundedRect(margin, curY, contentWidth, 22, 2, 2, 'F');
-    doc.setTextColor(48, 32, 24);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(8.5);
-    doc.text('Keamanan Pangan & Penyimpanan:', margin + 4, curY + 5.5);
-
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(80, 50, 35);
-    doc.setFontSize(8);
-    const rawSafety = recipe.safetyNotes || '';
-    const safetyLines = doc.splitTextToSize(rawSafety, contentWidth - 8);
-    doc.text(safetyLines, margin + 4, curY + 10.5);
-
-    // Footer page signature
+    // Page 2 Footer
     doc.setDrawColor(229, 217, 197);
     doc.line(margin, pageHeight - 12, pageWidth - margin, pageHeight - 12);
-
     doc.setTextColor(140, 120, 105);
     doc.setFontSize(7.5);
-    doc.text(`Dicetak melalui LarasRasa AI Food Creator • Tanggal: ${new Date().toLocaleDateString('id-ID')}`, margin, pageHeight - 7);
-    doc.text('Dokumen Asli Sah Dapur LarasRasa • Halaman 2 dari 2', pageWidth - margin, pageHeight - 7, { align: 'right' });
+    doc.text(`Diterbitkan melalui LarasRasa AI Food Creator • Tanggal: ${new Date().toLocaleDateString('id-ID')}`, margin, pageHeight - 7);
+    doc.text('Dokumen Resep Pusaka • Halaman 2 dari 2', pageWidth - margin, pageHeight - 7, { align: 'right' });
 
     // Save PDF
-    const safeTitle = (recipe.shortTitle || 'larasrasa-resep')
+    const safeTitle = (recipe.shortTitle || recipe.title || 'larasrasa-resep')
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');

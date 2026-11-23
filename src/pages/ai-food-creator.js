@@ -558,13 +558,6 @@ function formatRecipeAsText(recipe) {
     paragraphs.push(`Tahapan pengolahan memasak: ${stepsNarration}`);
   }
 
-  // Paragraf 5: Rahasia Dapur & Saran Penyajian
-  const tipsContent = recipe.chefTipsId || recipe.chefTips;
-  if (tipsContent) {
-    const tips = Array.isArray(tipsContent) ? tipsContent.join(' ') : tipsContent;
-    paragraphs.push(`Rahasia pawon tradisi: ${tips}`);
-  }
-
   return paragraphs.join('\n\n');
 }
 
@@ -738,25 +731,9 @@ function renderResultView(recipe, currentLang) {
               </div>
             ` : ''}
 
-            <!-- Chef Secrets & Pawon Tips -->
-            ${(recipe.chefTipsId || recipe.chefTips) ? `
-              <div class="bg-[#FAF7F2] p-5 sm:p-6 rounded-3xl border border-[#D49B42]/40 shadow-sm space-y-3 text-xs">
-                <div class="flex items-center gap-2 font-bold text-[#C84C24]">
-                  <span class="text-base">💡</span>
-                  <span class="font-editorial-serif text-sm">Rahasia Pawon Tradisi</span>
-                </div>
-                <div class="space-y-2 text-[#5C3622] leading-relaxed">
-                  <p class="flex items-start gap-2">
-                    <span class="text-[#D49B42] font-bold">•</span>
-                    <span>${escapeHtml(recipe.chefTipsId || recipe.chefTips)}</span>
-                  </p>
-                </div>
-              </div>
-            ` : ''}
-
           </div>
 
-          <!-- RIGHT COLUMN: Step-by-Step Cooking Steps & Safety Notes (7 cols) -->
+          <!-- RIGHT COLUMN: Step-by-Step Cooking Steps (7 cols) -->
           <div class="lg:col-span-7 space-y-6">
             
             <!-- Cooking Steps Card -->
@@ -807,19 +784,6 @@ function renderResultView(recipe, currentLang) {
                 `).join('')}
               </div>
             </div>
-
-            <!-- Food Safety & Storage Notes Card -->
-            ${(recipe.safetyNotesId || recipe.safetyNotes) ? `
-              <div class="p-5 sm:p-6 rounded-3xl bg-[#FAF7F2] border border-[#D49B42]/35 space-y-2 text-xs">
-                <div class="flex items-center gap-2 font-bold text-[#2E4D38]">
-                  <span class="text-base">🌿</span>
-                  <span class="font-editorial-serif text-sm">Petunjuk Kebersihan & Penyimpanan</span>
-                </div>
-                <p class="text-[#5C3622] leading-relaxed">
-                  ${escapeHtml(recipe.safetyNotesId || recipe.safetyNotes)}
-                </p>
-              </div>
-            ` : ''}
 
           </div>
 
