@@ -87,6 +87,83 @@ export async function renderFlavorMapPage() {
 
       </div>
 
+      <!-- 8 Sentra Kuliner Jawa Tengah Overview Cards Grid -->
+      <div class="space-y-6 pt-6 border-t border-[#D49B42]/25">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+          <div>
+            <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#C84C24] bg-[#FDF4EE] px-3 py-1 rounded-full border border-[#C84C24]/20">
+              ${isEn ? '8 Culinary Centers' : '8 Sentra Wilayah'}
+            </span>
+            <h2 class="font-editorial-serif text-2xl sm:text-3xl font-bold text-[#120B07] mt-1.5">
+              ${isEn ? 'Central Javanese Regional Culinary Centers' : 'Khasanah 8 Sentra Kuliner Jawa Tengah'}
+            </h2>
+          </div>
+          <p class="text-xs text-[#5C3622] max-w-md leading-relaxed">
+            ${isEn 
+              ? 'Each regional culinary center preserves iconic hearth traditions with verified authentic recipes proportioned for 4 servings.' 
+              : 'Setiap sentra wilayah mewariskan bumbu dan karakter rasa unik dengan resep otentik teruji untuk 4 porsi.'}
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          ${regions.map(r => `
+            <article class="bg-white rounded-3xl border border-[#D49B42]/35 p-5 shadow-xs flex flex-col justify-between hover:shadow-lg transition-all card-hover-lift">
+              <div class="space-y-3">
+                <div class="relative rounded-2xl overflow-hidden aspect-16/10 bg-[#120B07]/10 border border-[#D49B42]/25">
+                  <img src="${r.image}" 
+                       alt="${r.name}" 
+                       loading="lazy"
+                       class="w-full h-full object-cover"
+                       onerror="this.onerror=null; this.src='/assets/images/regions/semarang.jpg';"/>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+                  <div class="absolute bottom-2.5 left-3 right-3 text-white">
+                    <span class="text-[9.5px] font-bold uppercase tracking-wider text-[#D49B42] bg-black/60 px-2 py-0.5 rounded-md border border-[#D49B42]/30 inline-block">
+                      ${r.type}
+                    </span>
+                    <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-white leading-tight mt-0.5 truncate">
+                      ${r.name}
+                    </h3>
+                  </div>
+                </div>
+
+                <p class="font-editorial-serif italic text-xs text-[#C84C24] font-semibold line-clamp-1 leading-snug">
+                  "${r.tagline}"
+                </p>
+
+                <!-- Hidangan Andalan (Non-clickable, max 3, verified in recipes.js) -->
+                <div class="space-y-1.5 pt-1">
+                  <span class="block text-[10px] font-bold uppercase tracking-wider text-[#5C3622]">
+                    ${isEn ? 'Signature Dishes:' : 'Hidangan Andalan:'}
+                  </span>
+                  <div class="flex flex-wrap gap-1.5">
+                    ${(r.signatureDishes || []).slice(0, 3).map(dish => `
+                      <span class="px-2.5 py-1 rounded-lg text-[11px] bg-[#FAF7F2] text-[#120B07] font-semibold border border-[#D49B42]/30 shadow-2xs inline-flex items-center gap-1 select-none pointer-events-none">
+                        <span class="w-1 h-1 rounded-full bg-[#C84C24]"></span>
+                        <span>${dish}</span>
+                      </span>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3.5 mt-3 border-t border-[#E8DEC8] flex items-center justify-between text-xs">
+                <button type="button" 
+                        data-region-pill="${r.id}"
+                        class="text-xs font-bold text-[#C84C24] hover:text-[#AE3E1B] inline-flex items-center gap-1 cursor-pointer transition-colors">
+                  <span>${isEn ? 'View on Map' : 'Lihat di Peta'}</span>
+                  <span>&uarr;</span>
+                </button>
+                <a href="${isEn ? '#/recipes' : '#/resep'}"
+                   data-region-filter="${r.id}"
+                   class="text-xs font-bold text-[#120B07] hover:text-[#C84C24] transition-colors">
+                  ${isEn ? 'Browse Recipes &rarr;' : 'Buka Resep &rarr;'}
+                </a>
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+
     </div>
   `;
 }
@@ -153,6 +230,22 @@ function renderRegionDetailContent(region) {
           ${region.culinaryTendencies.map(tend => `
             <span class="px-3 py-1 rounded-xl text-xs bg-[#FAF7F2] text-[#120B07] font-semibold border border-[#D49B42]/35 shadow-2xs">
               ${tend}
+            </span>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- Hidangan Andalan Sentra (Non-clickable, max 3, verified in recipes.js) -->
+      <div class="space-y-2">
+        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07] flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+          <span>${isEn ? 'Signature Heritage Dishes:' : 'Hidangan Andalan Sentra:'}</span>
+        </span>
+        <div class="flex flex-wrap gap-2">
+          ${(region.signatureDishes || []).slice(0, 3).map(dish => `
+            <span class="px-3 py-1.5 rounded-xl text-xs bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/35 shadow-2xs inline-flex items-center gap-1.5 select-none pointer-events-none">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
+              <span>${dish}</span>
             </span>
           `).join('')}
         </div>
@@ -234,7 +327,7 @@ export async function initFlavorMapInteractions() {
           <div class="flavor-map-marker-wrapper ${isActive ? 'is-active' : ''}">
             <div class="marker-pulse-ring"></div>
             <div class="marker-bubble">
-              <span class="marker-icon">🍲</span>
+              <span class="marker-dot inline-block w-2 h-2 rounded-full bg-[#C84C24] shrink-0 mr-1.5"></span>
               <span class="marker-name">${displayName}</span>
             </div>
             <div class="marker-pointer"></div>

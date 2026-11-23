@@ -2,8 +2,8 @@ export const recipes = [
   {
     id: 'soto-kudus',
     slug: 'soto-kudus',
-    name: 'Soto Kudus Ayam Kampung',
-    javaneseName: 'Soto Kudus Pitik Kampung',
+    name: 'Soto Kudus Ayam Kampung Kuah Kencur',
+    javaneseName: 'Soto Kudus Pitik Kuah Kencur',
     regionId: 'kudus',
     regionName: 'Kabupaten Kudus',
     mealType: 'Makan Utama / Sarapan',
