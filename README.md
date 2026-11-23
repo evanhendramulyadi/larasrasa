@@ -1,4 +1,12 @@
-# LarasRasa
+<p align="center">
+  <img src="public/assets/images/larasrasa-logo.png" alt="LarasRasa Logo" width="120" style="border-radius: 20px;" />
+</p>
+
+<h1 align="center">LarasRasa</h1>
+
+<p align="center">
+  <strong>Pusaka Warisan Kuliner Jawa Tengah • Central Javanese Culinary Heritage Platform</strong>
+</p>
 
 LarasRasa is an interactive and exploratory culinary heritage web application designed to showcase Central Java's rich gastronomic traditions, iconic heritage recipes, indigenous spices, regional flavor geography, and cultural culinary matchmaking through an intuitive, visual, and modern digital experience.
 
