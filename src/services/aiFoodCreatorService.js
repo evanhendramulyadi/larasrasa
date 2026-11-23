@@ -292,10 +292,20 @@ export const aiFoodCreatorService = {
     else if (dishCategory === 'sayur') baseImage = RECIPE_IMAGE_POOL.sayur;
     else if (dishCategory === 'kudapan') baseImage = RECIPE_IMAGE_POOL.kudapan;
 
-    // Narrative Description
-    const description = isEn
-      ? `An authentic traditional recipe marrying the art of ${cookingMethod} with the aromatic warmth of ${keySpice1} and ${keySpice2}. Presenting a calibrated ${tasteProfile.replace('-', ' and ')} profile on the palate, this dish is portioned for ${servings} servings.${customNotes ? ` Custom flavor notes: "${customNotes}".` : ''}`
-      : `Sebuah olahan resep pusaka tradisi yang mengawinkan teknik olah ${cookingMethod} dengan kemegahan rempah ${keySpice1} dan ${keySpice2}. Menghadirkan karakter rasa ${tasteProfile.replace('-', ' ')} yang lembut di lidah, hidangan ini dirancang pas untuk ${servings} porsi santap nikmat.${customNotes ? ` Catatan rasa khusus: "${customNotes}".` : ''}`;
+    // Narrative Description (multiple rich paragraphs)
+    const p1 = isEn
+      ? `An authentic culinary creation marrying the heritage technique of ${cookingMethod} with the aromatic depth of ${keySpice1} and ${keySpice2}. Every spice proportion has been calibrated to draw out genuine Central Javanese warmth and rich flavors from the ingredients.`
+      : `Sebuah olahan resep pusaka tradisi yang mengawinkan teknik olah ${cookingMethod} dengan kemegahan aroma rempah ${keySpice1} dan ${keySpice2}. Komposisi bumbu pawon ini diracik secara saksama agar bumbu meresap sempurna dan mengeluarkan sari rasa terbaik.`;
+
+    const p2 = isEn
+      ? `The flavor journey presents a distinct ${tasteProfile.replace('-', ' and ')} harmony that is smooth and comforting on the palate. Designed for ${servings} generous servings, this dish carries the timeless wisdom of traditional family meals.${customNotes ? ` Special flavor touch: "${customNotes}".` : ''}`
+      : `Karakter rasa yang dihadirkan menonjolkan harmoni ${tasteProfile.replace('-', ' ')} khas Jawa Tengah yang gurih, mantap, dan lembut di lidah. Ditakar presisi untuk ${servings} porsi santapan hangat bersama keluarga tercinta.${customNotes ? ` Catatan selera khusus: "${customNotes}".` : ''}`;
+
+    const p3 = isEn
+      ? `Best served hot alongside fluffy white rice, fresh raw vegetables (lalapan), and authentic sambal for a complete Javanese culinary experience.`
+      : `Paling pas disajikan hangat mengepul bersama nasi putih pulen, lalapan segar, serta sambal pelengkap untuk menyempurnakan kelezatan cita rasa tradisi.`;
+
+    const description = `${p1}\n\n${p2}\n\n${p3}`;
 
     const chefTips = isEn
       ? `To achieve optimal essential oil extraction, toast dry whole spices (coriander and candlenuts) on an ungreased heavy pan until fragrant before crushing in a stone mortar. If using coconut milk, maintain a gentle low simmer so the coconut cream does not separate and the spiced oils emerge smoothly.`

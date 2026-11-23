@@ -513,57 +513,69 @@ function renderFormView(currentLang) {
 }
 
 /**
- * Formats full recipe into a structured, clean text string for clipboard copy.
+ * Formats full recipe into a clean, flowing narrative composed of distinct paragraphs.
  */
 function formatRecipeAsText(recipe, isEn) {
-  const lines = [];
-  lines.push('====================================================');
-  lines.push('LARASRASA • PUSAKA RASA JAWA TENGAH');
-  lines.push(isEn ? `RECIPE DOCUMENT: ${(recipe.title || '').toUpperCase()}` : `DOKUMEN RESEP: ${(recipe.title || '').toUpperCase()}`);
-  if (recipe.javaneseTitle) {
-    lines.push(recipe.aksaraJawa ? `${recipe.javaneseTitle} (${recipe.aksaraJawa})` : recipe.javaneseTitle);
+  const paragraphs = [];
+
+  // Paragraf 1: Judul dan Identitas Olahan
+  const title = (recipe.title || '').trim().toUpperCase();
+  const creator = recipe.creatorName ? (isEn ? `by ${recipe.creatorName}` : `oleh ${recipe.creatorName}`) : '';
+  const servings = recipe.servings || 4;
+  const time = recipe.totalTime || (isEn ? '45 mins' : '45 menit');
+  const method = recipe.cookingMethod || '';
+  const profile = recipe.tasteProfile || '';
+
+  if (isEn) {
+    paragraphs.push(
+      `${title}${creator ? ` (${creator})` : ''}. This authentic Central Javanese recipe is formulated for ${servings} portions with an estimated cooking duration of ${time}. It centers on the traditional culinary technique of ${method} with a balanced ${profile.replace('-', ' and ')} taste profile.`
+    );
+  } else {
+    paragraphs.push(
+      `${title}${creator ? ` (${creator})` : ''}. Resep pusaka khas Jawa Tengah ini diramu pas untuk ${servings} porsi dengan perkiraan waktu masak ${time}. Olahan ini memadukan teknik olah tradisi ${method} serta harmoni karakter rasa ${profile.replace('-', ' ')} yang autentik.`
+    );
   }
-  lines.push('====================================================');
-  if (recipe.creatorName && recipe.creatorName !== 'Dapur Tradisi LarasRasa') {
-    lines.push(`${isEn ? 'Creator' : 'Pencipta'}: ${recipe.creatorName}${recipe.creatorNickname ? ` (${recipe.creatorNickname})` : ''}`);
-  }
-  lines.push(`${isEn ? 'Portions' : 'Porsi'}: ${recipe.servings || 4} ${isEn ? 'Portions' : 'Porsi'}`);
-  lines.push(`${isEn ? 'Cooking Time' : 'Waktu Olah'}: ${recipe.totalTime || '45 Menit'}`);
-  lines.push(`${isEn ? 'Method' : 'Metode Masak'}: ${recipe.cookingMethod || ''}`);
-  lines.push(`${isEn ? 'Taste Profile' : 'Karakter Rasa'}: ${recipe.tasteProfile || ''}`);
-  lines.push(`${isEn ? 'Registration ID' : 'Nomor Seri Registrasi'}: ${recipe.id || ''}`);
-  lines.push('');
+
+  // Paragraf 2: Narasi Karakter Rasa & Konsep Resep
   if (recipe.description || recipe.philosophy) {
-    lines.push(isEn ? '--- RECIPE OVERVIEW ---' : '--- RINGKASAN RESEP ---');
-    lines.push(recipe.description || recipe.philosophy || '');
-    lines.push('');
+    paragraphs.push((recipe.description || recipe.philosophy).trim());
   }
-  lines.push(isEn ? `--- INGREDIENTS (${recipe.servings || 4} PORTIONS) ---` : `--- RERONCEN BAHAN & BUMBU (${recipe.servings || 4} PORSI) ---`);
-  (recipe.ingredients || []).forEach(ing => {
-    lines.push(`• ${ing.amount ? `${ing.amount} ${ing.unit || ''}` : ''} ${ing.name}${ing.note ? ` (${ing.note})` : ''}`);
-  });
-  lines.push('');
-  lines.push(isEn ? '--- COOKING STEPS ---' : '--- PANDUAN LANGKAH MEMASAK ---');
-  (recipe.steps || []).forEach((st, idx) => {
-    lines.push(`${st.stepNumber || idx + 1}. ${st.title} (${st.durationMinutes || 10} ${isEn ? 'min' : 'menit'})`);
-    lines.push(`   ${st.description}`);
-    if (st.technique) lines.push(`   [${isEn ? 'Technique' : 'Teknik'}: ${st.technique}]`);
-    if (st.tip) lines.push(`   [${isEn ? 'Tip' : 'Tips'}: ${st.tip}]`);
-    lines.push('');
-  });
+
+  // Paragraf 3: Bahan dan Rempah Utama
+  if (recipe.ingredients && recipe.ingredients.length > 0) {
+    const ingList = recipe.ingredients
+      .map(i => `${i.name}${i.amount ? ` (${i.amount} ${i.unit || ''})` : ''}`)
+      .join(', ');
+    paragraphs.push(
+      isEn 
+        ? `Ingredients ensemble: ${ingList}.`
+        : `Reroncen bahan dan bumbu dapur yang disiapkan: ${ingList}.`
+    );
+  }
+
+  // Paragraf 4: Panduan Langkah Memasak dalam Bentuk Narasi Berurutan
+  if (recipe.steps && recipe.steps.length > 0) {
+    const stepsNarration = recipe.steps
+      .map((st, idx) => `Langkah ${st.stepNumber || idx + 1} (${st.title}): ${st.description}`)
+      .join(' ');
+    paragraphs.push(
+      isEn
+        ? `Cooking workflow: ${recipe.steps.map((st, idx) => `Step ${st.stepNumber || idx + 1} (${st.title}): ${st.description}`).join(' ')}`
+        : `Tahapan pengolahan memasak: ${stepsNarration}`
+    );
+  }
+
+  // Paragraf 5: Rahasia Dapur & Saran Penyajian
   if (recipe.chefTips && recipe.chefTips.length > 0) {
-    lines.push(isEn ? '--- CHEF SECRETS ---' : '--- WEWADI PAWON (RAHASIA CHEF) ---');
-    recipe.chefTips.forEach(tip => lines.push(`• ${tip}`));
-    lines.push('');
+    const tips = Array.isArray(recipe.chefTips) ? recipe.chefTips.join(' ') : recipe.chefTips;
+    paragraphs.push(
+      isEn
+        ? `Chef hearth secrets: ${tips}`
+        : `Rahasia pawon tradisi: ${tips}`
+    );
   }
-  if (recipe.safetyNotes) {
-    lines.push(isEn ? '--- STORAGE & SAFETY ---' : '--- CATATAN KEAMANAN & PENYIMPANAN ---');
-    lines.push(recipe.safetyNotes);
-    lines.push('');
-  }
-  lines.push('====================================================');
-  lines.push('LarasRasa • Menyelaraskan Rasa Warisan Leluhur Jawa Tengah');
-  return lines.join('\n');
+
+  return paragraphs.join('\n\n');
 }
 
 /**
@@ -588,9 +600,6 @@ function renderResultView(recipe, currentLang) {
             <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-300 text-xs font-bold shadow-2xs">
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span>${t('aiCreator.resultBadge')}</span>
-            </span>
-            <span class="text-[11px] font-mono uppercase tracking-wider text-[#2E4D38] bg-[#FAF7F2] px-3 py-1 rounded-md border border-[#D49B42]/30 font-bold">
-              ID: ${creationId}
             </span>
           </div>
           <h1 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#120B07]">
@@ -670,9 +679,6 @@ function renderResultView(recipe, currentLang) {
         <div class="bg-white p-6 sm:p-10 rounded-3xl border-2 border-[#D49B42]/35 shadow-lg space-y-6">
           <div class="space-y-3 pb-6 border-b border-[#E8DEC8]">
             <div class="flex items-center justify-between gap-3 flex-wrap">
-              <span class="text-xs px-3.5 py-1 rounded-full bg-[#FDF4EE] text-[#C84C24] font-bold border border-[#C84C24]/30">
-                ${escapeHtml(recipe.dishCategory || 'Pusaka Jawa Tengah')}
-              </span>
               <span class="text-xs text-[#5C3622]">
                 ${isEn ? 'Calibrated by LarasRasa Culinary Intelligence' : 'Dikalibrasi dening LarasRasa Culinary Intelligence'}
               </span>
@@ -697,13 +703,15 @@ function renderResultView(recipe, currentLang) {
 
           ${(recipe.description || recipe.philosophy) ? `
             <!-- Overview & Flavor Profile -->
-            <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-2">
+            <div class="p-5 sm:p-6 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-3">
               <span class="text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider block">
                 ${isEn ? 'Recipe Overview & Flavor Character' : 'Karakter Rasa & Konsep Olahan'}
               </span>
-              <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
-                ${escapeHtml(recipe.description || recipe.philosophy || '')}
-              </p>
+              <div class="space-y-3 text-xs sm:text-sm text-[#5C3622] leading-relaxed">
+                ${(recipe.description || recipe.philosophy || '').split('\n\n').filter(Boolean).map(p => `
+                  <p>${escapeHtml(p.trim())}</p>
+                `).join('')}
+              </div>
             </div>
           ` : ''}
 
