@@ -47,7 +47,10 @@ export async function renderFlavorMapPage() {
                           ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#D49B42]/50' 
                           : 'bg-white/10 text-[#FAF7F2] border border-[#D49B42]/40 hover:bg-[#C84C24]/50 backdrop-blur-md'
                       }">
-                ${(r.name || '').replace('Kota & Kab ', '').replace('Kabupaten ', '').replace('Kota ', '')}
+                ${(r.name || '')
+                  .replace(/\s*(City\s*&\s*Regency|City|Regency)\s*/gi, '')
+                  .replace(/^(Kota\s*&\s*Kab|Kabupaten|Kota)\s+/gi, '')
+                  .trim()}
               </button>
             `).join('')}
           </div>
