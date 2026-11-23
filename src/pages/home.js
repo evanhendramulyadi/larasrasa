@@ -390,8 +390,8 @@ export async function renderHomePage() {
                 </h2>
                 <p class="text-xs sm:text-base text-[#FAF7F2]/85 max-w-2xl leading-relaxed">
                   ${isEn 
-                    ? 'Input your culinary vision, choose authentic regional spices, calibrate for 4 portions, and generate a standardized recipe template ready for backend integration.'
-                    : 'Pilih bahan rempah otentik Jawa Tengah, tentukan teknik memasak tradisional, atur takaran 4 porsi, lan susun cithakan resep resmi siap sambung backend.'}
+                    ? 'Input your culinary vision, choose authentic regional spices, calibrate for 4 portions, and generate an authentic Central Javanese recipe complete with an official culinary creation certificate.'
+                    : 'Pilih bahan rempah autentik Jawa Tengah, tentukan teknik memasak tradisional, atur takaran 4 porsi, lan terbitaken resep pusaka jangkep kaliyan piagam apresiasi resmi.'}
                 </p>
                 <div class="pt-2">
                   <a href="#/ai-food-creator" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
@@ -404,7 +404,7 @@ export async function renderHomePage() {
               </div>
 
               <div class="lg:col-span-4 bg-white/5 border border-[#D49B42]/30 rounded-2xl p-5 sm:p-6 space-y-3.5 text-xs">
-                <span class="text-[11px] font-bold text-[#D49B42] uppercase tracking-wider block">${isEn ? 'AI Studio Architecture' : 'Kautaman Studio AI'}</span>
+                <span class="text-[11px] font-bold text-[#D49B42] uppercase tracking-wider block">${isEn ? 'AI Studio Highlights' : 'Kautaman Studio AI'}</span>
                 <div class="space-y-2.5 text-[#FAF7F2]/85">
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
@@ -416,7 +416,7 @@ export async function renderHomePage() {
                   </div>
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
-                    <span><strong>${isEn ? 'Backend Ready:' : 'Kesiapan Backend API:'}</strong> ${isEn ? 'Structured payload ready for Laravel API' : 'Format payload siap kagem endpoint API'}</span>
+                    <span><strong>${isEn ? 'Official Certificate:' : 'Piagam Apresiasi Resmi:'}</strong> ${isEn ? 'Issued digitally with authentic verification code' : 'Diterbitkan digital mawi nomer registrasi resmi'}</span>
                   </div>
                 </div>
               </div>

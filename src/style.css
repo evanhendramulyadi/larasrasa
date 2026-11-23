@@ -333,3 +333,25 @@ body {
   animation: modalScaleIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   overscroll-behavior: contain;
 }
+
+/* Print Styles for Certificate & Recipe */
+@media print {
+  header, footer, nav, #app-navbar, .no-print, button, #result-close-top-btn {
+    display: none !important;
+  }
+  body, #app, #page-main-content {
+    background: #FAF7F2 !important;
+    color: #120B07 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  #recipe-certificate-card {
+    border: 3px solid #D49B42 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+    margin: 0.5cm auto 1cm auto !important;
+  }
+  .card-hover-lift {
+    box-shadow: none !important;
+  }
+}
