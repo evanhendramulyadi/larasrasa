@@ -219,7 +219,8 @@ export const id = {
     cityFilter: 'Kota / Wilayah:',
     allCities: 'Semua Kota',
     noticeTitle: 'Catatan Sejarah & Dokumentasi Usaha',
-    noticeText: 'Tahun berdiri dan sejarah usaha di atas mengikuti informasi dari berbagai sumber pendukung; sebagian detail tahun merupakan perkiraan karena belum memiliki dokumentasi primer yang seragam.'
+    noticeText: 'Tahun berdiri dan sejarah usaha di atas mengikuti informasi dari berbagai sumber pendukung; sebagian detail tahun merupakan perkiraan karena belum memiliki dokumentasi primer yang seragam.',
+    noticeText2: 'Data dan informasi ini diriset serta diambil pada tahun 2026. Bisa saja pada saat Anda membaca ini restorannya sudah tidak ada lagi, jadi pastikan status operasional restoran jika ingin berkunjung. Tautan Google Maps yang mengarahkan Anda ketika mengklik tombol "Buka di Peta" akan terus berfungsi selama restoran masih terdaftar di Google Maps.'
   },
   recommendations: {
     badge: 'Kurasi Selera Kuliner Jawa Tengah',

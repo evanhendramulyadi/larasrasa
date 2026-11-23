@@ -9,7 +9,7 @@ export function renderRestaurantCard(restaurant) {
 
   return `
     <article class="restaurant-card bg-white rounded-3xl overflow-hidden border border-[#D49B42]/30 shadow-xs hover:shadow-2xl hover:border-[#D49B42] transition-all duration-300 flex flex-col card-hover-lift group">
-      <!-- Image Header with Year & City Badges -->
+      <!-- Image Header -->
       <div class="relative aspect-16/10 bg-[#120B07]/10 overflow-hidden">
         <img src="${restaurant.image}" 
              alt="${restaurant.name}" 
@@ -17,15 +17,6 @@ export function renderRestaurantCard(restaurant) {
              class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
              onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg';"/>
         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
-        
-        <div class="absolute top-3.5 left-3.5 flex flex-wrap gap-2">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D49B42] text-[#120B07] shadow-md border border-[#F2BD68]">
-            <svg class="w-3.5 h-3.5 text-[#120B07]" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-            <span>Est. ${restaurant.yearEstablished}</span>
-          </span>
-        </div>
 
         <div class="absolute bottom-3.5 left-3.5 right-3.5 text-white">
           <h3 class="font-editorial-serif text-xl sm:text-2xl font-bold leading-tight drop-shadow-md group-hover:text-[#F2BD68] transition-colors">

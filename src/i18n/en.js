@@ -219,7 +219,8 @@ export const en = {
     cityFilter: 'City / Region:',
     allCities: 'All Cities',
     noticeTitle: 'Historical Documentation & Business Records Notice',
-    noticeText: 'The establishment years and business history above follow information from various supporting sources; some year details are approximations due to the absence of uniform primary documentation.'
+    noticeText: 'The establishment years and business history above follow information from various supporting sources; some year details are approximations due to the absence of uniform primary documentation.',
+    noticeText2: 'This data was researched and documented in 2026. It is possible that establishments may no longer be operating when you read this, so please verify the restaurant\'s operational status before visiting. The Google Maps link that directs you when clicking "Open Map" will continue to work as long as the restaurant remains listed on Google Maps.'
   },
   recommendations: {
     badge: 'Central Javanese Taste Curation',

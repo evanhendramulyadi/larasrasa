@@ -99,12 +99,15 @@ export async function renderLegendaryRestaurantsPage() {
             <path d="M12 16v-4M12 8h.01"/>
           </svg>
         </div>
-        <div class="space-y-1">
+        <div class="space-y-2">
           <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07]">
             ${t('restaurantsSection.noticeTitle')}
           </h3>
           <p class="text-xs sm:text-[13px] text-[#5C3622] leading-relaxed">
             ${t('restaurantsSection.noticeText')}
+          </p>
+          <p class="text-xs sm:text-[13px] text-[#5C3622]/90 leading-relaxed pt-1 border-t border-[#E8DEC8]/60">
+            ${t('restaurantsSection.noticeText2')}
           </p>
         </div>
       </div>
