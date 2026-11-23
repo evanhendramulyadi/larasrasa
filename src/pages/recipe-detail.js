@@ -21,8 +21,11 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
       <div class="max-w-4xl mx-auto px-4 py-24 text-center space-y-4">
         <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">${isEn ? 'Culinary Heritage Not Found' : 'Kuliner Tidak Ditemukan'}</h2>
         <p class="text-sm text-[#5C3622]">${isEn ? 'Sorry, the requested culinary chronicle could not be found.' : 'Mohon maaf, catatan kuliner yang Anda cari saat ini belum tersedia.'}</p>
-        <a href="${isEn ? '#/recipes' : '#/resep'}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120B07] text-white text-xs font-bold border border-[#D49B42]/40">
-          &larr; ${isEn ? 'Back to Culinary Catalog' : 'Kembali ke Khasanah Kuliner'}
+        <a href="${isEn ? '#/recipes' : '#/resep'}" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#120B07] text-white text-xs font-bold border border-[#D49B42]/40 hover:bg-[#C84C24] transition-all">
+          <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          <span>${isEn ? 'Back to Culinary Catalog' : 'Kembali ke Khasanah Kuliner'}</span>
         </a>
       </div>
     `;

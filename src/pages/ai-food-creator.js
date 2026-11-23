@@ -593,7 +593,9 @@ function renderResultView(recipe, currentLang) {
             id="create-another-recipe-btn"
             class="px-5 py-2.5 rounded-2xl border border-[#D49B42]/50 bg-white hover:bg-[#FAF7F2] text-[#120B07] text-xs font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer"
           >
-            <span>←</span>
+            <svg class="w-4 h-4 text-[#120B07] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
             <span>${t('aiCreator.backToStudioBtn')}</span>
           </button>
         </div>
@@ -701,7 +703,9 @@ function renderResultView(recipe, currentLang) {
                 id="bottom-create-another-btn"
                 class="w-full py-3.5 px-4 rounded-2xl bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer border border-[#E05A30]"
               >
-                <span>←</span>
+                <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
                 <span>${t('aiCreator.backToStudioBtn')}</span>
               </button>
             </div>

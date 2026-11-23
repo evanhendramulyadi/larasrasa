@@ -283,7 +283,7 @@ export const en = {
     emptyTipsPlaceholder: '[Chef Tips & Nutrition Estimation from Backend]',
     apiReadyBadge: 'Status: Ready for Backend API Integration (REST/Laravel)',
     apiPayloadTitle: 'Creation Parameter Payload Sent:',
-    backToStudioBtn: '← Back to Recipe Studio',
+    backToStudioBtn: 'Back to Recipe Studio',
     copyPayloadBtn: 'Copy Payload Parameters (JSON)',
     payloadCopied: 'JSON Payload Copied! ✓'
   },

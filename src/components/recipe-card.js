@@ -92,7 +92,7 @@ export function renderRecipeCard(recipe) {
 
           <span class="inline-flex items-center gap-1.5 font-bold text-[#120B07] group-hover:text-[#C84C24] transition-all">
             <span>${isEn ? 'Explore Recipe' : 'Pelajari Resep'}</span>
-            <svg class="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg class="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </span>

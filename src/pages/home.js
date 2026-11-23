@@ -138,9 +138,11 @@ export async function renderHomePage() {
                     ${fTagline}
                   </p>
                 </div>
-                <span class="mt-3.5 text-[10px] font-bold text-[#C84C24] uppercase tracking-wider group-hover:underline flex items-center gap-1">
+                <span class="mt-3.5 text-[10px] font-bold text-[#C84C24] uppercase tracking-wider group-hover:underline flex items-center gap-1.5">
                   <span>${t('flavorSection.exploreBtn')}</span>
-                  <span>&rarr;</span>
+                  <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
                 </span>
               </a>
             `;
@@ -213,7 +215,10 @@ export async function renderHomePage() {
               <div class="pt-2">
                 <a href="${isEn ? '#/flavor-map' : '#/peta-rasa'}" 
                    class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
-                  <span>${t('nav.flavorMap')} &rarr;</span>
+                  <span>${t('nav.flavorMap')}</span>
+                  <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
                 </a>
               </div>
             </div>
@@ -286,7 +291,9 @@ export async function renderHomePage() {
                           data-spice-id="${s.id}"
                           class="w-full text-xs font-bold text-[#C84C24] group-hover:text-[#AE3E1B] transition-colors flex items-center justify-between cursor-pointer">
                     <span>${t('spicesSection.inspectBtn')}</span>
-                    <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                    <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
                   </button>
                 </div>
               </div>

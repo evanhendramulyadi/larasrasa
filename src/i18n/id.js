@@ -283,7 +283,7 @@ export const id = {
     emptyTipsPlaceholder: '[Kiat Dapur & Estimasi Nutrisi dari Backend]',
     apiReadyBadge: 'Status: Siap Terhubung ke Backend API (REST / Laravel)',
     apiPayloadTitle: 'Parameter Payload Siap Dikirim:',
-    backToStudioBtn: '← Kembali ke Studio Racik',
+    backToStudioBtn: 'Kembali ke Studio Racik',
     copyPayloadBtn: 'Salin Parameter Payload (JSON)',
     payloadCopied: 'Payload JSON Berhasil Disalin! ✓'
   },

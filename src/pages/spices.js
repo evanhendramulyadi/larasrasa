@@ -148,7 +148,9 @@ export async function renderSpicesPage() {
             <div class="pt-3 border-t border-[#E8DEC8] mt-4 flex items-center justify-between">
               <span class="text-xs font-bold text-[#C84C24] group-hover:text-[#AE3E1B] flex items-center gap-1.5 transition-colors">
                 <span>${t('spicesSection.inspectBtn') || 'Lihat Rahasia Rempah'}</span>
-                <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
+                <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
               </span>
             </div>
           </div>

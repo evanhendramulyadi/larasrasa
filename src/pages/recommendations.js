@@ -113,13 +113,16 @@ function renderWizardView(step) {
         <div class="pt-6 border-t border-[#E8DEC8] flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 ${step > 1 ? 'sm:justify-between' : 'sm:justify-end'}">
           ${step > 1 ? `
             <button id="wizard-prev-btn" type="button" class="w-full sm:w-64 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs whitespace-nowrap">
-              &larr; <span>${t('recommendations.prevBtn')}</span>
+              <svg class="w-4 h-4 text-[#120B07] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              <span>${t('recommendations.prevBtn')}</span>
             </button>
           ` : ''}
 
           <button id="wizard-next-btn" type="button" class="w-full sm:w-64 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30] whitespace-nowrap">
             <span>${step === TOTAL_STEPS ? t('recommendations.submitBtn') : t('recommendations.nextBtn')}</span>
-            <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
@@ -548,7 +551,9 @@ function renderResultView(result) {
                       data-recipe-slug="${primary.slug}"
                       class="flex-1 inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs sm:text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center cursor-pointer">
                 <span>${t('recommendations.openRecipeBtn')}</span>
-                <span class="text-base">&rarr;</span>
+                <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
               </button>
 
               <button type="button" 
