@@ -24,7 +24,7 @@ export function localizeSpice(spice) {
     preparationMethod: enTrans.preparationMethod || spice.preparationMethod,
     culturalWisdom: enTrans.culturalWisdom || spice.culturalWisdom,
     substitutes: enTrans.substitutes || spice.substitutes,
-    iconicDishes: enTrans.iconicDishes || spice.iconicDishes
+    iconicDishes: spice.iconicDishes
   };
 }
 
