@@ -118,23 +118,18 @@ export async function renderRecipesPage(urlParams = {}) {
 
 function renderEmptyState() {
   return `
-    <div class="col-span-full py-16 text-center space-y-5 bg-white rounded-3xl border-2 border-dashed border-[#D49B42]/40 p-8 shadow-xs">
+    <div class="col-span-full py-16 text-center space-y-4 bg-white rounded-3xl border-2 border-dashed border-[#D49B42]/40 p-8 shadow-xs">
       <div class="w-16 h-16 rounded-3xl bg-[#FAF7F2] border border-[#D49B42]/40 text-[#C84C24] flex items-center justify-center mx-auto shadow-sm">
         <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/>
           <path d="m21 21-4.3-4.3"/>
         </svg>
       </div>
-      <div class="space-y-1.5">
+      <div class="space-y-1.5 max-w-md mx-auto">
         <h3 class="font-editorial-serif text-2xl font-bold text-[#120B07]">${t('recipesSection.emptyTitle')}</h3>
-        <p class="text-sm text-[#5C3622] max-w-md mx-auto leading-relaxed">
+        <p class="text-sm text-[#5C3622] leading-relaxed">
           ${t('recipesSection.emptyDesc')}
         </p>
-      </div>
-      <div class="pt-2">
-        <button id="empty-state-reset" type="button" class="px-6 py-3 rounded-full text-xs font-bold bg-[#120B07] text-[#FAF7F2] hover:bg-[#C84C24] transition-all shadow-sm cursor-pointer border border-[#D49B42]/40">
-          ${t('recipesSection.emptyResetBtn')}
-        </button>
       </div>
     </div>
   `;
@@ -153,20 +148,6 @@ export function initRecipesPageInteractions() {
 
     if (container) {
       container.innerHTML = list.length > 0 ? list.map(r => renderRecipeCard(r)).join('') : renderEmptyState();
-      
-      const emptyReset = document.getElementById('empty-state-reset');
-      if (emptyReset) {
-        emptyReset.onclick = () => {
-          activeFilters = {
-            search: '',
-            region: 'semua',
-            flavor: 'semua',
-            sort: 'popular'
-          };
-          const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
-          window.location.hash = isEn ? '#/recipes' : '#/resep';
-        };
-      }
     }
 
     if (indicator) {
