@@ -986,7 +986,8 @@ export const regionTranslationsEn = {
     tagline: 'Coastal Charisma with Crunchy Bamboo Shoots & Rich Savory Petis',
     description: 'As the capital of Central Java and a historic seaport, Semarang’s cuisine embodies a harmonious blend of Javanese, Chinese Peranakan, Arab, and European cultures. Flavors feature sweet-savory shrimp petis, local palm soy, and crunchy fresh bamboo shoots.',
     culturalIdentity: 'A historic crossroads of maritime trade along the northern coast (Pantura), blending indigenous Javanese traditions with Chinese and colonial culinary techniques.',
-    culinaryTendencies: ['Sweet-Savory Sauces', 'Fresh Bamboo Shoots & Prawns', 'Savory Petis & Garlic', 'Crispy Tauco Fritters']
+    culinaryTendencies: ['Sweet-Savory Sauces', 'Fresh Bamboo Shoots & Prawns', 'Savory Petis & Garlic', 'Crispy Tauco Fritters'],
+    keyIngredients: ['Sweet Bamboo Shoots', 'Savory Shrimp Petis', 'Mirama Sweet Soy', 'Garlic', 'Fermented Tauco']
   },
   'surakarta': {
     name: 'Surakarta (Solo) City',
@@ -994,7 +995,8 @@ export const regionTranslationsEn = {
     tagline: 'Delicate Royal Flavors, Velvet Coconut Areh, & Palace Elegance',
     description: 'Surakarta is the historical heartland of the Mataram Kingdom, celebrated for refined, mild, and sophisticated cooking. Its cuisine features rich coconut cream curds (areh), tender braised meats, and aristocratic European-Javanese fusions like Selat Solo.',
     culturalIdentity: 'Noble heritage from the Kasunanan and Mangkunegaran palaces, prioritizing balance, polite restraint, and sweet-savory harmony.',
-    culinaryTendencies: ['Velvet Coconut Areh', 'Mild Palm Sugar Braises', 'Tender Minced Meats', 'Warming Herbal Broths']
+    culinaryTendencies: ['Velvet Coconut Areh', 'Mild Palm Sugar Braises', 'Tender Minced Meats', 'Warming Herbal Broths'],
+    keyIngredients: ['Pure Coconut Areh Cream', 'Fine Javanese Palm Sugar', 'Toasted Candlenuts', 'Tender Mutton & Beef', 'Coriander Seeds']
   },
   'kudus': {
     name: 'Kudus Regency',
@@ -1002,7 +1004,8 @@ export const regionTranslationsEn = {
     tagline: 'Aromatic Golden Broths & Refreshing Bilimbi Steamed Chicken',
     description: 'Kudus boasts culinary traditions rooted in religious tolerance dating back to Sunan Kudus in the 16th century, where beef was avoided out of respect for Hindu neighbors and replaced with buffalo and free-range chicken. Soto Kudus and Garang Asem are aromatic masterpieces.',
     culturalIdentity: 'The tolerant philosophy of Sunan Kudus created a distinctive heritage of buffalo meat dishes scented with fresh kencur and golden garlic chips.',
-    culinaryTendencies: ['Clear Aromatic Broths', 'Generous Kencur & Fried Garlic', 'Tangy Bilimbi Fruit Acidity', 'Savory Melinjo Leaf Braises']
+    culinaryTendencies: ['Clear Aromatic Broths', 'Generous Kencur & Fried Garlic', 'Tangy Bilimbi Fruit Acidity', 'Savory Melinjo Leaf Braises'],
+    keyIngredients: ['Buffalo Meat / Free-range Chicken', 'Aromatic Ginger (Kencur)', 'Fresh Bilimbi Fruit', 'Local Shallots', 'Cane Sugar']
   },
   'banyumas': {
     name: 'Banyumas Regency',
@@ -1010,7 +1013,8 @@ export const regionTranslationsEn = {
     tagline: 'Supple Mendoan Tempeh, Savory Peanut Broths, & Sweet Fried Cassava',
     description: 'Nestled on the southwestern slopes of Mount Slamet, Banyumas is the home of Indonesia’s finest fermented soybean craftsmanship. Soft, half-fried Tempe Mendoan and hearty peanut-broth Sroto Sokaraja are beloved cultural staples.',
     culturalIdentity: 'The warm, unpretentious spirit of the "Banyumasan" folk, fond of casual gatherings at street-side stalls over hot tempeh and sweet tea.',
-    culinaryTendencies: ['Soft Fried Soy Tempeh', 'Peanut Broth Soups', 'Fiery Sweet Soy Chili Dip', 'Caramelized Nira Palm Sugar']
+    culinaryTendencies: ['Soft Fried Soy Tempeh', 'Peanut Broth Soups', 'Fiery Sweet Soy Chili Dip', 'Caramelized Nira Palm Sugar'],
+    keyIngredients: ['Selected Soybeans', 'Crushed Coriander Seeds', 'Sliced Scallions', 'Roasted Peanuts', 'Pure Coconut Nira Sugar']
   },
   'pekalongan': {
     name: 'Pekalongan City & Regency',
@@ -1018,7 +1022,8 @@ export const regionTranslationsEn = {
     tagline: 'Fragrant Torch Ginger Flowers, Fermented Tauco, & Savory Jackfruit',
     description: 'Renowned worldwide for its batik, Pekalongan is equally revered for Nasi Megono—finely minced young jackfruit steamed with fragrant torch ginger blossoms (kecombrang) and grated coconut, as well as Tauto, a beef soup spiced with fermented tauco.',
     culturalIdentity: 'A bustling coastal community of artisans and fishermen whose hospitality shines through fiber-rich meals scented with wild herbs.',
-    culinaryTendencies: ['Strong Torch Ginger Aroma', 'Fermented Red Tauco Base', 'Earthy Kluwek Nut Broth', 'Finely Minced Jackfruit']
+    culinaryTendencies: ['Strong Torch Ginger Aroma', 'Fermented Red Tauco Base', 'Earthy Kluwek Nut Broth', 'Finely Minced Jackfruit'],
+    keyIngredients: ['Torch Ginger Blossoms (Kecombrang)', 'Young Jackfruit', 'Fermented Red Tauco', 'Kluwek Nut', 'Fresh Grated Coconut']
   },
   'magelang': {
     name: 'Magelang City & Regency',
@@ -1026,7 +1031,8 @@ export const regionTranslationsEn = {
     tagline: 'Refreshing Tidar Valley Tofu, River Fish Mangut, & Borobudur Cassava',
     description: 'Surrounded by majestic volcanic peaks (Merapi, Merbabu, Sumbing), Magelang offers refreshing, nourishing food. Kupat Tahu Magelang is famous for its light, sweet-savory garlic soy dressing scattered with roasted peanuts.',
     culturalIdentity: 'Proximity to the ancient Borobudur temple and fertile agricultural valleys producing sweet cassava and Progo river delicacies.',
-    culinaryTendencies: ['Light Garlic Soy Broth', 'Coarse Roasted Peanuts', 'Fiery Yellow Bird’s Eye Chilies', 'Velvety Pounded Cassava']
+    culinaryTendencies: ['Light Garlic Soy Broth', 'Coarse Roasted Peanuts', 'Fiery Yellow Bird’s Eye Chilies', 'Velvety Pounded Cassava'],
+    keyIngredients: ['Magelang Soft Tofu', 'Butter Cassava', 'Roasted Peanuts', 'Traditional Sweet Soy Sauce', 'Smoked River Fish (Beong/Lele)']
   },
   'tegal': {
     name: 'Tegal City & Regency',
@@ -1034,7 +1040,8 @@ export const regionTranslationsEn = {
     tagline: 'Tender Young Lamb Skewers, Turmeric Coconut Broths, & Jasmine Tea',
     description: 'At the western gateway of Central Java, Tegal serves bold, hearty dishes. Tender mutton from young lambs (batibul) is grilled without gaminess, accompanied by fragrant jasmine tea brewed in clay pots with rock sugar.',
     culturalIdentity: 'Enterprising merchant spirit famed across Indonesia through the widespread Warteg (Warung Tegal) community.',
-    culinaryTendencies: ['Tender Young Lamb Grills', 'Rich Turmeric Coconut Broths', 'Chewy Savory Tapioca Aci', 'Clay Pot Jasmine Tea']
+    culinaryTendencies: ['Tender Young Lamb Grills', 'Rich Turmeric Coconut Broths', 'Chewy Savory Tapioca Aci', 'Clay Pot Jasmine Tea'],
+    keyIngredients: ['Young Lamb Meat (Batibul)', 'Tapioca Starch (Aci)', 'Authentic Tegal Sweet Soy', 'Fresh Chives', 'Turmeric']
   },
   'wonosobo': {
     name: 'Wonosobo Regency',
@@ -1042,7 +1049,8 @@ export const regionTranslationsEn = {
     tagline: 'Thick Comforting Starch Broths of the Misty Dieng Highlands',
     description: 'The cool mist of the Dieng volcanic plateau gave birth to deeply comforting food: Mie Ongklok, noodles blanched in bamboo baskets and blanketed in thick dried-shrimp and cassava starch gravy, eaten with sweet beef skewers.',
     culturalIdentity: 'Mountain heritage engineered to warm the body against alpine chill through piping-hot gravies and mountain chives.',
-    culinaryTendencies: ['Thick Cassava Starch Gravy', 'Savory Dried Shrimp & Garlic', 'Fresh Mountain Chives', 'Carica Fruit Sweets']
+    culinaryTendencies: ['Thick Cassava Starch Gravy', 'Savory Dried Shrimp & Garlic', 'Fresh Mountain Chives', 'Carica Fruit Sweets'],
+    keyIngredients: ['Cassava Starch', 'Fresh Mountain Chives', 'Dried Shrimp (Ebi)', 'Turmeric', 'Dieng Carica Papaya']
   }
 };
 

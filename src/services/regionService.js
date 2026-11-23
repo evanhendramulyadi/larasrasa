@@ -20,6 +20,7 @@ export function localizeRegion(region) {
     description: trans?.description || region.description,
     culturalIdentity: trans?.culturalIdentity || region.culturalIdentity,
     culinaryTendencies: trans?.culinaryTendencies || region.culinaryTendencies,
+    keyIngredients: trans?.keyIngredients || region.keyIngredients,
   };
 }
 

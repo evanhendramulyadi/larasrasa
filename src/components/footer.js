@@ -1,4 +1,6 @@
 import { t, i18n } from '../i18n/index.js';
+import { regions } from '../data/regions.js';
+import { localizeRegion } from '../services/regionService.js';
 
 /**
  * Harmonious & Balanced Royal Heritage Footer Component
@@ -16,16 +18,10 @@ export function renderFooter() {
     { label: t('nav.aiFoodCreator'), href: '#/ai-food-creator', isSpecial: true }
   ];
 
-  const regions = [
-    { id: 'semarang', name: 'Kota Semarang' },
-    { id: 'surakarta', name: 'Surakarta (Solo)' },
-    { id: 'kudus', name: 'Kab. Kudus' },
-    { id: 'banyumas', name: 'Kab. Banyumas' },
-    { id: 'pekalongan', name: 'Kota Pekalongan' },
-    { id: 'magelang', name: 'Kab. Magelang' },
-    { id: 'tegal', name: 'Kota & Kab. Tegal' },
-    { id: 'wonosobo', name: 'Kab. Wonosobo' }
-  ];
+  const regionsList = regions.map(r => ({
+    id: r.id,
+    name: localizeRegion(r).name
+  }));
 
   const teamMembers = [
     { name: 'Evan Hendra Mulyadi', role: isEn ? 'Web Developer & Team Leader' : 'Web Developer & Team Leader', isLeader: true },
@@ -112,7 +108,7 @@ export function renderFooter() {
               <span>${isEn ? '8 Culinary Regions' : '8 Sentra Wilayah'}</span>
             </h3>
             <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs text-[#FAF7F2]/80">
-              ${regions.map(r => `
+              ${regionsList.map(r => `
                 <a href="${isEn ? `#/recipes` : `#/resep`}" 
                    data-region-filter="${r.id}"
                    class="group flex items-center gap-1.5 hover:text-[#D49B42] transition-colors py-0.5">
