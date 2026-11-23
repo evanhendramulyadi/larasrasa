@@ -14,7 +14,10 @@ import { scrollToTop } from './utils/dom.js';
 import { translateHashRoute } from './utils/routes.js';
 
 export function resolveNearestRoute(rawPath, isEn = false) {
-  const normalized = (rawPath || '').toLowerCase().replace(/\/+$/, '') || '/';
+  let normalized = (rawPath || '').toLowerCase().replace(/\/+$/, '').trim();
+  if (!normalized.startsWith('/')) {
+    normalized = `/${normalized}`;
+  }
 
   const validExactRoutes = [
     '/',
@@ -26,36 +29,24 @@ export function resolveNearestRoute(rawPath, isEn = false) {
     '/ai-food-creator'
   ];
 
-  if (validExactRoutes.includes(normalized) || normalized.startsWith('/resep/') || normalized.startsWith('/recipes/')) {
+  if (validExactRoutes.includes(normalized)) {
     return normalized;
   }
 
-  // Nearest match for recipes
-  if (normalized.startsWith('/resep') || normalized.startsWith('/recipe')) {
+  // Recipe detail paths: /resep/<slug>, /recipes/<slug>, /recipe/<slug>
+  if (
+    normalized.startsWith('/resep/') || 
+    normalized.startsWith('/recipes/') || 
+    normalized.startsWith('/recipe/')
+  ) {
+    const slug = normalized.replace(/^\/(resep|recipes|recipe)\//, '').trim();
+    if (slug) {
+      return isEn ? `/recipes/${slug}` : `/resep/${slug}`;
+    }
     return isEn ? '/recipes' : '/resep';
   }
-  // Nearest match for flavor map
-  if (normalized.includes('peta') || normalized.includes('map')) {
-    return isEn ? '/flavor-map' : '/peta-rasa';
-  }
-  // Nearest match for spices
-  if (normalized.includes('rempah') || normalized.includes('spice')) {
-    return isEn ? '/spices' : '/jelajah-rempah';
-  }
-  // Nearest match for restaurants
-  if (normalized.includes('restoran') || normalized.includes('restaurant')) {
-    return isEn ? '/restaurants' : '/restoran-legendaris';
-  }
-  // Nearest match for recommendations
-  if (normalized.includes('rekomendasi') || normalized.includes('recommend')) {
-    return isEn ? '/recommendations' : '/rekomendasi';
-  }
-  // Nearest match for AI food creator
-  if (normalized.includes('creator') || normalized.includes('ai') || normalized.includes('studio')) {
-    return '/ai-food-creator';
-  }
 
-  // Fallback to Home as the nearest root
+  // Any other typo or invalid link strictly redirects to Home (/)
   return '/';
 }
 
@@ -354,27 +345,10 @@ export class Router {
       postRenderAction = () => initAiFoodCreatorInteractions();
       pageTitlePrefix = t('nav.aiFoodCreator');
     } else {
-      pageTitlePrefix = '404';
-      // 404 Fallback with bilingual & Javanese touch
-      const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
-      pageHtml = `
-        <div class="max-w-xl mx-auto px-4 py-28 text-center space-y-5">
-          <span class="font-editorial-serif text-7xl font-bold text-[#C84C24] block drop-shadow-sm">404</span>
-          <h2 class="font-editorial-serif text-3xl font-bold text-[#120B07]">
-            ${isEn ? 'Page Not Found' : 'Halaman Tidak Ditemukan'}
-          </h2>
-          <p class="text-sm text-[#5C3622] leading-relaxed max-w-md mx-auto">
-            ${isEn 
-              ? 'The culinary page you are looking for does not exist in LarasRasa.' 
-              : 'Mohon maaf, halaman kuliner yang Anda tuju tidak ditemukan di khasanah LarasRasa.'}
-          </p>
-          <div class="pt-3">
-            <a href="#/" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] text-xs font-bold transition-all shadow-md border border-[#D49B42]/40">
-              &larr; ${t('nav.home')}
-            </a>
-          </div>
-        </div>
-      `;
+      // Any other unrecognized route immediately redirects to Home
+      history.replaceState(null, '', '#/');
+      this.handleRouteChange();
+      return;
     }
 
     // Update document title reactively
