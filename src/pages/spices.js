@@ -52,14 +52,13 @@ export async function renderSpicesPage() {
         </div>
       </div>
 
-      <!-- Filter Category Pills and Count Bar -->
-      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3.5 pb-3 border-b border-[#D49B42]/20">
-        <!-- Category Filter Pills (2-cols on mobile, 3-cols on small tablet, horizontal flex on desktop) -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap items-center gap-2 sm:gap-2.5 w-full md:w-auto">
+      <!-- Filter Category Controls (1 full-width row per filter on mobile -> 6 rows; flex wrap on desktop) -->
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 md:flex md:flex-wrap items-center gap-2.5 w-full">
           ${categories.map(c => `
             <button type="button" 
                     data-spice-category="${c.id}"
-                    class="spice-cat-btn rempah-pill-btn w-full md:w-auto px-3 sm:px-4 py-2.5 rounded-full text-xs font-bold transition-all cursor-pointer text-center flex items-center justify-center truncate ${
+                    class="spice-cat-btn rempah-pill-btn w-full md:w-auto px-4 py-3 rounded-2xl md:rounded-full text-xs font-bold transition-all cursor-pointer text-center flex items-center justify-center truncate shadow-2xs ${
                       c.id === activeCategory
                         ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#C84C24]/30'
                         : 'bg-white text-[#120B07] border border-[#D49B42]/35 hover:bg-[#FAF7F2]'
@@ -69,10 +68,11 @@ export async function renderSpicesPage() {
           `).join('')}
         </div>
 
-        <div class="text-xs font-bold text-[#2E4D38] flex items-center justify-between md:justify-start gap-2 shrink-0 pt-1 md:pt-0">
-          <div class="flex items-center gap-2">
-            <span class="inline-block w-2 h-2 rounded-full bg-[#C84C24]"></span>
-            <span>${filteredSpices.length} ${t('spicesSection.availableCount')}</span>
+        <!-- Result Counter & Full-Width Separator Line matching cards above and below -->
+        <div class="flex items-center justify-between text-xs text-[#2E4D38] pb-3 border-b border-[#D49B42]/25 w-full">
+          <div class="font-medium text-xs sm:text-sm flex items-center gap-2">
+            <span class="inline-block w-2 h-2 rounded-full bg-[#C84C24] shrink-0"></span>
+            <span><strong class="text-[#120B07] font-bold">${filteredSpices.length}</strong> ${t('spicesSection.availableCount')}</span>
           </div>
         </div>
       </div>

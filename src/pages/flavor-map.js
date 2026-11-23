@@ -161,9 +161,8 @@ function renderRegionDetailContent(region) {
 
       <!-- Hidangan Andalan Sentra (Non-clickable, max 3, verified in recipes.js) -->
       <div class="space-y-2">
-        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07] flex items-center gap-1.5">
-          <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-          <span>${isEn ? 'Signature Heritage Dishes:' : 'Hidangan Andalan Sentra:'}</span>
+        <span class="block text-xs font-bold uppercase tracking-wider text-[#120B07]">
+          ${isEn ? 'Signature Heritage Dishes:' : 'Hidangan Andalan Sentra:'}
         </span>
         <div class="flex flex-wrap gap-2">
           ${(region.signatureDishes || []).slice(0, 3).map(dish => `
