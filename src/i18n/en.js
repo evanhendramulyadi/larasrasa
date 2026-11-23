@@ -205,7 +205,7 @@ export const en = {
     aromaTitle: 'Aroma & Palate Profile:',
     prepTitle: 'Kitchen Preparation Technique:',
     wisdomTitle: 'Ancestral Wisdom & Benefits:',
-    dishesTitle: 'Associated Iconic Dishes:',
+    dishesTitle: 'Hidangan Ikonik yang Menggunakan:',
     substitutesTitle: 'Culinary Substitutions:',
     closeModal: 'Close',
     exploreRecipes: 'Explore Related Recipes'

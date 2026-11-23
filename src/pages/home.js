@@ -202,11 +202,11 @@ export async function renderHomePage() {
                 </div>
                 <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
                   <p class="font-bold text-[#D49B42]">Solo (Surakarta)</p>
-                  <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Sega Liwet & Selat Solo</p>
+                  <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Nasi Liwet & Selat Solo</p>
                 </div>
                 <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
                   <p class="font-bold text-[#D49B42]">Kab. Kudus</p>
-                  <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Soto Kencur & Garang Asem</p>
+                  <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Soto Kudus & Garang Asem</p>
                 </div>
               </div>
 
