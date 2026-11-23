@@ -214,8 +214,9 @@ export const aiFoodCreatorService = {
     const keySpice1En = aromaticSpices[0]?.nameEn || 'Toasted Candlenut & Coriander';
     const keySpice2En = aromaticSpices[1]?.nameEn || 'Brebes Shallots';
 
-    const keySpice1 = isEn ? keySpice1En : keySpice1Id;
-    const keySpice2 = isEn ? keySpice2En : keySpice2Id;
+    // Recipe is purely formulated in Indonesian as requested
+    const keySpice1 = keySpice1Id;
+    const keySpice2 = keySpice2Id;
 
     // Cooking method verbs
     const methodVerbMapId = {
@@ -232,7 +233,7 @@ export const aiFoodCreatorService = {
       bakar: 'Charcoal-Grilled',
       goreng: 'Golden-Crisped'
     };
-    const methodVerb = isEn ? (methodVerbMapEn[cookingMethod] || 'Artisanal') : (methodVerbMapId[cookingMethod] || 'Olahan');
+    const methodVerb = methodVerbMapId[cookingMethod] || 'Olahan';
 
     // Regional style flair
     const regionFlairMapId = {
@@ -242,45 +243,37 @@ export const aiFoodCreatorService = {
       'asam-segar': 'Segar Belimbing Wuluh',
       'pekat-rempah': 'Pusaka Kraton Jawa'
     };
-    const regionFlairMapEn = {
-      'manis-gurih': 'Solo Mataraman Style',
-      'gurih-segar': 'Kudus Coastal Style',
-      'pedas-gurih': 'Banyumasan Rustic Style',
-      'asam-segar': 'Tangy Bilimbi Infused',
-      'pekat-rempah': 'Royal Javanese Spiced'
-    };
-    const regionFlair = isEn ? (regionFlairMapEn[tasteProfile] || 'Central Javanese Style') : (regionFlairMapId[tasteProfile] || 'Khas Jawa Tengah');
+    const regionFlair = regionFlairMapId[tasteProfile] || 'Khas Jawa Tengah';
 
     const proteinName = proteinItem.nameId.replace('Daging ', '').replace(' Segar', '');
     const methodVerbId = methodVerbMapId[cookingMethod] || 'Olahan';
-    const regionFlairId = regionFlairMapId[tasteProfile] || 'Khas Jawa Tengah';
-    const keySpice1Clean = (keySpice1.split(' ')[0] || '').replace(/[^a-zA-Z]/g, '');
+    const keySpice1Clean = (keySpice1Id.split(' ')[0] || '').replace(/[^a-zA-Z]/g, '');
 
-    // Authentic regional dish name is NEVER translated to English as requested
-    const dishBaseName = `${methodVerbId} ${proteinName} ${keySpice1Clean} (${regionFlairId})`;
+    // Authentic regional dish name WITHOUT region suffix as requested: "gausah pake wilayah"
+    const dishBaseName = `${methodVerbId} ${proteinName} ${keySpice1Clean}`.trim();
     const fullTitle = dishBaseName;
 
-    const subtitleId = 'Racikan Dapur Tradisi Jawa Tengah';
-    const subtitleEn = 'Authentic Central Javanese Heritage Creation';
-    const javaneseTitle = isEn ? subtitleEn : subtitleId;
+    const subtitleId = 'Racikan Resep Dapur Tradisi';
+    const subtitleEn = 'Authentic Heritage Recipe';
+    const javaneseTitle = subtitleId;
 
     const slug = dishBaseName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
     // Prep & Cook durations
     const durationMap = {
-      quick: { prep: 12, cook: 18, totalText: isEn ? '30 Mins' : '30 Menit' },
-      standard: { prep: 15, cook: 35, totalText: isEn ? '50 Mins' : '50 Menit' },
-      slow: { prep: 20, cook: 55, totalText: isEn ? '75 Mins' : '75 Menit' }
+      quick: { prep: 12, cook: 18, totalText: '30 Menit' },
+      standard: { prep: 15, cook: 35, totalText: '50 Menit' },
+      slow: { prep: 20, cook: 55, totalText: '75 Menit' }
     };
     const durationData = durationMap[cookingDuration] || durationMap.standard;
 
-    // Generate Ingredients list scaled with exact amounts
-    const scaledIngredients = this._generateScaledIngredients(proteinItem, selectedIngredients, servings, dietary, isEn);
+    // Generate Ingredients list scaled with exact amounts (pure Indonesian)
+    const scaledIngredients = this._generateScaledIngredients(proteinItem, selectedIngredients, servings, dietary, false);
 
-    // Generate Step by Step in both ID and EN for reactive translation
+    // Generate Step by Step in Indonesian for authentic pure language output
     const stepsId = this._generateCookingSteps(methodVerbMapId[cookingMethod] || 'Olahan', proteinItem, selectedIngredients, servings, spiceLevel, tasteProfile, false);
     const stepsEn = this._generateCookingSteps(methodVerbMapEn[cookingMethod] || 'Artisanal', proteinItem, selectedIngredients, servings, spiceLevel, tasteProfile, true);
-    const steps = isEn ? stepsEn : stepsId;
+    const steps = stepsId;
 
     // Pick appropriate base food image
     let baseImage = RECIPE_IMAGE_POOL.default;
@@ -305,15 +298,15 @@ export const aiFoodCreatorService = {
     const p3En = `Best served hot alongside fluffy white rice, fresh raw vegetables (lalapan), and authentic sambal for a complete Javanese culinary experience.`;
     const descriptionEn = `${p1En}\n\n${p2En}\n\n${p3En}`;
 
-    const description = isEn ? descriptionEn : descriptionId;
+    const description = descriptionId;
 
     const chefTipsId = `Untuk mendapatkan sari rasa optimal, sangrai rempah kering (ketumbar dan kemiri) di atas wajan tanah liat atau wajan tebal tanpa minyak hingga semerbak wangi sebelum diulek halus. Jika menggunakan santan atau kaldu, gunakan api lilin kecil agar santan tidak pecah dan minyak aromatik terbit perlahan.`;
     const chefTipsEn = `To achieve optimal essential oil extraction, toast dry whole spices (coriander and candlenuts) on an ungreased heavy pan until fragrant before crushing in a stone mortar. If using coconut milk, maintain a gentle low simmer so the coconut cream does not separate and the spiced oils emerge smoothly.`;
-    const chefTips = isEn ? chefTipsEn : chefTipsId;
+    const chefTips = chefTipsId;
 
     const safetyNotesId = `Pastikan bahan protein dicuci bersih dan dimasak hingga matang merata (suhu internal minimal 74°C untuk unggas). Simpan sisa masakan dalam wadah tertutup di lemari pendingin dan hangatkan kembali secara menyeluruh sebelum disantap.`;
     const safetyNotesEn = `Ensure raw proteins are prepared hygienically and cooked to a safe internal temperature (minimum 74°C for poultry). Store leftovers in an airtight container under refrigeration and reheat thoroughly before savoring.`;
-    const safetyNotes = isEn ? safetyNotesEn : safetyNotesId;
+    const safetyNotes = safetyNotesId;
 
     return {
       id: `ai-food-${Date.now()}`,
@@ -325,30 +318,30 @@ export const aiFoodCreatorService = {
       subtitleEn,
       creatorName,
       creatorNickname: creatorNickname || creatorName,
-      creatorCredit: isEn ? `Officially Created by: ${creatorName}` : `Diciptakan Resmi oleh: ${creatorName}`,
+      creatorCredit: `Diciptakan Resmi oleh: ${creatorName}`,
       description,
       descriptionId,
       descriptionEn,
-      regionName: isEn ? 'Central Java (Original Creation)' : 'Jawa Tengah (Kreasi Mandiri)',
+      regionName: 'Jawa Tengah (Kreasi Mandiri)',
       servings,
-      prepTime: isEn ? `${durationData.prep} Mins` : `${durationData.prep} Menit`,
-      cookTime: isEn ? `${durationData.cook} Mins` : `${durationData.cook} Menit`,
+      prepTime: `${durationData.prep} Menit`,
+      cookTime: `${durationData.cook} Menit`,
       totalTime: durationData.totalText,
-      difficulty: cookingDuration === 'quick' ? (isEn ? 'Easy' : 'Mudah') : (isEn ? 'Medium' : 'Sedang'),
-      calories: isEn ? `${Math.round(260 + (servings * 25))} kcal / serving` : `${Math.round(260 + (servings * 25))} kkal / porsi`,
+      difficulty: cookingDuration === 'quick' ? 'Mudah' : 'Sedang',
+      calories: `${Math.round(260 + (servings * 25))} kkal / porsi`,
       spiceLevel,
       cookingMethod,
       dishCategory,
       tasteProfile,
-      outputLanguage,
+      outputLanguage: 'id',
       imageStyle,
       aspectRatio,
       baseImage,
-      selectedIngredients: selectedIngredients.map(i => isEn ? (i.nameEn || i.nameId) : i.nameId),
+      selectedIngredients: selectedIngredients.map(i => i.nameId),
       ingredients: scaledIngredients,
       equipment: equipment.map(eq => {
         const found = PREFERENCE_OPTIONS.equipmentList.find(e => e.id === eq);
-        return isEn ? (found ? found.labelEn : eq) : (found ? found.labelId : eq);
+        return found ? found.labelId : eq;
       }),
       steps,
       stepsId,
@@ -454,70 +447,70 @@ export const aiFoodCreatorService = {
       steps.push({
         stepNumber: 1,
         title: 'Ingredient Prep & Grinding Spice Paste',
-        instruction: `Prepare a stone mortar. Grind the shallots, garlic, toasted candlenuts, coriander seeds, and sea salt into a smooth, fragrant paste. Lightly bruise the lemongrass stalk and galangal separately to release their volatile aromatic oils without tearing the stalk structure.`,
+        instruction: `Prepare a stone mortar. For about 10 minutes, grind the shallots, garlic, toasted candlenuts, coriander seeds, and sea salt into a smooth, fragrant paste. Lightly bruise the lemongrass stalk and galangal separately to release their volatile aromatic oils without tearing the stalk structure.`,
         sensoryMilestone: 'The sharp pungency of raw alliums softens into the warm nutty aroma of toasted candlenuts.'
       });
 
       steps.push({
         stepNumber: 2,
         title: 'Sautéing Spice Base & Releasing Aromatics',
-        instruction: `Heat cooking oil in a wok over medium heat. Add the spice paste, bruised lemongrass, Indonesian bay leaves, and kaffir lime leaves. Sauté gently with a wooden spoon until the paste turns golden-amber and fragrant spiced oil beads emerge to the surface.`,
+        instruction: `Heat cooking oil in a wok over medium heat. Add the spice paste, bruised lemongrass, Indonesian bay leaves, and kaffir lime leaves. Sauté gently for 5 to 7 minutes with a wooden spoon until the paste turns golden-amber and fragrant spiced oil beads emerge to the surface.`,
         sensoryMilestone: 'A deeply comforting savory aroma envelopes the kitchen, indicating the paste is cooked through without raw edge.'
       });
 
       steps.push({
         stepNumber: 3,
         title: `Primary Cooking of ${pName}`,
-        instruction: `Add ${pName} into the wok. Toss gently until every piece is coated in the rich spiced paste. Pour in the broth or coconut milk in batches, stirring smoothly in concentric circles from the wok edge.`,
+        instruction: `Add ${pName} into the wok. Toss gently for about 5 minutes until every piece is coated in the rich spiced paste. Pour in the broth or coconut milk in batches, stirring smoothly in concentric circles from the wok edge.`,
         sensoryMilestone: 'The broth arrives at a gentle simmer with glistening golden spice droplets dancing along the rim.'
       });
 
       steps.push({
         stepNumber: 4,
         title: 'Simmering & Balancing the Flavor Profile',
-        instruction: `Lower the stove flame to low. Stir in the shaved Javanese palm sugar, sliced chilies, and secondary ingredients. Cover and simmer patiently (${tasteProfile}) until the broth reduces and infuses thoroughly for ${servings} family servings.`,
+        instruction: `Lower the stove flame to low. Stir in the shaved Javanese palm sugar, sliced chilies, and secondary ingredients. Cover and simmer patiently for 15 to 20 minutes until the broth reduces, infusing deeply for ${servings} family servings.`,
         sensoryMilestone: 'The protein turns wonderfully tender, soaked with spices through to the deepest fiber.'
       });
 
       steps.push({
         stepNumber: 5,
         title: 'Plating & Warm Finishing Garnish',
-        instruction: `Taste and adjust final seasoning (achieving a comforting harmony of sweet, savory, and warm spices). Transfer onto an earthenware platter lined with a clean banana leaf. Crown with crispy golden Brebes shallots while piping hot.`,
+        instruction: `Taste and adjust final seasoning for 3 to 5 minutes to achieve a comforting harmony of sweet, savory, and warm spices. Transfer onto an earthenware platter lined with a clean banana leaf. Crown with crispy golden Brebes shallots while piping hot.`,
         sensoryMilestone: 'A glossy presentation with subtle steam carrying comforting notes of pandan and warm banana leaf.'
       });
     } else {
       steps.push({
         stepNumber: 1,
         title: 'Persiapan Bahan & Penumbukan Bumbu Halus',
-        instruction: `Siapkan cobek batu. Haluskan bawang merah, bawang putih, kemiri sangrai, ketumbar, dan garam hingga lembut bertekstur. Memarkan serai dan lengkuas secara terpisah agar minyak atsirinya merekah tanpa merusak struktur batang.`,
+        instruction: `Siapkan cobek batu. Selama sekitar 10 menit, haluskan bawang merah, bawang putih, kemiri sangrai, ketumbar, dan garam hingga lembut bertekstur. Memarkan serai dan lengkuas secara terpisah agar minyak atsirinya merekah tanpa merusak struktur batang.`,
         sensoryMilestone: 'Aroma tajam bawang mulai melunak dan bercampur harum kacang kemiri sangrai.'
       });
 
       steps.push({
         stepNumber: 2,
         title: 'Penumisan Bumbu Dasar & Pelepasan Minyak Aromatik',
-        instruction: `Panaskan minyak dalam wajan di atas api sedang. Masukkan bumbu halus, serai, daun salam, dan daun jeruk. Tumis perlahan dengan spatula kayu hingga bumbu matang kecokelatan dan minyak bumbu terbit ke permukaan (tanak).`,
+        instruction: `Panaskan minyak dalam wajan di atas api sedang. Masukkan bumbu halus, serai, daun salam, dan daun jeruk. Tumis perlahan selama 5 hingga 7 menit dengan spatula kayu hingga bumbu matang kecokelatan dan minyak bumbu terbit ke permukaan (tanak).`,
         sensoryMilestone: 'Aroma wangi gurih memenuhi seisi dapur, menandakan bumbu tidak langu lagi.'
       });
 
       steps.push({
         stepNumber: 3,
         title: `Pengolahan Utama ${pName}`,
-        instruction: `Masukkan ${pName} ke dalam wajan bumbu. Aduk merata hingga seluruh permukaannya terbalut bumbu pekat. Tuangkan cairan (kaldu / santan) secara bertahap sambil diaduk perlahan dari pinggir wajan.`,
+        instruction: `Masukkan ${pName} ke dalam wajan bumbu. Aduk merata selama sekitar 5 menit hingga seluruh permukaannya terbalut bumbu pekat. Tuangkan cairan (kaldu / santan) secara bertahap sambil diaduk perlahan dari pinggir wajan.`,
         sensoryMilestone: 'Kuah mulai mendidih lembut dengan gelembung-gelembung minyak keemasan di tepian.'
       });
 
       steps.push({
         stepNumber: 4,
         title: 'Ungkep & Penyelarasan Spektrum Rasa',
-        instruction: `Kecilkan api kompor. Masukkan gula kelapa Jawa, irisan cabai, dan bahan pelengkap lainnya. Tutup wajan dan biarkan bumbu meresap (${tasteProfile}) hingga kuah mengental dan menyusut sesuai selera sajian ${servings} porsi.`,
+        instruction: `Kecilkan api kompor. Masukkan gula kelapa Jawa, irisan cabai, dan bahan pelengkap lainnya. Tutup wajan dan biarkan bumbu meresap serta mengungkep perlahan selama 15 hingga 20 menit hingga kuah mengental dan menyusut pas untuk sajian ${servings} porsi.`,
         sensoryMilestone: 'Daging menjadi sangat empuk dan bumbu meresap hingga ke lapisan serat terdalam.'
       });
 
       steps.push({
         stepNumber: 5,
         title: 'Penyajian Khidmat & Taburan Akhir',
-        instruction: `Cicipi dan koreksi rasa akhir (seimbang antara manis, gurih, dan hangat rempah). Angkat dan tata dengan anggun di atas piring tanah liat atau piring keramik beralas daun pisang. Taburi bawang merah goreng renyah Brebes saat masih hangat.`,
+        instruction: `Cicipi dan koreksi rasa akhir selama 3 hingga 5 menit agar seimbang antara manis, gurih, dan hangat rempah. Angkat dan tata dengan anggun di atas piring tanah liat atau piring keramik beralas daun pisang. Taburi bawang merah goreng renyah Brebes saat masih hangat.`,
         sensoryMilestone: 'Penampilan mengilap mengundang selera dengan asap tipis beraroma pandan dan daun pisang.'
       });
     }
