@@ -214,7 +214,9 @@ export const en = {
     mapHint: 'Click markers to open Google Maps turn-by-turn navigation',
     searchPlaceholder: 'Search eatery or restaurant (e.g., Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'City / Region:',
-    allCities: 'All Cities'
+    allCities: 'All Cities',
+    noticeTitle: 'Visitor Notice & Data Verification',
+    noticeText: 'Establishment records and culinary profiles were researched and documented in 2026. Operating status, business hours, and pricing may change or close permanently over time. Prior to visiting, please verify current opening hours, operational status, and menu prices online or via Google Maps.'
   },
   recommendations: {
     badge: 'Central Javanese Taste Curation',

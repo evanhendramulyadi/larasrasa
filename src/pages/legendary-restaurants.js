@@ -94,6 +94,19 @@ export async function renderLegendaryRestaurantsPage() {
         ${restaurantsList.map(r => renderRestaurantCard(r)).join('')}
       </div>
 
+      <!-- Visitor Notice & Data Verification Card -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-white via-[#FAF7F2] to-[#F5EFEB] border border-[#D49B42]/35 shadow-xs space-y-2">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
+          <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">
+            ${t('restaurantsSection.noticeTitle')}
+          </h3>
+        </div>
+        <p class="text-xs sm:text-[13px] text-[#5C3622] leading-relaxed">
+          ${t('restaurantsSection.noticeText')}
+        </p>
+      </div>
+
     </div>
   `;
 }
