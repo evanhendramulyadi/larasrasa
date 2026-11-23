@@ -72,10 +72,10 @@ export function renderRecipeModal(rawRecipe) {
           </div>
         </div>
 
-        <!-- Modal Body: Vertical Scrollable Content ("Vertikal & Cukup Pop Up Saja yang Di-scroll") -->
+        <!-- Modal Body: Vertical Scrollable Content -->
         <div class="p-5 sm:p-7 overflow-y-auto space-y-6 text-[#120B07]">
           
-          <!-- Section 1: Ringkasan Citarasa & Porsi Resep (Strict 4 Porsi) -->
+          <!-- Section 1: Flavor Profile & Recipe Yield (4 Servings) -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 text-center">
             <div class="p-1">
               <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${isEn ? 'Region' : 'Sentra Wilayah'}</span>
@@ -95,7 +95,7 @@ export function renderRecipeModal(rawRecipe) {
             </div>
           </div>
 
-          <!-- Section 2: Narasi Pengantar & Sejarah Warisan Leluhur -->
+          <!-- Section 2: Heritage Narrative & Cultural Context -->
           <div class="space-y-3 p-4 sm:p-5 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30">
             <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider flex items-center gap-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
@@ -111,7 +111,7 @@ export function renderRecipeModal(rawRecipe) {
             ` : ''}
           </div>
 
-          <!-- Section 3: Takaran Bahan & Komposisi Bumbu (Kalibrasi 4 Porsi) -->
+          <!-- Section 3: Ingredients & Spice Measurements (4 Servings) -->
           <div class="space-y-4">
             <div class="flex items-center justify-between">
               <h3 class="font-editorial-serif text-lg sm:text-xl font-bold text-[#120B07] flex items-center gap-2">
@@ -123,7 +123,7 @@ export function renderRecipeModal(rawRecipe) {
               </span>
             </div>
 
-            <!-- Cooking Equipment / Peralatan Masak Tradisional -->
+            <!-- Cooking Equipment / Traditional Kitchen Utensils -->
             ${recipe.equipment && recipe.equipment.length > 0 ? `
               <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/35 space-y-2.5">
                 <div class="flex items-center justify-between">
@@ -168,7 +168,7 @@ export function renderRecipeModal(rawRecipe) {
             </div>
           </div>
 
-          <!-- Section 4: Langkah-Langkah Memasak Interaktif -->
+          <!-- Section 4: Interactive Step-by-Step Cooking Steps -->
           <div class="space-y-4">
             <h3 class="font-editorial-serif text-lg sm:text-xl font-bold text-[#120B07] flex items-center gap-2">
               <span class="w-2 h-5 bg-[#C84C24] rounded-full inline-block"></span>
@@ -205,7 +205,7 @@ export function renderRecipeModal(rawRecipe) {
             </div>
           </div>
 
-          <!-- Section 5: Tips Pawon / Chef Tips -->
+          <!-- Section 5: Traditional Kitchen & Chef Tips -->
           ${recipe.cookingTips && recipe.cookingTips.length > 0 ? `
             <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 space-y-2">
               <span class="text-xs font-bold text-amber-950 uppercase tracking-wider flex items-center gap-1.5">

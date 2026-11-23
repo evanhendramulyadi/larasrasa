@@ -178,7 +178,7 @@ export async function renderHomePage() {
         </div>
       </section>
 
-      <!-- SECTION: PETA RASA CULINARY GEOGRAPHY -->
+      <!-- SECTION: FLAVOR MAP CULINARY GEOGRAPHY -->
       <section class="w-full py-14 sm:py-20 bg-[#120B07] text-white relative overflow-hidden border-b border-[#D49B42]/30 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
@@ -334,7 +334,7 @@ export async function renderHomePage() {
         </div>
       </section>
 
-      <!-- SECTION: QUICK CONCIERGE CTA (MAKANAN APA HARI INI) -->
+      <!-- SECTION: QUICK CONCIERGE CTA (WHAT TO EAT TODAY) -->
       <section class="w-full py-14 sm:py-20 bg-gradient-to-b from-[#FAF7F2] to-[#F5EFEB] border-b border-[#D49B42]/25">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="bg-white rounded-3xl p-8 sm:p-14 border border-[#D49B42]/40 shadow-xl text-center space-y-6">

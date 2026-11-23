@@ -30,7 +30,7 @@ export function localizeSpice(spice) {
 
 export const spiceService = {
   /**
-   * Mengambil daftar rempah & bumbu aromatik khas Jawa Tengah.
+   * Retrieves list of Central Javanese spices & aromatics.
    */
   async getSpices(category = 'semua') {
     if (!API_CONFIG.useMock) {
@@ -41,7 +41,7 @@ export const spiceService = {
           return response.data.map(localizeSpice);
         }
       } catch (err) {
-        console.warn('Gagal memuat rempah dari Laravel API, beralih ke data lokal:', err);
+        console.warn('Failed to load spices from Laravel API, falling back to local data:', err);
       }
     }
 
@@ -53,18 +53,18 @@ export const spiceService = {
   },
 
   /**
-   * Mengambil satu rempah berdasarkan ID.
+   * Retrieves a single spice by ID.
    */
   async getSpiceById(id) {
     const spice = spices.find(s => s.id === id);
     if (!spice) {
-      throw new Error(`Rempah dengan ID "${id}" tidak ditemukan.`);
+      throw new Error(`Spice with ID "${id}" not found.`);
     }
     return localizeSpice(spice);
   },
 
   /**
-   * Pencarian rempah berdasarkan nama, aroma, atau masakan terkait.
+   * Searches spices by name, aroma, or associated dishes.
    */
   async searchSpices(query = '') {
     const localized = spices.map(localizeSpice);

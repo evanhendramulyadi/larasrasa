@@ -1,7 +1,6 @@
 /**
- * Kamus Bahasa Indonesia (ID) — LarasRasa
- * Menggunakan Bahasa Indonesia yang baik, luwes, dan mudah dipahami,
- * dengan sentuhan istilah kuliner serta falsafah Jawa yang autentik.
+ * Indonesian Dictionary (ID) — LarasRasa
+ * Written in natural, accessible Indonesian with authentic Javanese culinary lore.
  */
 export const id = {
   common: {
@@ -24,7 +23,6 @@ export const id = {
     done: 'Selesai',
     directions: 'Petunjuk Arah',
     openInMap: 'Buka di Peta',
-    estBudget: 'Prakiraan Biaya',
     verifiedSource: 'Catatan Referensi',
     hours: 'Jam Buka',
     address: 'Alamat',

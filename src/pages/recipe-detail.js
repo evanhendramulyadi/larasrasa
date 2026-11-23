@@ -412,7 +412,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
         </div>
       </section>
 
-      <!-- Bottom Action: Tutup Resep -->
+      <!-- Bottom Action: Close Recipe / Return to Catalog -->
       <div class="pt-6 border-t border-[#D49B42]/30 flex items-center justify-center">
         <a href="${isEn ? '#/recipes' : '#/resep'}" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#120B07] text-[#FAF7F2] hover:bg-[#C84C24] transition-all font-bold text-xs shadow-md border border-[#D49B42]/40 cursor-pointer">
           <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">

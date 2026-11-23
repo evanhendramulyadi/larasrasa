@@ -57,8 +57,8 @@ export function localizeRecipe(recipe) {
 
 export const recipeService = {
   /**
-   * Mengambil daftar resep dengan filter, pencarian, dan pengurutan.
-   * Disiapkan untuk memanggil GET /api/recipes jika mode Laravel aktif.
+   * Retrieves list of recipes with filter, search, and sorting.
+   * Ready to call GET /api/recipes if Laravel API mode is active.
    */
   async getRecipes(params = {}) {
     if (!API_CONFIG.useMock) {
@@ -67,14 +67,14 @@ export const recipeService = {
         const response = await apiRequest(`/recipes${queryString ? `?${queryString}` : ''}`);
         return (response.data || []).map(localizeRecipe);
       } catch (err) {
-        console.warn('Gagal memuat resep dari Laravel API, beralih ke data lokal:', err);
+        console.warn('Failed to load recipes from Laravel API, falling back to local data:', err);
       }
     }
 
     // Local filter and search implementation
     let result = recipes.map(localizeRecipe);
 
-    // Filter keyword / pencarian
+    // Keyword / search filter
     if (params.search && params.search.trim()) {
       const q = params.search.toLowerCase().trim();
       result = result.filter(r => {
@@ -88,7 +88,7 @@ export const recipeService = {
       });
     }
 
-    // Filter wilayah / region
+    // Regional filter
     if (params.region && params.region !== 'semua') {
       result = result.filter(r => r.regionId === params.region);
     }
@@ -127,8 +127,8 @@ export const recipeService = {
   },
 
   /**
-   * Mengambil detail resep berdasarkan slug unik.
-   * Disiapkan untuk memanggil GET /api/recipes/{slug}.
+   * Retrieves recipe details by unique slug.
+   * Ready to call GET /api/recipes/{slug}.
    */
   async getRecipeBySlug(slug) {
     if (!API_CONFIG.useMock) {
@@ -136,19 +136,19 @@ export const recipeService = {
         const response = await apiRequest(`/recipes/${slug}`);
         return localizeRecipe(response.data);
       } catch (err) {
-        console.warn(`Gagal memuat resep ${slug} dari Laravel API:`, err);
+        console.warn(`Failed to load recipe ${slug} from Laravel API:`, err);
       }
     }
 
     const recipe = recipes.find(r => r.slug === slug || r.id === slug);
     if (!recipe) {
-      throw new Error(`Resep dengan slug "${slug}" tidak ditemukan.`);
+      throw new Error(`Recipe with slug "${slug}" not found.`);
     }
     return localizeRecipe(recipe);
   },
 
   /**
-   * Mengambil resep unggulan pilihan kurator.
+   * Retrieves curated featured recipes.
    */
   async getFeaturedRecipes(limit = 4) {
     const all = await this.getRecipes();
@@ -156,7 +156,7 @@ export const recipeService = {
   },
 
   /**
-   * Mengambil resep terkait (related recipes).
+   * Retrieves related recipes.
    */
   async getRelatedRecipes(recipeId, limit = 3) {
     const current = recipes.find(r => r.id === recipeId);

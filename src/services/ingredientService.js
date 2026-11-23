@@ -64,8 +64,8 @@ export const ALL_LOCAL_INGREDIENTS = [
 
 export const ingredientService = {
   /**
-   * Mengambil katalog bahan terstruktur.
-   * Mendukung pemanggilan API Laravel GET /api/ingredients.
+   * Retrieves structured ingredient catalog.
+   * Supports calling Laravel API GET /api/ingredients.
    */
   async getCatalog() {
     if (!API_CONFIG.useMock) {
@@ -73,14 +73,14 @@ export const ingredientService = {
         const response = await apiRequest('/ingredients');
         if (response?.data) return response.data;
       } catch (err) {
-        console.warn('Gagal memuat bahan dari Laravel API, beralih ke data lokal:', err);
+        console.warn('Failed to load ingredients from Laravel API, falling back to local data:', err);
       }
     }
     return LOCAL_INGREDIENT_CATALOG;
   },
 
   /**
-   * Mengambil daftar bahan datar berdasarkan kategori opsional.
+   * Retrieves flat ingredient list filtered by optional category.
    */
   async getIngredients(category = 'all') {
     const catalog = await this.getCatalog();
@@ -103,7 +103,7 @@ export const ingredientService = {
   },
 
   /**
-   * Mencari satu bahan berdasarkan ID.
+   * Searches for a single ingredient by ID.
    */
   async getIngredientById(id) {
     const all = await this.getIngredients('all');
@@ -111,7 +111,7 @@ export const ingredientService = {
   },
 
   /**
-   * Mencari bahan dengan filter teks kata kunci.
+   * Searches ingredients using keyword text filter.
    */
   async searchIngredients(query = '', category = 'all') {
     const items = await this.getIngredients(category);

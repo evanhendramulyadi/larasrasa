@@ -57,7 +57,7 @@ export async function renderSpicesPage() {
       <div class="space-y-4">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           
-          <!-- Mobile Dropdown Selector (khusus mobile, matching Sort & Region dropdown design) -->
+          <!-- Mobile Dropdown Selector -->
           <div class="block md:hidden w-full">
             <label for="spice-category-select-mobile" class="block text-xs font-bold uppercase tracking-wider text-[#5C3622] mb-2">${isEn ? 'Filter by Category:' : 'Kategori Rempah:'}</label>
             <div class="relative w-full">
@@ -77,7 +77,7 @@ export async function renderSpicesPage() {
             </div>
           </div>
 
-          <!-- Desktop Category Pills (khusus desktop / tablet) -->
+          <!-- Desktop Category Pills -->
           <div class="hidden md:flex md:flex-wrap items-center gap-2.5 w-auto">
             ${categories.map(c => `
               <button type="button" 
@@ -201,10 +201,10 @@ function renderSpiceModal(spice) {
           </div>
         </div>
 
-        <!-- Modal Body: Vertical Scrollable Content ("Vertikal & Cukup Pop Up Saja yang Di-scroll") -->
+        <!-- Modal Body: Vertical Scrollable Content -->
         <div class="p-5 sm:p-6 overflow-y-auto space-y-4">
           
-          <!-- Section 1: Peran Utama Masakan -->
+          <!-- Section 1: Culinary Role & Soul -->
           <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-1.5">
             <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider flex items-center gap-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
@@ -220,7 +220,7 @@ function renderSpiceModal(spice) {
             ` : ''}
           </div>
 
-          <!-- Section 2: Profil Aroma & Karakter Rasa -->
+          <!-- Section 2: Aroma Profile & Palate Character -->
           <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-1.5">
             <span class="text-[11px] font-bold text-[#120B07] uppercase tracking-wider flex items-center gap-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-[#D49B42]"></span>
@@ -231,7 +231,7 @@ function renderSpiceModal(spice) {
             </p>
           </div>
 
-          <!-- Section 3: Teknik Pengolahan Pawon -->
+          <!-- Section 3: Kitchen Preparation Technique -->
           <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 space-y-1.5">
             <span class="text-[11px] font-bold text-[#120B07] uppercase tracking-wider flex items-center gap-1.5">
               <span class="w-1.5 h-1.5 rounded-full bg-[#D49B42]"></span>
@@ -242,7 +242,7 @@ function renderSpiceModal(spice) {
             </p>
           </div>
 
-          <!-- Section 4: Kearifan Budaya & Filosofi Leluhur -->
+          <!-- Section 4: Cultural Wisdom & Ancestral Lore -->
           <div class="p-4 rounded-2xl bg-gradient-to-r from-[#120B07] to-[#1E120A] text-[#FAF7F2] border border-[#D49B42]/40 space-y-1.5 shadow-xs">
             <div class="flex items-center gap-2 text-[#D49B42] text-[11px] font-bold uppercase tracking-wider">
               <svg class="w-4 h-4 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -256,7 +256,7 @@ function renderSpiceModal(spice) {
             </p>
           </div>
 
-          <!-- Section 5: Sajian Ikonik Terkait -->
+          <!-- Section 5: Associated Iconic Dishes -->
           ${spice.iconicDishes && spice.iconicDishes.length > 0 ? `
             <div class="p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/25 space-y-2">
               <span class="text-[11px] font-bold text-[#120B07] uppercase tracking-wider block">
@@ -272,7 +272,7 @@ function renderSpiceModal(spice) {
             </div>
           ` : ''}
 
-          <!-- Section 6: Alternatif Pengganti -->
+          <!-- Section 6: Culinary Substitutions -->
           ${spice.substitutes ? `
             <div class="text-xs text-[#5C3622] bg-[#FAF7F2]/80 p-3.5 rounded-xl border border-[#E8DEC8]">
               <span class="font-bold text-[#120B07]">${t('spicesSection.substitutesTitle') || 'Alternatif Pengganti:'} </span>

@@ -274,12 +274,6 @@ export const aiFoodCreatorService = {
     };
     const durationData = durationMap[cookingDuration] || durationMap.standard;
 
-    // Estimate cost per serving
-    const costPerServing = proteinItem.id.includes('daging') ? 22000 : 12000;
-    const totalEstCost = isEn 
-      ? `IDR ${(costPerServing * servings).toLocaleString('en-US')}`
-      : `Rp ${(costPerServing * servings).toLocaleString('id-ID')}`;
-
     // Generate Ingredients list scaled with exact amounts
     const scaledIngredients = this._generateScaledIngredients(proteinItem, selectedIngredients, servings, dietary, isEn);
 
@@ -326,7 +320,6 @@ export const aiFoodCreatorService = {
       prepTime: isEn ? `${durationData.prep} Mins` : `${durationData.prep} Menit`,
       cookTime: isEn ? `${durationData.cook} Mins` : `${durationData.cook} Menit`,
       totalTime: durationData.totalText,
-      estimatedCost: totalEstCost,
       difficulty: cookingDuration === 'quick' ? (isEn ? 'Easy' : 'Mudah') : (isEn ? 'Medium' : 'Sedang'),
       calories: isEn ? `${Math.round(260 + (servings * 25))} kcal / serving` : `${Math.round(260 + (servings * 25))} kkal / porsi`,
       spiceLevel,
@@ -812,7 +805,6 @@ export const aiFoodCreatorService = {
         prep_time: recipe.prepTime,
         cook_time: recipe.cookTime,
         total_time: recipe.totalTime,
-        estimated_cost: recipe.estimatedCost,
         difficulty: recipe.difficulty,
         spice_level: recipe.spiceLevel,
         cooking_method: recipe.cookingMethod,

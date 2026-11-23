@@ -541,8 +541,7 @@ function renderFormView(currentLang) {
 }
 
 /**
- * Output Template View: STRICTLY EMPTY TEMPLATE AS REQUESTED BY USER
- * "untuk ai food creator outuputnya ksoongan aja template itu nnti dr back end"
+ * Output Template View: Clean recipe certificate template populated dynamically.
  */
 function renderResultView(recipe, currentLang) {
   const isEn = currentLang === 'en';

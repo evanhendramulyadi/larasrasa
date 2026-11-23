@@ -4,17 +4,17 @@ import { API_CONFIG, apiRequest } from './api.js';
 /**
  * Recommendation Service
  * 
- * Sistem kurasi rekomendasi kuliner Jawa Tengah berbasis selera dan eksplorasi budaya.
- * Menghubungkan preferensi cita rasa, tipe santapan, dan kawasan budaya
- * untuk memperkenalkan hidangan tradisional autentik paling selaras (standar 4 porsi).
+ * Central Javanese culinary curation system based on palate preferences and cultural exploration.
+ * Matches flavor profiles, meal types, and regional heritages
+ * to introduce authentic traditional dishes (calibrated standard 4 servings).
  */
 
 export const recommendationService = {
   /**
-   * Mengirim preferensi pengguna dan menerima rekomendasi kuliner terstruktur.
+   * Submits user preferences and returns structured culinary recommendations.
    * 
-   * @param {Object} preferences Preferensi selera: { flavor, dishType, regionPreference }
-   * @returns {Promise<Object>} Objek rekomendasi utama, narasi budaya, dan alternatif hidangan
+   * @param {Object} preferences Flavor preferences: { flavor, dishType, regionPreference }
+   * @returns {Promise<Object>} Recommendation object with primary pick, cultural narrative, and alternatives
    */
   async getRecommendations(preferences) {
     if (!API_CONFIG.useMock) {
@@ -131,7 +131,7 @@ export const recommendationService = {
     ];
     const alternatives = scoredRecipes.slice(1, 4).map(sr => sr.recipe);
 
-    // Pembuatan narasi kurasi yang elegan bernuansa budaya (tanpa AI slop)
+    // Generate elegant cultural narrative without boilerplate
     const rationaleNarrative = this._generateNarrative(topPick, preferences);
 
     return {
@@ -151,7 +151,7 @@ export const recommendationService = {
   },
 
   /**
-   * Menghasilkan narasi apresiasi budaya dan kurasi selera kuliner Jawa Tengah.
+   * Generates cultural appreciation narrative for Central Javanese cuisine.
    */
   _generateNarrative(recipe, preferences) {
     const flavorText = preferences.flavor ? `cita rasa ${preferences.flavor}` : 'kehangatan rasa tradisional';

@@ -21,23 +21,23 @@ export function formatDuration(minutes) {
 }
 
 /**
- * Menghitung dan memformat jumlah bahan secara proporsional sesuai jumlah porsi.
- * Contoh: base amount 0.5 untuk 4 porsi -> jika porsi diubah jadi 8, hasil = 1
+ * Calculates and formats ingredient amount proportionally according to target servings.
+ * Example: base amount 0.5 for 4 servings -> if target is 8, result = 1
  */
 export function scaleIngredientAmount(baseAmount, baseServings, targetServings) {
   if (typeof baseAmount !== 'number') return baseAmount;
   const scaled = (baseAmount / baseServings) * targetServings;
   
-  // Format desimal cantik (misal 0.5, 1.25, 2)
+  // Format clean integer (e.g. 1, 2)
   if (Number.isInteger(scaled)) {
     return scaled.toString();
   }
-  // Pembulatan wajar 1 atau 2 desimal
+  // Proportional rounding to 1 or 2 decimal places
   return parseFloat(scaled.toFixed(2)).toString();
 }
 
 /**
- * Label penanda tingkat kesulitan dengan warna badge
+ * Returns difficulty badge styling and localized label
  */
 export function getDifficultyBadge(difficulty) {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';

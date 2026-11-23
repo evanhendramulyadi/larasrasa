@@ -26,7 +26,7 @@ export function localizeRegion(region) {
 
 export const regionService = {
   /**
-   * Mengambil daftar wilayah Jawa Tengah beserta identitas kulinernya.
+   * Retrieves list of Central Java regions and their culinary identities.
    */
   async getRegions() {
     if (!API_CONFIG.useMock) {
@@ -41,7 +41,7 @@ export const regionService = {
   },
 
   /**
-   * Mengambil satu wilayah berdasarkan ID.
+   * Retrieves a single region by ID.
    */
   async getRegionById(id) {
     if (!API_CONFIG.useMock) {
@@ -61,7 +61,7 @@ export const regionService = {
   },
 
   /**
-   * Mengambil data GeoJSON batas geografis Jawa Tengah untuk peta interaktif Leaflet.
+   * Retrieves GeoJSON boundary data for Central Java interactive Leaflet map.
    */
   async getGeoJson() {
     try {

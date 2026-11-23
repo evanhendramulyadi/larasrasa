@@ -251,7 +251,7 @@ export class ThreeHeroShowcase {
       }
     });
 
-    // Popover "Buka Resep Lengkap" button
+    // Popover "Open Full Recipe" button
     popOpenBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
       if (currentActiveSlug) {

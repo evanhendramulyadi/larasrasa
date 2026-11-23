@@ -3,7 +3,7 @@ import { regionService } from '../services/regionService.js';
 import { i18n, t } from '../i18n/index.js';
 
 /**
- * Peta Rasa (Interactive Central Java Flavor Map)
+ * Interactive Central Java Flavor Map
  * Royal heritage palette, GeoJSON district boundaries, and full bilingual support.
  */
 

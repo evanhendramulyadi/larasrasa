@@ -23,7 +23,6 @@ export const en = {
     done: 'Completed',
     directions: 'Directions',
     openInMap: 'Open in Map',
-    estBudget: 'Estimated Budget',
     verifiedSource: 'Culinary Reference',
     hours: 'Opening Hours',
     address: 'Address',
