@@ -1,6 +1,7 @@
 import { recommendationService } from '../services/recommendationService.js';
 import { flavorProfiles, getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { openRecipeModal } from '../components/recipe-modal.js';
+import { localizeRecipe } from '../services/recipeService.js';
 import { t, i18n } from '../i18n/index.js';
 
 /**
@@ -111,14 +112,14 @@ function renderWizardView(step) {
         <!-- Navigation Buttons -->
         <div class="pt-6 border-t border-[#E8DEC8] flex items-center gap-4 ${step > 1 ? 'justify-between' : 'justify-end'}">
           ${step > 1 ? `
-            <button id="wizard-prev-btn" type="button" class="flex-1 sm:flex-initial sm:w-52 inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-xs font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs">
+            <button id="wizard-prev-btn" type="button" class="flex-1 sm:flex-initial sm:w-64 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs whitespace-nowrap">
               &larr; <span>${t('recommendations.prevBtn')}</span>
             </button>
           ` : ''}
 
-          <button id="wizard-next-btn" type="button" class="${step > 1 ? 'flex-1 sm:flex-initial sm:w-52' : 'w-full sm:w-52'} inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-xs font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30]">
+          <button id="wizard-next-btn" type="button" class="${step > 1 ? 'flex-1 sm:flex-initial sm:w-64' : 'w-full sm:w-64'} inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 cursor-pointer border border-[#E05A30] whitespace-nowrap">
             <span>${step === TOTAL_STEPS ? t('recommendations.submitBtn') : t('recommendations.nextBtn')}</span>
-            <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
@@ -295,23 +296,24 @@ function renderStepContent(step) {
 
 function renderResultView(result) {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
-  const primary = result.primary || result.primaryRecommendation;
+  const rawPrimary = result.primary || result.primaryRecommendation;
+  const primary = isEn ? localizeRecipe(rawPrimary) : rawPrimary;
   const localizedFlavors = getLocalizedFlavorProfiles();
   const flavorMap = {};
   localizedFlavors.forEach(f => {
-    flavorMap[f.id] = f.name;
+    flavorMap[f.id] = isEn ? (f.nameEn || f.name) : f.name;
   });
 
   const dishTypeLabels = {
-    'kuah-segar': isEn ? 'Fresh Broth' : 'Berkuah Segar Bening',
-    'kuah-santan': isEn ? 'Rich Coconut Milk' : 'Kuah Santan Gurih',
-    'kering-bakar': isEn ? 'Grilled & Roasted' : 'Bakar & Ungkep',
-    'kudapan-lauk': isEn ? 'Crispy Lauk & Bites' : 'Lauk & Kudapan Tradisional'
+    'kuah-segar': isEn ? 'Fresh & Clear Broths' : 'Santapan Berkuah Segar Bening',
+    'kuah-santan': isEn ? 'Rich Coconut Stews & Curries' : 'Berkuah Santan Gurih & Medok',
+    'kering-bakar': isEn ? 'Grilled, Roasted & Caramelized' : 'Olahan Bakar, Panggang & Ungkep',
+    'kudapan-lauk': isEn ? 'Crispy Delights & Traditional Bites' : 'Lauk Gorengan & Kudapan Tradisional'
   };
 
   const regionLabels = {
-    keraton: isEn ? 'Royal Court (Solo)' : 'Keraton Solo',
-    pantura: isEn ? 'Northern Coast' : 'Pesisir Pantura',
+    keraton: isEn ? 'Royal Court & Interior (Solo)' : 'Keraton & Pedalaman (Solo)',
+    pantura: isEn ? 'Northern Coast (Pantura)' : 'Pesisir Pantura',
     pegunungan: isEn ? 'Mountain Valleys' : 'Pegunungan & Lembah',
     semua: isEn ? 'All Central Java' : 'Seluruh Jawa Tengah'
   };
@@ -320,14 +322,53 @@ function renderResultView(result) {
   const chosenDishTypeName = dishTypeLabels[currentAnswers.dishType] || currentAnswers.dishType;
   const chosenRegionName = regionLabels[currentAnswers.regionPreference] || currentAnswers.regionPreference;
 
-  const matchHighlights = result.matchHighlights && result.matchHighlights.length > 0 
-    ? result.matchHighlights 
-    : [
-        isEn ? 'Signature Central Javanese flavor profile matching your craving' : 'Karakter bumbu rempah autentik khas Jawa Tengah yang paling selaras dengan selera',
-        isEn ? 'Rich cultural heritage and gastronomic history from its culinary center' : 'Memiliki kekayaan cerita sejarah dan tradisi luhur dari sentra asalnya',
-        isEn ? 'Traditional recipe proportioned for 4 servings' : 'Resep dengan takaran pas untuk 4 porsi'
+  const getLocalizedHighlights = () => {
+    if (isEn) {
+      if (Array.isArray(result.matchHighlights) && result.matchHighlights.length > 0) {
+        return result.matchHighlights.map(h => {
+          if (h.includes('sangat dominan') || h.includes('Karakter rasa utama') || h.includes('Primary')) {
+            return `Primary ${chosenFlavorName || 'flavor'} character is prominently and authentically expressed`;
+          }
+          if (h.includes('sentuhan rasa') || h.includes('Menghadirkan sentuhan') || h.includes('nuance')) {
+            return `Harmoniously infused with authentic ${chosenFlavorName || 'flavor'} notes`;
+          }
+          if (h.includes('Format sajian') || h.includes('gaya santapan') || h.includes('Serving format')) {
+            return 'Serving format aligns precisely with your desired dining experience';
+          }
+          if (h.includes('tekstur dan pengalaman') || h.includes('texture')) {
+            return 'Closely resonates with your preferred texture and dining experience';
+          }
+          if (h.includes('Keraton Surakarta') || h.includes('Royal Court')) {
+            return `Reflects the noble culinary heritage of Surakarta Royal Court (${primary.regionName})`;
+          }
+          if (h.includes('Pantura') || h.includes('coastal')) {
+            return `Represents the vibrant coastal spice dynamics of Central Java's Pantura (${primary.regionName})`;
+          }
+          if (h.includes('pegunungan') || h.includes('highlands')) {
+            return `Brings forth the comforting hearth spices of highlands and valleys (${primary.regionName})`;
+          }
+          if (h.includes('Pusaka kuliner') || h.includes('culinary treasure') || h.includes('specialty')) {
+            return `Signature traditional culinary specialty from ${primary.regionName}`;
+          }
+          return h;
+        });
+      }
+      return [
+        `Signature ${chosenFlavorName || 'Central Javanese'} flavor profile matching your preference`,
+        `Rich cultural heritage and gastronomic tradition from ${primary.regionName}`,
+        'Traditional recipe calibrated for 4 standard portions'
       ];
+    }
+    return (result.matchHighlights && result.matchHighlights.length > 0)
+      ? result.matchHighlights
+      : [
+          'Karakter bumbu rempah autentik khas Jawa Tengah yang paling selaras dengan selera',
+          'Memiliki kekayaan cerita sejarah dan tradisi luhur dari sentra asalnya',
+          'Resep dengan takaran pas untuk 4 porsi'
+        ];
+  };
 
+  const matchHighlights = getLocalizedHighlights();
   const primaryFlavorLabel = (primary.flavorProfiles || []).map(f => flavorMap[f] || f).join(' • ');
 
   return `
@@ -426,7 +467,7 @@ function renderResultView(result) {
                 ` : ''}
                 <div class="flex items-center gap-2 pt-1 text-[11px] font-semibold text-white/90">
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
-                    ${primary.mealType || 'Kuliner Tradisional'}
+                    ${primary.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
                   </span>
                   <span class="px-2.5 py-0.5 rounded-lg bg-white/20 backdrop-blur-xs border border-white/20">
                     4 ${isEn ? 'Portions' : 'Porsi'}
@@ -442,7 +483,7 @@ function renderResultView(result) {
             <!-- Category & Flavor Badges -->
             <div class="flex flex-wrap items-center gap-2">
               <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/30 shadow-2xs">
-                ${primary.mealType}
+                ${primary.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
               </span>
               ${primaryFlavorLabel ? `
                 <span class="text-xs px-3 py-1 rounded-full bg-[#FDF4EE] text-[#C84C24] font-bold border border-[#C84C24]/30 shadow-2xs">
@@ -491,7 +532,7 @@ function renderResultView(result) {
               </div>
               <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
                 <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Flavor' : 'Karakter'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${primaryFlavorLabel || 'Autentik'}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${primaryFlavorLabel || (isEn ? 'Authentic' : 'Autentik')}</span>
               </div>
               <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
                 <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Servings' : 'Porsi Resep'}</span>
@@ -499,7 +540,7 @@ function renderResultView(result) {
               </div>
               <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
                 <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Tradition' : 'Kategori'}</span>
-                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${primary.mealType}</span>
+                <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 truncate">${primary.mealType || (isEn ? 'Traditional' : 'Tradisional')}</span>
               </div>
             </div>
 

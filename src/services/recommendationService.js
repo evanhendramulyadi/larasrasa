@@ -1,5 +1,8 @@
 import { recipes } from '../data/recipes.js';
 import { API_CONFIG, apiRequest } from './api.js';
+import { i18n } from '../i18n/index.js';
+import { regionTranslationsEn } from '../data/translations-en.js';
+import { flavorProfiles } from '../data/flavorProfiles.js';
 
 /**
  * Recommendation Service
@@ -37,19 +40,28 @@ export const recommendationService = {
       throw new Error('Preferensi cita rasa wajib dipilih untuk menemukan rekomendasi kuliner.');
     }
 
+    const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+    const flavorObj = flavorProfiles.find(f => f.id === preferences.flavor);
+    const flavorLabel = isEn ? (flavorObj?.nameEn || preferences.flavor) : (flavorObj?.name || preferences.flavor);
+
     // Engine Penilaian Keselarasan Kuliner Budaya Jawa Tengah
     const scoredRecipes = recipes.map(recipe => {
       let score = 0;
       const matchReasons = [];
+      const regName = (isEn && regionTranslationsEn?.[recipe.regionId]?.name) || recipe.regionName;
 
       // 1. Keselarasan Karakter Cita Rasa (Bobot utama: 40 poin)
       const flavors = recipe.flavorProfiles || [];
       if (flavors.length > 0 && flavors[0] === preferences.flavor) {
         score += 40;
-        matchReasons.push(`Karakter rasa utama ${preferences.flavor} sangat dominan dan autentik`);
+        matchReasons.push(isEn
+          ? `Primary ${flavorLabel} flavor character is prominently and authentically expressed`
+          : `Karakter rasa utama ${flavorLabel} sangat dominan dan autentik`);
       } else if (flavors.includes(preferences.flavor)) {
         score += 35;
-        matchReasons.push(`Menghadirkan sentuhan rasa ${preferences.flavor} yang selaras`);
+        matchReasons.push(isEn
+          ? `Features a harmonious nuance of ${flavorLabel} flavor`
+          : `Menghadirkan sentuhan rasa ${flavorLabel} yang selaras`);
       } else {
         score += 5;
       }
@@ -88,10 +100,14 @@ export const recommendationService = {
 
         if (dishMatch) {
           score += 35;
-          matchReasons.push('Format sajian tepat sesuai gaya santapan yang Anda inginkan');
+          matchReasons.push(isEn
+            ? 'Serving format aligns precisely with your desired dining experience'
+            : 'Format sajian tepat sesuai gaya santapan yang Anda inginkan');
         } else if (dishSecondary) {
           score += 22;
-          matchReasons.push('Mendekati preferensi tekstur dan pengalaman bersantap Anda');
+          matchReasons.push(isEn
+            ? 'Closely aligns with your texture and dining comfort preference'
+            : 'Mendekati preferensi tekstur dan pengalaman bersantap Anda');
         } else {
           score += 8;
         }
@@ -102,28 +118,36 @@ export const recommendationService = {
       if (preferences.regionPreference === 'keraton') {
         if (regId.includes('surakarta') || regId.includes('solo')) {
           score += 25;
-          matchReasons.push(`Mencerminkan warisan kuliner Keraton Surakarta (${recipe.regionName}) yang kaya tata krama rasa`);
+          matchReasons.push(isEn
+            ? `Reflects the noble culinary heritage of Surakarta Royal Court (${regName})`
+            : `Mencerminkan warisan kuliner Keraton Surakarta (${recipe.regionName}) yang kaya tata krama rasa`);
         } else {
           score += 6;
         }
       } else if (preferences.regionPreference === 'pantura') {
         if (regId.includes('semarang') || regId.includes('pekalongan') || regId.includes('tegal') || regId.includes('kudus')) {
           score += 25;
-          matchReasons.push(`Mewakili dinamika bumbu pesisir Pantura Jawa Tengah (${recipe.regionName})`);
+          matchReasons.push(isEn
+            ? `Represents the vibrant coastal spice dynamics of Central Java's Pantura (${regName})`
+            : `Mewakili dinamika bumbu pesisir Pantura Jawa Tengah (${recipe.regionName})`);
         } else {
           score += 6;
         }
       } else if (preferences.regionPreference === 'pegunungan') {
         if (regId.includes('wonosobo') || regId.includes('magelang') || regId.includes('banyumas')) {
           score += 25;
-          matchReasons.push(`Menghadirkan kehangatan rempah bumi pegunungan dan lembah (${recipe.regionName})`);
+          matchReasons.push(isEn
+            ? `Brings forth the comforting hearth spices of highlands and valleys (${regName})`
+            : `Menghadirkan kehangatan rempah bumi pegunungan dan lembah (${recipe.regionName})`);
         } else {
           score += 6;
         }
       } else {
         // Semua Sentra Jawa Tengah
         score += 22;
-        matchReasons.push(`Pusaka kuliner unggulan dari sentra ${recipe.regionName}`);
+        matchReasons.push(isEn
+          ? `Signature traditional culinary specialty from ${regName}`
+          : `Pusaka kuliner unggulan dari sentra ${recipe.regionName}`);
       }
 
       return {
@@ -138,13 +162,13 @@ export const recommendationService = {
 
     const topPick = scoredRecipes[0]?.recipe || recipes[0];
     const topReasons = scoredRecipes[0]?.matchReasons || [
-      'Pilihan hidangan tradisional Jawa Tengah yang selaras dengan selera Anda',
-      'Memiliki kekayaan sejarah dan filosofi dapur yang mendalam',
-      'Dilengkapi panduan takaran bumbu standar untuk 4 porsi'
+      isEn ? 'Central Javanese culinary specialty harmonizing with your taste' : 'Pilihan hidangan tradisional Jawa Tengah yang selaras dengan selera Anda',
+      isEn ? 'Steeped in rich gastronomic heritage and ancestral lore' : 'Memiliki kekayaan sejarah dan filosofi dapur yang mendalam',
+      isEn ? 'Calibrated standard recipe proportioned for 4 servings' : 'Dilengkapi panduan takaran bumbu standar untuk 4 porsi'
     ];
 
     // Generate elegant cultural narrative without boilerplate
-    const rationaleNarrative = this._generateNarrative(topPick, preferences);
+    const rationaleNarrative = this._generateNarrative(topPick, preferences, isEn);
 
     const calculatedScore = scoredRecipes[0]?.score || 85;
 
@@ -167,7 +191,12 @@ export const recommendationService = {
   /**
    * Generates cultural appreciation narrative for Central Javanese cuisine.
    */
-  _generateNarrative(recipe, preferences) {
+  _generateNarrative(recipe, preferences, isEn = false) {
+    if (isEn) {
+      const flavorText = preferences.flavor ? `${preferences.flavor} flavor` : 'traditional warmth';
+      return `Based on your chosen preferences, **${recipe.name}** is the traditional specialty of ${recipe.regionName} that resonates most harmoniously today. This culinary creation highlights the balance of ${flavorText} intertwined with ancestral spices. Proportioned precisely for 4 servings.`;
+    }
+
     const flavorText = preferences.flavor ? `cita rasa ${preferences.flavor}` : 'kehangatan rasa tradisional';
 
     return `Berdasarkan selera yang Anda pilih, **${recipe.name}** adalah hidangan khas ${recipe.regionName} yang paling selaras untuk dinikmati hari ini. Kuliner ini menonjolkan harmoni ${flavorText} berpadu dengan rempah autentik leluhur. Selain memiliki cerita sejarah yang panjang dalam kebudayaan Jawa Tengah, resep ini juga telah terkalibrasi dengan takaran bahan yang pas untuk 4 porsi.`;
