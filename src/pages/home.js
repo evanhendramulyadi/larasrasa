@@ -390,8 +390,8 @@ export async function renderHomePage() {
                 </h2>
                 <p class="text-xs sm:text-base text-[#FAF7F2]/85 max-w-2xl leading-relaxed">
                   ${isEn 
-                    ? 'Input your culinary vision, choose authentic regional spices, calibrate for 4 portions, and generate an authentic Central Javanese recipe complete with an official culinary creation certificate.'
-                    : 'Pilih bahan rempah autentik Jawa Tengah, tentukan teknik memasak tradisional, atur takaran 4 porsi, lan terbitaken resep pusaka jangkep kaliyan piagam apresiasi resmi.'}
+                    ? 'Input your culinary vision, choose authentic regional spices, calibrate for 4 portions, and generate an authentic Central Javanese recipe ready to download.'
+                    : 'Pilih bahan rempah autentik Jawa Tengah, tentukan teknik memasak tradisional, atur takaran 4 porsi, lan terbitaken resep pusaka jangkep ingkang saged dipun-undhuh.'}
                 </p>
                 <div class="pt-2">
                   <a href="#/ai-food-creator" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
@@ -412,11 +412,11 @@ export async function renderHomePage() {
                   </div>
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
-                    <span><strong>${isEn ? 'Creator Attribution:' : 'Hak Cipta Tertera:'}</strong> ${isEn ? 'Official certificate & attribution' : 'Asma pencipta ing cithakan resep'}</span>
+                    <span><strong>${isEn ? 'Step-by-Step Guide:' : 'Panduan Bertahap:'}</strong> ${isEn ? 'Traditional techniques with sensory cues' : 'Teknik masak tradisi kanthi pituduh jangkep'}</span>
                   </div>
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
-                    <span><strong>${isEn ? 'Official Certificate:' : 'Piagam Apresiasi Resmi:'}</strong> ${isEn ? 'Issued digitally with authentic verification code' : 'Diterbitkan digital mawi nomer registrasi resmi'}</span>
+                    <span><strong>${isEn ? 'Downloadable PDF:' : 'Unduh Dokumen (PDF):'}</strong> ${isEn ? 'Export complete recipe document instantly' : 'Saged langsung dipun-undhuh format PDF'}</span>
                   </div>
                 </div>
               </div>

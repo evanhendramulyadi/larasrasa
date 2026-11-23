@@ -109,14 +109,14 @@ function renderGeneratingState(currentLang) {
         </h2>
         <p class="text-xs sm:text-sm text-[#5C3622] max-w-md mx-auto leading-relaxed">
           ${isEn 
-            ? 'Harmonizing regional spices, calculating precise ingredient grammage, and preparing your official certificate of culinary creation.'
-            : 'Menyelaraskan rempah tradisi, menghitung takaran bumbu presisi, dan menerbitkan piagam apresiasi resmi kreasi Anda.'}
+            ? 'Harmonizing regional spices, calculating precise ingredient grammage, and formulating your authentic recipe document.'
+            : 'Menyelaraskan rempah tradisi, menghitung takaran bumbu presisi, dan menyusun dokumen resep pusaka autentik.'}
         </p>
       </div>
 
       <div class="max-w-xs mx-auto pawon-glass p-4 rounded-2xl border border-[#D49B42]/35 text-xs text-[#5C3622] space-y-2 shadow-sm">
         <div class="flex items-center justify-between font-bold">
-          <span>${isEn ? 'Culinary Synthesis & Certification' : 'Sintesis Rasa & Pengesahan Piagam'}</span>
+          <span>${isEn ? 'Culinary Synthesis & Recipe Document' : 'Sintesis Rasa & Dokumen Resep'}</span>
           <span class="text-[#C84C24] font-mono">100%</span>
         </div>
         <div class="w-full bg-[#FAF7F2] h-2.5 rounded-full overflow-hidden border border-[#E8DEC8]">
@@ -207,67 +207,13 @@ function renderFormView(currentLang) {
       <!-- Interactive Studio Form -->
       <form id="ai-creator-form" class="space-y-8 max-w-4xl mx-auto">
         
-        <!-- SECTION 1: Creator Identity -->
-        <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6 border border-[#D49B42]/35 shadow-xs">
-          <div class="pb-4 border-b border-[#E8DEC8] flex items-center justify-between">
-            <div>
-              <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider">${t('aiCreator.step1Title')}</span>
-              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-                ${isEn ? '1. Creator Attribution' : '1. Identitas Pencipta Resep'}
-              </h2>
-            </div>
-            <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#C84C24] border border-[#D49B42]/40 font-bold">
-              ${t('aiCreator.step1Required')}
-            </span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div class="space-y-1.5">
-              <label for="creator-name-input" class="block text-xs font-bold text-[#120B07]">
-                ${t('aiCreator.creatorNameLabel')} <span class="text-rose-600">*</span>
-              </label>
-              <input 
-                type="text" 
-                id="creator-name-input" 
-                name="creatorName"
-                value="${escapeHtml(formState.creatorName)}"
-                placeholder="${isEn ? 'e.g., Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
-                required
-                class="w-full px-4 py-3.5 rounded-2xl bg-white border border-[#E8DEC8] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] text-sm text-[#120B07] transition-all shadow-inner"
-              />
-              <p class="text-[11px] text-[#5C3622]/80">
-                ${isEn 
-                  ? 'This name will be honored on the official certificate of culinary creation and recipe document.' 
-                  : 'Nama ini akan dicantumkan pada piagam penghargaan kreasi kuliner dan dokumen resep pusaka.'}
-              </p>
-            </div>
-
-            <div class="space-y-1.5">
-              <label for="creator-nickname-input" class="block text-xs font-bold text-[#120B07]">
-                ${t('aiCreator.creatorNicknameLabel')}
-              </label>
-              <input 
-                type="text" 
-                id="creator-nickname-input" 
-                name="creatorNickname"
-                value="${escapeHtml(formState.creatorNickname)}"
-                placeholder="${isEn ? 'e.g., Chef Hendra' : 'Contoh: Mas Hendra / Chef Evan'}"
-                class="w-full px-4 py-3.5 rounded-2xl bg-white border border-[#E8DEC8] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] text-sm text-[#120B07] transition-all shadow-inner"
-              />
-              <p class="text-[11px] text-[#5C3622]/80">
-                ${isEn ? 'Appears in culinary narrative notes.' : 'Dicantumkan sebagai catatan personal pembuat.'}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- SECTION 2: Ingredient Selection -->
+        <!-- SECTION 1: Ingredient Selection -->
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6 border border-[#D49B42]/35 shadow-xs">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#E8DEC8]">
             <div class="space-y-0.5">
-              <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider">${t('aiCreator.step2Title')}</span>
+              <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider">${t('aiCreator.step1Title')}</span>
               <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-                ${isEn ? '2. Select Regional Ingredients' : '2. Pilih Bahan & Rempah Otentik Jawa'}
+                ${isEn ? '1. Select Regional Ingredients' : '1. Pilih Bahan & Rempah Otentik Jawa'}
               </h2>
             </div>
             
@@ -380,12 +326,12 @@ function renderFormView(currentLang) {
           </div>
         </section>
 
-        <!-- SECTION 3: Culinary Calibration & Portions -->
+        <!-- SECTION 2: Culinary Calibration & Portions -->
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6 border border-[#D49B42]/35 shadow-xs">
           <div class="pb-4 border-b border-[#E8DEC8]">
-            <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider">${t('aiCreator.step3Title')}</span>
+            <span class="text-[11px] font-bold text-[#C84C24] uppercase tracking-wider">${t('aiCreator.step2Title')}</span>
             <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-              ${isEn ? '3. Culinary Calibration & Portions' : '3. Kalibrasi Watak Rasa & Porsi'}
+              ${isEn ? '2. Culinary Calibration & Portions' : '2. Kalibrasi Watak Rasa & Porsi'}
             </h2>
           </div>
 
@@ -512,12 +458,12 @@ function renderFormView(currentLang) {
         <div class="p-6 sm:p-10 rounded-3xl bg-gradient-to-r from-[#120B07] via-[#1E120A] to-[#120B07] border-2 border-[#D49B42]/45 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-5">
           <div class="text-left space-y-1.5">
             <h3 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#FAF7F2]">
-              ${isEn ? 'Ready to synthesize your original recipe?' : 'Siap melahirkan kreasi resep orisinal Anda?'}
+              ${isEn ? 'Ready to synthesize your heritage recipe?' : 'Siap meracik kreasi resep pusaka Anda?'}
             </h3>
             <p class="text-xs text-[#FAF7F2]/80 max-w-lg">
               ${isEn 
-                ? 'LarasRasa AI will formulate calibrated measurements, culinary heritage lore, and an official certificate.' 
-                : 'Kecerdasan buatan LarasRasa akan meracik komposisi bumbu presisi, narasi sejarah, dan piagam apresiasi resmi.'}
+                ? 'LarasRasa AI will formulate calibrated measurements, culinary heritage lore, and step-by-step instructions.' 
+                : 'Kecerdasan buatan LarasRasa akan meracik takaran bumbu presisi, narasi sejarah, dan panduan olah pusaka siap unduh.'}
             </p>
           </div>
 
@@ -527,7 +473,7 @@ function renderFormView(currentLang) {
             class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C84C24] hover:bg-[#AE3E1B] text-[#FAF7F2] font-bold text-sm tracking-wide transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center justify-center gap-2.5 shrink-0 cursor-pointer border border-[#E05A30]"
           >
             <span>✨</span>
-            <span>${isEn ? 'Synthesize Recipe & Issue Certificate' : 'Racik Resep & Terbitkan Piagam'}</span>
+            <span>${isEn ? 'Synthesize Heritage Recipe' : 'Racik Resep Pusaka ✨'}</span>
             <svg class="w-4 h-4 text-[#FAF7F2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
@@ -552,7 +498,9 @@ function formatRecipeAsText(recipe, isEn) {
     lines.push(recipe.aksaraJawa ? `${recipe.javaneseTitle} (${recipe.aksaraJawa})` : recipe.javaneseTitle);
   }
   lines.push('====================================================');
-  lines.push(`${isEn ? 'Creator' : 'Pencipta'}: ${recipe.creatorName || ''}${recipe.creatorNickname ? ` (${recipe.creatorNickname})` : ''}`);
+  if (recipe.creatorName && recipe.creatorName !== 'Dapur Tradisi LarasRasa') {
+    lines.push(`${isEn ? 'Creator' : 'Pencipta'}: ${recipe.creatorName}${recipe.creatorNickname ? ` (${recipe.creatorNickname})` : ''}`);
+  }
   lines.push(`${isEn ? 'Portions' : 'Porsi'}: ${recipe.servings || 4} ${isEn ? 'Portions' : 'Porsi'}`);
   lines.push(`${isEn ? 'Cooking Time' : 'Waktu Olah'}: ${recipe.totalTime || '45 Menit'}`);
   lines.push(`${isEn ? 'Method' : 'Metode Masak'}: ${recipe.cookingMethod || ''}`);
@@ -648,140 +596,30 @@ function renderResultView(recipe, currentLang) {
         <button type="button" id="dismiss-toast-btn" class="font-bold text-emerald-700 text-sm cursor-pointer hover:text-emerald-950">&times;</button>
       </div>
 
-      <!-- FRONTEND CERTIFICATE OF CULINARY CREATION -->
-      <section id="recipe-certificate-card" class="relative overflow-hidden rounded-3xl p-6 sm:p-10 lg:p-12 border-3 border-[#D49B42] bg-[#FAF7F2] shadow-2xl space-y-6 text-[#120B07] text-center my-6">
-        <!-- Decorative Inner Border -->
-        <div class="absolute inset-2 sm:inset-3 rounded-2xl border border-[#D49B42]/50 pointer-events-none"></div>
-        
-        <!-- Corner Ornaments -->
-        <div class="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-[#C84C24] pointer-events-none"></div>
-        <div class="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-[#C84C24] pointer-events-none"></div>
-        <div class="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-[#C84C24] pointer-events-none"></div>
-        <div class="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-[#C84C24] pointer-events-none"></div>
-
-        <!-- Header Crest & Title -->
-        <div class="relative z-10 space-y-2">
-          <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#120B07] text-[#D49B42] text-[11px] font-bold tracking-widest uppercase shadow-xs">
-            <span>★ LARASRASA • PUSAKA RASA JAWA TENGAH ★</span>
-          </div>
-          <h2 class="font-editorial-serif text-2xl sm:text-4xl font-bold tracking-tight text-[#120B07] uppercase">
-            ${t('aiCreator.certHeading')}
-          </h2>
-          <p class="text-xs sm:text-sm text-[#C84C24] font-medium italic">
-            ${t('aiCreator.certSub')}
-          </p>
-          <div class="w-32 h-0.5 bg-[#D49B42]/60 mx-auto mt-2"></div>
-        </div>
-
-        <!-- Presentation Recipient -->
-        <div class="relative z-10 space-y-2 py-2">
-          <p class="text-xs text-[#5C3622]">
-            ${t('aiCreator.certPresentedTo')}
-          </p>
-          <div class="space-y-1">
-            <h3 class="font-editorial-serif text-2xl sm:text-4xl font-bold text-[#120B07] tracking-wide uppercase">
-              ${escapeHtml(recipe.creatorName)}
-            </h3>
-            ${recipe.creatorNickname ? `
-              <p class="text-xs sm:text-sm font-bold text-[#C84C24] tracking-wider uppercase">
-                ${escapeHtml(recipe.creatorNickname)}
-              </p>
-            ` : ''}
-          </div>
-          <div class="w-48 h-0.5 bg-[#C84C24]/40 mx-auto"></div>
-        </div>
-
-        <!-- Dish Title Citation -->
-        <div class="relative z-10 space-y-2 py-2 max-w-2xl mx-auto">
-          <p class="text-xs text-[#5C3622]">
-            ${t('aiCreator.certForTitle')}
-          </p>
-          <div class="p-4 sm:p-5 rounded-2xl bg-[#F4EFE6] border border-[#D49B42]/40 shadow-inner space-y-1">
-            <h4 class="font-editorial-serif text-xl sm:text-3xl font-bold text-[#C84C24]">
-              ${escapeHtml(recipe.title)}
-            </h4>
-            ${recipe.javaneseTitle ? `
-              <p class="text-xs sm:text-sm italic text-[#5C3622] font-serif">
-                "${escapeHtml(recipe.javaneseTitle)}" ${recipe.aksaraJawa ? `<span class="text-xs font-mono ml-1 text-[#2E4D38]">(${escapeHtml(recipe.aksaraJawa)})</span>` : ''}
-              </p>
-            ` : ''}
-          </div>
-        </div>
-
-        <!-- Metadata Ribbon -->
-        <div class="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 max-w-3xl mx-auto text-xs">
-          <div class="p-3 rounded-xl bg-white/80 border border-[#E8DEC8] text-center">
-            <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Portions' : 'Takaran Porsi'}</span>
-            <span class="font-bold text-[#120B07] block mt-0.5">${recipe.servings || 4} ${isEn ? 'Portions' : 'Porsi'}</span>
-          </div>
-          <div class="p-3 rounded-xl bg-white/80 border border-[#E8DEC8] text-center">
-            <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Method' : 'Metode Olah'}</span>
-            <span class="font-bold text-[#120B07] block mt-0.5 capitalize">${escapeHtml(recipe.cookingMethod)}</span>
-          </div>
-          <div class="p-3 rounded-xl bg-white/80 border border-[#E8DEC8] text-center">
-            <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Taste Profile' : 'Karakter Rasa'}</span>
-            <span class="font-bold text-[#120B07] block mt-0.5 capitalize">${escapeHtml(recipe.tasteProfile)}</span>
-          </div>
-          <div class="p-3 rounded-xl bg-white/80 border border-[#E8DEC8] text-center">
-            <span class="block text-[10px] uppercase font-bold text-[#2E4D38] tracking-wider">${isEn ? 'Serial Registration' : 'Nomor Seri Registrasi'}</span>
-            <span class="font-mono text-[11px] font-bold text-[#C84C24] block mt-0.5">${creationId}</span>
-          </div>
-        </div>
-
-        <!-- Official Seal & Signatures Footer -->
-        <div class="relative z-10 pt-4 border-t border-[#D49B42]/30 flex flex-col sm:flex-row items-center justify-between gap-4 max-w-3xl mx-auto text-xs">
-          <div class="text-center sm:text-left space-y-1">
-            <span class="text-[10px] uppercase font-bold tracking-wider text-[#5C3622] block">
-              ${isEn ? 'Date of Issue & Verification' : 'Tanggal Pengesahan Dokumen'}
-            </span>
-            <span class="font-bold text-[#120B07]">${creationDate}</span>
-            <p class="text-[10px] text-[#2E4D38] font-mono">Kode Keaslian: ${creationId}</p>
-          </div>
-
-          <!-- Digital Gold Seal -->
-          <div class="flex items-center justify-center">
-            <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-full border-2 border-[#D49B42] bg-[#FAF7F2] p-1 shadow-md flex items-center justify-center">
-              <div class="w-full h-full rounded-full border border-dashed border-[#C84C24] flex flex-col items-center justify-center text-[8px] font-bold text-[#C84C24] text-center leading-tight">
-                <span class="text-xs">★</span>
-                <span>LARASRASA</span>
-                <span>TERVERIFIKASI</span>
-                <span>KREASI</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="text-center sm:text-right space-y-1">
-            <span class="text-[10px] uppercase font-bold tracking-wider text-[#5C3622] block">
-              ${t('aiCreator.certCuratorSeal')}
-            </span>
-            <div class="font-serif italic text-base text-[#120B07] font-bold">LarasRasa Dewan Kurator</div>
-            <p class="text-[10px] text-[#2E4D38]">${t('aiCreator.certVerifiedSignature')}</p>
-          </div>
-        </div>
-      </section>
+      
 
       <!-- Action Toolbar (PDF, Print, Copy) -->
       <div class="flex flex-wrap items-center justify-center gap-3 pt-2 no-print">
         <button 
           type="button" 
-          id="download-cert-pdf-btn"
-          class="px-5 py-2.5 rounded-2xl bg-[#D49B42] hover:bg-[#C28A35] text-[#120B07] font-bold text-xs transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer border border-[#E5B565]"
+          id="download-recipe-pdf-btn"
+          class="px-5 py-2.5 rounded-2xl bg-[#C84C24] hover:bg-[#AE3E1B] text-white font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer border border-[#E05A30]"
         >
-          <svg class="w-4 h-4 text-[#120B07]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
           </svg>
-          <span>${t('aiCreator.downloadCert')}</span>
+          <span>${t('aiCreator.downloadPdf') || (isEn ? 'Download Recipe (PDF)' : 'Unduh Resep (PDF)')}</span>
         </button>
 
         <button 
           type="button" 
-          id="print-cert-btn"
+          id="print-recipe-btn"
           class="px-5 py-2.5 rounded-2xl bg-white hover:bg-[#FAF7F2] text-[#120B07] font-bold text-xs transition-all shadow-xs hover:shadow-md hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer border border-[#D49B42]/50"
         >
           <svg class="w-4 h-4 text-[#120B07]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/>
           </svg>
-          <span>${t('aiCreator.printCert')}</span>
+          <span>${t('aiCreator.printRecipe') || (isEn ? 'Print Recipe Document' : 'Cetak Dokumen Resep')}</span>
         </button>
 
         <button 
@@ -822,9 +660,7 @@ function renderResultView(recipe, currentLang) {
               </p>
             ` : ''}
 
-            <p class="text-xs text-[#5C3622]">
-              ${isEn ? 'Crafted by' : 'Karya Cipta'}: <strong class="text-[#120B07]">${escapeHtml(recipe.creatorName)}</strong>${recipe.creatorNickname ? ` (${escapeHtml(recipe.creatorNickname)})` : ''}
-            </p>
+            
           </div>
 
           <!-- Cultural Philosophy Narrative -->
@@ -1180,14 +1016,7 @@ export function initAiFoodCreatorInteractions() {
     form.onsubmit = async (e) => {
       e.preventDefault();
 
-      if (!formState.creatorName.trim()) {
-        validationMessage = isEn 
-          ? 'Please provide your Creator Full Name before formulating the recipe.' 
-          : 'Mangga isi Asma Lengkap Pencipta saderengipun nyusun resep.';
-        reRenderCurrentView();
-        window.scrollTo({ top: 300, behavior: 'smooth' });
-        return;
-      }
+      
 
       if (formState.selectedIngredientIds.length === 0) {
         validationMessage = isEn 
@@ -1223,36 +1052,34 @@ export function initAiFoodCreatorInteractions() {
     };
   }
 
-  // Certificate PDF Download
-  const downloadCertBtn = document.getElementById('download-cert-pdf-btn');
-  if (downloadCertBtn && currentGeneratedRecipe) {
-    downloadCertBtn.onclick = async () => {
+  // Recipe PDF Download
+  const downloadRecipeBtn = document.getElementById('download-recipe-pdf-btn');
+  if (downloadRecipeBtn && currentGeneratedRecipe) {
+    downloadRecipeBtn.onclick = async () => {
       try {
-        downloadCertBtn.disabled = true;
-        downloadCertBtn.innerHTML = `<span>⏳</span><span>${isEn ? 'Preparing PDF...' : 'Menyiapkan Piagam...'}</span>`;
-        await aiFoodCreatorService.generateCertificatePdf(currentGeneratedRecipe, {
-          lang: isEn ? 'en' : 'id'
-        });
-        showToast(isEn ? '✓ Official certificate PDF downloaded!' : '✓ Piagam resmi (PDF) kasil ka-undhuh!');
+        downloadRecipeBtn.disabled = true;
+        downloadRecipeBtn.innerHTML = `<span>⏳</span><span>${isEn ? 'Preparing PDF...' : 'Menyiapkan PDF...'}</span>`;
+        await aiFoodCreatorService.generateRecipePdf(currentGeneratedRecipe);
+        showToast(isEn ? '✓ Recipe document PDF downloaded successfully!' : '✓ Dokumen resep (PDF) kasil ka-undhuh!');
       } catch (err) {
         console.error('PDF error:', err);
-        showToast(isEn ? 'Failed to download certificate PDF.' : 'Gagal ngundhuh piagam PDF.');
+        showToast(isEn ? 'Failed to download recipe PDF.' : 'Gagal ngundhuh resep PDF.');
       } finally {
-        downloadCertBtn.disabled = false;
-        downloadCertBtn.innerHTML = `
-          <svg class="w-4 h-4 text-[#120B07]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        downloadRecipeBtn.disabled = false;
+        downloadRecipeBtn.innerHTML = `
+          <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
           </svg>
-          <span>${t('aiCreator.downloadCert')}</span>
+          <span>${t('aiCreator.downloadPdf') || (isEn ? 'Download Recipe (PDF)' : 'Unduh Resep (PDF)')}</span>
         `;
       }
     };
   }
 
   // Print Certificate Button
-  const printCertBtn = document.getElementById('print-cert-btn');
-  if (printCertBtn) {
-    printCertBtn.onclick = () => {
+  const printRecipeBtn = document.getElementById('print-recipe-btn');
+  if (printRecipeBtn) {
+    printRecipeBtn.onclick = () => {
       window.print();
     };
   }

@@ -124,11 +124,10 @@ export const aiFoodCreatorService = {
       outputLanguage = 'id'
     } = payload;
 
-    if (!creatorName || creatorName.trim().length === 0) {
-      throw new Error(outputLanguage === 'en' 
-        ? 'Creator full name is required for official recipe attribution and certification.'
-        : 'Nama lengkap pencipta resep wajib diisi untuk tanda bukti kepemilikan cipta resep.');
-    }
+    // Creator name is optional
+    const resolvedCreatorName = (creatorName && creatorName.trim().length > 0)
+      ? creatorName.trim()
+      : (outputLanguage === 'en' ? 'LarasRasa Culinary Hearth' : 'Dapur Tradisi LarasRasa');
 
     if (!Array.isArray(selectedIngredientIds) || selectedIngredientIds.length === 0) {
       throw new Error(outputLanguage === 'en'
@@ -141,7 +140,10 @@ export const aiFoodCreatorService = {
       try {
         const response = await apiRequest('/ai/food-creator', {
           method: 'POST',
-          body: JSON.stringify(payload)
+          body: JSON.stringify({
+            ...payload,
+            creatorName: resolvedCreatorName
+          })
         });
         if (response?.data) return response.data;
       } catch (err) {
@@ -153,8 +155,8 @@ export const aiFoodCreatorService = {
     await new Promise(resolve => setTimeout(resolve, 800));
 
     return this._synthesizeLocalRecipe({
-      creatorName: creatorName.trim(),
-      creatorNickname: (creatorNickname || '').trim(),
+      creatorName: resolvedCreatorName,
+      creatorNickname: (creatorNickname || resolvedCreatorName).trim(),
       selectedIngredientIds,
       cookingMethod,
       dishCategory,
@@ -256,13 +258,11 @@ export const aiFoodCreatorService = {
       ? `${methodVerb} ${proteinName} with ${keySpice1.split(' ')[0]} (${regionFlair})`
       : `${methodVerb} ${proteinName} ${keySpice1.split(' ')[0]} ${regionFlair}`;
     
-    const fullTitle = isEn
-      ? `Recipe by ${creatorName}: ${dishBaseName}`
-      : `Kreasi ${creatorName}: ${dishBaseName}`;
+    const fullTitle = dishBaseName;
 
     const javaneseTitle = isEn
-      ? `${creatorNickname || creatorName}'s Hearth Kitchen — ${dishBaseName}`
-      : `Racikan Dapur ${creatorNickname || creatorName} — ${dishBaseName}`;
+      ? `Central Javanese Hearth Recipe — ${dishBaseName}`
+      : `Racikan Dapur Tradisi — ${dishBaseName}`;
 
     const slug = dishBaseName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -294,8 +294,8 @@ export const aiFoodCreatorService = {
 
     // Narrative Description
     const description = isEn
-      ? `An original recipe concept envisioned by **${creatorName}**, marrying the traditional art of ${cookingMethod} with the aromatic warmth of ${keySpice1} and ${keySpice2}. Presenting a calibrated ${tasteProfile.replace('-', ' and ')} profile on the palate, this dish is portioned for ${servings} servings.${customNotes ? ` Creator's personal vision: "${customNotes}".` : ''}`
-      : `Sebuah mahakarya resep baru yang dirancang khusus oleh **${creatorName}**, mengawinkan teknik olah ${cookingMethod} dengan kemegahan rempah ${keySpice1} dan ${keySpice2}. Menghadirkan karakter rasa ${tasteProfile.replace('-', ' ')} yang lembut di lidah, hidangan ini dirancang untuk ${servings} porsi santap nikmat.${customNotes ? ` Sentuhan personal: "${customNotes}".` : ''}`;
+      ? `An authentic traditional recipe marrying the art of ${cookingMethod} with the aromatic warmth of ${keySpice1} and ${keySpice2}. Presenting a calibrated ${tasteProfile.replace('-', ' and ')} profile on the palate, this dish is portioned for ${servings} servings.${customNotes ? ` Custom flavor notes: "${customNotes}".` : ''}`
+      : `Sebuah olahan resep pusaka tradisi yang mengawinkan teknik olah ${cookingMethod} dengan kemegahan rempah ${keySpice1} dan ${keySpice2}. Menghadirkan karakter rasa ${tasteProfile.replace('-', ' ')} yang lembut di lidah, hidangan ini dirancang pas untuk ${servings} porsi santap nikmat.${customNotes ? ` Catatan rasa khusus: "${customNotes}".` : ''}`;
 
     const chefTips = isEn
       ? `To achieve optimal essential oil extraction, toast dry whole spices (coriander and candlenuts) on an ungreased heavy pan until fragrant before crushing in a stone mortar. If using coconut milk, maintain a gentle low simmer so the coconut cream does not separate and the spiced oils emerge smoothly.`
@@ -889,16 +889,19 @@ export const aiFoodCreatorService = {
     doc.text(titleLines, margin, curY);
     curY += (titleLines.length * 7) + 2;
 
-    // Creator Credit Tag
+    // Recipe Tag Banner
     doc.setFillColor(242, 232, 216); // #F2E8D8
     doc.roundedRect(margin, curY, contentWidth, 10, 2, 2, 'F');
     doc.setTextColor(184, 92, 56);
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(9);
-    doc.text(`DICIPTAKAN OLEH: ${recipe.creatorName.toUpperCase()}`, margin + 5, curY + 6.5);
+    const creatorLabel = (recipe.creatorName && !recipe.creatorName.includes('LarasRasa') && !recipe.creatorName.includes('Dapur'))
+      ? `DICIPTAKAN OLEH: ${recipe.creatorName.toUpperCase()}`
+      : `RESEP KREASI PUSAKA JAWA TENGAH`;
+    doc.text(creatorLabel, margin + 5, curY + 6.5);
     doc.setTextColor(101, 67, 50);
     doc.setFont('helvetica', 'normal');
-    doc.text(`Porsi: ${recipe.servings} | Durasi: ${recipe.totalTime} | Tingkat: ${recipe.difficulty}`, pageWidth - margin - 5, curY + 6.5, { align: 'right' });
+    doc.text(`Porsi: ${recipe.servings || 4} | Durasi: ${recipe.totalTime || '45 Menit'} | Tingkat: ${recipe.difficulty || 'Sedang'}`, pageWidth - margin - 5, curY + 6.5, { align: 'right' });
     curY += 15;
 
     // Embed poster thumbnail if canvas provided
@@ -927,11 +930,12 @@ export const aiFoodCreatorService = {
     doc.setTextColor(80, 50, 35);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8.5);
-    const descLines = doc.splitTextToSize(recipe.description.replace(/\*\*/g, ''), textWidth);
+    const rawStory = (recipe.description || recipe.philosophy || '').replace(/\*\*/g, '');
+    const descLines = doc.splitTextToSize(rawStory, textWidth);
     doc.text(descLines, textLeftMargin, curY + 10);
 
     const descHeight = (descLines.length * 4.5);
-    curY = Math.max(curY + 70, curY + descHeight + 15);
+    curY = posterCanvas ? Math.max(curY + 70, curY + descHeight + 15) : (curY + descHeight + 15);
 
     // --- Ingredients Section ---
     doc.setDrawColor(229, 217, 197);
@@ -1007,16 +1011,18 @@ export const aiFoodCreatorService = {
       doc.setTextColor(70, 50, 40);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8.5);
-      const stepTextLines = doc.splitTextToSize(step.instruction, contentWidth - 9);
+      const stepTextLines = doc.splitTextToSize(step.instruction || step.description || '', contentWidth - 9);
       doc.text(stepTextLines, margin + 9, curY);
       curY += (stepTextLines.length * 4.2) + 2;
 
       // Sensory hint
-      doc.setTextColor(119, 123, 82); // Muted olive
-      doc.setFont('helvetica', 'italic');
-      doc.setFontSize(8);
-      doc.text(`Isyarat Panca Indera: "${step.sensoryMilestone}"`, margin + 9, curY);
-      curY += 7;
+      if (step.sensoryMilestone) {
+        doc.setTextColor(119, 123, 82); // Muted olive
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(8);
+        doc.text(`Isyarat Panca Indera: "${step.sensoryMilestone}"`, margin + 9, curY);
+        curY += 7;
+      }
     });
 
     curY += 4;
@@ -1035,7 +1041,8 @@ export const aiFoodCreatorService = {
     doc.setTextColor(80, 50, 35);
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(8);
-    const tipLines = doc.splitTextToSize(recipe.chefTips, contentWidth - 8);
+    const rawTips = Array.isArray(recipe.chefTips) ? recipe.chefTips.join('\n• ') : (recipe.chefTips || '');
+    const tipLines = doc.splitTextToSize(rawTips, contentWidth - 8);
     doc.text(tipLines, margin + 4, curY + 11);
     curY += 32;
 
@@ -1050,7 +1057,8 @@ export const aiFoodCreatorService = {
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(80, 50, 35);
     doc.setFontSize(8);
-    const safetyLines = doc.splitTextToSize(recipe.safetyNotes, contentWidth - 8);
+    const rawSafety = recipe.safetyNotes || '';
+    const safetyLines = doc.splitTextToSize(rawSafety, contentWidth - 8);
     doc.text(safetyLines, margin + 4, curY + 10.5);
 
     // Footer page signature
