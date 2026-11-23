@@ -1113,7 +1113,25 @@ export function initAiFoodCreatorInteractions() {
         }
       }
 
-      // 3. Backend Credit Check: Diam di tempat (tidak scroll), pop-up error muncul di bawah
+      // 3. Update tombol racik ke status memverifikasi (diam di tempat di form)
+      nameError = false;
+      ingredientError = false;
+      sessionAlert = null;
+
+      const submitBtn = document.getElementById('generate-recipe-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-90', 'cursor-wait');
+        submitBtn.innerHTML = `
+          <svg class="w-4 h-4 text-white animate-spin shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>${isEn ? 'Verifying & Formulating...' : 'Memverifikasi & Meracik...'}</span>
+        `;
+      }
+
+      // Backend Credit Check: Diam di tempat (tidak scroll), pop-up error muncul di bawah jika gagal
       try {
         const creditCheck = await aiFoodCreatorService.checkCredits();
         if (!creditCheck.ok) {
@@ -1133,36 +1151,40 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // 4. Proses Berhasil Mulai: Scroll ke atas untuk melihat proses racik
-      nameError = false;
-      ingredientError = false;
-      sessionAlert = null;
-      const formPositionAtSubmit = window.scrollY;
-
-      isGenerating = true;
-      await reRenderCurrentView(false);
-      window.scrollTo({ top: 150, behavior: 'smooth' });
-
+      // 4. Panggil Backend untuk Meracik Resep (Tunggu apakah beneran bisa)
       try {
         const recipe = await aiFoodCreatorService.generateRecipe({
           ...formState,
           outputLanguage: isEn ? 'en' : 'id'
         });
+
+        if (!recipe) {
+          throw new Error('Empty recipe response');
+        }
+
+        // HANYA JIKA BENAR-BENAR BISA: Baru tampilkan proses dan scroll ke atas
         currentGeneratedRecipe = recipe;
         localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+
+        isGenerating = true;
+        await reRenderCurrentView(false);
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+
+        await new Promise(resolve => setTimeout(resolve, 600));
+
         isGenerating = false;
         await reRenderCurrentView(false);
         window.scrollTo({ top: 100, behavior: 'smooth' });
+
       } catch (err) {
+        // GAGAL: Pop up error muncul di bawah, layar tetap diam di tempat
         isGenerating = false;
         if (err.code === 'CREDIT_EXHAUSTED') {
           sessionAlert = { type: 'credit' };
         } else {
           sessionAlert = { type: 'backend_error' };
         }
-        await reRenderCurrentView(false);
-        // Gagal generate: diam di tempat di tombol racik, tidak nge-scroll ke atas
-        window.scrollTo({ top: formPositionAtSubmit, behavior: 'instant' });
+        await reRenderCurrentView(true);
         return;
       }
     };
