@@ -177,25 +177,25 @@ function renderStepContent(step) {
         {
           id: 'kuah-segar',
           title: isEn ? 'Fresh & Clear Broths' : 'Santapan Berkuah Segar Bening',
-          desc: isEn ? 'Comforting soups and herbal broths without heavy creaminess (Soto Kudus, Sup Matahari, Garang Asem)' : 'Soto bening, sup kaldu rempah, dan olahan asam segar yang melegakan serta menenangkan (Soto Kudus, Sup Matahari)',
+          desc: isEn ? 'Comforting soups, chicken timlo, and refreshing clear broths (Soto Kudus, Timlo Solo, Garang Asem)' : 'Soto bening, timlo kaldu ayam, dan garang asem segar yang melegakan serta menenangkan (Soto Kudus, Timlo Solo, Garang Asem)',
           tag: isEn ? 'Light & Refreshing' : 'Segar & Menenangkan'
         },
         {
           id: 'kuah-santan',
           title: isEn ? 'Rich Coconut Stews & Curries' : 'Berkuah Santan Gurih & Medok',
-          desc: isEn ? 'Simmered seasoned coconut milk stews (Gudeg, Mangut Lele, Opor, Nasi Liwet)' : 'Gudeg, opor ayam kampung, mangut lele asap, atau nasi liwet berbalut areh gurih lembut',
+          desc: isEn ? 'Simmered seasoned coconut milk specialties (Gudeg Komplit, Mangut Lele Asap, Kupat Glabed, Nasi Liwet Solo)' : 'Gudeg komplit, mangut lele asap, kupat glabed, atau nasi liwet berbalut areh gurih lembut',
           tag: isEn ? 'Rich & Savory' : 'Gurih Meresap'
         },
         {
           id: 'kering-bakar',
           title: isEn ? 'Grilled, Roasted & Caramelized' : 'Olahan Bakar, Panggang & Ungkep',
-          desc: isEn ? 'Charcoal skewered meats, slow-braised sweet bacem, and caramelized heritage specialties' : 'Sate buntel Solo, daging bacem legit manis, sate batibul Tegal, dan olahan ungkepan bumbu karamel sedap',
+          desc: isEn ? 'Charcoal skewered and slow-braised specialties (Sate Buntel Solo, Sate Batibul Tegal, Tempe Bacem, Tengkleng)' : 'Sate buntel Solo, tempe bacem legit, sate batibul Tegal, dan tengkleng kambing aromatik',
           tag: isEn ? 'Smoky & Sweet' : 'Aroma Bakaran'
         },
         {
           id: 'kudapan-lauk',
           title: isEn ? 'Crispy Delights & Traditional Bites' : 'Lauk Gorengan & Kudapan Tradisional',
-          desc: isEn ? 'Warm tempe mendoan, savory tahu gimbal, crispy spring rolls, or classic teatime snacks' : 'Tempe mendoan Banyumas hangat, tahu gimbal Semarang, lumpia renyah, atau kudapan khas teman santap',
+          desc: isEn ? 'Warm Tempe Mendoan Banyumas, Tahu Gimbal Semarang, crispy Lumpia, Serabi Notosuman, and Getuk Trio' : 'Tempe mendoan Banyumas hangat, tahu gimbal Semarang, lumpia renyah, serabi Notosuman, atau getuk trio',
           tag: isEn ? 'Crispy & Casual' : 'Renyah & Santai'
         }
       ];
@@ -237,25 +237,25 @@ function renderStepContent(step) {
         {
           id: 'keraton',
           title: isEn ? 'Royal Court & Interior (Surakarta / Solo)' : 'Keraton & Pedalaman (Surakarta / Solo)',
-          desc: isEn ? 'Elegance of savory areh coconut cream, subtle sweetness, and refined noble hearth heritage' : 'Keanggunan santan areh gurih lembut, manis berkelas, dan warisan dapur bangsawan Kasunanan Surakarta',
+          desc: isEn ? 'Noble culinary heritage of Surakarta including Nasi Liwet Solo, Selat Solo, Sate Buntel, and Serabi Notosuman' : 'Keanggunan kuliner Kasunanan Surakarta seperti nasi liwet, selat Solo, sate buntel, dan serabi Notosuman',
           badge: isEn ? 'Royal Heritage' : 'Pusaka Keraton'
         },
         {
           id: 'pantura',
           title: isEn ? 'Northern Coast / Pantura (Semarang, Pekalongan, Tegal, Kudus)' : 'Pesisir Pantura (Semarang, Pekalongan, Tegal, Kudus)',
-          desc: isEn ? 'Coastal vibrancy infused with fragrant shrimp paste (petis), fermented soybeans (tauco), and bamboo shoots' : 'Dinamika bumbu pesisir kaya aroma petis udang, rebung manis, tauco harum, dan kaldu daging rempah',
+          desc: isEn ? 'Coastal specialties including Lumpia Semarang, Tahu Gimbal, Garang Asem Kudus, Tauto Pekalongan, and Sate Batibul Tegal' : 'Dinamika kuliner pesisir seperti lumpia Semarang, tahu gimbal, garang asem Kudus, tauto Pekalongan, dan sate batibul Tegal',
           badge: isEn ? 'Coastal Trade' : 'Jalur Rempah Pesisir'
         },
         {
           id: 'pegunungan',
           title: isEn ? 'Mountain Valleys (Wonosobo, Magelang, Banyumas)' : 'Lembah & Pegunungan (Wonosobo, Magelang, Banyumas)',
-          desc: isEn ? 'Highland comfort driven by aromatic kencur ginger, crispy mendoan, and warming thick broths' : 'Kearifan bumbu bumi dingin, kehangatan kencur, mie ongklok berkuah kental, kupat tahu, dan tempe mendoan',
+          desc: isEn ? 'Highland heritage including Mie Ongklok Wonosobo, Kupat Tahu Magelang, Tempe Mendoan Banyumas, and Mangut Lele Asap' : 'Kearifan bumi dingin seperti mie ongklok Wonosobo, kupat tahu Magelang, tempe mendoan Banyumas, dan mangut lele asap',
           badge: isEn ? 'Highland Hearth' : 'Rempah Pegunungan'
         },
         {
           id: 'semua',
           title: isEn ? 'All Central Javanese Regions' : 'Seluruh Sentra Jawa Tengah',
-          desc: isEn ? 'Open across all 8 cultural culinary centers without regional boundaries' : 'Buka rekomendasi lintas seluruh 8 sentra kuliner untuk menemukan hidangan tradisional paling selaras',
+          desc: isEn ? 'Open across all 8 cultural culinary centers to discover your most harmonious traditional dish' : 'Buka rekomendasi lintas seluruh 8 sentra kuliner Jawa Tengah untuk menemukan hidangan tradisional paling selaras',
           badge: isEn ? 'Broad Discovery' : 'Lintas Sentra'
         }
       ];

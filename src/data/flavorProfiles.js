@@ -14,7 +14,7 @@ export const flavorProfiles = [
     icon: 'sparkles',
     culturalNote: 'Di Solo dan sekitarnya, manis melambangkan kelembutan budi pekerti (luhuring budi) dan keramahan yang meneduhkan.',
     culturalNoteEn: 'In Surakarta and surrounding royal lands, sweetness symbolizes noble refinement and peaceful hospitality.',
-    sampleDishes: ['Selat Solo', 'Tempe Bacem', 'Gudeg Koyor']
+    sampleDishes: ['Selat Solo', 'Tempe Bacem', 'Gudeg Komplit']
   },
   {
     id: 'gurih',
@@ -27,9 +27,9 @@ export const flavorProfiles = [
     color: '#654332',
     bgBadge: 'bg-[#FAF6EF] text-[#302018] border-[#654332]/30',
     icon: 'utensils',
-    culturalNote: 'Menjadi pondasi sajian syukuran dan kenduri seperti Nasi Liwet dan Opor Ayam kampung.',
-    culturalNoteEn: 'Forms the sacred cornerstone of communal thanksgiving feasts like Nasi Liwet and free-range chicken opor.',
-    sampleDishes: ['Nasi Liwet Solo', 'Mendoan Banyumas', 'Opor Bebek']
+    culturalNote: 'Menjadi pondasi sajian syukuran dan kenduri seperti Nasi Liwet Solo dan Gudeg Komplit.',
+    culturalNoteEn: 'Forms the sacred cornerstone of communal thanksgiving feasts like Nasi Liwet Solo and Gudeg Komplit.',
+    sampleDishes: ['Nasi Liwet Solo', 'Tempe Mendoan', 'Tahu Gimbal Semarang']
   },
   {
     id: 'segar',
@@ -44,7 +44,7 @@ export const flavorProfiles = [
     icon: 'soup',
     culturalNote: 'Disajikan dalam mangkuk keramik kecil tradisional bersama perkedel dan sate kerang di Kudus dan sekitarnya.',
     culturalNoteEn: 'Traditionally savored in miniature ceramic bowls with crispy potato cakes and sweet soy clam skewers.',
-    sampleDishes: ['Soto Kudus', 'Kupat Tahu Magelang', 'Soto Semarang']
+    sampleDishes: ['Soto Kudus', 'Timlo Solo', 'Kupat Tahu Magelang']
   },
   {
     id: 'asam',
@@ -59,7 +59,7 @@ export const flavorProfiles = [
     icon: 'citrus',
     culturalNote: 'Diolah dengan teknik kukus berbungkus daun pisang berlapis agar sari belimbing meresap sempurna ke serat daging.',
     culturalNoteEn: 'Steamed inside tightly folded banana leaves so the fruit’s natural juices deeply infuse the tender chicken.',
-    sampleDishes: ['Garang Asem', 'Sayur Asem Wonosobo', 'Pindang Kudus']
+    sampleDishes: ['Garang Asem Ayam Kudus', 'Selat Solo Daging Sapi']
   },
   {
     id: 'pedas',
@@ -72,9 +72,9 @@ export const flavorProfiles = [
     color: '#A83226',
     bgBadge: 'bg-red-50 text-red-900 border-red-300',
     icon: 'flame',
-    culturalNote: 'Sering dipadukan dengan cocolan sambal kecap rawit iris pada mendoan panas atau rica-rica entok khas pedalaman.',
-    culturalNoteEn: 'Frequently enjoyed alongside hot sweet soy chili dipping sauces with sizzling mendoan or slow-braised duck.',
-    sampleDishes: ['Sambal Tumpang', 'Mangut Beong', 'Rica Entok']
+    culturalNote: 'Sering dipadukan dengan cocolan sambal kecap rawit iris pada tempe mendoan panas atau olahan pedas mangut lele asap.',
+    culturalNoteEn: 'Frequently enjoyed alongside hot sweet soy chili dipping sauces with sizzling tempe mendoan or spicy inland mangut lele.',
+    sampleDishes: ['Mangut Lele Asap', 'Tempe Mendoan', 'Sate Kambing Batibul']
   },
   {
     id: 'kaya-rempah',
@@ -89,7 +89,7 @@ export const flavorProfiles = [
     icon: 'feather',
     culturalNote: 'Mencerminkan sejarah pesisir pantai utara (Pantura) dan pertemuan rempah jalur perdagangan rempah kuno.',
     culturalNoteEn: 'Reflects the ancient spice trading legacy along the northern Java Sea corridor.',
-    sampleDishes: ['Nasi Megono', 'Pindang Tetel', 'Sate Buntel Solo']
+    sampleDishes: ['Nasi Megono Pekalongan', 'Sate Buntel Solo', 'Tengkleng Kambing Solo']
   }
 ];
 
