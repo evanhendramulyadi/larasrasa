@@ -217,6 +217,11 @@ body {
   border-top-color: #D49B42;
 }
 
+.flavor-map-marker-wrapper.is-active .marker-dot,
+.flavor-map-marker-wrapper.is-active .marker-pulse-ring {
+  display: none !important;
+}
+
 .marker-pulse-ring {
   position: absolute;
   top: 50%;

@@ -248,9 +248,9 @@ export async function initFlavorMapInteractions() {
         className: 'flavor-map-marker-container',
         html: `
           <div class="flavor-map-marker-wrapper ${isActive ? 'is-active' : ''}">
-            <div class="marker-pulse-ring"></div>
+            ${isActive ? '' : '<div class="marker-pulse-ring"></div>'}
             <div class="marker-bubble">
-              <span class="marker-dot inline-block w-2 h-2 rounded-full bg-[#C84C24] shrink-0 mr-1.5"></span>
+              ${isActive ? '' : '<span class="marker-dot inline-block w-2 h-2 rounded-full bg-[#C84C24] shrink-0 mr-1.5"></span>'}
               <span class="marker-name">${displayName}</span>
             </div>
             <div class="marker-pointer"></div>
