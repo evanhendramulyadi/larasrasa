@@ -228,10 +228,10 @@ function renderFormView(currentLang) {
         <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6 border border-[#D49B42]/35 shadow-xs">
           <div class="space-y-0.5 pb-4 border-b border-[#E8DEC8]">
             <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-              ${isEn ? 'Step 1 • Select Regional Ingredients' : 'Langkah 1 • Pilih Bahan & Rempah Otentik Jawa'}
+              ${isEn ? 'Step 1 • Select Authentic Central Javanese Ingredients' : 'Langkah 1 • Pilih Bahan & Rempah Otentik Jawa Tengah'}
             </h2>
             <p class="text-xs text-[#5C3622]">
-              ${isEn ? 'Select authentic Central Javanese ingredients and spices (minimum 5 ingredients)' : 'Pilih aneka bahan pokok dan bumbu dapur autentik khas Jawa Tengah (minimal 5 bahan)'}
+              ${isEn ? 'Select authentic Central Javanese ingredients and spices' : 'Pilih aneka bahan pokok dan bumbu dapur autentik khas Jawa Tengah'}
             </p>
           </div>
 
@@ -253,7 +253,7 @@ function renderFormView(currentLang) {
             <div class="flex flex-wrap gap-1.5">
               ${selectedCount === 0 ? `
                 <span class="text-xs italic text-[#5C3622]">
-                  ${isEn ? 'No ingredients selected yet. Click ingredients below to select (minimum 5 ingredients).': 'Belum ada bahan yang dipilih. Klik bahan-bahan di bawah untuk memilih (minimal 5 bahan).'}
+                  ${isEn ? 'No ingredients selected yet. Click ingredients below to select.': 'Belum ada bahan yang dipilih. Klik bahan-bahan di bawah untuk memilih.'}
                 </span>
               ` : formState.selectedIngredientIds.map(id => {
                 const item = ALL_INGREDIENTS.find(i => i.id === id);
