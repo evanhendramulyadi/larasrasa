@@ -275,7 +275,12 @@ export const en = {
     stepsTitle: 'Step-by-Step Traditional Cooking Guide',
     chefTipsTitle: 'Pawon Secrets & Chef Wisdom',
     safetyTitle: 'Food Safety & Heritage Storage Notes',
-    backToStudioBtn: 'Back to Recipe Studio'
+    backToStudioBtn: 'Back to Recipe Studio',
+    cooldownWarning: 'Recipe generation is limited to once every 10 minutes. Please wait {minutes} more minute(s) before crafting a new recipe.',
+    cooldownAlertTitle: 'Rate Limit Warning',
+    errorNoCredits: 'Recipe creation credits are exhausted. Please contact the administrator for additional credits.',
+    errorForbidden: 'Supabase service access denied (403 Forbidden). Please ensure Enforce JWT Verification is disabled in Supabase Dashboard to allow the publishable key.',
+    errorGeneral: 'Failed to process recipe generation with AI. Please check your connection and try again.'
   },
   footer: {
     philosophy: 'Laras symbolizes moral harmony and balance of flavor; Rasa encapsulates sensory richness and hearth traditions of Central Java. Dedicated to everyone who cherishes authentic Indonesian culinary heritage.',

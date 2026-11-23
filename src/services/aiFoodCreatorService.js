@@ -23,6 +23,138 @@ export const INGREDIENT_CATALOG = LOCAL_INGREDIENT_CATALOG;
 export const ALL_INGREDIENTS = ALL_LOCAL_INGREDIENTS;
 export { ingredientService };
 
+export const SUPABASE_CONFIG = {
+  url: 'https://fkenbpopcgghadbcresj.supabase.co',
+  functionUrl: 'https://fkenbpopcgghadbcresj.supabase.co/functions/v1/generate-recipe',
+  publishableKey: 'sb_publishable_Q2sMqA6Kk3oZhnMOSFSGlA_OpYKlV-j'
+};
+
+/**
+ * Builds the comprehensive AI recipe formulation prompt.
+ * Aggregates all user inputs from the frontend into a structured, culturally authentic template.
+ * Demands authentic Central Javanese cuisine flair ("berbau jateng") and bilingual outputs.
+ * CRITICAL: In English, the dish name is strictly untranslated.
+ */
+export function buildRecipePrompt(inputs) {
+  const {
+    creatorName,
+    selectedIngredientIds = [],
+    cookingMethod = 'ungkep',
+    tasteProfile = 'manis-gurih',
+    spiceLevel = 1,
+    servings = 4,
+    equipment = ['wajan', 'cobek'],
+    customNotes = ''
+  } = inputs;
+
+  const ingredientNames = selectedIngredientIds.map(id => {
+    const found = ALL_INGREDIENTS.find(i => i.id === id);
+    return found ? found.nameId : id;
+  });
+
+  const methodObj = PREFERENCE_OPTIONS.cookingMethods.find(m => m.id === cookingMethod);
+  const methodLabel = methodObj ? `${methodObj.labelId} (${methodObj.descId})` : cookingMethod;
+
+  const tasteObj = PREFERENCE_OPTIONS.tasteProfiles.find(t => t.id === tasteProfile);
+  const tasteLabel = tasteObj ? tasteObj.labelId : tasteProfile;
+
+  const spiceObj = PREFERENCE_OPTIONS.spiceLevels.find(s => s.id === spiceLevel);
+  const spiceLabel = spiceObj ? spiceObj.labelId : `Level ${spiceLevel}`;
+
+  const eqLabels = equipment.map(eq => {
+    const found = PREFERENCE_OPTIONS.equipmentList.find(e => e.id === eq);
+    return found ? found.labelId : eq;
+  });
+
+  return `Kamu adalah AI Culinary Intelligence LarasRasa, pakar peracik kuliner pusaka Jawa Tengah.
+Tugasmu adalah meracik resep masakan tradisional autentik Jawa Tengah berdasarkan pilihan bahan dan teknik berikut:
+
+DATA INPUT PENGGUNA:
+- Nama Pencipta Resep: ${creatorName || 'Dapur Tradisi LarasRasa'}
+- Bahan Pilihan: ${ingredientNames.join(', ')}
+- Metode Memasak: ${methodLabel}
+- Harmoni Karakter Rasa: ${tasteLabel}
+- Tingkat Kehangatan Lombok: ${spiceLabel}
+- Porsi: ${servings} porsi santapan
+- Peralatan Dapur: ${eqLabels.join(', ')}
+${customNotes ? `- Catatan Selera Tambahan: "${customNotes}"` : ''}
+
+PEDOMAN PERACIKAN RESEP:
+1. NAMA MASAKAN (TITLE):
+   - Wajib memiliki cita rasa dan aura khas tradisi kuliner Jawa Tengah yang kental ("berbau jateng").
+   - Contoh nama autentik: "Ungkep Gurih Udang Belimbing", "Garang Asem Ayam Bumbung", "Mangut Bandeng Asap Brebes", "Gecok Daging Sapi Pawon", "Brongkos Tahu Tempe Pedas", "Semur Solo Telur Bebek".
+   - Nama masakan HANYA SATU nama baku yang padat dan anggun. Jangan gunakan kata "atau", garis miring (/), tanda kurung, atau label wilayah langsung di judul.
+   - PENTING / CRITICAL: Dalam versi terjemahan Bahasa Inggris (English Version), NAMA MASAKAN TIDAK BOLEH DITERJEMAHKAN! Tetap gunakan nama masakan asli berbahasa Indonesia/Jawa tersebut (contoh: tetap "Ungkep Gurih Udang Belimbing").
+
+2. DUA VERSI TERJEMAHAN (INDONESIA & INGGRIS):
+   - Buat 2 versi lengkap: versi Bahasa Indonesia (ID) dan versi Bahasa Inggris (EN).
+   - Seluruh teks pengantar, bahan, bumbu, alat, dan langkah memasak harus diterjemahkan secara fasih dan natural, KECUALI nama masakan yang tetap asli Jawa Tengah.
+
+3. SUBTITLE:
+   - Bahasa Indonesia: "Racikan Resep Dapur Tradisi"
+   - Bahasa Inggris: "Authentic Heritage Recipe"
+
+4. KARAKTER RASA & KONSEP OLAHAN (3 PARAGRAF NARATIF):
+   - Paragraf 1: Mengisahkan perpaduan teknik memasak dengan kekayaan aroma rempah-rempah yang dipilih.
+   - Paragraf 2: Menggambarkan karakter rasa yang dihadirkan (gurih, manis, mantap) yang ditakar presisi untuk 4 porsi santapan keluarga, memasukkan catatan selera pengguna jika ada.
+   - Paragraf 3: Saran penyajian hangat bersama nasi putih pulen, lalapan segar, dan sambal pelengkap.
+   - Sediakan dalam versi Indonesia (descriptionId) dan versi Inggris (descriptionEn).
+
+5. BAHAN & BUMBU DAPUR (INGREDIENTS):
+   - Seluruh bahan ditakar presisi untuk ${servings} porsi.
+   - Setiap bahan menyertakan nama (nameId & nameEn), takaran (amount angka), satuan (unitId & unitEn), dan petunjuk persiapan (noteId & noteEn, contoh: "siap olah", "dihaluskan", "memarkan").
+
+6. PERALATAN DAPUR (EQUIPMENT):
+   - Daftar peralatan tradisional yang digunakan, dengan labelId dan labelEn.
+
+7. PANDUAN LANGKAH MEMASAK (5 TAHAP):
+   - Terdiri dari tepat 5 tahapan memasak berurutan dari persiapan bumbu hingga penyajian.
+   - Setiap langkah memiliki stepNumber, judul langkah (titleId & titleEn), instruksi terperinci (instructionId & instructionEn) dengan perkiraan menit, serta teknik/tips pawon.
+
+FORMAT LUARAN HARUS MENGHASILKAN JSON VALID:
+{
+  "title": "Nama Masakan Berbau Jateng",
+  "subtitleId": "Racikan Resep Dapur Tradisi",
+  "subtitleEn": "Authentic Heritage Recipe",
+  "creatorName": "${creatorName || 'Dapur Tradisi LarasRasa'}",
+  "descriptionId": "Paragraf 1\\n\\nParagraf 2\\n\\nParagraf 3",
+  "descriptionEn": "Paragraph 1\\n\\nParagraph 2\\n\\nParagraph 3",
+  "ingredients": [
+    {
+      "nameId": "Udang Jerbung Segar",
+      "nameEn": "Fresh Wild Prawns",
+      "amount": 350,
+      "unitId": "g",
+      "unitEn": "g",
+      "noteId": "siap olah",
+      "noteEn": "cleaned and prepped"
+    }
+  ],
+  "equipment": [
+    { "labelId": "Wajan Penggorengan / Wok", "labelEn": "Cooking Wok" },
+    { "labelId": "Cobek Batu & Ulekan", "labelEn": "Stone Mortar & Pestle" }
+  ],
+  "stepsId": [
+    {
+      "stepNumber": 1,
+      "titleId": "Persiapan Bahan & Penumbukan Bumbu Halus",
+      "instructionId": "Siapkan cobek batu. Selama sekitar 10 menit...",
+      "techniqueId": "Penumbukan Kasar",
+      "tipId": "Sangrai kemiri dan ketumbar terlebih dahulu"
+    }
+  ],
+  "stepsEn": [
+    {
+      "stepNumber": 1,
+      "titleEn": "Ingredient Prep & Grinding Spice Paste",
+      "instructionEn": "Prepare a stone mortar. For about 10 minutes...",
+      "techniqueEn": "Stone Mortar Grinding",
+      "tipEn": "Toast candlenuts and coriander seeds first"
+    }
+  ]
+}`;
+}
+
 export const PREFERENCE_OPTIONS = {
   cookingMethods: [
     { id: 'tumis', labelId: 'Tumis Cepat Beraroma', labelEn: 'Quick Aromatic Stir-fry', descId: 'Minyak panas, bumbu rajang halus, tekstur renyah segar.', descEn: 'Hot oil, finely sliced aromatic spices, crisp and fresh texture.' },
@@ -102,8 +234,55 @@ const RECIPE_IMAGE_POOL = {
 
 export const aiFoodCreatorService = {
   /**
-   * Synthesize a structured recipe with the AI engine.
-   * Uses future Laravel API if available; otherwise uses deterministic Javanese culinary intelligence.
+   * Check remaining credits with Supabase Edge Function
+   */
+  async checkCredits() {
+    try {
+      const response = await fetch(SUPABASE_CONFIG.functionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_CONFIG.publishableKey,
+          'Authorization': `Bearer ${SUPABASE_CONFIG.publishableKey}`
+        },
+        body: JSON.stringify({ action: 'check-credits' })
+      });
+
+      if (response.status === 402 || response.status === 429) {
+        return { ok: false, error: 'no_credits', message: 'Kredit peracikan resep telah habis.' };
+      }
+
+      if (response.status === 403) {
+        return { 
+          ok: false, 
+          error: 'forbidden', 
+          status: 403, 
+          message: 'Akses layanan Supabase ditolak (403 Forbidden).' 
+        };
+      }
+
+      if (!response.ok) {
+        return { ok: false, error: 'request_failed', status: response.status };
+      }
+
+      const data = await response.json().catch(() => ({}));
+      if (data.credits !== undefined && data.credits <= 0) {
+        return { ok: false, error: 'no_credits', credits: 0 };
+      }
+      if (data.hasCredit === false || data.hasCredits === false) {
+        return { ok: false, error: 'no_credits', credits: 0 };
+      }
+
+      return { ok: true, credits: data.credits ?? 999 };
+    } catch (err) {
+      console.warn('Supabase credit check connection error:', err);
+      return { ok: false, error: 'network_error', message: err.message };
+    }
+  },
+
+  /**
+   * Synthesize a structured recipe with the AI engine via Supabase Edge Function (Gemini API)
+   * with high-fidelity deterministic culinary intelligence fallback.
    */
   async generateRecipe(payload) {
     const {
@@ -135,24 +314,77 @@ export const aiFoodCreatorService = {
         : 'Pilih minimal 5 bahan atau rempah untuk memulai penciptaan resep kuliner.');
     }
 
-    // Try future Laravel REST AI endpoint if configured
-    if (!API_CONFIG.useMock) {
-      try {
-        const response = await apiRequest('/ai/food-creator', {
-          method: 'POST',
-          body: JSON.stringify({
-            ...payload,
-            creatorName: resolvedCreatorName
-          })
-        });
-        if (response?.data) return response.data;
-      } catch (err) {
-        console.warn('API backend belum aktif, menjalankan Smart Culinary Intelligence Engine:', err);
+    // 1. Build prompt template containing all input parameters
+    const promptTemplate = buildRecipePrompt({
+      creatorName: resolvedCreatorName,
+      selectedIngredientIds,
+      cookingMethod,
+      tasteProfile,
+      spiceLevel,
+      servings: parseInt(servings) || 4,
+      equipment,
+      customNotes
+    });
+
+    // 2. Transmit prompt to Supabase Edge Function -> Google Gemini API
+    try {
+      const response = await fetch(SUPABASE_CONFIG.functionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_CONFIG.publishableKey,
+          'Authorization': `Bearer ${SUPABASE_CONFIG.publishableKey}`
+        },
+        body: JSON.stringify({
+          prompt: promptTemplate,
+          action: 'generate',
+          inputs: {
+            creatorName: resolvedCreatorName,
+            selectedIngredientIds,
+            cookingMethod,
+            dishCategory,
+            tasteProfile,
+            spiceLevel,
+            cookingDuration,
+            servings: parseInt(servings) || 4,
+            equipment,
+            dietary,
+            customNotes
+          }
+        })
+      });
+
+      if (response.status === 402 || response.status === 429) {
+        const creditErr = new Error('CREDIT_EXHAUSTED');
+        creditErr.code = 'CREDIT_EXHAUSTED';
+        throw creditErr;
       }
+
+      if (response.status === 403) {
+        const forbiddenErr = new Error('EDGE_FORBIDDEN');
+        forbiddenErr.code = 'EDGE_FORBIDDEN';
+        throw forbiddenErr;
+      }
+
+      if (response.ok) {
+        const resultData = await response.json();
+        const parsed = this._parseGeminiRecipeResponse(resultData, payload, resolvedCreatorName);
+        if (parsed) {
+          return parsed;
+        }
+      } else {
+        const errText = await response.text().catch(() => '');
+        console.warn(`Supabase function status ${response.status}: ${errText}`);
+      }
+    } catch (err) {
+      if (err.code === 'CREDIT_EXHAUSTED' || err.code === 'EDGE_FORBIDDEN') {
+        throw err;
+      }
+      console.warn('Supabase Edge Function relay error, utilizing Smart Culinary Intelligence Fallback:', err);
     }
 
-    // Realistic processing pause (800ms) for professional AI feel
-    await new Promise(resolve => setTimeout(resolve, 800));
+    // Realistic processing pause (600ms) for professional AI feel
+    await new Promise(resolve => setTimeout(resolve, 600));
 
     return this._synthesizeLocalRecipe({
       creatorName: resolvedCreatorName,
@@ -171,6 +403,145 @@ export const aiFoodCreatorService = {
       aspectRatio,
       outputLanguage: outputLanguage || 'id'
     });
+  },
+
+  /**
+   * Parse and extract recipe from Gemini API response
+   */
+  _parseGeminiRecipeResponse(resultData, payload, resolvedCreatorName) {
+    if (!resultData) return null;
+
+    let textContent = '';
+    if (typeof resultData === 'string') {
+      textContent = resultData;
+    } else if (resultData.recipe && typeof resultData.recipe === 'object') {
+      return this._normalizeRecipeObject(resultData.recipe, payload, resolvedCreatorName);
+    } else if (resultData.title && (resultData.ingredients || resultData.stepsId)) {
+      return this._normalizeRecipeObject(resultData, payload, resolvedCreatorName);
+    } else if (resultData.candidates?.[0]?.content?.parts?.[0]?.text) {
+      textContent = resultData.candidates[0].content.parts[0].text;
+    } else if (resultData.text) {
+      textContent = resultData.text;
+    } else if (resultData.response) {
+      textContent = typeof resultData.response === 'string' ? resultData.response : JSON.stringify(resultData.response);
+    } else {
+      textContent = JSON.stringify(resultData);
+    }
+
+    try {
+      let jsonStr = textContent.trim();
+      const codeBlockMatch = jsonStr.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+      if (codeBlockMatch && codeBlockMatch[1]) {
+        jsonStr = codeBlockMatch[1].trim();
+      } else {
+        const startBrace = jsonStr.indexOf('{');
+        const endBrace = jsonStr.lastIndexOf('}');
+        if (startBrace !== -1 && endBrace !== -1 && endBrace > startBrace) {
+          jsonStr = jsonStr.slice(startBrace, endBrace + 1);
+        }
+      }
+
+      const parsed = JSON.parse(jsonStr);
+      if (parsed && (parsed.title || parsed.dishName)) {
+        return this._normalizeRecipeObject(parsed, payload, resolvedCreatorName);
+      }
+    } catch (parseErr) {
+      console.warn('Could not parse JSON from Gemini text output:', parseErr);
+    }
+
+    return null;
+  },
+
+  _normalizeRecipeObject(raw, payload, resolvedCreatorName) {
+    const rawTitle = (raw.title || raw.dishName || 'Racikan Pusaka Jawa Tengah').trim();
+    const cleanTitle = rawTitle.split('/')[0].split(' atau ')[0].trim();
+
+    const subtitleId = raw.subtitleId || 'Racikan Resep Dapur Tradisi';
+    const subtitleEn = raw.subtitleEn || 'Authentic Heritage Recipe';
+
+    const descId = (raw.descriptionId || raw.description || '').trim();
+    const descEn = (raw.descriptionEn || raw.description || descId).trim();
+
+    const rawIngs = Array.isArray(raw.ingredients) ? raw.ingredients : [];
+    const normalizedIngs = rawIngs.map(i => ({
+      nameId: i.nameId || i.name || 'Bahan Tradisi',
+      nameEn: i.nameEn || i.nameId || i.name || 'Heritage Ingredient',
+      amount: i.amount || 1,
+      unitId: i.unitId || i.unit || 'secukupnya',
+      unitEn: i.unitEn || i.unitId || i.unit || 'to taste',
+      noteId: i.noteId || i.note || '',
+      noteEn: i.noteEn || i.noteId || i.note || ''
+    }));
+
+    const rawEq = Array.isArray(raw.equipment) ? raw.equipment : [];
+    const normalizedEq = rawEq.map(eq => {
+      if (typeof eq === 'object') {
+        return {
+          id: eq.id || 'alat',
+          labelId: eq.labelId || eq.name || 'Wajan Penggorengan',
+          labelEn: eq.labelEn || eq.labelId || eq.name || 'Cooking Wok'
+        };
+      }
+      return { id: String(eq), labelId: String(eq), labelEn: String(eq) };
+    });
+
+    const rawStepsId = Array.isArray(raw.stepsId) ? raw.stepsId : (Array.isArray(raw.steps) ? raw.steps : []);
+    const normalizedStepsId = rawStepsId.map((st, idx) => ({
+      stepNumber: st.stepNumber || idx + 1,
+      title: st.titleId || st.title || `Tahap ${idx + 1}`,
+      titleId: st.titleId || st.title || `Tahap ${idx + 1}`,
+      instruction: st.instructionId || st.instruction || st.desc || '',
+      instructionId: st.instructionId || st.instruction || st.desc || '',
+      techniqueId: st.techniqueId || st.technique || '',
+      tipId: st.tipId || st.tip || ''
+    }));
+
+    const rawStepsEn = Array.isArray(raw.stepsEn) ? raw.stepsEn : rawStepsId;
+    const normalizedStepsEn = rawStepsEn.map((st, idx) => ({
+      stepNumber: st.stepNumber || idx + 1,
+      title: st.titleEn || st.title || `Step ${idx + 1}`,
+      titleEn: st.titleEn || st.title || `Step ${idx + 1}`,
+      instruction: st.instructionEn || st.instruction || st.desc || '',
+      instructionEn: st.instructionEn || st.instruction || st.desc || '',
+      techniqueEn: st.techniqueEn || st.technique || '',
+      tipEn: st.tipEn || st.tip || ''
+    }));
+
+    const slug = cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    return {
+      id: `ai-food-${Date.now()}`,
+      slug,
+      title: cleanTitle,
+      shortTitle: cleanTitle,
+      javaneseTitle: subtitleId,
+      subtitleId,
+      subtitleEn,
+      creatorName: resolvedCreatorName,
+      creatorNickname: resolvedCreatorName,
+      creatorCredit: `Diciptakan Resmi oleh: ${resolvedCreatorName}`,
+      description: descId,
+      descriptionId: descId,
+      descriptionEn: descEn,
+      regionName: 'Kreasi Dapur Tradisi',
+      servings: payload.servings || 4,
+      prepTime: '15 Menit',
+      cookTime: '35 Menit',
+      totalTime: '50 Menit',
+      difficulty: 'Sedang',
+      calories: '320 kkal / porsi',
+      spiceLevel: payload.spiceLevel || 1,
+      cookingMethod: payload.cookingMethod || 'ungkep',
+      dishCategory: payload.dishCategory || 'lauk',
+      tasteProfile: payload.tasteProfile || 'manis-gurih',
+      outputLanguage: 'id',
+      ingredients: normalizedIngs,
+      equipment: normalizedEq,
+      steps: normalizedStepsId,
+      stepsId: normalizedStepsId,
+      stepsEn: normalizedStepsEn,
+      createdAt: new Date().toISOString()
+    };
   },
 
   /**

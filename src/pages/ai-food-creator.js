@@ -42,9 +42,13 @@ let formState = {
   outputLanguage: 'id'
 };
 
+const COOLDOWN_KEY = 'larasrasa_last_ai_recipe_timestamp';
+const COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes limit per session
+
 let currentGeneratedRecipe = null;
 let isGenerating = false;
 let validationMessage = null;
+let sessionAlert = null; // { type: 'cooldown' | 'credit' | 'forbidden' | 'error', minutes?: number }
 let toastMessage = null;
 let nameError = false;
 let ingredientError = false;
@@ -72,6 +76,7 @@ export function resetAiFoodCreatorState() {
   currentGeneratedRecipe = null;
   isGenerating = false;
   validationMessage = null;
+  sessionAlert = null;
   toastMessage = null;
   nameError = false;
   ingredientError = false;
@@ -144,6 +149,50 @@ function renderGeneratingState(currentLang) {
  */
 function renderFormView(currentLang) {
   const isEn = currentLang === 'en';
+
+  // Compute session alert content reactively based on active language (strictly zero emoji)
+  function getSessionAlertContent() {
+    if (!sessionAlert) return null;
+    if (sessionAlert.type === 'cooldown') {
+      const minutes = sessionAlert.minutes || 10;
+      return {
+        badge: isEn ? 'Rate Limit Notice' : 'Peringatan Batas Waktu',
+        title: isEn ? 'Cooldown in Effect' : 'Batas Waktu Peracikan Resep',
+        text: isEn 
+          ? `Recipe generation is limited to once every 10 minutes. Please wait ${minutes} more minute(s) before crafting a new recipe.`
+          : `Batas peracikan resep adalah 10 menit sekali. Silakan tunggu ${minutes} menit lagi sebelum meracik resep baru.`,
+        isWarning: true
+      };
+    }
+    if (sessionAlert.type === 'credit') {
+      return {
+        badge: isEn ? 'Credit Limit Notice' : 'Pemberitahuan Kuota Resep',
+        title: isEn ? 'Credits Exhausted' : 'Kredit Peracikan Habis',
+        text: isEn
+          ? 'Recipe creation credits are exhausted. Please contact the administrator for additional credits.'
+          : 'Kredit peracikan resep telah habis. Silakan hubungi pengelola untuk penambahan kredit.',
+        isWarning: false
+      };
+    }
+    if (sessionAlert.type === 'forbidden') {
+      return {
+        badge: isEn ? 'Service Authorization Notice' : 'Pemberitahuan Otorisasi Layanan',
+        title: isEn ? 'Access Denied (403 Forbidden)' : 'Akses Ditolak (403 Forbidden)',
+        text: isEn
+          ? 'Supabase service access denied (403 Forbidden). Please ensure Enforce JWT Verification is disabled in Supabase Dashboard to allow the publishable key.'
+          : 'Akses layanan Supabase ditolak (403 Forbidden). Pastikan Enforce JWT Verification dinonaktifkan di Dashboard Supabase untuk mengizinkan kunci publishable.',
+        isWarning: false
+      };
+    }
+    return {
+      badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
+      title: isEn ? 'Generation Error' : 'Kendala Peracikan',
+      text: sessionAlert.text || (isEn ? 'Failed to process recipe generation with AI. Please check your connection and try again.' : 'Gagal memproses peracikan resep dengan AI. Silakan periksa koneksi dan coba lagi.'),
+      isWarning: false
+    };
+  }
+
+  const alertContent = getSessionAlertContent();
 
   // Filter ingredients directly by search query (no category tabs)
   let filteredIngredients = ALL_INGREDIENTS;
@@ -505,6 +554,29 @@ function renderFormView(currentLang) {
             </svg>
           </button>
         </div>
+
+        <!-- Alert Banner Below Button (Zero Emoji, Bilingual Reactive) -->
+        ${alertContent ? `
+          <div id="ai-creator-session-alert" class="p-5 sm:p-6 rounded-3xl ${
+            alertContent.isWarning
+              ? 'bg-amber-50 border-2 border-amber-300 text-amber-950'
+              : 'bg-rose-50 border-2 border-rose-300 text-rose-950'
+          } shadow-md space-y-1.5 text-center animate-fade-in" role="alert">
+            <div class="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider ${
+              alertContent.isWarning ? 'bg-amber-200/70 text-amber-900 border border-amber-400/50' : 'bg-rose-200/70 text-rose-900 border border-rose-400/50'
+            }">
+              ${escapeHtml(alertContent.badge)}
+            </div>
+            <strong class="block text-sm sm:text-base font-bold font-editorial-serif ${
+              alertContent.isWarning ? 'text-amber-900' : 'text-rose-900'
+            }">
+              ${escapeHtml(alertContent.title)}
+            </strong>
+            <p class="text-xs sm:text-sm font-medium leading-relaxed max-w-2xl mx-auto">
+              ${escapeHtml(alertContent.text)}
+            </p>
+          </div>
+        ` : ''}
 
       </form>
 
@@ -1023,8 +1095,54 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
+      // 2. 10-Minute Cooldown Check
+      const lastGenTimestamp = localStorage.getItem(COOLDOWN_KEY);
+      if (lastGenTimestamp) {
+        const elapsed = Date.now() - parseInt(lastGenTimestamp, 10);
+        if (elapsed < COOLDOWN_MS) {
+          const remainingMinutes = Math.max(1, Math.ceil((COOLDOWN_MS - elapsed) / 60000));
+          sessionAlert = {
+            type: 'cooldown',
+            minutes: remainingMinutes
+          };
+          await reRenderCurrentView();
+          const alertEl = document.getElementById('ai-creator-session-alert');
+          if (alertEl) {
+            alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
+      }
+
+      // 3. Supabase Credit Check
+      try {
+        const creditCheck = await aiFoodCreatorService.checkCredits();
+        if (!creditCheck.ok) {
+          if (creditCheck.error === 'no_credits') {
+            sessionAlert = { type: 'credit' };
+            await reRenderCurrentView();
+            const alertEl = document.getElementById('ai-creator-session-alert');
+            if (alertEl) {
+              alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+          } else if (creditCheck.error === 'forbidden' || creditCheck.status === 403) {
+            sessionAlert = { type: 'forbidden' };
+            await reRenderCurrentView();
+            const alertEl = document.getElementById('ai-creator-session-alert');
+            if (alertEl) {
+              alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            return;
+          }
+        }
+      } catch (checkErr) {
+        console.warn('Credit check error:', checkErr);
+      }
+
       nameError = false;
       ingredientError = false;
+      sessionAlert = null;
       isGenerating = true;
       reRenderCurrentView();
       window.scrollTo({ top: 150, behavior: 'smooth' });
@@ -1035,12 +1153,33 @@ export function initAiFoodCreatorInteractions() {
           outputLanguage: isEn ? 'en' : 'id'
         });
         currentGeneratedRecipe = recipe;
+        localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
       } catch (err) {
+        if (err.code === 'CREDIT_EXHAUSTED') {
+          sessionAlert = { type: 'credit' };
+          isGenerating = false;
+          await reRenderCurrentView();
+          const alertEl = document.getElementById('ai-creator-session-alert');
+          if (alertEl) {
+            alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        } else if (err.code === 'EDGE_FORBIDDEN') {
+          sessionAlert = { type: 'forbidden' };
+          isGenerating = false;
+          await reRenderCurrentView();
+          const alertEl = document.getElementById('ai-creator-session-alert');
+          if (alertEl) {
+            alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+          return;
+        }
         console.warn('Fallback to local synthesis:', err);
         currentGeneratedRecipe = aiFoodCreatorService._synthesizeLocalRecipe({
           ...formState,
           outputLanguage: isEn ? 'en' : 'id'
         });
+        localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
       } finally {
         isGenerating = false;
         reRenderCurrentView();
