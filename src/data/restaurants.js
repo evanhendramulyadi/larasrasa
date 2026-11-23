@@ -70,16 +70,6 @@ export const restaurants = [
     image: '/assets/images/restaurants/pak-manto.jpg'
   },
   {
-    id: 'warung-megono-pak-bon-pekalongan',
-    name: 'Warung Makan Nasi Megono Pak Bon',
-    yearEstablished: 1963,
-    city: 'Kota & Kab Pekalongan',
-    regionId: 'pekalongan',
-    description: 'Berdiri sejak 1963. Menjual sego megono, yaitu nasi hangat dengan cacahan nangka muda berbumbu kelapa, beserta aneka lauk pendamping khas Pekalongan.',
-    googleMapsUrl: 'https://maps.google.com/?q=Warung+Makan+Nasi+Megono+Pak+Bon+Pekalongan',
-    image: '/assets/images/restaurants/megono-pak-bon.jpg'
-  },
-  {
     id: 'mendoan-eco-21-purwokerto',
     name: 'Mendoan Eco 21',
     yearEstablished: 1990,

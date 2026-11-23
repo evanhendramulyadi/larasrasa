@@ -86,17 +86,17 @@ export const PREFERENCE_OPTIONS = {
 
 // Culinary Asset pool for composite rendering
 const RECIPE_IMAGE_POOL = {
-  ayam: '/assets/images/recipes/garang-asem-chicken.jpg',
-  sapi: '/assets/images/recipes/solo-beef-salad.jpg',
-  kambing: '/assets/images/recipes/solo-minced-satay.jpg',
-  ikan: '/assets/images/recipes/kudus-chicken-soup.jpg',
-  udang: '/assets/images/recipes/semarang-gimbal-tofu.jpg',
-  tempe: '/assets/images/recipes/banyumas-tempe-mendoan.jpg',
-  tahu: '/assets/images/recipes/braised-sweet-tempeh.jpg',
-  telur: '/assets/images/recipes/solo-coconut-rice.jpg',
-  beras: '/assets/images/recipes/pekalongan-megono.jpg',
-  sayur: '/assets/images/recipes/garang-asem-chicken.jpg',
-  kudapan: '/assets/images/recipes/semarang-spring-rolls.jpg',
+  ayam: '/assets/images/recipes/garang-asem.jpg',
+  sapi: '/assets/images/recipes/selat-solo.jpg',
+  kambing: '/assets/images/recipes/sate-buntel.jpg',
+  ikan: '/assets/images/recipes/soto-kudus.jpg',
+  udang: '/assets/images/recipes/tahu-gimbal.jpg',
+  tempe: '/assets/images/recipes/mendoan.jpg',
+  tahu: '/assets/images/recipes/tempe-bacem.jpg',
+  telur: '/assets/images/recipes/nasi-liwet.jpg',
+  beras: '/assets/images/recipes/megono.jpg',
+  sayur: '/assets/images/recipes/garang-asem.jpg',
+  kudapan: '/assets/images/recipes/lumpia-semarang.jpg',
   default: '/assets/images/hero/hero-culinary.jpg'
 };
 

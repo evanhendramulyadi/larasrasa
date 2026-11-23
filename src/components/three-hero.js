@@ -95,7 +95,7 @@ export class ThreeHeroShowcase {
         <!-- Centerpiece Viewport with 4 Interactive Hotspot Pins -->
         <div id="hero-viewport-area" class="w-full flex-1 relative rounded-xl sm:rounded-2xl overflow-hidden min-h-0 bg-[#120B07] border border-[#D49B42]/30 shadow-inner group select-none flex flex-col">
           <img 
-            src="/assets/images/hero/hidangan-pusaka-jateng.jpg" 
+            src="/assets/images/hero/heritage-feast.jpg" 
             alt="${t('hero.pusakaTitle')}" 
             class="w-full h-full object-cover object-center filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-103"
             onerror="this.src='/assets/images/hero/hero-culinary.jpg'"

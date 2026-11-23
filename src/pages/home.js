@@ -221,7 +221,7 @@ export async function renderHomePage() {
             <!-- Preview Graphic Teaser -->
             <div class="lg:col-span-6 flex items-center justify-center">
               <div class="w-full aspect-4/3 rounded-2xl sm:rounded-3xl overflow-hidden border border-[#D49B42]/40 shadow-xl relative group">
-                <img src="/assets/images/regions/peta-sentra-kuliner.jpg" 
+                <img src="/assets/images/regions/culinary-map.jpg" 
                      alt="${t('mapSection.mapTitle')}" 
                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                      onerror="this.src='/assets/images/regions/semarang.jpg'"/>
