@@ -1288,100 +1288,40 @@ export const spiceTranslationsEn = {
 
 export const restaurantTranslationsEn = {
   'toko-oen-semarang': {
-    signatureDish: 'Oen Fried Lumpia & Biefstuk van de Haas',
-    category: 'Colonial Heritage Dining',
-    openingHours: 'Daily: 09:30 – 21:30 WIB',
-    description: 'One of Indonesia’s oldest family restaurants, preserving art deco architecture, antique teak interiors, and Dutch-Indonesian fusion recipes from the pre-independence era.',
-    historicalContext: 'Founded by the Oen Tjoen Hok family. Toko Oen Semarang, opened in 1936, remains an enduring custodian of nostalgic colonial recipes, blending Chinese-Javanese rebung spring rolls with vintage Dutch parlor fare.',
-    specialties: ['Classic Crispy Lumpia', 'Javanese Biefstuk', 'Warm Poffertjes', 'Tutti Frutti Ice Cream']
+    description: 'Established in 1936. Serves homemade ice cream, classic colonial fusion dishes combining Dutch, Chinese, and Indonesian influences, as well as vintage cookies and traditional pastries for gifts.'
   },
   'nasi-liwet-wongso-lemu-solo': {
-    signatureDish: 'Complete Nasi Liwet with Shredded Chicken & Velvet Areh',
-    category: 'Traditional Evening Banquet',
-    openingHours: 'Daily: 16:00 – 01:00 WIB',
-    description: 'The quintessential evening pilgrimage in Keprabon, Solo. Served on banana leaf cones with savory-sweet braised chayote, tender chicken opor, and thick, velvety areh coconut cream.',
-    historicalContext: 'Ibu Wongso Lemu began selling nasi liwet on foot during the 1950s before establishing this spot on Jalan Teuku Umar. Floor mat (lesehan) seating and soft live sinden singing provide timeless ambiance.',
-    specialties: ['Banana Leaf Nasi Liwet', 'Free-range Chicken Opor', 'Savory Coconut Curd (Areh)', 'Marbled Pindang Eggs']
+    description: 'Established in 1950. Serves savory Solo-style nasi liwet with an assortment of traditional side dishes.'
   },
-  'soto-kudus-pak-darno': {
-    signatureDish: 'Traditional Small Ceramic Bowl Free-range Chicken Soup',
-    category: 'Legendary Soto Stall',
-    openingHours: 'Daily: 06:30 – 20:30 WIB',
-    description: 'Authentic Kudus chicken soup featuring a pristine golden broth infused with kencur root and crispy fried garlic chips. Served in iconic miniature ceramic bowls with porcelain spoons.',
-    historicalContext: 'Preserving northern coastal soup traditions since 1968, Pak Darno simmers whole chickens in rustic earthenware vats over firewood embers to extract pure, delicate broth essence.',
-    specialties: ['Small Ceramic Bowl Soto', 'Sweet Soy Clam Skewers', 'Potato Perkedel', 'Crispy Savory Beef Lung']
+  'soto-ayam-pak-darno-semarang': {
+    description: 'Established around 1979 or the early 1980s. Serves signature Semarang-style chicken soto with an assortment of satay and fritters as accompaniments. Located at Jl. MH Thamrin No. 88, Semarang.'
   },
   'garang-asem-sari-rasa-kudus': {
-    signatureDish: 'Banana Leaf Steamed Free-range Chicken Garang Asem',
-    category: 'Traditional Heritage Eatery',
-    openingHours: 'Daily: 07:30 – 21:00 WIB',
-    description: 'The premier destination for garang asem along the Pantura highway. Each parcel is steamed inside tightly pinned banana leaves with chicken, fresh bilimbi fruit, green tomatoes, and whole bird’s eye chilies.',
-    historicalContext: 'Founded in the mid-1980s, Sari Rasa became the ultimate rest stop for travelers traversing the north coast seeking an energizing, tangy herbal feast.',
-    specialties: ['Banana Leaf Garang Asem', 'Kudus Chicken Pindang', 'Galangal Fried Chicken']
+    description: 'Established in 1977, pioneered by Ibu Sriati. Serves signature Kudus free-range chicken garang asem alongside other traditional Javanese dishes.'
   },
   'lunpia-gang-lombok-semarang': {
-    signatureDish: 'Original Bamboo Shoot & Dried Shrimp Lunpia (Wet & Crispy)',
-    category: 'Cultural Heritage Food Landmark',
-    openingHours: 'Daily: 08:00 – 17:00 WIB',
-    description: 'The historic birthplace of Semarang’s spring rolls. Prepared using hand-selected bamboo shoots cured without pungent odor, dried savory shrimp, and gossamer-thin wrappers. Served with thick garlic tauco dip and fresh green leeks.',
-    historicalContext: 'Direct descendants of Tjoa Thay Joe (Fujian migrant) and Wasih (Javanese woman) who in the late 19th century married Chinese roll craftsmanship with sweet-savory Javanese palate.',
-    specialties: ['Crispy Golden Lunpia', 'Tender Fresh (Wet) Lunpia', 'Thick Garlic Tauco Sauce']
+    description: 'Pioneered around 1867–1877. Exclusively specializes in authentic Semarang lumpia, available in both fresh and crispy fried variants.'
   },
   'selat-solo-mbak-lies': {
-    signatureDish: 'Beef Bestik Selat Solo & Galantine Selat',
-    category: 'Cultural Heritage Restaurant',
-    openingHours: 'Daily: 08:00 – 17:30 WIB',
-    description: 'Adorned with thousands of antique porcelain ceramics and European-Javanese heirlooms, serving authentic Selat Solo with tender beef slices, sweet nutmeg broth, crisp fries, and golden Javanese mustard.',
-    historicalContext: 'Pioneered by Mrs. Wulandari Kusmadyaningrum (Mbak Lies) in 1987 in a Serengan alleyway, successfully making aristocratic royal palace dining accessible to everyday patrons.',
-    specialties: ['Beef Bestik Selat Solo', 'Fresh Broth Galantine Selat', 'Matahari Soup', 'Timlo Solo']
+    description: 'Established in 1987. Serves various Javanese-Dutch culinary classics from Solo, with Selat Solo as its signature specialty.'
   },
   'sate-kambing-pak-manto-solo': {
-    signatureDish: 'Sate Buntel & Fiery Sweet Tengkleng Rica',
-    category: 'Specialist Mutton Destination',
-    openingHours: 'Daily: 09:00 – 21:00 WIB',
-    description: 'Pioneer of succulent minced spiced mutton wrapped in delicate caul fat (sate buntel) and fiery sweet charcoal-grilled bone-in lamb stew (tengkleng rica).',
-    historicalContext: 'The late Sumanto (Pak Manto) started with a mobile pushcart before inventing the spicy tengkleng rica variation that revolutionized Central Javanese lamb cuisine nationwide.',
-    specialties: ['Minced Mutton Sate Buntel', 'Fiery Tengkleng Rica', 'Rich Herbal Lamb Curry']
+    description: 'Established in 1990. Serves various Solo-style mutton and offal specialties, headlined by its iconic tengkleng rica-rica and sate buntel.'
   },
   'warung-megono-pak-bon-pekalongan': {
-    signatureDish: 'Complete Megono Rice with Torch Ginger & Hot Mendoan',
-    category: 'Traditional Coastal Stall',
-    openingHours: 'Daily: 06:00 – 14:00 WIB',
-    description: 'The breakfast epicenter of Pekalongan, serving warm steamed jackfruit rice redolent of torch ginger blossoms, golden turmeric mendoan tempeh, and coastal squid cooked in its own savory ink.',
-    historicalContext: 'Cared for across generations by the Pak Bon family since the 1970s, it embodies the warm hospitality and rustic spice richness of the Pekalongan shoreline.',
-    specialties: ['Torch Ginger Nasi Megono', 'Wide Banyumas Mendoan', 'Savory Coastal Black Squid', 'Smoked Mangut Fish']
+    description: 'Established in 1963. Serves warm sego megono (young jackfruit minced with seasoned grated coconut) accompanied by various coastal Pekalongan side dishes.'
   },
-  'mendoan-echo-banyumas': {
-    signatureDish: 'Authentic Banyumas Soft Fried Tempe Mendoan',
-    category: 'Banyumasan Culinary & Gift Hub',
-    openingHours: 'Daily: 07:00 – 21:00 WIB',
-    description: 'Artisanal soybean tempeh producer frying fresh to order in bubbling woks. Tender, half-cooked slabs fragrant with wild scallions, served with sweet dark soy chili dip.',
-    historicalContext: 'A pioneer in packaging fresh raw tempeh wrapped in banana leaves with seasoned flour packets for visitors taking authentic Banyumasan flavor home.',
-    specialties: ['Piping-Hot Mendoan', 'Banyumas Rawit Sweet Soy Dip', 'Sokaraja Fried Getuk']
+  'mendoan-eco-21-purwokerto': {
+    description: 'Established in 1990 in the Sawangan area, Purwokerto. Offers freshly fried tempe mendoan as well as take-home uncooked packages and other traditional Banyumas treats.'
   },
   'kupat-tahu-pojok-magelang': {
-    signatureDish: 'Tofu & Rice Cake with Light Garlic Soy Broth',
-    category: 'Historic Heritage Warung',
-    openingHours: 'Daily: 09:00 – 20:30 WIB',
-    description: 'The oldest kupat tahu warung in Magelang, serving generations since the pre-independence era. Golden silk tofu, crispy vegetable fritters, chewy rice cake, and delicate sweet-savory garlic broth.',
-    historicalContext: 'Founded by Mr. Kuntjoro in 1942. The walls feature historic photographs of Indonesian presidents and national figures who made pilgrimages here when traveling to Borobudur.',
-    specialties: ['Complete Kupat Tahu', 'Omelette Fried Kupat Tahu', 'Fresh Red Bean Iced Dessert']
+    description: 'Established in 1942. Serves authentic Magelang kupat tahu, traditionally cooked over aromatic wood charcoal.'
   },
   'sate-kambing-wendys-tegal': {
-    signatureDish: 'Tender Batibul Young Lamb Satay & Clear Mutton Stew',
-    category: 'Batibul Young Lamb Specialist',
-    openingHours: 'Daily: 09:30 – 21:00 WIB',
-    description: 'The premier destination for tender batibul lamb satay (under three months old) in Tegal. Skewered plain and grilled over fragrant coconut shell charcoal, delivering extraordinarily juicy meat and natural sweetness.',
-    historicalContext: 'Founded by the Wendy family in the 1980s, becoming an iconic culinary rest stop along the western Pantura corridor of Central Java.',
-    specialties: ['Plain-Grilled Batibul Satay', 'Clear Lamb Garang Asem', 'Mutton Shank Soup', 'Crispy Tahu Aci Slawi']
+    description: 'Pioneered in 1984. Exclusively specializes in young goat mutton (batibul, aged 3–5 months) culinary creations typical of Tegal.'
   },
   'mie-ongklok-pak-muhadi-wonosobo': {
-    signatureDish: 'Mie Ongklok with Savory Ebi Gravy & Sweet Beef Satay',
-    category: 'Dieng Highland Heritage Warung',
-    openingHours: 'Daily: 09:30 – 19:30 WIB',
-    description: 'Pioneer of warming noodle bowls in the heart of Wonosobo. Yellow noodles tossed in bamboo ongklok baskets, bathed in thick dried shrimp gravy with garlic chives, served with sweet beef satay and crispy tempe kemul.',
-    historicalContext: 'Mr. Muhadi perfected this comforting dried shrimp broth in the 1980s, becoming a beloved pilgrimage for Dieng Plateau hikers and families seeking warmth.',
-    specialties: ['Special Mie Ongklok', 'Sweet Glazed Beef Satay', 'Crispy Turmeric Tempe Kemul', 'Cassava Geblek']
+    description: 'Established in 1966. Focuses on authentic Wonosobo-style mie ongklok served with savory sweet beef or chicken satay skewers.'
   }
 };
 

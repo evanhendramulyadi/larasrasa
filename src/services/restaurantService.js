@@ -19,19 +19,13 @@ export function localizeRestaurant(restaurant) {
   return {
     ...restaurant,
     city: localizedCity,
-    signatureDish: restaurant.signatureDish,
-    category: trans.category || restaurant.category,
-    openingHours: trans.openingHours || restaurant.openingHours,
     description: trans.description || restaurant.description,
-    historicalContext: trans.historicalContext || restaurant.historicalContext,
-    specialties: restaurant.specialties,
   };
 }
 
 export const restaurantService = {
   /**
    * Mengambil daftar restoran legendaris dengan filter.
-   * Disiapkan untuk memanggil GET /api/restaurants jika mode Laravel aktif.
    */
   async getRestaurants(params = {}) {
     if (!API_CONFIG.useMock) {
@@ -51,15 +45,13 @@ export const restaurantService = {
       result = result.filter(r => r.city.toLowerCase().includes(params.city.toLowerCase()) || r.regionId === params.city);
     }
 
-    // Filter kategori
-    if (params.category && params.category !== 'semua') {
-      result = result.filter(r => r.category.toLowerCase().includes(params.category.toLowerCase()));
-    }
-
-    // Filter pencarian teks: khusus nama warung atau restoran saja
+    // Filter pencarian teks: khusus nama warung atau isi deskripsinya
     if (params.search && params.search.trim()) {
       const q = params.search.toLowerCase().trim();
-      result = result.filter(r => r.name.toLowerCase().includes(q));
+      result = result.filter(r => 
+        r.name.toLowerCase().includes(q) || 
+        (r.description && r.description.toLowerCase().includes(q))
+      );
     }
 
     return result;
@@ -93,4 +85,3 @@ export const restaurantService = {
     return all.slice(0, limit);
   }
 };
-

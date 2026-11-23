@@ -124,7 +124,7 @@ export const recipes = [
       note: 'Estimasi per porsi mangkuk saji tanpa nasi putih berlebih.'
     },
     relatedRecipeIds: ['garang-asem-kudus', 'nasi-liwet-solo', 'kupat-tahu-magelang'],
-    legendaryRestaurantIds: ['soto-kudus-pak-darno', 'garang-asem-sari-rasa-kudus']
+    legendaryRestaurantIds: ['soto-ayam-pak-darno-semarang', 'garang-asem-sari-rasa-kudus']
   },
   {
     id: 'nasi-liwet-solo',
@@ -362,7 +362,7 @@ export const recipes = [
       note: 'Rendah karbohidrat, kaya vitamin C alami dari belimbing wuluh.'
     },
     relatedRecipeIds: ['soto-kudus', 'mendoan-banyumas', 'nasi-megono-pekalongan'],
-    legendaryRestaurantIds: ['garang-asem-sari-rasa-kudus', 'soto-kudus-pak-darno']
+    legendaryRestaurantIds: ['garang-asem-sari-rasa-kudus', 'soto-ayam-pak-darno-semarang']
   },
   {
     id: 'lumpia-semarang',
@@ -600,7 +600,7 @@ export const recipes = [
       note: 'Per 1 lembar mendoan basah.'
     },
     relatedRecipeIds: ['lumpia-semarang', 'garang-asem-kudus', 'soto-kudus'],
-    legendaryRestaurantIds: ['mendoan-echo-banyumas', 'warung-megono-pak-bon-pekalongan']
+    legendaryRestaurantIds: ['mendoan-eco-21-purwokerto', 'warung-megono-pak-bon-pekalongan']
   },
   {
     id: 'selat-solo',
@@ -951,7 +951,7 @@ export const recipes = [
       note: 'Per porsi porsi sayur megono tanpa nasi putih.'
     },
     relatedRecipeIds: ['mendoan-banyumas', 'garang-asem-kudus', 'soto-kudus'],
-    legendaryRestaurantIds: ['warung-megono-pak-bon-pekalongan', 'mendoan-echo-banyumas']
+    legendaryRestaurantIds: ['warung-megono-pak-bon-pekalongan', 'mendoan-eco-21-purwokerto']
   },
   {
     id: 'sate-buntel-solo',
@@ -2879,7 +2879,7 @@ export const recipes = [
       note: 'Per porsi semangkuk sroto lengkap dengan ketupat, suwiran ayam, sambal kacang, dan kerupuk cantir.'
     },
     relatedRecipeIds: ['mendoan-banyumas', 'soto-kudus', 'tahu-gimbal-semarang'],
-    legendaryRestaurantIds: ['sate-tambak-banyumas', 'mendoan-echo-banyumas']
+    legendaryRestaurantIds: ['sate-tambak-banyumas', 'mendoan-eco-21-purwokerto']
   },
   {
     id: 'tempe-kemul-wonosobo',
@@ -2998,7 +2998,7 @@ export const recipes = [
       note: 'Per porsi 2 lembar tempe kemul renyah kucai.'
     },
     relatedRecipeIds: ['mie-ongklok-wonosobo', 'mendoan-banyumas', 'tahu-aci-slawi-tegal'],
-    legendaryRestaurantIds: ['pak-manto-solo', 'mendoan-echo-banyumas']
+    legendaryRestaurantIds: ['pak-manto-solo', 'mendoan-eco-21-purwokerto']
   }
 ];
 

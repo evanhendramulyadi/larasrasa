@@ -1,9 +1,8 @@
-import { t, i18n } from '../i18n/index.js';
+import { i18n } from '../i18n/index.js';
 
 /**
  * Editorial Royal Heritage Restaurant Card Component
- * Historic registry aesthetic with verified address, Google Maps link,
- * and bilingual Javanese-Indonesian touches.
+ * Verified city badge, year, Google Maps link, and authentic concise description.
  */
 export function renderRestaurantCard(restaurant) {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
@@ -35,41 +34,25 @@ export function renderRestaurantCard(restaurant) {
           <h3 class="font-editorial-serif text-xl sm:text-2xl font-bold leading-tight drop-shadow-md group-hover:text-[#F2BD68] transition-colors">
             ${restaurant.name}
           </h3>
-          <p class="text-xs text-[#EFE8DA] line-clamp-1 mt-1 font-semibold">
-            <span>${restaurant.signatureDish}</span>
-          </p>
         </div>
       </div>
 
       <!-- Content Details -->
       <div class="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
-        <div class="space-y-3.5">
-          <p class="text-xs text-[#5C3622] line-clamp-3 leading-relaxed">
+        <div>
+          <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
             ${restaurant.description}
           </p>
-
-          <div class="space-y-2 text-xs text-[#120B07] pt-3.5 border-t border-[#E8DEC8]">
-            <div class="flex items-start gap-2">
-              <svg class="w-4 h-4 text-[#C84C24] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                <circle cx="12" cy="10" r="3"/>
-              </svg>
-              <span class="line-clamp-2 text-[#5C3622] font-medium">${restaurant.address}</span>
-            </div>
-            <div class="flex items-center gap-2 text-[#2E4D38] font-bold">
-              <svg class="w-4 h-4 text-[#2E4D38] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-              <span>${restaurant.openingHours}</span>
-            </div>
-          </div>
         </div>
 
-        <!-- Action Bar: Price & Map Navigation -->
+        <!-- Action Bar: City & Map Navigation -->
         <div class="pt-3.5 border-t border-[#E8DEC8] flex items-center justify-between gap-2">
-          <span class="text-xs font-bold text-[#C84C24] shrink-0">
-            ${restaurant.priceRange}
+          <span class="text-xs text-[#8C6D52] font-semibold flex items-center gap-1.5 truncate">
+            <svg class="w-3.5 h-3.5 text-[#C84C24] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span class="truncate">${restaurant.city}</span>
           </span>
           <a href="${restaurant.googleMapsUrl}" 
              target="_blank" 

@@ -1,255 +1,122 @@
 export const restaurants = [
   {
     id: 'toko-oen-semarang',
-    name: 'Toko Oen Semarang',
+    name: 'Toko Oen',
     yearEstablished: 1936,
     city: 'Kota Semarang',
     regionId: 'semarang',
-    address: 'Jl. Pemuda No. 52, Pandansari, Semarang Tengah, Kota Semarang 50138',
-    coordinates: {
-      lat: -6.9749,
-      lng: 110.4239
-    },
-    signatureDish: 'Lumpia Goreng Oen & Biefstuk van de Haas',
-    priceRange: 'Rp 40.000 – Rp 120.000 / porsi',
-    category: 'Restoran Kolonial & Warisan',
-    openingHours: 'Setiap Hari: 09.30 – 21.30 WIB',
-    description: 'Salah satu restoran keluarga tertua di Indonesia yang masih mempertahankan arsitektur kolonial art deco, interior kayu antik, serta resep otentik akulturasi Jawa-Belanda sejak era sebelum kemerdekaan.',
-    historicalContext: 'Didirikan oleh keluarga Oen Tjoen Hok. Toko Oen Semarang yang dibuka pada 1936 kini menjadi penjaga tradisi kuliner nostalgia yang menyatukan racikan lumpia rebung peranakan dan masakan peninggalan tempo doeloe.',
-    googleMapsUrl: 'https://maps.google.com/?q=-6.9749,110.4239',
-    image: '/assets/images/restaurants/toko-oen.jpg',
-    specialties: ['Lumpia Goreng Klasik', 'Biefstuk Jawa', 'Poffertjes', 'Es Krim Tutti Frutti']
+    description: 'Berdiri sejak 1936. Menjual es krim homemade, hidangan klasik perpaduan Belanda, Tionghoa, dan Indonesia, serta kue kering dan roti jadul untuk oleh-oleh.',
+    googleMapsUrl: 'https://maps.google.com/?q=Toko+Oen+Semarang',
+    image: '/assets/images/restaurants/toko-oen.jpg'
   },
   {
     id: 'nasi-liwet-wongso-lemu-solo',
-    name: 'Nasi Liwet Wongso Lemu',
+    name: 'Nasi Liwet Bu Wongso Lemu',
     yearEstablished: 1950,
     city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
-    address: 'Jl. Teuku Umar, Keprabon, Kec. Banjarsari, Kota Surakarta 57131',
-    coordinates: {
-      lat: -7.5678,
-      lng: 110.8242
-    },
-    signatureDish: 'Nasi Liwet Komplit Suwir Ayam & Areh',
-    priceRange: 'Rp 25.000 – Rp 45.000 / porsi',
-    category: 'Kuliner Malam Tradisional',
-    openingHours: 'Setiap Hari: 16.00 – 01.00 WIB',
-    description: 'Destinasi wajib penikmat nasi liwet di kawasan Keprabon Solo. Disajikan di atas pincuk daun pisang dengan siraman kuah sayur labu siam pedas-manis, suwiran ayam opor lembut, dan gumpalan areh putih santan kental yang gurih tiada tanding.',
-    historicalContext: 'Ibu Wongso Lemu mulai menjajakan nasi liwet keliling pada dekade 1950-an sebelum menetap di Jalan Teuku Umar. Tradisi lesehan dan alunan tembang sinden Jawa menjadi ciri khas atmosfer makan di sini.',
-    googleMapsUrl: 'https://maps.google.com/?q=-7.5678,110.8242',
-    image: '/assets/images/restaurants/wongso-lemu.jpg',
-    specialties: ['Nasi Liwet Pincuk', 'Ayam Opor Kampung', 'Areh Santan Gurih', 'Telur Pindang Cokelat']
+    description: 'Berdiri sejak 1950. Menjual nasi liwet gurih khas Solo dengan beragam lauk tradisional.',
+    googleMapsUrl: 'https://maps.google.com/?q=Nasi+Liwet+Wongso+Lemu+Solo',
+    image: '/assets/images/restaurants/wongso-lemu.jpg'
   },
   {
-    id: 'soto-kudus-pak-darno',
-    name: 'Soto Ayam Kudus Pak Darno',
-    yearEstablished: 1968,
-    city: 'Kabupaten Kudus',
-    regionId: 'kudus',
-    address: 'Jl. KH. Agus Salim No. 25, Panjunan, Kec. Kota Kudus, Kabupaten Kudus 59317',
-    coordinates: {
-      lat: -6.8118,
-      lng: 110.8384
-    },
-    signatureDish: 'Soto Ayam Kampung Mangkuk Kecil Tradisional',
-    priceRange: 'Rp 18.000 – Rp 35.000 / porsi',
-    category: 'Warung Soto Legendaris',
-    openingHours: 'Setiap Hari: 06.30 – 20.30 WIB',
-    description: 'Penyaji soto Kudus otentik dengan kaldu ayam kampung bening keemasan yang sarat bumbu kencur dan bawang putih goreng renyah. Disajikan dalam mangkuk keramik kecil khas Kudus bersama sendok bebek bebek porselen.',
-    historicalContext: 'Mewarisi tradisi bumbu soto pesisir Kudus sejak tahun 1968, Pak Darno tetap mempertahankan metode perebusan kaldu menggunakan kuali tanah liat dan kayu bakar untuk mengeluarkan sari pati daging ayam kampung.',
-    googleMapsUrl: 'https://maps.google.com/?q=-6.8118,110.8384',
-    image: '/assets/images/restaurants/soto-pak-darno.jpg',
-    specialties: ['Soto Ayam Mangkuk Keramik', 'Sate Kerang Bumbu Manis', 'Perkedel Kentang', 'Paru Goreng Gurih']
+    id: 'soto-ayam-pak-darno-semarang',
+    name: 'Soto Ayam Pak Darno',
+    yearEstablished: 1979,
+    city: 'Kota Semarang',
+    regionId: 'semarang',
+    description: 'Berdiri sekitar 1979 atau awal 1980-an. Menjual soto ayam khas Semarang dengan aneka sate dan gorengan sebagai pelengkap. Berlokasi di Jl. MH Thamrin No. 88, Semarang.',
+    googleMapsUrl: 'https://maps.google.com/?q=Soto+Ayam+Pak+Darno+Thamrin+Semarang',
+    image: '/assets/images/restaurants/soto-pak-darno.jpg'
   },
   {
     id: 'garang-asem-sari-rasa-kudus',
-    name: 'Garang Asem Sari Rasa Kudus',
-    yearEstablished: 1985,
+    name: 'Garang Asem Sari Rasa (Gasasa)',
+    yearEstablished: 1977,
     city: 'Kabupaten Kudus',
     regionId: 'kudus',
-    address: 'Jl. AKBP Agil Kusumadya No. 20, Jati Kulon, Jati, Kabupaten Kudus 59346',
-    coordinates: {
-      lat: -6.8225,
-      lng: 110.8351
-    },
-    signatureDish: 'Garang Asem Ayam Kampung Daun Pisang',
-    priceRange: 'Rp 35.000 – Rp 50.000 / porsi',
-    category: 'Rumah Makan Tradisional',
-    openingHours: 'Setiap Hari: 07.30 – 21.00 WIB',
-    description: 'Spesialis garang asem paling tersohor di jalur Pantura Kudus. Setiap porsi dikukus dalam bungkusan daun pisang rapat berisi potongan ayam kampung, belimbing wuluh segar, tomat hijau, dan cabai rawit utuh berkuah santan encer beraroma asap daun.',
-    historicalContext: 'Didirikan pada pertengahan 1980-an, Sari Rasa menjadi rujukan utama para pelintas Pantura yang mendambakan hidangan berkuah asam pedas penyegar tubuh.',
-    googleMapsUrl: 'https://maps.google.com/?q=-6.8225,110.8351',
-    image: '/assets/images/restaurants/sari-rasa-kudus.jpg',
-    specialties: ['Garang Asem Daun Pisang', 'Pindang Ayam Kudus', 'Ayam Goreng Bumbu Lengkuas']
+    description: 'Berdiri sejak 1977, dirintis oleh Ibu Sriati. Menjual garang asem ayam kampung khas Kudus serta aneka masakan Jawa lainnya.',
+    googleMapsUrl: 'https://maps.google.com/?q=Garang+Asem+Sari+Rasa+Kudus',
+    image: '/assets/images/restaurants/sari-rasa-kudus.jpg'
   },
   {
     id: 'lunpia-gang-lombok-semarang',
-    name: 'Lunpia Gang Lombok No. 1',
-    yearEstablished: 1890,
+    name: 'Lunpia Gang Lombok',
+    yearEstablished: 1867,
     city: 'Kota Semarang',
     regionId: 'semarang',
-    address: 'Gang Lombok No. 1, Purwodinatan, Semarang Tengah (Samping Klenteng Tay Kak Sie), Kota Semarang 50137',
-    coordinates: {
-      lat: -6.9742,
-      lng: 110.4287
-    },
-    signatureDish: 'Lunpia Rebung Ebi Asli Basah & Goreng',
-    priceRange: 'Rp 22.000 / biji',
-    category: 'Gerai Kuliner Warisan Budaya',
-    openingHours: 'Setiap Hari: 08.00 – 17.00 WIB',
-    description: 'Pusat lahirnya lumpia Semarang modern. Menggunakan rebung pilihan yang diolah tanpa bau pesing, ebi kering gurih, dan balutan kulit tipis lembut. Disajikan dengan saus kental bawang putih, daun bawang segar, dan acar mentimun.',
-    historicalContext: 'Merupakan generasi penerus langsung dari Tjoa Thay Joe (imigran Fujian) dan Wasih (wanita Jawa) yang pada akhir abad ke-19 memadukan martabak Tionghoa dengan cita rasa manis-gurih Jawa.',
-    googleMapsUrl: 'https://maps.google.com/?q=-6.9742,110.4287',
-    image: '/assets/images/restaurants/lumpia-gang-lombok.jpg',
-    specialties: ['Lunpia Goreng Gurih Renyah', 'Lunpia Basah Original', 'Saus Bawang Putih Tauco Kental']
+    description: 'Mulai dirintis sekitar tahun 1867–1877. Secara khusus menjual lumpia khas Semarang dalam varian basah dan goreng.',
+    googleMapsUrl: 'https://maps.google.com/?q=Lunpia+Gang+Lombok+No+1+Semarang',
+    image: '/assets/images/restaurants/lumpia-gang-lombok.jpg'
   },
   {
     id: 'selat-solo-mbak-lies',
-    name: 'Selat Solo Mbak Lies',
+    name: 'Warung Selat Mbak Lies',
     yearEstablished: 1987,
     city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
-    address: 'Jl. Veteran, Gang II No. 42, Serengan, Kota Surakarta 57155',
-    coordinates: {
-      lat: -7.5857,
-      lng: 110.8224
-    },
-    signatureDish: 'Selat Bestik Daging Sapi & Selat Galantin',
-    priceRange: 'Rp 22.000 – Rp 38.000 / porsi',
-    category: 'Restoran Warisan Budaya',
-    openingHours: 'Setiap Hari: 08.00 – 17.30 WIB',
-    description: 'Rumah makan berhias ribuan keramik porselen antik dan ornamen klasik Eropa-Jawa yang menyajikan Selat Solo otentik dengan irisan bistik daging sapi empuk, kuah segar manis berempah pala, kentang goreng renyah, dan saus mustar Jawa kuning.',
-    historicalContext: 'Dipelopori oleh Ny. Wulandari Kusmadyaningrum (Mbak Lies) pada 1987 di dalam gang perkampungan Serengan, berhasil menghidupkan kembali sajian bistik ala keraton Solo bagi masyarakat luas.',
-    googleMapsUrl: 'https://maps.google.com/?q=-7.5857,110.8224',
-    image: '/assets/images/restaurants/selat-mbak-lies.jpg',
-    specialties: ['Selat Daging Sapi Bestik', 'Selat Galantin Kuah Segar', 'Sup Matahari', 'Timlo Solo']
+    description: 'Berdiri sejak 1987. Menjual berbagai kuliner khas Solo bergaya Jawa-Belanda dengan menu utama Selat Solo.',
+    googleMapsUrl: 'https://maps.google.com/?q=Warung+Selat+Mbak+Lies+Solo',
+    image: '/assets/images/restaurants/selat-mbak-lies.jpg'
   },
   {
     id: 'sate-kambing-pak-manto-solo',
-    name: 'Sate Kambing Pak Manto Solo',
+    name: 'Sate Kambing & Thengkleng Rica-Rica Pak Manto',
     yearEstablished: 1990,
     city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
-    address: 'Jl. Honggowongso No. 36, Sriwedari, Kec. Laweyan, Kota Surakarta 57141',
-    coordinates: {
-      lat: -7.5683,
-      lng: 110.8144
-    },
-    signatureDish: 'Sate Buntel & Tengkleng Rica Pedas Manis',
-    priceRange: 'Rp 35.000 – Rp 70.000 / porsi',
-    category: 'Spesialis Daging Kambing',
-    openingHours: 'Setiap Hari: 09.00 – 21.00 WIB',
-    description: 'Pelopor sate buntel daging cincang lembut berbalut lemak tipis serta tengkleng rica legendaris berkuah kental pedas manis beraroma bakar arang khas Laweyan Solo.',
-    historicalContext: 'Almarhum Sumanto (Pak Manto) mengawali usahanya dari berjualan sate keliling dan menciptakan variasi tengkleng rica yang kini menjadi tren kuliner nasional.',
-    googleMapsUrl: 'https://maps.google.com/?q=-7.5683,110.8144',
-    image: '/assets/images/restaurants/pak-manto.jpg',
-    specialties: ['Sate Buntel Daging Cincang', 'Tengkleng Rica Pedas Gila', 'Gulai Kambing Gurih']
+    description: 'Berdiri sejak 1990. Menjual beragam olahan daging dan jeroan kambing khas Solo, dengan menu ikonik tengkleng rica-rica dan sate buntel.',
+    googleMapsUrl: 'https://maps.google.com/?q=Sate+Kambing+Pak+Manto+Solo',
+    image: '/assets/images/restaurants/pak-manto.jpg'
   },
   {
     id: 'warung-megono-pak-bon-pekalongan',
-    name: 'Warung Makan Megono Pak Bon',
-    yearEstablished: 1972,
+    name: 'Warung Makan Nasi Megono Pak Bon',
+    yearEstablished: 1963,
     city: 'Kota & Kab Pekalongan',
     regionId: 'pekalongan',
-    address: 'Jl. Cempaka No. 1, Poncol, Pekalongan Timur, Kota Pekalongan 51122',
-    coordinates: {
-      lat: -6.8902,
-      lng: 109.6805
-    },
-    signatureDish: 'Nasi Megono Komplit Kecombrang & Mendoan Hangat',
-    priceRange: 'Rp 10.000 – Rp 25.000 / porsi',
-    category: 'Warung Tradisional Pesisir',
-    openingHours: 'Setiap Hari: 06.00 – 14.00 WIB',
-    description: 'Pusat sarapan warga Pekalongan dengan sajian nasi megono hangat beraroma bunga kecombrang yang pekat, ditemani tempe mendoan panas bertepung kunyit dan cumi masak hitam khas pesisir.',
-    historicalContext: 'Dikelola turun-temurun oleh keluarga Pak Bon sejak dekade 1970-an, menjadi simbol kebersahajaan dan kekayaan rasa dapur warga pesisir Pekalongan.',
-    googleMapsUrl: 'https://maps.google.com/?q=-6.8902,109.6805',
-    image: '/assets/images/restaurants/megono-pak-bon.jpg',
-    specialties: ['Nasi Megono Kecombrang', 'Tempe Mendoan Lebar', 'Cumi Hitam Pesisir', 'Ikan Mangut Asap']
+    description: 'Berdiri sejak 1963. Menjual sego megono, yaitu nasi hangat dengan cacahan nangka muda berbumbu kelapa, beserta aneka lauk pendamping khas Pekalongan.',
+    googleMapsUrl: 'https://maps.google.com/?q=Warung+Makan+Nasi+Megono+Pak+Bon+Pekalongan',
+    image: '/assets/images/restaurants/megono-pak-bon.jpg'
   },
   {
-    id: 'mendoan-echo-banyumas',
-    name: 'Mendoan Echo Asli Banyumas',
-    yearEstablished: 1983,
+    id: 'mendoan-eco-21-purwokerto',
+    name: 'Mendoan Eco 21',
+    yearEstablished: 1990,
     city: 'Kabupaten Banyumas',
     regionId: 'banyumas',
-    address: 'Jl. Mayjen Sutoyo No. 9, Sawangan, Purwokerto Barat, Kabupaten Banyumas 53132',
-    coordinates: {
-      lat: -7.4241,
-      lng: 109.2312
-    },
-    signatureDish: 'Tempe Mendoan Basah Daun Bawang Asli',
-    priceRange: 'Rp 4.000 / lembar (Paket besek oleh-oleh tersedia)',
-    category: 'Pusat Kuliner & Oleh-Oleh Banyumasan',
-    openingHours: 'Setiap Hari: 07.00 – 21.00 WIB',
-    description: 'Produsen tempe mendoan daun kedelai asli yang digoreng langsung mendidih di depan pembeli. Lembaran mendoan disajikan setengah matang hangat, kenyal lembut, dengan aroma daun bawang yang harum menggiurkan.',
-    historicalContext: 'Menjadi salah satu pelopor kemasan oleh-oleh tempe mendoan mentah bungkus daun pisang lengkap dengan tepung racik dan kecap cocolan khusus khas Sawangan Purwokerto.',
-    googleMapsUrl: 'https://maps.google.com/?q=-7.4241,109.2312',
-    image: '/assets/images/restaurants/mendoan-echo.jpg',
-    specialties: ['Tempe Mendoan Goreng Panas', 'Sambal Kecap Rawit Banyumas', 'Getuk Goreng Sokaraja']
+    description: 'Berdiri sejak 1990 di kawasan Sawangan, Purwokerto. Menjual tempe mendoan matang maupun paket mentah serta aneka oleh-oleh khas Banyumas lainnya.',
+    googleMapsUrl: 'https://maps.google.com/?q=Mendoan+Eco+21+Sawangan+Purwokerto',
+    image: '/assets/images/restaurants/mendoan-echo.jpg'
   },
   {
     id: 'kupat-tahu-pojok-magelang',
-    name: 'Kupat Tahu Pojok Magelang',
+    name: 'Kupat Tahu Pojok',
     yearEstablished: 1942,
     city: 'Kota & Kab Magelang',
     regionId: 'magelang',
-    address: 'Jl. Tentara Pelajar No. 14, Cacaban, Magelang Tengah, Kota Magelang 56121',
-    coordinates: {
-      lat: -7.4789,
-      lng: 110.2173
-    },
-    signatureDish: 'Kupat Tahu Telur Kuah Bawang Encer Manis',
-    priceRange: 'Rp 15.000 – Rp 25.000 / porsi',
-    category: 'Warung Legendaris Sejarah',
-    openingHours: 'Setiap Hari: 09.00 – 20.30 WIB',
-    description: 'Warung kupat tahu tertua di Magelang yang telah melayani lintas generasi sejak zaman pra-kemerdekaan. Disajikan dengan tahu sutra goreng lembut, bakwan sayur renyah, kupat kenyal, kecambah pendek, dan kuah kecap bawang putih yang ringan dan tidak enek.',
-    historicalContext: 'Didirikan oleh Bapak Kuntjoro pada tahun 1942. Dinding warung dipenuhi foto-foto kunjungan para presiden RI dan tokoh nasional yang selalu menyempatkan singgah saat berkunjung ke Magelang atau Borobudur.',
-    googleMapsUrl: 'https://maps.google.com/?q=-7.4789,110.2173',
-    image: '/assets/images/restaurants/kupat-tahu-pojok.jpg',
-    specialties: ['Kupat Tahu Komplit', 'Kupat Tahu Telur Dadar', 'Es Kacang Merah Segar']
+    description: 'Berdiri sejak 1942. Menjual kupat tahu khas Magelang yang dimasak secara tradisional menggunakan arang kayu.',
+    googleMapsUrl: 'https://maps.google.com/?q=Kupat+Tahu+Pojok+Magelang',
+    image: '/assets/images/restaurants/kupat-tahu-pojok.jpg'
   },
   {
     id: 'sate-kambing-wendys-tegal',
-    name: 'Sate Kambing Muda Wendy\'s Tegal',
-    yearEstablished: 1980,
+    name: 'Sate Kambing Muda Wendy\'s',
+    yearEstablished: 1984,
     city: 'Kota & Kab Tegal',
     regionId: 'tegal',
-    address: 'Jl. Letjen Suprapto No. 59, Kraton, Kec. Tegal Barat, Kota Tegal 52112',
-    coordinates: {
-      lat: -6.8682,
-      lng: 109.1365
-    },
-    signatureDish: 'Sate Kambing Batibul Polosan & Garang Asem Kambing',
-    priceRange: 'Rp 45.000 – Rp 85.000 / porsi',
-    category: 'Spesialis Sate Kambing Batibul',
-    openingHours: 'Setiap Hari: 09.30 – 21.00 WIB',
-    description: 'Destinasi legendaris sate kambing muda batibul (bawah tiga bulan) di kota Tegal. Daging kambing dipanggang polosan di atas bara arang batok kelapa tanpa bumbu celup, menghasilkan tekstur daging yang empuk luar biasa dengan aroma harum gurih alami.',
-    historicalContext: 'Mulai dirintis oleh keluarga Wendy pada era 1980-an dan menjadi rujukan utama pecinta kuliner sate kambing muda di jalur Pantura barat Jawa Tengah.',
-    googleMapsUrl: 'https://maps.google.com/?q=-6.8682,109.1365',
-    image: '/assets/images/recipes/solo-minced-satay.jpg',
-    specialties: ['Sate Kambing Batibul', 'Garang Asem Kambing Bening', 'Sop Kaki Kambing', 'Tahu Aci Slawi']
+    description: 'Mulai dirintis pada 1984. Secara khusus menjual berbagai olahan daging kambing muda (batibul atau usia 3–5 bulan) khas Tegal.',
+    googleMapsUrl: 'https://maps.google.com/?q=Sate+Kambing+Muda+Wendy%27s+Tegal',
+    image: '/assets/images/recipes/sate-kambing-batibul.jpg'
   },
   {
     id: 'mie-ongklok-pak-muhadi-wonosobo',
-    name: 'Mie Ongklok Pak Muhadi Wonosobo',
-    yearEstablished: 1980,
+    name: 'Mie Ongklok Pak Muhadi',
+    yearEstablished: 1966,
     city: 'Kabupaten Wonosobo',
     regionId: 'wonosobo',
-    address: 'Jl. A. Yani No. 1, Tosari, Jaraksari, Kec. Wonosobo, Kabupaten Wonosobo 56314',
-    coordinates: {
-      lat: -7.3621,
-      lng: 109.9015
-    },
-    signatureDish: 'Mie Ongklok Kuah Kental Ebi & Sate Sapi Bumbu Manis',
-    priceRange: 'Rp 15.000 – Rp 35.000 / porsi',
-    category: 'Warung Pusaka Dieng',
-    openingHours: 'Setiap Hari: 09.30 – 19.30 WIB',
-    description: 'Pelopor kehangatan hidangan mie ongklok di pusat kota Wonosobo. Mi kuning kenyal diaduk dalam keranjang bambu ongklok, diguyur kuah kental kaldu ebi dan tepung tapioka beraroma kucai pegunungan, ditemani sate sapi manis dan tempe kemul renyah.',
-    historicalContext: 'Bapak Muhadi meracik bumbu kuah ebi kental sejak dekade 1980-an yang menjadi penawar dingin paling dicari para pendaki dan wisatawan Dataran Tinggi Dieng.',
-    googleMapsUrl: 'https://maps.google.com/?q=-7.3621,109.9015',
-    image: '/assets/images/recipes/wonosobo-ongklok-noodles.jpg',
-    specialties: ['Mie Ongklok Spesial', 'Sate Sapi Bumbu Manis', 'Tempe Kemul Kunyit Krispi', 'Geblek Singkong']
+    description: 'Berdiri sejak 1966. Berfokus menjual mi ongklok khas Wonosobo dengan sate sapi atau ayam sebagai menu pendamping.',
+    googleMapsUrl: 'https://maps.google.com/?q=Mie+Ongklok+Pak+Muhadi+Wonosobo',
+    image: '/assets/images/recipes/mie-ongklok.jpg'
   }
 ];
-
