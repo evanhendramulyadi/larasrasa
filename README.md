@@ -6,7 +6,7 @@
 
 LarasRasa is an interactive and exploratory culinary heritage web application designed to showcase Central Java's rich gastronomic traditions, iconic heritage recipes, indigenous spices, regional flavor geography, and cultural culinary matchmaking through an intuitive, visual, and modern digital experience.
 
-This project was initiated as a Project-Based Learning (PjBL) assignment at SMK Pariwisata Metland School, represented by Kelompok 2 (Central Java Group)—a collaborative multidisciplinary student group bringing together talents across software engineering, UI/UX design, flow architecture, and academic research.
+This project was initiated as a Project-Based Learning (PjBL) assignment in the Information Technology (IT) Department at SMK Pariwisata Metland School. For this assignment, Kelompok 2 was tasked with creating a website centered on Central Java, choosing to develop LarasRasa—an exploratory culinary platform celebrating Central Java's rich culinary traditions, iconic recipes, indigenous spices, and gastronomic heritage.
 
 ---
 
@@ -44,7 +44,7 @@ Experience LarasRasa directly in your browser:
 
 ## 👥 Project Background & Development Team
 
-This web application was created as part of a school Project-Based Learning (PjBL) assignment at SMK Pariwisata Metland School. For this assignment, a collaborative group named Kelompok 2 (Central Java Group) was established, uniting students from the Information Technology / Software Engineering Department.
+This web application was created as part of the school Project-Based Learning (PjBL) program in the Information Technology (IT) Department at SMK Pariwisata Metland School. In this program, Kelompok 2 was tasked with developing a website centered around Central Java, bringing together talents across software engineering, UI/UX design, flow architecture, and academic research.
 
 Within Kelompok 2, the web application was fully designed, architected, and built by:
 
@@ -97,6 +97,6 @@ Ensure you have [Node.js](https://nodejs.org/) (version 18 or later) installed a
 
 © 2026–Present Kelompok 2. All Rights Reserved.
 
-The web application codebase and technical implementation were developed by Kelompok 2 (Central Java Group), particularly the Information Technology / Software Engineering Team, as part of the Project-Based Learning (PjBL) program at SMK Pariwisata Metland School.
+The web application codebase and technical implementation were developed by Kelompok 2 as part of the Information Technology (IT) Project-Based Learning (PjBL) program at SMK Pariwisata Metland School.
 
 This repository is publicly accessible solely for viewing, studying, and reviewing the source code. Public access does not grant permission to copy the entire project, rebrand or rename it, remove attribution, or claim it as your own creation. Re-use or distribution without explicit permission from the author is strictly prohibited.
