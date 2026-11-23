@@ -218,8 +218,8 @@ export const id = {
     searchPlaceholder: 'Cari warung atau restoran (contoh: Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'Kota / Wilayah:',
     allCities: 'Semua Kota',
-    noticeTitle: 'Catatan Kunjungan & Validasi Data',
-    noticeText: 'Data restoran dan tempat makan legendaris ini diriset dan didokumentasikan pada tahun 2026. Status operasional dapat berubah atau tutup permanen sewaktu-waktu. Harap pastikan kembali status buka/tutup, jam operasional, serta harga menu terkini melalui internet atau Google Maps sebelum Anda berkunjung.'
+    noticeTitle: 'Catatan Sejarah & Dokumentasi Usaha',
+    noticeText: 'Tahun berdiri dan sejarah usaha di atas mengikuti informasi dari berbagai sumber pendukung; sebagian detail tahun merupakan perkiraan karena belum memiliki dokumentasi primer yang seragam.'
   },
   recommendations: {
     badge: 'Kurasi Selera Kuliner Jawa Tengah',

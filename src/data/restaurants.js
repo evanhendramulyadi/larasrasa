@@ -5,8 +5,8 @@ export const restaurants = [
     yearEstablished: 1936,
     city: 'Kota Semarang',
     regionId: 'semarang',
-    description: 'Berdiri sejak 1936. Menjual es krim homemade, hidangan klasik perpaduan Belanda, Tionghoa, dan Indonesia, serta kue kering dan roti jadul untuk oleh-oleh.',
-    googleMapsUrl: 'https://maps.google.com/?q=Toko+Oen+Semarang',
+    description: 'Berdiri di Semarang pada tahun 1936. Menjual es krim buatan sendiri (homemade), hidangan klasik perpaduan Belanda, Tionghoa, dan Indonesia, serta kue kering dan roti jadul untuk oleh-oleh.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJlXBR3U2LcC4R4HHkfElxS_g',
     image: '/assets/images/restaurants/toko-oen.jpg'
   },
   {
@@ -15,28 +15,28 @@ export const restaurants = [
     yearEstablished: 1950,
     city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
-    description: 'Berdiri sejak 1950. Menjual nasi liwet gurih khas Solo dengan beragam lauk tradisional.',
-    googleMapsUrl: 'https://maps.google.com/?q=Nasi+Liwet+Wongso+Lemu+Solo',
+    description: 'Berdiri pada tahun 1950. Menjual hidangan khas Solo berupa nasi liwet gurih dengan beragam lauk kampung.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJB0OZbWIWei4R-uruTK1Smbo',
     image: '/assets/images/restaurants/wongso-lemu.jpg'
   },
   {
     id: 'soto-ayam-pak-darno-semarang',
     name: 'Soto Ayam Pak Darno',
-    yearEstablished: 1979,
+    yearEstablished: 1980,
     city: 'Kota Semarang',
     regionId: 'semarang',
-    description: 'Berdiri sekitar 1979 atau awal 1980-an. Menjual soto ayam khas Semarang dengan aneka sate dan gorengan sebagai pelengkap. Berlokasi di Jl. MH Thamrin No. 88, Semarang.',
-    googleMapsUrl: 'https://maps.google.com/?q=Soto+Ayam+Pak+Darno+Thamrin+Semarang',
+    description: 'Berdiri sejak 1980-an. Menjual soto ayam khas Semarang beserta aneka sate dan gorengan pelengkap. Meskipun disajikan dalam mangkuk kecil seperti soto Kudus, warung ini menyajikan soto bergaya Semarang.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ14pzBlGLcC4Rh-m-8CVMBx0',
     image: '/assets/images/restaurants/soto-pak-darno.jpg'
   },
   {
     id: 'garang-asem-sari-rasa-kudus',
-    name: 'Garang Asem Sari Rasa (Gasasa)',
+    name: 'RM Gasasa Garang Asem Sari Rasa',
     yearEstablished: 1977,
     city: 'Kabupaten Kudus',
     regionId: 'kudus',
-    description: 'Berdiri sejak 1977, dirintis oleh Ibu Sriati. Menjual garang asem ayam kampung khas Kudus serta aneka masakan Jawa lainnya.',
-    googleMapsUrl: 'https://maps.google.com/?q=Garang+Asem+Sari+Rasa+Kudus',
+    description: 'Berdiri pada tahun 1977, dirintis oleh Ibu Sriati. Garang asem ayam kampung khas Kudus mulai diperkenalkan sebagai menu pada tahun 1986, beserta aneka masakan Jawa lainnya.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJOUBgru3EcC4R5q8BFN5Lnd8',
     image: '/assets/images/restaurants/sari-rasa-kudus.jpg'
   },
   {
@@ -45,8 +45,8 @@ export const restaurants = [
     yearEstablished: 1867,
     city: 'Kota Semarang',
     regionId: 'semarang',
-    description: 'Mulai dirintis sekitar tahun 1867–1877. Secara khusus menjual lumpia khas Semarang dalam varian basah dan goreng.',
-    googleMapsUrl: 'https://maps.google.com/?q=Lunpia+Gang+Lombok+No+1+Semarang',
+    description: 'Mulai dirintis sejak abad ke-19. Menjual lumpia khas Semarang, baik varian basah maupun goreng.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJn406fqr0cC4RG0y566UNjY0',
     image: '/assets/images/restaurants/lumpia-gang-lombok.jpg'
   },
   {
@@ -55,18 +55,18 @@ export const restaurants = [
     yearEstablished: 1987,
     city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
-    description: 'Berdiri sejak 1987. Menjual berbagai kuliner khas Solo bergaya Jawa-Belanda dengan menu utama Selat Solo.',
-    googleMapsUrl: 'https://maps.google.com/?q=Warung+Selat+Mbak+Lies+Solo',
+    description: 'Berdiri sejak tahun 1987. Menjual berbagai kuliner khas Solo bergaya perpaduan Jawa dan Belanda, dengan menu utama Selat Solo.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ4-fKX6kXei4RbOfyhZ81GeY',
     image: '/assets/images/restaurants/selat-mbak-lies.jpg'
   },
   {
     id: 'sate-kambing-pak-manto-solo',
-    name: 'Sate Kambing & Thengkleng Rica-Rica Pak Manto',
+    name: 'Sate Kambing & Tengkleng Rica Rica Pak Manto',
     yearEstablished: 1990,
     city: 'Kota Surakarta (Solo)',
     regionId: 'surakarta',
-    description: 'Berdiri sejak 1990. Menjual beragam olahan daging dan jeroan kambing khas Solo, dengan menu ikonik tengkleng rica-rica dan sate buntel.',
-    googleMapsUrl: 'https://maps.google.com/?q=Sate+Kambing+Pak+Manto+Solo',
+    description: 'Berdiri pada tahun 1990. Menjual beragam olahan daging dan jeroan kambing khas Solo, dengan menu ikonik berupa tengkleng rica-rica dan sate buntel.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJiez_A30Wei4REcQvSaDbGpE',
     image: '/assets/images/restaurants/pak-manto.jpg'
   },
   {
@@ -75,38 +75,38 @@ export const restaurants = [
     yearEstablished: 1963,
     city: 'Kota & Kab Pekalongan',
     regionId: 'pekalongan',
-    description: 'Berdiri sejak 1963. Menjual sego megono, yaitu nasi hangat dengan cacahan nangka muda berbumbu kelapa, beserta aneka lauk pendamping khas Pekalongan.',
-    googleMapsUrl: 'https://maps.google.com/?q=Warung+Makan+Nasi+Megono+Pak+Bon+Pekalongan',
+    description: 'Berdiri sejak tahun 1963. Menjual sego megono, yaitu nasi hangat dengan cacahan nangka muda berbumbu kelapa, beserta aneka lauk pendamping khas Pekalongan.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJe8JEHDMkcC4RPqRrgK5do4Q',
     image: '/assets/images/restaurants/megono-pak-bon.jpg'
   },
   {
     id: 'mendoan-eco-21-purwokerto',
-    name: 'Mendoan Eco 21',
+    name: 'Pusat Oleh-Oleh ECO21',
     yearEstablished: 1990,
     city: 'Kabupaten Banyumas',
     regionId: 'banyumas',
-    description: 'Berdiri sejak 1990 di kawasan Sawangan, Purwokerto. Menjual tempe mendoan matang maupun paket mentah serta aneka oleh-oleh khas Banyumas lainnya.',
-    googleMapsUrl: 'https://maps.google.com/?q=Mendoan+Eco+21+Sawangan+Purwokerto',
+    description: 'Berdiri sejak tahun 1990 di kawasan Sawangan, Purwokerto, Banyumas. Menjual tempe mendoan matang maupun paket mentah, beserta aneka oleh-oleh khas Banyumas lainnya.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJoy_Yt4VeZS4RI7Cj7pAdZO8',
     image: '/assets/images/restaurants/mendoan-echo.jpg'
   },
   {
     id: 'kupat-tahu-pojok-magelang',
-    name: 'Kupat Tahu Pojok',
+    name: 'Kupat Tahu Pojok Magelang',
     yearEstablished: 1942,
     city: 'Kota & Kab Magelang',
     regionId: 'magelang',
-    description: 'Berdiri sejak 1942. Menjual kupat tahu khas Magelang yang dimasak secara tradisional menggunakan arang kayu.',
-    googleMapsUrl: 'https://maps.google.com/?q=Kupat+Tahu+Pojok+Magelang',
+    description: 'Berdiri pada tahun 1942. Menjual kupat tahu khas Magelang sebagai menu utamanya.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJUe-TyF6Pei4R0LNN4lJvfuw',
     image: '/assets/images/restaurants/kupat-tahu-pojok.jpg'
   },
   {
     id: 'sate-kambing-wendys-tegal',
-    name: 'Sate Kambing Muda Wendy\'s',
+    name: 'Sate Mendo Wendy\'s',
     yearEstablished: 1984,
     city: 'Kota & Kab Tegal',
     regionId: 'tegal',
-    description: 'Mulai dirintis pada 1984. Secara khusus menjual berbagai olahan daging kambing muda (batibul atau usia 3–5 bulan) khas Tegal.',
-    googleMapsUrl: 'https://maps.google.com/?q=Sate+Kambing+Muda+Wendy%27s+Tegal',
+    description: 'Mulai dirintis pada tahun 1984. Menjual berbagai olahan daging kambing muda (balibul, yaitu kambing berusia di bawah 5 bulan) khas Tegal.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ-2SWiXq3by4R0YPMzNT5zZg',
     image: '/assets/images/recipes/sate-kambing-batibul.jpg'
   },
   {
@@ -115,8 +115,8 @@ export const restaurants = [
     yearEstablished: 1966,
     city: 'Kabupaten Wonosobo',
     regionId: 'wonosobo',
-    description: 'Berdiri sejak 1966. Berfokus menjual mi ongklok khas Wonosobo dengan sate sapi atau ayam sebagai menu pendamping.',
-    googleMapsUrl: 'https://maps.google.com/?q=Mie+Ongklok+Pak+Muhadi+Wonosobo',
+    description: 'Berdiri sejak tahun 1966. Berfokus menjual mie ongklok khas Wonosobo beserta sate sapi sebagai menu pendamping utamanya.',
+    googleMapsUrl: 'https://www.google.com/maps/place//data=!4m2!3m1!19sChIJ7d58eQChei4RZdoHbvwQ5Dk',
     image: '/assets/images/recipes/mie-ongklok.jpg'
   }
 ];

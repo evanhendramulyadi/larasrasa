@@ -218,8 +218,8 @@ export const en = {
     searchPlaceholder: 'Search eatery or restaurant (e.g., Toko Oen, Wongso Lemu, Mbak Lies, Pak Manto)...',
     cityFilter: 'City / Region:',
     allCities: 'All Cities',
-    noticeTitle: 'Visitor Notice & Data Verification',
-    noticeText: 'Establishment records and culinary profiles were researched and documented in 2026. Operating status, business hours, and pricing may change or close permanently over time. Prior to visiting, please verify current opening hours, operational status, and menu prices online or via Google Maps.'
+    noticeTitle: 'Historical Documentation & Business Records Notice',
+    noticeText: 'The establishment years and business history above follow information from various supporting sources; some year details are approximations due to the absence of uniform primary documentation.'
   },
   recommendations: {
     badge: 'Central Javanese Taste Curation',

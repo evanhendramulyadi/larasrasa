@@ -25,9 +25,6 @@ export function renderRestaurantCard(restaurant) {
             </svg>
             <span>Est. ${restaurant.yearEstablished}</span>
           </span>
-          <span class="px-3 py-1 rounded-full text-xs font-bold bg-[#120B07]/90 text-[#FAF7F2] backdrop-blur-md border border-[#D49B42]/40 shadow-xs">
-            ${restaurant.city}
-          </span>
         </div>
 
         <div class="absolute bottom-3.5 left-3.5 right-3.5 text-white">

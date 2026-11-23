@@ -1288,40 +1288,40 @@ export const spiceTranslationsEn = {
 
 export const restaurantTranslationsEn = {
   'toko-oen-semarang': {
-    description: 'Established in 1936. Serves homemade ice cream, classic colonial fusion dishes combining Dutch, Chinese, and Indonesian influences, as well as vintage cookies and traditional pastries for gifts.'
+    description: 'Established in Semarang in 1936. Serves homemade ice cream, classic colonial fusion dishes combining Dutch, Chinese, and Indonesian influences, as well as vintage cookies and traditional pastries for gifts.'
   },
   'nasi-liwet-wongso-lemu-solo': {
-    description: 'Established in 1950. Serves savory Solo-style nasi liwet with an assortment of traditional side dishes.'
+    description: 'Established in 1950. Serves savory Solo-style nasi liwet with an assortment of traditional village side dishes.'
   },
   'soto-ayam-pak-darno-semarang': {
-    description: 'Established around 1979 or the early 1980s. Serves signature Semarang-style chicken soto with an assortment of satay and fritters as accompaniments. Located at Jl. MH Thamrin No. 88, Semarang.'
+    description: 'Established since the 1980s. Serves signature Semarang-style chicken soto alongside an assortment of satays and fritters. Although served in small bowls like Kudus soto, this eatery serves distinct Semarang-style soto.'
   },
   'garang-asem-sari-rasa-kudus': {
-    description: 'Established in 1977, pioneered by Ibu Sriati. Serves signature Kudus free-range chicken garang asem alongside other traditional Javanese dishes.'
+    description: 'Established in 1977, pioneered by Ibu Sriati. Signature Kudus free-range chicken garang asem was introduced to the menu in 1986, alongside other traditional Javanese dishes.'
   },
   'lunpia-gang-lombok-semarang': {
-    description: 'Pioneered around 1867–1877. Exclusively specializes in authentic Semarang lumpia, available in both fresh and crispy fried variants.'
+    description: 'Pioneered since the 19th century. Specializes in signature Semarang lumpia, available in both fresh and crispy fried variants.'
   },
   'selat-solo-mbak-lies': {
-    description: 'Established in 1987. Serves various Javanese-Dutch culinary classics from Solo, with Selat Solo as its signature specialty.'
+    description: 'Established in 1987. Serves various traditional Solo culinary classics blending Javanese and Dutch styles, featuring Selat Solo as its main specialty.'
   },
   'sate-kambing-pak-manto-solo': {
-    description: 'Established in 1990. Serves various Solo-style mutton and offal specialties, headlined by its iconic tengkleng rica-rica and sate buntel.'
+    description: 'Established in 1990. Serves various Solo-style goat meat and offal dishes, headlined by its iconic tengkleng rica-rica and sate buntel.'
   },
   'warung-megono-pak-bon-pekalongan': {
-    description: 'Established in 1963. Serves warm sego megono (young jackfruit minced with seasoned grated coconut) accompanied by various coastal Pekalongan side dishes.'
+    description: 'Established in 1963. Serves warm sego megono (warm rice topped with finely minced young jackfruit seasoned with coconut) along with various typical Pekalongan side dishes.'
   },
   'mendoan-eco-21-purwokerto': {
-    description: 'Established in 1990 in the Sawangan area, Purwokerto. Offers freshly fried tempe mendoan as well as take-home uncooked packages and other traditional Banyumas treats.'
+    description: 'Established in 1990 in the Sawangan area, Purwokerto, Banyumas. Offers freshly fried tempe mendoan as well as uncooked raw packages and other traditional Banyumas treats.'
   },
   'kupat-tahu-pojok-magelang': {
-    description: 'Established in 1942. Serves authentic Magelang kupat tahu, traditionally cooked over aromatic wood charcoal.'
+    description: 'Established in 1942. Serves authentic Magelang kupat tahu as its primary specialty.'
   },
   'sate-kambing-wendys-tegal': {
-    description: 'Pioneered in 1984. Exclusively specializes in young goat mutton (batibul, aged 3–5 months) culinary creations typical of Tegal.'
+    description: 'Pioneered in 1984. Specializes in various Tegal-style young goat dishes (balibul, goat aged under 5 months).'
   },
   'mie-ongklok-pak-muhadi-wonosobo': {
-    description: 'Established in 1966. Focuses on authentic Wonosobo-style mie ongklok served with savory sweet beef or chicken satay skewers.'
+    description: 'Established in 1966. Focuses on authentic Wonosobo-style mie ongklok served with beef satay as its primary accompaniment.'
   }
 };
 
