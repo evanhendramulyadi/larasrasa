@@ -31,8 +31,7 @@ export const regions = [
     lng: 110.8243,
     zoomLevel: 12,
     colorAccent: '#654332',
-    image: '/assets/images/regions/surakarta.jpg',
-    specialNote: 'Surakarta (Solo) berstatus Kota di bawah administrasi Provinsi Jawa Tengah, berbeda secara administratif dari Daerah Istimewa Yogyakarta.'
+    image: '/assets/images/regions/surakarta.jpg'
   },
   {
     id: 'kudus',
