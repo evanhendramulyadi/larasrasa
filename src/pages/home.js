@@ -391,11 +391,11 @@ export async function renderHomePage() {
                 <p class="text-xs sm:text-base text-[#FAF7F2]/85 max-w-2xl leading-relaxed">
                   ${isEn 
                     ? 'Input your culinary vision, choose authentic regional spices, calibrate for 4 portions, and generate an authentic Central Javanese recipe ready to download.'
-                    : 'Pilih bahan rempah autentik Jawa Tengah, tentukan teknik memasak tradisional, atur takaran 4 porsi, lan terbitaken resep pusaka jangkep ingkang saged dipun-undhuh.'}
+                    : 'Pilih bahan rempah autentik Jawa Tengah, tentukan teknik memasak tradisional, atur takaran 4 porsi, dan terbitkan resep pusaka lengkap yang dapat diunduh.'}
                 </p>
                 <div class="pt-2">
                   <a href="#/ai-food-creator" class="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold bg-[#C84C24] hover:bg-[#AE3E1B] text-white transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 border border-[#E05A30]">
-                    <span>${isEn ? 'Open AI Food Creator Studio' : 'Bukak Studio AI Food Creator'}</span>
+                    <span>${isEn ? 'Open AI Food Creator Studio' : 'Buka Studio AI Food Creator'}</span>
                     <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                       <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
@@ -404,7 +404,7 @@ export async function renderHomePage() {
               </div>
 
               <div class="lg:col-span-4 bg-white/5 border border-[#D49B42]/30 rounded-2xl p-5 sm:p-6 space-y-3.5 text-xs">
-                <span class="text-[11px] font-bold text-[#D49B42] uppercase tracking-wider block">${isEn ? 'AI Studio Highlights' : 'Kautaman Studio AI'}</span>
+                <span class="text-[11px] font-bold text-[#D49B42] uppercase tracking-wider block">${isEn ? 'AI Studio Highlights' : 'Keunggulan Studio AI'}</span>
                 <div class="space-y-2.5 text-[#FAF7F2]/85">
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
@@ -412,11 +412,11 @@ export async function renderHomePage() {
                   </div>
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
-                    <span><strong>${isEn ? 'Step-by-Step Guide:' : 'Panduan Bertahap:'}</strong> ${isEn ? 'Traditional techniques with sensory cues' : 'Teknik masak tradisi kanthi pituduh jangkep'}</span>
+                    <span><strong>${isEn ? 'Step-by-Step Guide:' : 'Panduan Bertahap:'}</strong> ${isEn ? 'Traditional techniques with sensory cues' : 'Teknik masak tradisional dengan panduan lengkap'}</span>
                   </div>
                   <div class="flex items-start gap-2.5">
                     <span class="text-[#C84C24] font-bold text-sm">✓</span>
-                    <span><strong>${isEn ? 'Downloadable PDF:' : 'Unduh Dokumen (PDF):'}</strong> ${isEn ? 'Export complete recipe document instantly' : 'Saged langsung dipun-undhuh format PDF'}</span>
+                    <span><strong>${isEn ? 'Downloadable PDF:' : 'Unduh Dokumen (PDF):'}</strong> ${isEn ? 'Export complete recipe document instantly' : 'Dapat langsung diunduh dalam format PDF'}</span>
                   </div>
                 </div>
               </div>
