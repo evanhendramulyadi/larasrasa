@@ -586,8 +586,10 @@ function renderFormView(currentLang) {
               placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
               class="w-full px-4 py-3.5 rounded-2xl bg-white border border-[#E8DEC8] text-xs sm:text-sm text-[#120B07] focus:ring-2 focus:ring-[#C84C24] shadow-inner"
             />
-            <p class="text-[11px] text-[#5C3622]/80">
-              ${isEn ? 'Personal preference or creative touch for the recipe formulation.' : 'Sentuhan pribadi atau catatan khusus untuk menyempurnakan racikan rasa.'}
+            <p class="text-[11px] text-[#5C3622]/80 leading-relaxed">
+              ${isEn 
+                ? 'Personal preference or creative touch for the recipe formulation. If filled with gibberish, inappropriate text, or off-topic prompts, AI will automatically ignore them and focus on the authentic recipe.' 
+                : 'Sentuhan pribadi atau catatan khusus untuk menyempurnakan racikan rasa. Jika diisi teks asal, kata tidak pantas, atau di luar konteks masakan, AI akan mengabaikannya dan tetap fokus pada resep autentik.'}
             </p>
           </div>
         </section>
