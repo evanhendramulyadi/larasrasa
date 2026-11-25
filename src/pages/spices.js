@@ -127,7 +127,6 @@ export async function renderSpicesPage() {
                 <img src="${safeUrl(spice.image, '/assets/images/hero/hero-culinary.jpg')}" 
                      alt="${escapeHtml(spice.name)} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
                      class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
-                     loading="lazy"
                      data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-[#120B07]/85 text-[10px] font-bold text-[#FAF7F2] backdrop-blur-md border border-[#D49B42]/30">

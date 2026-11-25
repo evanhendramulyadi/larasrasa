@@ -271,7 +271,6 @@ export async function renderHomePage() {
                     <img src="${safeUrl(s.image, '/assets/images/hero/hero-culinary.jpg')}" 
                          alt="${escapeHtml(s.name)} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
                          class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
-                         loading="lazy"
                          data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent"></div>
                     <span class="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-[#120B07]/90 text-[10px] font-bold text-[#FAF7F2] backdrop-blur-md border border-[#D49B42]/30">

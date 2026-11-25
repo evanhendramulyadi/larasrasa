@@ -1076,6 +1076,12 @@ function extractRecipeFromGeminiPayload(
   const fenced = cleanJson.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
   if (fenced && fenced[1]) {
     cleanJson = fenced[1].trim();
+  } else {
+    const startBrace = cleanJson.indexOf("{");
+    const endBrace = cleanJson.lastIndexOf("}");
+    if (startBrace !== -1 && endBrace !== -1 && endBrace > startBrace) {
+      cleanJson = cleanJson.slice(startBrace, endBrace + 1);
+    }
   }
 
   let recipeObj: unknown;
@@ -1222,7 +1228,7 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
     contents: [{ parts: [{ text: serverPrompt }] }],
     generationConfig: {
       temperature: 0.7,
-      maxOutputTokens: 4096,
+      maxOutputTokens: 8192,
       responseMimeType: "application/json",
     },
   });
@@ -1232,6 +1238,7 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
   let rateLimitHits = 0;
   let serviceUnavailableHits = 0;
   let timeoutHits = 0;
+  let invalidOutputHits = 0;
 
   for (const model of candidatesToTry) {
     const elapsedMs = nowFn() - upstreamStartedAt;
@@ -1290,6 +1297,7 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
         } else {
           console.warn("Upstream AI invalid JSON payload:", model.id);
         }
+        invalidOutputHits++;
         discoveryState.blockedUntilByModel.set(model.id, {
           until: nowFn() + TRANSIENT_MODEL_COOLDOWN_MS,
           permanent: false,
@@ -1354,7 +1362,7 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
   if (
     reachableAttempts > 0 &&
     (serviceUnavailableHits + timeoutHits) > 0 &&
-    (serviceUnavailableHits + rateLimitHits + timeoutHits) === reachableAttempts
+    (serviceUnavailableHits + rateLimitHits + timeoutHits + invalidOutputHits) === reachableAttempts
   ) {
     return jsonResponse(
       origin,

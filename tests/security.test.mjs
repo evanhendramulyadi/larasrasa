@@ -619,7 +619,7 @@ test('Dynamic Model Discovery: caches paginated ListModels, fails over fast on 4
   ]);
   assert.deepEqual(aliasVsPreview.map((m) => m.id), ['gemini-flash-lite-latest', 'gemini-3.1-flash-lite-preview']);
 
-  // Request 3 where active remaining models return 503 or TimeoutError -> returns 503 instead of 502
+  // Request 3 where active remaining models return 503, invalid_json, or TimeoutError -> returns 503 instead of 502
   const overloadDeps = makeDeps({
     fetchFn: async (url) => {
       const target = String(url);
@@ -628,6 +628,7 @@ test('Dynamic Model Discovery: caches paginated ListModels, fails over fast on 4
           makeListModelsJson([
             { name: 'models/gemini-dead-lite', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
             { name: 'models/gemini-active-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+            { name: 'models/gemini-truncated-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
             { name: 'models/gemini-slow-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
           ]),
           { status: 200, headers: { 'Content-Type': 'application/json' } },
@@ -635,6 +636,12 @@ test('Dynamic Model Discovery: caches paginated ListModels, fails over fast on 4
       }
       if (target.includes('gemini-dead-lite')) {
         return new Response('Not found', { status: 404 });
+      }
+      if (target.includes('gemini-truncated-flash')) {
+        return new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: '{"title":"Truncated' }] } }] }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
       }
       if (target.includes('gemini-slow-flash')) {
         const err = new Error('The operation timed out');
@@ -647,6 +654,51 @@ test('Dynamic Model Discovery: caches paginated ListModels, fails over fast on 4
   const res3 = await handleRequest(makePostRequest(payload, { 'cf-connecting-ip': '203.0.113.11' }), overloadDeps);
   assert.equal(res3.status, 503);
   assert.equal(res3.headers.get('retry-after'), '15');
+
+  // Prose-wrapped JSON without code fences parses cleanly & generationConfig uses maxOutputTokens >= 8192
+  let capturedGenConfig = null;
+  const proseDeps = makeDeps({
+    fetchFn: async (url, init) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-prose-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      capturedGenConfig = JSON.parse(String(init.body)).generationConfig;
+      return new Response(
+        JSON.stringify({
+          candidates: [
+            {
+              content: {
+                parts: [
+                  {
+                    text:
+                      'Berikut resepnya:\n' +
+                      JSON.stringify({
+                        title: 'Garang Asem Bumbung',
+                        ingredients: [{ nameId: 'Ayam Kampung', amount: 500, unitId: 'g' }],
+                        stepsId: [{ stepNumber: 1, titleId: 'Siapkan', instructionId: 'Masak hingga empuk.' }],
+                      }) +
+                      '\nSelamat memasak!',
+                  },
+                ],
+              },
+            },
+          ],
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
+      );
+    },
+  });
+  const proseRes = await handleRequest(makePostRequest(payload, { 'cf-connecting-ip': '203.0.113.13' }), proseDeps);
+  assert.equal(proseRes.status, 200);
+  const proseData = await proseRes.json();
+  assert.equal(proseData.recipe.title, 'Garang Asem Bumbung');
+  assert.ok(capturedGenConfig && capturedGenConfig.maxOutputTokens >= 8192);
 });
 
 test('Frontend service maps HTTP 503 to BACKEND_REQUEST_FAILED consistently with standard error alerts', async () => {
@@ -715,4 +767,9 @@ test('Homepage translates Flavor Map city cards in EN and dead placeholder/liste
   assert.ok(aiCreatorSrc.includes('id="ingredient-grid-container"'));
   assert.ok(!aiCreatorSrc.includes('[data-tab]'));
   assert.ok(!aiCreatorSrc.includes('creator-nickname-input'));
+
+  const restHtmlCheck = await renderLegendaryRestaurantsPage();
+  const spicesHtmlCheck = await renderSpicesPage();
+  assert.ok(!restHtmlCheck.includes('loading="lazy"'));
+  assert.ok(!spicesHtmlCheck.includes('loading="lazy"'));
 });

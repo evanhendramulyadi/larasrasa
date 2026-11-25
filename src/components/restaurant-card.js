@@ -14,7 +14,6 @@ export function renderRestaurantCard(restaurant) {
       <div class="relative aspect-16/10 bg-[#120B07]/10 overflow-hidden">
         <img src="${safeUrl(restaurant.image, '/assets/images/hero/hero-culinary.jpg')}" 
              alt="${escapeHtml(restaurant.name)} - ${isEn ? 'Culinary Heritage Destination' : 'Destinasi Kuliner Pusaka'}" 
-             loading="lazy"
              class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
              data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
