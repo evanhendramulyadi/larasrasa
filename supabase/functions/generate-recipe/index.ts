@@ -164,10 +164,13 @@ export const LIST_MODELS_FAILURE_COOLDOWN_MS = 15 * 1000;
 export const UNAVAILABLE_MODEL_COOLDOWN_MS = 30 * 60 * 1000;
 export const TRANSIENT_MODEL_COOLDOWN_MS = 90 * 1000;
 export const LIST_MODELS_TIMEOUT_MS = 10_000;
-export const GENERATE_ATTEMPT_TIMEOUT_MS = 18_000;
+export const GENERATE_ATTEMPT_TIMEOUT_MS = 12_000;
 export const MAX_UPSTREAM_BUDGET_MS = 38_000;
 export const MAX_LIST_MODEL_PAGES = 5;
-export const MAX_MODEL_ATTEMPTS_PER_REQUEST = 6;
+export const MAX_MODEL_ATTEMPTS_PER_REQUEST = 10;
+export const MAX_LITE_CANDIDATES = 4;
+export const MAX_FLASH_CANDIDATES = 4;
+export const MAX_PRO_CANDIDATES = 2;
 export const RETRY_503_BACKOFF_MS = 350;
 
 const VALID_MODEL_NAME_REGEX = /^models\/([a-z0-9][a-z0-9._-]{1,100})$/i;
@@ -987,7 +990,15 @@ async function getDiscoveredModels(
   return { models, rateLimited: listRateLimited };
 }
 
-function selectCandidateModels(
+function getModelTier(id: string): "lite" | "flash" | "other" | "pro" {
+  const lower = id.toLowerCase();
+  if (/(?:^|[^a-z0-9])(lite|nano|mini)(?:[^a-z0-9]|$)/.test(lower)) return "lite";
+  if (/(?:^|[^a-z0-9])flash(?:[^a-z0-9]|$)/.test(lower)) return "flash";
+  if (/(?:^|[^a-z0-9])(pro|ultra)(?:[^a-z0-9]|$)/.test(lower)) return "pro";
+  return "other";
+}
+
+export function selectCandidateModels(
   models: DiscoveredModel[],
   state: ModelDiscoveryState,
   now: number,
@@ -1005,7 +1016,38 @@ function selectCandidateModels(
   }
 
   if (unblocked.length > 0) {
-    return unblocked.slice(0, MAX_MODEL_ATTEMPTS_PER_REQUEST);
+    // Keep lowest-cost lite models first while reserving fallback slots for flash & pro tiers
+    const pickedLite: DiscoveredModel[] = [];
+    const pickedFlash: DiscoveredModel[] = [];
+    const pickedPro: DiscoveredModel[] = [];
+    const pickedIds = new Set<string>();
+
+    for (const model of unblocked) {
+      const tier = getModelTier(model.id);
+      if (tier === "lite" && pickedLite.length < MAX_LITE_CANDIDATES) {
+        pickedLite.push(model);
+        pickedIds.add(model.id);
+      } else if ((tier === "flash" || tier === "other") && pickedFlash.length < MAX_FLASH_CANDIDATES) {
+        pickedFlash.push(model);
+        pickedIds.add(model.id);
+      } else if (tier === "pro" && pickedPro.length < MAX_PRO_CANDIDATES) {
+        pickedPro.push(model);
+        pickedIds.add(model.id);
+      }
+    }
+
+    const combined = [...pickedLite, ...pickedFlash, ...pickedPro];
+    if (combined.length < MAX_MODEL_ATTEMPTS_PER_REQUEST) {
+      for (const model of unblocked) {
+        if (combined.length >= MAX_MODEL_ATTEMPTS_PER_REQUEST) break;
+        if (!pickedIds.has(model.id)) {
+          combined.push(model);
+          pickedIds.add(model.id);
+        }
+      }
+    }
+
+    return combined.slice(0, MAX_MODEL_ATTEMPTS_PER_REQUEST);
   }
 
   // If every unblocked candidate was recently overloaded (503/429), retry earliest transient ones
@@ -1211,8 +1253,9 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
         signal: AbortSignal.timeout(attemptTimeout),
       });
 
-      // Brief single backoff retry for transient 503 overload
-      if (res.status === 503) {
+      // On 503 overload, jump immediately to the next distinct model when fallbacks exist;
+      // only retry once on the same endpoint when it is the sole candidate available.
+      if (res.status === 503 && candidatesToTry.length === 1) {
         const remainingAfterFirst = MAX_UPSTREAM_BUDGET_MS - (nowFn() - upstreamStartedAt);
         if (remainingAfterFirst > RETRY_503_BACKOFF_MS + 2_000) {
           await sleepImpl(RETRY_503_BACKOFF_MS);

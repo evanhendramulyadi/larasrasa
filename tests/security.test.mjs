@@ -12,6 +12,7 @@ import {
   createModelDiscoveryState,
   isCompatibleTextRecipeModel,
   rankCompatibleModels,
+  selectCandidateModels,
 } from '../supabase/functions/generate-recipe/index.ts';
 import { escapeHtml, safeUrl } from '../src/utils/dom.js';
 import { renderFilterPanel } from '../src/components/filter-panel.js';
@@ -487,11 +488,10 @@ test('Dynamic Model Discovery: filters incompatible modalities & prioritizes low
   );
 });
 
-test('Dynamic Model Discovery: caches paginated ListModels, skips 404 models via negative cache, retries 503, and falls back cleanly', async () => {
+test('Dynamic Model Discovery: caches paginated ListModels, fails over fast on 404/503, retries sole 503 candidate, and diversifies tiers', async () => {
   let currentTime = 1_000_000;
   let listModelsCalls = 0;
   const generateCalls = [];
-  const attemptCountByModel = new Map();
 
   const deps = makeDeps({
     nowFn: () => currentTime,
@@ -522,8 +522,6 @@ test('Dynamic Model Discovery: caches paginated ListModels, skips 404 models via
       const modelMatch = target.match(/\/models\/([^:]+):generateContent/);
       const modelId = modelMatch ? modelMatch[1] : 'unknown';
       generateCalls.push(modelId);
-      const count = (attemptCountByModel.get(modelId) || 0) + 1;
-      attemptCountByModel.set(modelId, count);
 
       if (modelId === 'gemini-9-flash-lite') {
         return new Response('Model no longer available', { status: 404 });
@@ -543,7 +541,7 @@ test('Dynamic Model Discovery: caches paginated ListModels, skips 404 models via
 
   const payload = JSON.stringify({ action: 'generate', inputs: VALID_INPUTS });
 
-  // Request 1: fetches 2 pages of ListModels, skips 404 on model 1, retries 503 once on model 2, falls back to model 3 -> 200
+  // Request 1: fetches 2 pages of ListModels, skips 404 on model 1, fails over immediately on 503 model 2 -> model 3 succeeds
   const res1 = await handleRequest(makePostRequest(payload, { 'cf-connecting-ip': '203.0.113.10' }), deps);
   assert.equal(res1.status, 200);
   const body1 = await res1.json();
@@ -552,7 +550,6 @@ test('Dynamic Model Discovery: caches paginated ListModels, skips 404 models via
   assert.equal(listModelsCalls, 2); // 2 paginated requests once
   assert.deepEqual(generateCalls, [
     'gemini-9-flash-lite',
-    'gemini-flash-lite-latest',
     'gemini-flash-lite-latest',
     'gemini-9-flash',
   ]);
@@ -564,6 +561,54 @@ test('Dynamic Model Discovery: caches paginated ListModels, skips 404 models via
   assert.equal(res2.status, 200);
   assert.equal(listModelsCalls, 2);
   assert.deepEqual(generateCalls, ['gemini-9-flash']);
+
+  // Single-candidate scenario: when only 1 model exists and returns 503 once, retries once and succeeds
+  let soleAttempt = 0;
+  const soleDeps = makeDeps({
+    fetchFn: async (url) => {
+      if (String(url).includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-sole-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      soleAttempt++;
+      if (soleAttempt === 1) {
+        return new Response('Temporary overload', { status: 503 });
+      }
+      return new Response(makeValidRecipePayload('Soto Kudus Asli'), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    },
+  });
+  const soleRes = await handleRequest(makePostRequest(payload, { 'cf-connecting-ip': '203.0.113.12' }), soleDeps);
+  assert.equal(soleRes.status, 200);
+  assert.equal(soleAttempt, 2);
+
+  // Tier-diversity check: many lite models must not starve flash and pro fallback slots
+  const manyModels = rankCompatibleModels([
+    { name: 'models/gemini-9.1-flash-lite', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.2-flash-lite', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.3-flash-lite', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.4-flash-lite', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.5-flash-lite', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.6-flash-lite', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.1-flash', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.2-flash', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.3-flash', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.4-flash', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.5-flash', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.1-pro', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9.2-pro', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+  ]);
+  const selected = selectCandidateModels(manyModels, createModelDiscoveryState(), 1000);
+  assert.equal(selected.length, 10);
+  assert.equal(selected.slice(0, 4).every((m) => m.id.includes('flash-lite')), true);
+  assert.equal(selected.slice(4, 8).every((m) => !m.id.includes('lite') && m.id.includes('flash')), true);
+  assert.equal(selected.slice(8, 10).every((m) => m.id.includes('pro')), true);
 
   // Request 3 where active remaining models return 503 -> returns 503 instead of 502
   const overloadDeps = makeDeps({
