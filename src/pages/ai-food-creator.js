@@ -1156,6 +1156,9 @@ export function initAiFoodCreatorInteractions() {
   if (form) {
     form.onsubmit = async (e) => {
       e.preventDefault();
+      sessionAlert = null;
+      const existingAlert = document.getElementById('ai-creator-session-alert');
+      if (existingAlert) existingAlert.remove();
 
       // 1. Author Name Validation: Scroll up to creator name input
       if (!formState.creatorName.trim()) {

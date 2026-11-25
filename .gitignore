@@ -20,6 +20,7 @@ dist-ssr
 # Deployment & local scratch workspaces
 .vercel
 scratch/
+supabase/.temp/
 
 # Editor directories and files
 .vscode/*
