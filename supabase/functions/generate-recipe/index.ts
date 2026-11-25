@@ -155,11 +155,41 @@ const FORBIDDEN_KEYS: ReadonlySet<string> = new Set([
   "prototype",
 ]);
 
-const GEMINI_MODEL_ENDPOINTS = [
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent",
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
-  "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
+const GEMINI_API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
+const GEMINI_LIST_MODELS_URL = `${GEMINI_API_BASE_URL}/models`;
+
+// Dynamic discovery, caching, and resilience configuration (no model names locked in source)
+export const MODEL_CACHE_TTL_MS = 10 * 60 * 1000;
+export const LIST_MODELS_FAILURE_COOLDOWN_MS = 15 * 1000;
+export const UNAVAILABLE_MODEL_COOLDOWN_MS = 30 * 60 * 1000;
+export const TRANSIENT_MODEL_COOLDOWN_MS = 90 * 1000;
+export const LIST_MODELS_TIMEOUT_MS = 10_000;
+export const GENERATE_ATTEMPT_TIMEOUT_MS = 18_000;
+export const MAX_UPSTREAM_BUDGET_MS = 38_000;
+export const MAX_LIST_MODEL_PAGES = 5;
+export const MAX_MODEL_ATTEMPTS_PER_REQUEST = 6;
+export const RETRY_503_BACKOFF_MS = 350;
+
+const VALID_MODEL_NAME_REGEX = /^models\/([a-z0-9][a-z0-9._-]{1,100})$/i;
+
+// Non-text-recipe capabilities/modalities excluded during dynamic discovery
+const EXCLUDED_CAPABILITY_PATTERNS: ReadonlyArray<RegExp> = [
+  /(?:^|[^a-z0-9])embed(?:ding)?s?(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])aqa(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])tts(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])audio(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])speech(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])live(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])lyria(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])music(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])imagen?(?:[^a-z0-9]|$)/i,
+  /nano\s*banana/i,
+  /(?:^|[^a-z0-9])veo(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])robotics(?:[^a-z0-9]|$)/i,
+  /computer[-\s]?use/i,
+  /deep[-\s]?research/i,
+  /(?:^|[^a-z0-9])antigravity(?:[^a-z0-9]|$)/i,
+  /(?:^|[^a-z0-9])gemma(?:[^a-z0-9]|$)/i,
 ];
 
 // Per-isolate fallback salt if RATE_LIMIT_SALT secret is unset
@@ -174,6 +204,41 @@ const defaultRateLimitState: RateLimitState = {
   perKeyTimestamps: new Map(),
   globalTimestamps: [],
 };
+
+export interface DiscoveredModel {
+  name: string;
+  id: string;
+  displayName: string;
+  inputTokenLimit: number;
+  outputTokenLimit: number;
+  thinking: boolean;
+  priorityScore: number;
+}
+
+export interface BlockedModelEntry {
+  until: number;
+  permanent: boolean;
+}
+
+export interface ModelDiscoveryState {
+  models: DiscoveredModel[];
+  fetchedAt: number;
+  lastFailureAt: number;
+  blockedUntilByModel: Map<string, BlockedModelEntry>;
+  inFlightRefresh: Promise<DiscoveredModel[]> | null;
+}
+
+export function createModelDiscoveryState(): ModelDiscoveryState {
+  return {
+    models: [],
+    fetchedAt: 0,
+    lastFailureAt: 0,
+    blockedUntilByModel: new Map(),
+    inFlightRefresh: null,
+  };
+}
+
+const defaultModelDiscoveryState: ModelDiscoveryState = createModelDiscoveryState();
 
 export interface ValidatedInputs {
   creatorName: string;
@@ -194,7 +259,9 @@ export interface RuntimeDeps {
   getEnv?: (name: string) => string | undefined;
   fetchFn?: typeof fetch;
   rateLimitState?: RateLimitState;
+  modelDiscoveryState?: ModelDiscoveryState;
   nowFn?: () => number;
+  sleepFn?: (ms: number) => Promise<void>;
 }
 
 function getRuntimeEnv(name: string, deps?: RuntimeDeps): string | undefined {
@@ -665,10 +732,335 @@ FORMAT LUARAN WAJIB JSON VALID:
 }`;
 }
 
+function parseModelVersionScore(id: string): number {
+  const match = id.toLowerCase().match(/^gemini-(\d+)(?:\.(\d+))?(?:[^0-9]|$)/);
+  if (!match) return 0;
+  const major = Number(match[1]) || 0;
+  const minor = Number(match[2]) || 0;
+  const numericVersion = Math.min(major + minor * 0.1, 20);
+  return Math.round(numericVersion * 12);
+}
+
+/**
+ * Computes a deterministic preference score prioritizing lowest-cost, lightweight
+ * stable Gemini text models suitable for structured recipe JSON generation.
+ */
+export function scoreModelForRecipe(model: {
+  id: string;
+  thinking?: boolean;
+  outputTokenLimit?: number;
+}): number {
+  const lowerId = model.id.toLowerCase();
+  let score = 0;
+
+  // 1. Cost & lightweight tier priority: lite/nano/mini > flash > neutral > pro > ultra
+  if (/(?:^|[^a-z0-9])(lite|nano|mini)(?:[^a-z0-9]|$)/.test(lowerId)) {
+    score += 500;
+  } else if (/(?:^|[^a-z0-9])flash(?:[^a-z0-9]|$)/.test(lowerId)) {
+    score += 350;
+  } else if (/(?:^|[^a-z0-9])ultra(?:[^a-z0-9]|$)/.test(lowerId)) {
+    score -= 100;
+  } else if (/(?:^|[^a-z0-9])pro(?:[^a-z0-9]|$)/.test(lowerId)) {
+    score += 50;
+  } else {
+    score += 200;
+  }
+
+  // 2. Lifecycle stability preference (avoid experimental builds when stable/latest exist)
+  if (/(?:^|[^a-z0-9])(exp|experimental)(?:[^a-z0-9]|$)/.test(lowerId)) {
+    score -= 50;
+  } else if (/(?:^|[^a-z0-9])preview(?:[^a-z0-9]|$)/.test(lowerId)) {
+    score += 10;
+  } else if (lowerId.endsWith("-latest")) {
+    score += 40;
+  } else {
+    score += 60;
+  }
+
+  // 3. Generational recency parsed dynamically from model ID
+  score += parseModelVersionScore(lowerId);
+
+  // 4. Lower latency/token overhead when non-thinking lightweight variant is available
+  if (model.thinking !== true) {
+    score += 10;
+  }
+
+  if (typeof model.outputTokenLimit === "number" && Number.isFinite(model.outputTokenLimit)) {
+    score += Math.min(8, Math.floor(model.outputTokenLimit / 8192));
+  }
+
+  return score;
+}
+
+/**
+ * Validates whether a ListModels metadata entry is compatible with structured JSON
+ * recipe synthesis via `generateContent` (excluding embeddings, audio/TTS, image-only,
+ * robotics, specialized agents, and non-Gemini families).
+ */
+export function isCompatibleTextRecipeModel(raw: unknown): DiscoveredModel | null {
+  if (!isPlainObject(raw) || typeof raw.name !== "string") {
+    return null;
+  }
+
+  const nameMatch = raw.name.trim().match(VALID_MODEL_NAME_REGEX);
+  if (!nameMatch) {
+    return null;
+  }
+
+  const id = nameMatch[1];
+  const lowerId = id.toLowerCase();
+  if (!lowerId.startsWith("gemini-")) {
+    return null;
+  }
+
+  if (
+    !Array.isArray(raw.supportedGenerationMethods) ||
+    !raw.supportedGenerationMethods.includes("generateContent")
+  ) {
+    return null;
+  }
+
+  const displayName = typeof raw.displayName === "string" ? raw.displayName.trim() : id;
+  const labelTarget = `${id} ${displayName}`;
+  for (const pattern of EXCLUDED_CAPABILITY_PATTERNS) {
+    if (pattern.test(labelTarget)) {
+      return null;
+    }
+  }
+
+  const inputTokenLimit = typeof raw.inputTokenLimit === "number" && Number.isFinite(raw.inputTokenLimit)
+    ? raw.inputTokenLimit
+    : 0;
+  const outputTokenLimit = typeof raw.outputTokenLimit === "number" && Number.isFinite(raw.outputTokenLimit)
+    ? raw.outputTokenLimit
+    : 0;
+
+  if ((outputTokenLimit > 0 && outputTokenLimit < 2048) || (inputTokenLimit > 0 && inputTokenLimit < 4096)) {
+    return null;
+  }
+
+  const thinking = raw.thinking === true;
+  const priorityScore = scoreModelForRecipe({ id, thinking, outputTokenLimit });
+
+  return {
+    name: `models/${id}`,
+    id,
+    displayName,
+    inputTokenLimit,
+    outputTokenLimit,
+    thinking,
+    priorityScore,
+  };
+}
+
+export function rankCompatibleModels(rawModels: unknown[]): DiscoveredModel[] {
+  const deduped = new Map<string, DiscoveredModel>();
+  for (const entry of rawModels) {
+    const model = isCompatibleTextRecipeModel(entry);
+    if (model && !deduped.has(model.id)) {
+      deduped.set(model.id, model);
+    }
+  }
+
+  return Array.from(deduped.values()).sort((a, b) => {
+    if (b.priorityScore !== a.priorityScore) {
+      return b.priorityScore - a.priorityScore;
+    }
+    return a.id.localeCompare(b.id);
+  });
+}
+
+async function fetchAvailableModels(
+  apiKey: string,
+  fetchImpl: typeof fetch,
+): Promise<{ ok: true; models: DiscoveredModel[] } | { ok: false; rateLimited: boolean }> {
+  const allRawModels: unknown[] = [];
+  let pageToken: string | null = null;
+  let rateLimited = false;
+
+  for (let page = 0; page < MAX_LIST_MODEL_PAGES; page++) {
+    const listUrl = new URL(GEMINI_LIST_MODELS_URL);
+    listUrl.searchParams.set("pageSize", "100");
+    if (pageToken) {
+      listUrl.searchParams.set("pageToken", pageToken);
+    }
+
+    const res = await fetchImpl(listUrl.toString(), {
+      method: "GET",
+      headers: {
+        "x-goog-api-key": apiKey,
+      },
+      signal: AbortSignal.timeout(LIST_MODELS_TIMEOUT_MS),
+    });
+
+    if (!res.ok) {
+      if (res.status === 429) {
+        rateLimited = true;
+      } else {
+        console.warn("Upstream ListModels status:", res.status);
+      }
+      return { ok: false, rateLimited };
+    }
+
+    const payload = (await res.json().catch(() => null)) as {
+      models?: unknown[];
+      nextPageToken?: unknown;
+    } | null;
+
+    if (!payload || !Array.isArray(payload.models)) {
+      return { ok: false, rateLimited: false };
+    }
+
+    allRawModels.push(...payload.models);
+
+    if (typeof payload.nextPageToken === "string" && payload.nextPageToken.trim().length > 0 && payload.nextPageToken.length <= 512) {
+      pageToken = payload.nextPageToken.trim();
+    } else {
+      break;
+    }
+  }
+
+  return {
+    ok: true,
+    models: rankCompatibleModels(allRawModels),
+  };
+}
+
+function pruneExpiredModelBlocks(state: ModelDiscoveryState, now: number): void {
+  for (const [modelId, entry] of state.blockedUntilByModel.entries()) {
+    if (entry.until <= now) {
+      state.blockedUntilByModel.delete(modelId);
+    }
+  }
+}
+
+async function getDiscoveredModels(
+  apiKey: string,
+  deps?: RuntimeDeps,
+  forceRefresh = false,
+): Promise<{ models: DiscoveredModel[]; rateLimited: boolean }> {
+  const state = deps?.modelDiscoveryState || defaultModelDiscoveryState;
+  const fetchImpl = deps?.fetchFn || fetch;
+  const now = deps?.nowFn ? deps.nowFn() : Date.now();
+
+  pruneExpiredModelBlocks(state, now);
+
+  const cacheValid = state.models.length > 0 && (now - state.fetchedAt) < MODEL_CACHE_TTL_MS;
+  const recentlyFailed = state.lastFailureAt > 0 && (now - state.lastFailureAt) < LIST_MODELS_FAILURE_COOLDOWN_MS;
+
+  if (!forceRefresh && cacheValid) {
+    return { models: state.models, rateLimited: false };
+  }
+  if (!forceRefresh && state.models.length > 0 && recentlyFailed) {
+    return { models: state.models, rateLimited: false };
+  }
+
+  if (state.inFlightRefresh) {
+    const models = await state.inFlightRefresh;
+    return { models, rateLimited: false };
+  }
+
+  let listRateLimited = false;
+  state.inFlightRefresh = (async () => {
+    try {
+      const discoveryResult = await fetchAvailableModels(apiKey, fetchImpl);
+      const refreshedAt = deps?.nowFn ? deps.nowFn() : Date.now();
+      if (discoveryResult.ok && discoveryResult.models.length > 0) {
+        state.models = discoveryResult.models;
+        state.fetchedAt = refreshedAt;
+        state.lastFailureAt = 0;
+        return state.models;
+      }
+      listRateLimited = !discoveryResult.ok && discoveryResult.rateLimited;
+      state.lastFailureAt = refreshedAt;
+      return state.models;
+    } catch (err) {
+      console.warn("Upstream ListModels exception:", err instanceof Error ? err.name : "unknown");
+      state.lastFailureAt = deps?.nowFn ? deps.nowFn() : Date.now();
+      return state.models;
+    } finally {
+      state.inFlightRefresh = null;
+    }
+  })();
+
+  const models = await state.inFlightRefresh;
+  return { models, rateLimited: listRateLimited };
+}
+
+function selectCandidateModels(
+  models: DiscoveredModel[],
+  state: ModelDiscoveryState,
+  now: number,
+): DiscoveredModel[] {
+  const unblocked: DiscoveredModel[] = [];
+  const transientBlocked: Array<{ model: DiscoveredModel; until: number }> = [];
+
+  for (const model of models) {
+    const block = state.blockedUntilByModel.get(model.id);
+    if (!block || block.until <= now) {
+      unblocked.push(model);
+    } else if (!block.permanent) {
+      transientBlocked.push({ model, until: block.until });
+    }
+  }
+
+  if (unblocked.length > 0) {
+    return unblocked.slice(0, MAX_MODEL_ATTEMPTS_PER_REQUEST);
+  }
+
+  // If every unblocked candidate was recently overloaded (503/429), retry earliest transient ones
+  if (transientBlocked.length > 0) {
+    transientBlocked.sort((a, b) => a.until - b.until);
+    return transientBlocked.slice(0, 2).map((entry) => entry.model);
+  }
+
+  return [];
+}
+
+function extractRecipeFromGeminiPayload(
+  geminiPayload: Record<string, unknown>,
+): { ok: true; recipe: Record<string, unknown> } | { ok: false; reason: string } {
+  const candidates = (geminiPayload as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> }).candidates;
+  const rawRecipeText = candidates?.[0]?.content?.parts
+    ?.map((p) => p.text || "")
+    .join("")
+    .trim();
+
+  if (!rawRecipeText) {
+    return { ok: false, reason: "empty_text" };
+  }
+
+  let cleanJson = rawRecipeText;
+  const fenced = cleanJson.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  if (fenced && fenced[1]) {
+    cleanJson = fenced[1].trim();
+  }
+
+  let recipeObj: unknown;
+  try {
+    recipeObj = JSON.parse(cleanJson);
+  } catch {
+    return { ok: false, reason: "invalid_json" };
+  }
+
+  if (
+    !isPlainObject(recipeObj) ||
+    typeof recipeObj.title !== "string" ||
+    !Array.isArray(recipeObj.ingredients) ||
+    recipeObj.ingredients.length === 0
+  ) {
+    return { ok: false, reason: "incomplete_recipe" };
+  }
+
+  return { ok: true, recipe: recipeObj };
+}
+
 export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<Response> {
   const origin = req.headers.get("origin");
   const allowedOrigins = getAllowedOrigins(deps);
   const fetchImpl = deps?.fetchFn || fetch;
+  const nowFn = deps?.nowFn || (() => Date.now());
+  const sleepImpl = deps?.sleepFn || ((ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms)));
 
   // 1. CORS Preflight
   if (req.method === "OPTIONS") {
@@ -754,93 +1146,174 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
     return jsonResponse(origin, allowedOrigins, { success: false, error: "Service temporarily unavailable" }, 500);
   }
 
-  // 9. Server-Side Prompt Construction & Gemini API Invocation
+  // 9. Server-Side Prompt Construction & Dynamic Model Discovery
   const serverPrompt = buildServerRecipePrompt(validation.data);
+  const discoveryState = deps?.modelDiscoveryState || defaultModelDiscoveryState;
+  const upstreamStartedAt = nowFn();
 
-  let geminiPayload: Record<string, unknown> | null = null;
-  let allRateLimited = false;
+  let discovery = await getDiscoveredModels(apiKey, deps);
+  if (discovery.models.length === 0) {
+    if (discovery.rateLimited) {
+      return jsonResponse(
+        origin,
+        allowedOrigins,
+        { success: false, error: "AI service is busy, please try again shortly", retryAfter: 60 },
+        429,
+        { "Retry-After": "60" },
+      );
+    }
+    return jsonResponse(origin, allowedOrigins, { success: false, error: "Recipe generation failed" }, 502);
+  }
+
+  let candidatesToTry = selectCandidateModels(discovery.models, discoveryState, nowFn());
+  if (candidatesToTry.length === 0 && (nowFn() - discoveryState.fetchedAt) >= LIST_MODELS_FAILURE_COOLDOWN_MS) {
+    discovery = await getDiscoveredModels(apiKey, deps, true);
+    candidatesToTry = selectCandidateModels(discovery.models, discoveryState, nowFn());
+  }
+
+  if (candidatesToTry.length === 0) {
+    return jsonResponse(origin, allowedOrigins, { success: false, error: "Recipe generation failed" }, 502);
+  }
+
+  // 10. Execute generateContent with per-model negative caching, 503 retry, and fallback
+  const requestBody = JSON.stringify({
+    contents: [{ parts: [{ text: serverPrompt }] }],
+    generationConfig: {
+      temperature: 0.7,
+      maxOutputTokens: 4096,
+      responseMimeType: "application/json",
+    },
+  });
+
+  let attemptedCount = 0;
+  let unavailableHits = 0;
   let rateLimitHits = 0;
+  let serviceUnavailableHits = 0;
 
-  for (const endpoint of GEMINI_MODEL_ENDPOINTS) {
+  for (const model of candidatesToTry) {
+    const elapsedMs = nowFn() - upstreamStartedAt;
+    if (elapsedMs >= MAX_UPSTREAM_BUDGET_MS) {
+      break;
+    }
+
+    attemptedCount++;
+    const endpoint = `${GEMINI_API_BASE_URL}/${model.name}:generateContent`;
+
     try {
-      const res = await fetchImpl(endpoint, {
+      const attemptTimeout = Math.max(2_000, Math.min(GENERATE_ATTEMPT_TIMEOUT_MS, MAX_UPSTREAM_BUDGET_MS - elapsedMs));
+      let res = await fetchImpl(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-goog-api-key": apiKey,
         },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: serverPrompt }] }],
-          generationConfig: {
-            temperature: 0.7,
-            maxOutputTokens: 4096,
-            responseMimeType: "application/json",
-          },
-        }),
-        signal: AbortSignal.timeout(35_000),
+        body: requestBody,
+        signal: AbortSignal.timeout(attemptTimeout),
       });
 
-      if (res.ok) {
-        geminiPayload = (await res.json()) as Record<string, unknown>;
-        break;
+      // Brief single backoff retry for transient 503 overload
+      if (res.status === 503) {
+        const remainingAfterFirst = MAX_UPSTREAM_BUDGET_MS - (nowFn() - upstreamStartedAt);
+        if (remainingAfterFirst > RETRY_503_BACKOFF_MS + 2_000) {
+          await sleepImpl(RETRY_503_BACKOFF_MS);
+          const retryTimeout = Math.max(
+            2_000,
+            Math.min(GENERATE_ATTEMPT_TIMEOUT_MS, MAX_UPSTREAM_BUDGET_MS - (nowFn() - upstreamStartedAt)),
+          );
+          res = await fetchImpl(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-goog-api-key": apiKey,
+            },
+            body: requestBody,
+            signal: AbortSignal.timeout(retryTimeout),
+          });
+        }
       }
 
-      if (res.status === 429) {
+      if (res.ok) {
+        const geminiPayload = (await res.json().catch(() => null)) as Record<string, unknown> | null;
+        if (geminiPayload) {
+          const extracted = extractRecipeFromGeminiPayload(geminiPayload);
+          if (extracted.ok) {
+            return jsonResponse(origin, allowedOrigins, {
+              success: true,
+              recipe: extracted.recipe,
+            });
+          }
+          console.warn("Upstream AI invalid output:", model.id, extracted.reason);
+        } else {
+          console.warn("Upstream AI invalid JSON payload:", model.id);
+        }
+        discoveryState.blockedUntilByModel.set(model.id, {
+          until: nowFn() + TRANSIENT_MODEL_COOLDOWN_MS,
+          permanent: false,
+        });
+        continue;
+      }
+
+      const failNow = nowFn();
+      if (res.status === 404 || res.status === 400 || res.status === 403) {
+        unavailableHits++;
+        // Model listed by ListModels but unavailable/incompatible for this project or request schema
+        discoveryState.blockedUntilByModel.set(model.id, {
+          until: failNow + UNAVAILABLE_MODEL_COOLDOWN_MS,
+          permanent: true,
+        });
+        console.warn("Upstream AI model unavailable:", model.id, res.status);
+      } else if (res.status === 429) {
         rateLimitHits++;
+        discoveryState.blockedUntilByModel.set(model.id, {
+          until: failNow + TRANSIENT_MODEL_COOLDOWN_MS,
+          permanent: false,
+        });
+        console.warn("Upstream AI rate limited:", model.id, res.status);
+      } else if (res.status === 503) {
+        serviceUnavailableHits++;
+        discoveryState.blockedUntilByModel.set(model.id, {
+          until: failNow + TRANSIENT_MODEL_COOLDOWN_MS,
+          permanent: false,
+        });
+        console.warn("Upstream AI overloaded:", model.id, res.status);
       } else {
-        // Log upstream status internally without exposing raw API responses to callers
-        console.warn("Upstream AI status:", res.status, "on endpoint");
+        discoveryState.blockedUntilByModel.set(model.id, {
+          until: failNow + TRANSIENT_MODEL_COOLDOWN_MS,
+          permanent: false,
+        });
+        console.warn("Upstream AI status:", model.id, res.status);
       }
     } catch (callErr) {
-      console.warn("Upstream AI call exception:", callErr instanceof Error ? callErr.name : "unknown");
+      discoveryState.blockedUntilByModel.set(model.id, {
+        until: nowFn() + TRANSIENT_MODEL_COOLDOWN_MS,
+        permanent: false,
+      });
+      console.warn("Upstream AI call exception:", model.id, callErr instanceof Error ? callErr.name : "unknown");
     }
   }
 
-  if (!geminiPayload) {
-    allRateLimited = rateLimitHits > 0 && rateLimitHits === GEMINI_MODEL_ENDPOINTS.length;
-    if (allRateLimited) {
-      return jsonResponse(origin, allowedOrigins, { success: false, error: "AI service is busy, please try again shortly" }, 429);
-    }
-    return jsonResponse(origin, allowedOrigins, { success: false, error: "Recipe generation failed" }, 502);
+  const reachableAttempts = attemptedCount - unavailableHits;
+  if (reachableAttempts > 0 && rateLimitHits === reachableAttempts) {
+    return jsonResponse(
+      origin,
+      allowedOrigins,
+      { success: false, error: "AI service is busy, please try again shortly", retryAfter: 60 },
+      429,
+      { "Retry-After": "60" },
+    );
   }
 
-  // 10. Validate Gemini Output Structure
-  const candidates = (geminiPayload as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> }).candidates;
-  const rawRecipeText = candidates?.[0]?.content?.parts
-    ?.map((p) => p.text || "")
-    .join("")
-    .trim();
-
-  if (!rawRecipeText) {
-    return jsonResponse(origin, allowedOrigins, { success: false, error: "Empty recipe output from AI" }, 502);
+  if (reachableAttempts > 0 && serviceUnavailableHits > 0 && (serviceUnavailableHits + rateLimitHits) === reachableAttempts) {
+    return jsonResponse(
+      origin,
+      allowedOrigins,
+      { success: false, error: "AI service is temporarily unavailable, please try again shortly" },
+      503,
+      { "Retry-After": "15" },
+    );
   }
 
-  let cleanJson = rawRecipeText;
-  const fenced = cleanJson.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-  if (fenced && fenced[1]) {
-    cleanJson = fenced[1].trim();
-  }
-
-  let recipeObj: unknown;
-  try {
-    recipeObj = JSON.parse(cleanJson);
-  } catch {
-    return jsonResponse(origin, allowedOrigins, { success: false, error: "Invalid AI output format" }, 502);
-  }
-
-  if (
-    !isPlainObject(recipeObj) ||
-    typeof recipeObj.title !== "string" ||
-    !Array.isArray(recipeObj.ingredients) ||
-    recipeObj.ingredients.length === 0
-  ) {
-    return jsonResponse(origin, allowedOrigins, { success: false, error: "Incomplete recipe output from AI" }, 502);
-  }
-
-  return jsonResponse(origin, allowedOrigins, {
-    success: true,
-    recipe: recipeObj,
-  });
+  return jsonResponse(origin, allowedOrigins, { success: false, error: "Recipe generation failed" }, 502);
 }
 
 // Register entrypoint automatically in Deno / Supabase Edge Runtime

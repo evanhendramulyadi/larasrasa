@@ -9,6 +9,9 @@ import {
   extractTrustedClientIp,
   validateGenerateRequest,
   buildServerRecipePrompt,
+  createModelDiscoveryState,
+  isCompatibleTextRecipeModel,
+  rankCompatibleModels,
 } from '../supabase/functions/generate-recipe/index.ts';
 import { escapeHtml, safeUrl } from '../src/utils/dom.js';
 import { renderFilterPanel } from '../src/components/filter-panel.js';
@@ -61,11 +64,37 @@ function makeDeps(overrides = {}) {
       perKeyTimestamps: new Map(),
       globalTimestamps: [],
     },
+    modelDiscoveryState: createModelDiscoveryState(),
+    sleepFn: async () => {},
     fetchFn: async () => {
       throw new Error('Gemini API must not be called on rejected requests');
     },
     ...overrides,
   };
+}
+
+function makeListModelsJson(models, nextPageToken) {
+  return JSON.stringify(nextPageToken ? { models, nextPageToken } : { models });
+}
+
+function makeValidRecipePayload(title = 'Ungkep Ayam Kemiri') {
+  return JSON.stringify({
+    candidates: [
+      {
+        content: {
+          parts: [
+            {
+              text: JSON.stringify({
+                title,
+                ingredients: [{ nameId: 'Ayam Kampung', amount: 500, unitId: 'g' }],
+                stepsId: [{ stepNumber: 1, titleId: 'Masak', instructionId: 'Masak hingga matang.' }],
+              }),
+            },
+          ],
+        },
+      },
+    ],
+  });
 }
 
 function makePostRequest(bodyStr, headers = {}) {
@@ -197,28 +226,27 @@ test('Edge Function enforces Content-Type, body size limit, strict JSON schema, 
 test('Edge Function rate limiter enforces backend limits and resists X-Forwarded-For spoofing', async () => {
   let calledCount = 0;
   const deps = makeDeps({
-    fetchFn: async () => {
-      calledCount++;
-      return new Response(
-        JSON.stringify({
-          candidates: [
+    fetchFn: async (url) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
             {
-              content: {
-                parts: [
-                  {
-                    text: JSON.stringify({
-                      title: 'Ungkep Ayam Kemiri',
-                      ingredients: [{ nameId: 'Ayam Kampung', amount: 500, unitId: 'g' }],
-                      stepsId: [{ stepNumber: 1, titleId: 'Masak', instructionId: 'Masak hingga matang.' }],
-                    }),
-                  },
-                ],
-              },
+              name: 'models/gemini-flash-lite-latest',
+              displayName: 'Gemini Flash-Lite Latest',
+              supportedGenerationMethods: ['generateContent', 'countTokens'],
+              inputTokenLimit: 1048576,
+              outputTokenLimit: 65536,
             },
-          ],
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } },
-      );
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      calledCount++;
+      return new Response(makeValidRecipePayload(), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
     },
   });
 
@@ -253,14 +281,29 @@ test('Edge Function rate limiter enforces backend limits and resists X-Forwarded
   assert.equal(calledCount, 2);
 });
 
-test('Edge Function sends GEMINI_API_KEY strictly via x-goog-api-key header and hides upstream errors', async () => {
-  let capturedUrl = '';
-  let capturedHeaders = null;
+test('Edge Function sends GEMINI_API_KEY strictly via x-goog-api-key header on ListModels & generateContent and hides upstream errors', async () => {
+  const capturedUrls = [];
+  const capturedHeadersList = [];
 
   const deps = makeDeps({
     fetchFn: async (url, init) => {
-      capturedUrl = String(url);
-      capturedHeaders = init.headers;
+      const target = String(url);
+      capturedUrls.push(target);
+      capturedHeadersList.push(init.headers);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            {
+              name: 'models/gemini-flash-lite-latest',
+              displayName: 'Gemini Flash-Lite Latest',
+              supportedGenerationMethods: ['generateContent'],
+              inputTokenLimit: 1048576,
+              outputTokenLimit: 65536,
+            },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
       return new Response('Internal quota trace at /secret/path', { status: 500 });
     },
   });
@@ -275,8 +318,11 @@ test('Edge Function sends GEMINI_API_KEY strictly via x-goog-api-key header and 
   const body = await res.json();
   assert.equal(body.error, 'Recipe generation failed');
   assert.ok(!JSON.stringify(body).includes('/secret/path'));
-  assert.ok(!capturedUrl.includes('test-gemini-secret-key'));
-  assert.equal(capturedHeaders['x-goog-api-key'], 'test-gemini-secret-key');
+  assert.ok(capturedUrls.length >= 2);
+  for (let i = 0; i < capturedUrls.length; i++) {
+    assert.ok(!capturedUrls[i].includes('test-gemini-secret-key'));
+    assert.equal(capturedHeadersList[i]['x-goog-api-key'], 'test-gemini-secret-key');
+  }
 
   const prompt = buildServerRecipePrompt(VALID_INPUTS);
   assert.ok(prompt.includes('Daging Ayam Kampung'));
@@ -405,4 +451,140 @@ test('Full page & component rendering regression + XSS payload neutralization ch
   assert.ok(!maliciousModal.includes('javascript:alert(1)'));
   assert.ok(!maliciousModal.includes('<img src=x onerror=alert(1)>'));
   assert.ok(maliciousModal.includes('&lt;img src=x onerror=alert(1)&gt;'));
+});
+
+test('Dynamic Model Discovery: filters incompatible modalities & prioritizes lowest-cost lightweight models', () => {
+  const rawModels = [
+    { name: 'models/gemini-embedding-001', displayName: 'Gemini Embedding 001', supportedGenerationMethods: ['embedContent'], outputTokenLimit: 1 },
+    { name: 'models/gemini-9-flash-preview-tts', displayName: 'Gemini TTS', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 16384 },
+    { name: 'models/gemini-9-flash-image', displayName: 'Nano Banana', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 32768 },
+    { name: 'models/gemini-9-flash-native-audio', displayName: 'Gemini Live Audio', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 32768 },
+    { name: 'models/gemini-robotics-er-9', displayName: 'Gemini Robotics', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9-computer-use', displayName: 'Computer Use', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/deep-research-preview', displayName: 'Deep Research', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemma-4-31b-it', displayName: 'Gemma 4', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 32768 },
+    { name: 'models/lyria-3.5', displayName: 'Lyria Music', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-9-tiny', displayName: 'Tiny Model', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 256 },
+    { name: 'models/../evil-path', displayName: 'Path Traversal', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    // Valid compatible text models using synthetic future versions (zero hardcoded names)
+    { name: 'models/gemini-9-pro', displayName: 'Gemini 9 Pro', description: 'Supports text and image input', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536, thinking: true },
+    { name: 'models/gemini-9-flash', displayName: 'Gemini 9 Flash', description: 'Multimodal image/audio understanding', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536, thinking: true },
+    { name: 'models/gemini-9-flash-lite', displayName: 'Gemini 9 Flash-Lite', description: 'Lightweight text generation', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+    { name: 'models/gemini-flash-lite-latest', displayName: 'Gemini Flash-Lite Latest', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+  ];
+
+  // Ensure incompatible items are rejected even individually
+  assert.equal(isCompatibleTextRecipeModel(rawModels[0]), null);
+  assert.equal(isCompatibleTextRecipeModel(rawModels[1]), null);
+  assert.equal(isCompatibleTextRecipeModel(rawModels[2]), null);
+  assert.equal(isCompatibleTextRecipeModel(rawModels[7]), null);
+  assert.equal(isCompatibleTextRecipeModel(rawModels[10]), null);
+
+  const ranked = rankCompatibleModels(rawModels);
+  assert.deepEqual(
+    ranked.map((m) => m.id),
+    ['gemini-9-flash-lite', 'gemini-flash-lite-latest', 'gemini-9-flash', 'gemini-9-pro'],
+  );
+});
+
+test('Dynamic Model Discovery: caches paginated ListModels, skips 404 models via negative cache, retries 503, and falls back cleanly', async () => {
+  let currentTime = 1_000_000;
+  let listModelsCalls = 0;
+  const generateCalls = [];
+  const attemptCountByModel = new Map();
+
+  const deps = makeDeps({
+    nowFn: () => currentTime,
+    fetchFn: async (url) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        listModelsCalls++;
+        if (!target.includes('pageToken=')) {
+          return new Response(
+            makeListModelsJson(
+              [
+                { name: 'models/gemini-9-flash-lite', displayName: 'Dead Lite', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+                { name: 'models/gemini-flash-lite-latest', displayName: 'Overloaded Lite', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+              ],
+              'page-2-token',
+            ),
+            { status: 200, headers: { 'Content-Type': 'application/json' } },
+          );
+        }
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-9-flash', displayName: 'Healthy Flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+
+      const modelMatch = target.match(/\/models\/([^:]+):generateContent/);
+      const modelId = modelMatch ? modelMatch[1] : 'unknown';
+      generateCalls.push(modelId);
+      const count = (attemptCountByModel.get(modelId) || 0) + 1;
+      attemptCountByModel.set(modelId, count);
+
+      if (modelId === 'gemini-9-flash-lite') {
+        return new Response('Model no longer available', { status: 404 });
+      }
+      if (modelId === 'gemini-flash-lite-latest') {
+        return new Response('Overloaded', { status: 503 });
+      }
+      if (modelId === 'gemini-9-flash') {
+        return new Response(makeValidRecipePayload('Garang Asem Kudus'), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      return new Response('Unexpected model', { status: 500 });
+    },
+  });
+
+  const payload = JSON.stringify({ action: 'generate', inputs: VALID_INPUTS });
+
+  // Request 1: fetches 2 pages of ListModels, skips 404 on model 1, retries 503 once on model 2, falls back to model 3 -> 200
+  const res1 = await handleRequest(makePostRequest(payload, { 'cf-connecting-ip': '203.0.113.10' }), deps);
+  assert.equal(res1.status, 200);
+  const body1 = await res1.json();
+  assert.equal(body1.success, true);
+  assert.equal(body1.recipe.title, 'Garang Asem Kudus');
+  assert.equal(listModelsCalls, 2); // 2 paginated requests once
+  assert.deepEqual(generateCalls, [
+    'gemini-9-flash-lite',
+    'gemini-flash-lite-latest',
+    'gemini-flash-lite-latest',
+    'gemini-9-flash',
+  ]);
+
+  // Request 2 shortly after: uses cached ListModels (0 new calls) AND skips 404 + 503 blocked models directly!
+  currentTime += 5_000;
+  generateCalls.length = 0;
+  const res2 = await handleRequest(makePostRequest(payload, { 'cf-connecting-ip': '203.0.113.10' }), deps);
+  assert.equal(res2.status, 200);
+  assert.equal(listModelsCalls, 2);
+  assert.deepEqual(generateCalls, ['gemini-9-flash']);
+
+  // Request 3 where active remaining models return 503 -> returns 503 instead of 502
+  const overloadDeps = makeDeps({
+    fetchFn: async (url) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-dead-lite', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+            { name: 'models/gemini-active-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      if (target.includes('gemini-dead-lite')) {
+        return new Response('Not found', { status: 404 });
+      }
+      return new Response('Service Unavailable', { status: 503 });
+    },
+  });
+  const res3 = await handleRequest(makePostRequest(payload, { 'cf-connecting-ip': '203.0.113.11' }), overloadDeps);
+  assert.equal(res3.status, 503);
+  assert.equal(res3.headers.get('retry-after'), '15');
 });
