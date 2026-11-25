@@ -98,7 +98,7 @@ export class HeroShowcase {
             src="/assets/images/hero/heritage-feast.jpg" 
             alt="${t('hero.pusakaTitle')}" 
             class="w-full h-full object-cover object-center filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-103"
-            onerror="this.src='/assets/images/hero/hero-culinary.jpg'"
+            data-fallback-src="/assets/images/hero/hero-culinary.jpg"
           />
 
           <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-black/25 pointer-events-none"></div>

@@ -2,6 +2,7 @@ import { regions } from '../data/regions.js';
 import { localizeRegion } from '../services/regionService.js';
 import { getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { t } from '../i18n/index.js';
+import { escapeHtml } from '../utils/dom.js';
 
 /**
  * Editorial Royal Heritage Filter & Search Panel Component
@@ -31,7 +32,8 @@ export function renderFilterPanel(currentFilters = {}) {
           </div>
           <input type="text" 
                  id="recipe-search-input" 
-                 value="${searchQuery}"
+                 value="${escapeHtml(searchQuery)}"
+                 maxlength="100"
                  placeholder="${t('recipesSection.searchPlaceholder')}" 
                  class="w-full pl-11 pr-10 py-3.5 rounded-2xl border border-[#E8DEC8] bg-[#FAF7F2] text-sm text-[#120B07] placeholder-[#5C3622]/50 focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] focus:border-transparent transition-all shadow-inner"/>
           ${searchQuery ? `
@@ -74,13 +76,13 @@ export function renderFilterPanel(currentFilters = {}) {
           ${localizedFlavors.map(f => `
             <button type="button" 
                     data-filter-type="flavor" 
-                    data-value="${f.id}"
+                    data-value="${escapeHtml(f.id)}"
                     class="filter-pill px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
                       selectedFlavor === f.id
                         ? 'bg-[#C84C24] text-white font-bold shadow-md ring-2 ring-[#C84C24]/30'
                         : 'bg-[#FAF7F2] text-[#5C3622] hover:bg-[#EFE8DA] border border-[#E8DEC8]'
                     }">
-              ${f.name}
+              ${escapeHtml(f.name)}
             </button>
           `).join('')}
         </div>
@@ -95,7 +97,7 @@ export function renderFilterPanel(currentFilters = {}) {
           <select id="filter-region" data-filter-type="region" class="w-full sm:w-72 py-2.5 px-3.5 rounded-xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-semibold text-[#120B07] cursor-pointer focus:ring-2 focus:ring-[#C84C24]">
             <option value="semua">${t('recipesSection.allRegions')}</option>
             ${regions.map(localizeRegion).map(r => `
-              <option value="${r.id}" ${selectedRegion === r.id ? 'selected' : ''}>${r.name}</option>
+              <option value="${escapeHtml(r.id)}" ${selectedRegion === r.id ? 'selected' : ''}>${escapeHtml(r.name)}</option>
             `).join('')}
           </select>
         </div>

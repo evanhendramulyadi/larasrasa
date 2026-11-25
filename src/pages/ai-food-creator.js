@@ -5,6 +5,7 @@ import {
   PREFERENCE_OPTIONS 
 } from '../services/aiFoodCreatorService.js';
 import { i18n, t } from '../i18n/index.js';
+import { escapeHtml } from '../utils/dom.js';
 
 /**
  * LarasRasa AI Food Creator Studio
@@ -308,6 +309,7 @@ function renderFormView(currentLang) {
             type="text" 
             id="creator-name-input" 
             name="creatorName"
+            maxlength="60"
             value="${escapeHtml(formState.creatorName)}"
             placeholder="${isEn ? 'e.g., Evan Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
             class="w-full px-4 py-3 rounded-2xl bg-white border ${
@@ -582,6 +584,7 @@ function renderFormView(currentLang) {
               type="text" 
               id="custom-notes-input" 
               name="customNotes"
+              maxlength="250"
               value="${escapeHtml(formState.customNotes)}"
               placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
               class="w-full px-4 py-3.5 rounded-2xl bg-white border border-[#E8DEC8] text-xs sm:text-sm text-[#120B07] focus:ring-2 focus:ring-[#C84C24] shadow-inner"
@@ -871,7 +874,7 @@ function renderResultView(recipe, currentLang) {
                   </h3>
                 </div>
                 <span class="text-xs px-2.5 py-1 rounded-lg bg-[#FAF7F2] text-[#2E4D38] font-bold border border-[#D49B42]/30">
-                  ${recipe.servings || 4} ${isEn ? 'portions' : 'porsi'}
+                  ${escapeHtml(recipe.servings || 4)} ${isEn ? 'portions' : 'porsi'}
                 </span>
               </div>
 
@@ -887,7 +890,7 @@ function renderResultView(recipe, currentLang) {
                       </div>
                     </div>
                     <span class="font-mono text-[11px] font-bold text-[#120B07] bg-white px-2.5 py-1 rounded-lg border border-[#E8DEC8] shrink-0">
-                      ${ing.amount ? `${ing.amount} ${isEn ? (ing.unitEn || ing.unitId || ing.unit) : (ing.unitId || ing.unit)}` : '-'}
+                      ${ing.amount !== undefined && ing.amount !== null && ing.amount !== '' ? `${escapeHtml(ing.amount)} ${escapeHtml(isEn ? (ing.unitEn || ing.unitId || ing.unit) : (ing.unitId || ing.unit))}` : '-'}
                     </span>
                   </div>
                 `).join('')}
@@ -939,7 +942,7 @@ function renderResultView(recipe, currentLang) {
                   <div class="p-5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] space-y-2 text-xs hover:border-[#D49B42]/50 transition-colors">
                     <div class="flex items-center gap-2.5">
                       <span class="w-6 h-6 rounded-full bg-[#120B07] text-[#D49B42] font-bold text-xs flex items-center justify-center font-mono shrink-0">
-                        ${step.stepNumber || idx + 1}
+                        ${escapeHtml(step.stepNumber || idx + 1)}
                       </span>
                       <strong class="text-[#120B07] font-bold font-editorial-serif text-sm sm:text-base">
                         ${escapeHtml(isEn ? (step.titleEn || step.titleId || step.title) : (step.titleId || step.title))}
@@ -1172,22 +1175,28 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // 3. 10-Minute Cooldown Check: Keep scroll position and display notification
+      // 3. 10-Minute Client UX Cooldown Check (server-side rate limit remains authoritative)
       const lastGenTimestamp = localStorage.getItem(COOLDOWN_KEY);
       if (lastGenTimestamp) {
-        const elapsed = Date.now() - parseInt(lastGenTimestamp, 10);
-        if (elapsed < COOLDOWN_MS) {
-          const remainingMinutes = Math.max(1, Math.ceil((COOLDOWN_MS - elapsed) / 60000));
-          sessionAlert = {
-            type: 'cooldown',
-            minutes: remainingMinutes
-          };
-          await reRenderCurrentView(true);
-          return;
+        const parsedTs = Number.parseInt(lastGenTimestamp, 10);
+        const now = Date.now();
+        if (Number.isFinite(parsedTs) && parsedTs > 0 && parsedTs <= now) {
+          const elapsed = now - parsedTs;
+          if (elapsed < COOLDOWN_MS) {
+            const remainingMinutes = Math.max(1, Math.ceil((COOLDOWN_MS - elapsed) / 60000));
+            sessionAlert = {
+              type: 'cooldown',
+              minutes: remainingMinutes
+            };
+            await reRenderCurrentView(true);
+            return;
+          }
+        } else {
+          localStorage.removeItem(COOLDOWN_KEY);
         }
       }
 
-      // 4. Update submit button to verifying state (stay in place on form)
+      // 4. Update submit button to verifying state (stay in place on form while awaiting backend)
       nameError = false;
       ingredientError = false;
       sessionAlert = null;
@@ -1205,91 +1214,67 @@ export function initAiFoodCreatorInteractions() {
         `;
       }
 
-      // 5. Backend Credit Check: Fast verification, stay in place if failed
+      // 5. Call secured backend generation directly (if rate-limited/rejected, stay in place on form)
+      let recipe = null;
       try {
-        const creditCheck = await aiFoodCreatorService.checkCredits();
-        if (!creditCheck.ok) {
-          if (creditCheck.error === 'no_credits') {
-            sessionAlert = { type: 'credit' };
-          } else {
-            sessionAlert = { type: 'backend_error' };
-          }
-          await reRenderCurrentView(true);
-          return;
+        recipe = await aiFoodCreatorService.generateRecipe({
+          ...formState,
+          outputLanguage: isEn ? 'en' : 'id'
+        });
+        if (!recipe || !recipe.title) {
+          throw new Error('Empty recipe response');
         }
-      } catch (checkErr) {
-        sessionAlert = { type: 'backend_error' };
+      } catch (err) {
+        isGenerating = false;
+        currentGeneratingPercent = 20;
+        currentGeneratingStageIdx = 0;
+        currentGeneratedRecipe = null;
+        if (err.code === 'RATE_LIMITED') {
+          const waitMinutes = Math.max(1, Math.ceil((err.retryAfterSeconds || 60) / 60));
+          sessionAlert = {
+            type: 'cooldown',
+            minutes: waitMinutes
+          };
+        } else if (err.code === 'CREDIT_EXHAUSTED') {
+          sessionAlert = { type: 'credit' };
+        } else {
+          sessionAlert = { type: 'backend_error' };
+        }
         await reRenderCurrentView(true);
         return;
       }
 
-      // 6. Verification Succeeded: Switch immediately to processing screen and scroll up
+      // 6. Backend Succeeded: Transition smoothly through the formulating showcase and display recipe
       isGenerating = true;
       currentGeneratingPercent = 20;
       currentGeneratingStageIdx = 0;
       await reRenderCurrentView(false);
       window.scrollTo({ top: 150, behavior: 'smooth' });
 
-      // 7. Execute recipe generation with deliberate minimum duration (2.8s)
-      try {
-        const minProcessingTime = new Promise(resolve => setTimeout(resolve, 2800));
-        const [recipe] = await Promise.all([
-          aiFoodCreatorService.generateRecipe({
-            ...formState,
-            outputLanguage: isEn ? 'en' : 'id'
-          }),
-          minProcessingTime
-        ]);
+      await new Promise(resolve => setTimeout(resolve, 2600));
 
-        if (!recipe || !recipe.title) {
-          throw new Error('Empty recipe response');
-        }
+      currentGeneratedRecipe = recipe;
+      localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
 
-        currentGeneratedRecipe = recipe;
-        localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
-
-        if (window.__larasRasaProgressTimer) {
-          clearInterval(window.__larasRasaProgressTimer);
-          window.__larasRasaProgressTimer = null;
-        }
-
-        const progressBar = document.getElementById('generating-progress-bar');
-        const percentEl = document.getElementById('generating-progress-percent');
-        const stageEl = document.getElementById('generating-progress-stage');
-        if (progressBar) progressBar.style.width = '100%';
-        if (percentEl) percentEl.textContent = '100%';
-        if (stageEl) stageEl.textContent = isEn ? 'Heritage recipe formulated!' : 'Resep pusaka siap disajikan!';
-
-        await new Promise(resolve => setTimeout(resolve, 400));
-
-        isGenerating = false;
-        currentGeneratingPercent = 20;
-        currentGeneratingStageIdx = 0;
-        await reRenderCurrentView(false);
-        window.scrollTo({ top: 100, behavior: 'smooth' });
-
-      } catch (err) {
-        if (window.__larasRasaProgressTimer) {
-          clearInterval(window.__larasRasaProgressTimer);
-          window.__larasRasaProgressTimer = null;
-        }
-        // Generation Failure: Return to form, stay in place, and display notification
-        isGenerating = false;
-        currentGeneratingPercent = 20;
-        currentGeneratingStageIdx = 0;
-        currentGeneratedRecipe = null;
-        if (err.code === 'CREDIT_EXHAUSTED') {
-          sessionAlert = { type: 'credit' };
-        } else {
-          sessionAlert = { type: 'backend_error' };
-        }
-        await reRenderCurrentView(false);
-        const alertEl = document.getElementById('ai-creator-session-alert') || document.getElementById('creator-name-box');
-        if (alertEl) {
-          alertEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        return;
+      if (window.__larasRasaProgressTimer) {
+        clearInterval(window.__larasRasaProgressTimer);
+        window.__larasRasaProgressTimer = null;
       }
+
+      const progressBar = document.getElementById('generating-progress-bar');
+      const percentEl = document.getElementById('generating-progress-percent');
+      const stageEl = document.getElementById('generating-progress-stage');
+      if (progressBar) progressBar.style.width = '100%';
+      if (percentEl) percentEl.textContent = '100%';
+      if (stageEl) stageEl.textContent = isEn ? 'Heritage recipe formulated!' : 'Resep pusaka siap disajikan!';
+
+      await new Promise(resolve => setTimeout(resolve, 400));
+
+      isGenerating = false;
+      currentGeneratingPercent = 20;
+      currentGeneratingStageIdx = 0;
+      await reRenderCurrentView(false);
+      window.scrollTo({ top: 100, behavior: 'smooth' });
     };
   }
 
@@ -1406,14 +1391,4 @@ async function reRenderCurrentView(preserveScroll = true) {
       window.scrollTo({ top: savedY, behavior: 'instant' });
     }
   }
-}
-
-function escapeHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
 }

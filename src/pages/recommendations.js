@@ -3,6 +3,7 @@ import { flavorProfiles, getLocalizedFlavorProfiles } from '../data/flavorProfil
 import { openRecipeModal } from '../components/recipe-modal.js';
 import { localizeRecipe } from '../services/recipeService.js';
 import { t, i18n } from '../i18n/index.js';
+import { escapeHtml, safeUrl } from '../utils/dom.js';
 
 /**
  * Central Javanese Cultural Culinary Taste Matcher
@@ -436,10 +437,10 @@ function renderResultView(result) {
           <!-- Left Column: Hero Macro Image Showcase (5 Cols) -->
           <div class="lg:col-span-5 relative">
             <div class="relative aspect-4/3 lg:aspect-4/5 w-full rounded-3xl overflow-hidden bg-[#120B07] border border-[#D49B42]/30 shadow-md">
-              <img src="${primary.image}" 
-                   alt="${primary.name} - ${isEn ? 'Recommended Heritage Dish' : 'Rekomendasi Kuliner Pusaka'}" 
+              <img src="${safeUrl(primary.image, '/assets/images/hero/hero-culinary.jpg')}" 
+                   alt="${escapeHtml(primary.name)} - ${isEn ? 'Recommended Heritage Dish' : 'Rekomendasi Kuliner Pusaka'}" 
                    class="w-full h-full object-cover" 
-                   onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
+                   data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
               <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
               
               <!-- Floating Top Badges -->
@@ -488,10 +489,10 @@ function renderResultView(result) {
             <!-- Title & Regional Lore Excerpt -->
             <div class="space-y-2">
               <h2 class="font-editorial-serif text-3xl sm:text-4xl font-bold text-[#120B07] leading-tight">
-                ${primary.name}
+                ${escapeHtml(primary.name)}
               </h2>
               <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
-                ${primary.intro}
+                ${escapeHtml(primary.intro)}
               </p>
             </div>
 
@@ -508,7 +509,7 @@ function renderResultView(result) {
                 ${matchHighlights.map(h => `
                   <div class="flex items-start gap-2.5 text-xs text-[#120B07] leading-relaxed">
                     <span class="w-4 h-4 rounded-full bg-[#C84C24]/15 text-[#C84C24] flex items-center justify-center shrink-0 font-bold text-[10px] mt-0.5">✓</span>
-                    <span>${h}</span>
+                    <span>${escapeHtml(h)}</span>
                   </div>
                 `).join('')}
               </div>

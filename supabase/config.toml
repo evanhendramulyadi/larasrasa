@@ -1,0 +1,14 @@
+# Supabase Edge Functions Configuration for LarasRasa
+#
+# verify_jwt is set to false ONLY because LarasRasa is a public, login-free web showcase
+# and the frontend passes Supabase's modern opaque publishable key (sb_publishable_...)
+# rather than a signed user JWT.
+#
+# Security controls are enforced inside generate-recipe/index.ts via:
+# - Strict JSON schema validation and allowlists (rejecting arbitrary prompts & unknown keys)
+# - Server-side prompt construction
+# - Trusted-edge IP rate limiting & burst circuit breakers
+# - Removal of diagnostic/unauthenticated credit enumeration actions
+
+[functions.generate-recipe]
+verify_jwt = false

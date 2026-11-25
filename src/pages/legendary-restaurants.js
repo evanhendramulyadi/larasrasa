@@ -3,6 +3,7 @@ import { renderRestaurantCard } from '../components/restaurant-card.js';
 import { regions } from '../data/regions.js';
 import { localizeRegion } from '../services/regionService.js';
 import { t, i18n } from '../i18n/index.js';
+import { escapeHtml } from '../utils/dom.js';
 
 let currentFilter = {
   city: 'semua',
@@ -43,7 +44,8 @@ export async function renderLegendaryRestaurantsPage() {
           <div class="relative flex-1 w-full">
             <input type="text" 
                    id="restaurant-search-input" 
-                   value="${currentFilter.search}"
+                   value="${escapeHtml(currentFilter.search)}"
+                   maxlength="100"
                    placeholder="${t('restaurantsSection.searchPlaceholder')}" 
                    class="w-full pl-11 pr-4 py-3 rounded-2xl border border-[#E8DEC8] bg-[#FAF7F2] text-sm text-[#120B07] placeholder-[#5C3622]/50 focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] transition-all shadow-inner"/>
             <svg class="w-5 h-5 text-[#C84C24] absolute left-3.5 top-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">

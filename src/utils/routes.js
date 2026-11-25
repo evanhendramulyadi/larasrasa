@@ -63,3 +63,42 @@ export function translateHashRoute(currentHash, targetLang) {
 
   return `#${path}${query}`;
 }
+
+/**
+ * Resolves a raw hash path to the nearest valid clean route, sanitizing dynamic recipe slugs.
+ */
+export function resolveNearestRoute(rawPath, isEn = false) {
+  let normalized = (rawPath || '').toLowerCase().replace(/\/+$/, '').trim();
+  if (!normalized.startsWith('/')) {
+    normalized = `/${normalized}`;
+  }
+
+  const validExactRoutes = [
+    '/',
+    '/resep', '/recipes',
+    '/peta-rasa', '/flavor-map',
+    '/jelajah-rempah', '/spices',
+    '/restoran-legendaris', '/restaurants',
+    '/rekomendasi', '/recommendations',
+    '/ai-food-creator'
+  ];
+
+  if (validExactRoutes.includes(normalized)) {
+    return normalized;
+  }
+
+  if (
+    normalized.startsWith('/resep/') ||
+    normalized.startsWith('/recipes/') ||
+    normalized.startsWith('/recipe/')
+  ) {
+    const rawSlug = normalized.replace(/^\/(resep|recipes|recipe)\//, '').trim();
+    const slug = /^[a-z0-9-]+$/i.test(rawSlug) ? rawSlug : '';
+    if (slug) {
+      return isEn ? `/recipes/${slug}` : `/resep/${slug}`;
+    }
+    return isEn ? '/recipes' : '/resep';
+  }
+
+  return '/';
+}

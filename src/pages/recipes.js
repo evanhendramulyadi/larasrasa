@@ -63,11 +63,12 @@ export async function renderRecipesPage(urlParams = {}) {
     region = 'semua';
   }
 
-  // Reset filters to defaults or apply incoming URL params cleanly
+  // Reset filters to defaults or apply incoming URL params cleanly with length bounds
+  const safeSearch = typeof urlParams.search === 'string' ? urlParams.search.slice(0, 100) : '';
   activeFilters = {
-    search: urlParams.search || '',
-    region: region,
-    flavor: flavor,
+    search: safeSearch,
+    region: typeof region === 'string' ? region.slice(0, 40) : 'semua',
+    flavor: typeof flavor === 'string' ? flavor.slice(0, 40) : 'semua',
     sort: 'popular'
   };
 

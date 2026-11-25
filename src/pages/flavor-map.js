@@ -2,6 +2,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { regionService } from '../services/regionService.js';
 import { i18n, t } from '../i18n/index.js';
+import { escapeHtml, safeUrl } from '../utils/dom.js';
 
 /**
  * Interactive Central Java Flavor Map
@@ -103,17 +104,17 @@ function renderRegionDetailContent(region) {
       
       <!-- Region Image Banner -->
       <div class="relative rounded-2xl overflow-hidden aspect-16/9 bg-[#120B07]/10 border border-[#D49B42]/35 shadow-sm">
-        <img src="${region.image}" 
-             alt="${isEn ? `${region.name} Culinary Landscape` : `Lansekap Kuliner ${region.name}`}" 
+        <img src="${safeUrl(region.image, '/assets/images/regions/semarang.jpg')}" 
+             alt="${escapeHtml(isEn ? `${region.name} Culinary Landscape` : `Lansekap Kuliner ${region.name}`)}" 
              class="w-full h-full object-cover"
-             onerror="this.onerror=null; this.src='/assets/images/regions/semarang.jpg';"/>
+             data-fallback-src="/assets/images/regions/semarang.jpg"/>
         <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
         <div class="absolute bottom-3.5 left-4 right-4 text-white">
           <span class="text-[10px] font-bold uppercase tracking-wider text-[#D49B42] bg-black/60 px-2.5 py-0.5 rounded-md border border-[#D49B42]/30">
-            ${i18n?.getLanguage && i18n.getLanguage() === 'en' ? `${region.type} in Central Java` : `${region.type} di Jawa Tengah`}
+            ${escapeHtml(i18n?.getLanguage && i18n.getLanguage() === 'en' ? `${region.type} in Central Java` : `${region.type} di Jawa Tengah`)}
           </span>
           <h2 class="font-editorial-serif text-2xl font-bold leading-tight mt-1 text-white">
-            ${region.name}
+            ${escapeHtml(region.name)}
           </h2>
         </div>
       </div>
@@ -121,10 +122,10 @@ function renderRegionDetailContent(region) {
       <!-- Tagline & Description -->
       <div class="space-y-2">
         <p class="font-editorial-serif italic text-base text-[#C84C24] font-semibold leading-snug">
-          "${region.tagline}"
+          "${escapeHtml(region.tagline)}"
         </p>
         <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
-          ${region.description}
+          ${escapeHtml(region.description)}
         </p>
       </div>
 
@@ -135,7 +136,7 @@ function renderRegionDetailContent(region) {
             <line x1="12" y1="16" x2="12" y2="12"/>
             <line x1="12" y1="8" x2="12.01" y2="8"/>
           </svg>
-          <span><strong>${t('map.regionNote')}</strong> ${region.specialNote}</span>
+          <span><strong>${t('map.regionNote')}</strong> ${escapeHtml(region.specialNote)}</span>
         </div>
       ` : ''}
 
@@ -145,7 +146,7 @@ function renderRegionDetailContent(region) {
           ${t('map.identity')}
         </span>
         <p class="text-xs text-[#5C3622] leading-relaxed">
-          ${region.culturalIdentity}
+          ${escapeHtml(region.culturalIdentity)}
         </p>
       </div>
 
@@ -245,7 +246,7 @@ export async function initFlavorMapInteractions() {
 
     // Custom Icon for Central Java Culinary Epicenters
     const createMarkerIcon = (region, isActive = false) => {
-      const displayName = formatMarkerName(region.name);
+      const displayName = escapeHtml(formatMarkerName(region.name));
       return L.divIcon({
         className: 'flavor-map-marker-container',
         html: `
@@ -280,11 +281,6 @@ export async function initFlavorMapInteractions() {
         regionMarkers[region.id] = marker;
       }
     });
-
-    // Wire global bridge for region selection
-    window.selectFlavorRegion = (id) => {
-      selectRegion(id);
-    };
 
     // Wire Region Pill Buttons
     const pills = document.querySelectorAll('[data-region-pill]');

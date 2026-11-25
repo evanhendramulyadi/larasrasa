@@ -6,13 +6,40 @@ export const $ = (selector, context = document) => context.querySelector(selecto
 export const $$ = (selector, context = document) => Array.from(context.querySelectorAll(selector));
 
 export function escapeHtml(str) {
-  if (!str) return '';
+  if (str === null || str === undefined) return '';
   return String(str)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+/**
+ * Validates URLs before inserting into href/src attributes to block javascript:, data:, or vbscript: payloads.
+ */
+export function safeUrl(url, fallback = '#') {
+  if (typeof url !== 'string') return fallback;
+  const trimmed = url.trim();
+  if (!trimmed) return fallback;
+
+  if (trimmed.startsWith('/') && !trimmed.startsWith('//')) {
+    return escapeHtml(trimmed);
+  }
+  if (trimmed.startsWith('#')) {
+    return escapeHtml(trimmed);
+  }
+
+  try {
+    const parsed = new URL(trimmed);
+    if (parsed.protocol === 'https:' || parsed.protocol === 'http:') {
+      return escapeHtml(parsed.toString());
+    }
+  } catch {
+    return fallback;
+  }
+
+  return fallback;
 }
 
 /**

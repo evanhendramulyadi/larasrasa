@@ -17,44 +17,9 @@ import {
 import { openRecipeModal, closeRecipeModal, getActiveRecipeModalSlug } from './components/recipe-modal.js';
 import { recipeService, localizeRecipe } from './services/recipeService.js';
 import { scrollToTop } from './utils/dom.js';
-import { translateHashRoute } from './utils/routes.js';
+import { translateHashRoute, resolveNearestRoute } from './utils/routes.js';
 
-export function resolveNearestRoute(rawPath, isEn = false) {
-  let normalized = (rawPath || '').toLowerCase().replace(/\/+$/, '').trim();
-  if (!normalized.startsWith('/')) {
-    normalized = `/${normalized}`;
-  }
-
-  const validExactRoutes = [
-    '/',
-    '/resep', '/recipes',
-    '/peta-rasa', '/flavor-map',
-    '/jelajah-rempah', '/spices',
-    '/restoran-legendaris', '/restaurants',
-    '/rekomendasi', '/recommendations',
-    '/ai-food-creator'
-  ];
-
-  if (validExactRoutes.includes(normalized)) {
-    return normalized;
-  }
-
-  // Recipe detail paths: /resep/<slug>, /recipes/<slug>, /recipe/<slug>
-  if (
-    normalized.startsWith('/resep/') || 
-    normalized.startsWith('/recipes/') || 
-    normalized.startsWith('/recipe/')
-  ) {
-    const slug = normalized.replace(/^\/(resep|recipes|recipe)\//, '').trim();
-    if (slug) {
-      return isEn ? `/recipes/${slug}` : `/resep/${slug}`;
-    }
-    return isEn ? '/recipes' : '/resep';
-  }
-
-  // Any other typo or invalid link strictly redirects to Home (/)
-  return '/';
-}
+export { resolveNearestRoute };
 
 /**
  * Client-Side Router for LarasRasa SPA
@@ -206,11 +171,14 @@ export class Router {
     const [pathPart, queryPart] = rawHash.split('?');
     const path = pathPart.startsWith('/') ? pathPart : `/${pathPart}`;
 
+    const allowedQueryKeys = new Set(['flavor', 'region', 'search']);
     const queryParams = {};
     if (queryPart) {
       const searchParams = new URLSearchParams(queryPart);
       for (const [key, val] of searchParams.entries()) {
-        queryParams[key] = val;
+        if (allowedQueryKeys.has(key)) {
+          queryParams[key] = val.slice(0, 100);
+        }
       }
       // If the URL contained query parameters (like ?flavor=pedas or ?region=...),
       // immediately remove query parameters and normalize URL to the clean route

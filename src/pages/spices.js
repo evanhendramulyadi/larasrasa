@@ -1,6 +1,7 @@
 import { spiceService, localizeSpice } from '../services/spiceService.js';
 import { spices } from '../data/spices.js';
 import { i18n, t } from '../i18n/index.js';
+import { escapeHtml, safeUrl } from '../utils/dom.js';
 
 export { localizeSpice };
 
@@ -123,25 +124,25 @@ export async function renderSpicesPage() {
           >
             <div>
               <div class="relative w-full aspect-4/3 rounded-2xl overflow-hidden mb-3 bg-[#FAF7F2] border border-[#E8DEC8]">
-                <img src="${spice.image}" 
-                     alt="${spice.name} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
+                <img src="${safeUrl(spice.image, '/assets/images/hero/hero-culinary.jpg')}" 
+                     alt="${escapeHtml(spice.name)} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
                      class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
                      loading="lazy"
-                     onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
+                     data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <span class="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-[#120B07]/85 text-[10px] font-bold text-[#FAF7F2] backdrop-blur-md border border-[#D49B42]/30">
-                  ${spice.categoryName}
+                  ${escapeHtml(spice.categoryName)}
                 </span>
               </div>
               
               <h3 class="font-editorial-serif text-lg font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors leading-snug">
-                ${spice.name}
+                ${escapeHtml(spice.name)}
               </h3>
               <p class="text-xs italic text-[#2E4D38] mb-2 font-mono font-semibold">
-                ${spice.latinName}
+                ${escapeHtml(spice.latinName)}
               </p>
               <p class="text-xs text-[#5C3622] line-clamp-2 leading-relaxed">
-                ${spice.role}
+                ${escapeHtml(spice.role)}
               </p>
             </div>
 
@@ -184,21 +185,21 @@ function renderSpiceModal(spice) {
 
         <!-- Modal Header with Macro Image (Shrink 0) -->
         <div class="relative w-full h-52 sm:h-60 shrink-0 overflow-hidden bg-[#120B07]">
-          <img src="${spice.image}" 
-               alt="${spice.name} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
+          <img src="${safeUrl(spice.image, '/assets/images/hero/hero-culinary.jpg')}" 
+               alt="${escapeHtml(spice.name)} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
                class="w-full h-full object-cover filter brightness-[0.96] contrast-[1.05]"
-               onerror="this.src='/assets/images/hero/hero-culinary.jpg'"/>
+               data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#120B07] via-black/40 to-transparent"></div>
           
           <div class="absolute bottom-3.5 left-5 right-14 text-white space-y-1">
             <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#C84C24] text-white shadow-xs border border-white/20">
-              <span>${spice.categoryName}</span>
+              <span>${escapeHtml(spice.categoryName)}</span>
             </div>
             <h2 id="modal-spice-title" class="font-editorial-serif text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
-              ${spice.name}
+              ${escapeHtml(spice.name)}
             </h2>
             <p class="text-xs sm:text-sm text-[#D49B42] italic font-mono font-semibold">
-              ${spice.latinName}
+              ${escapeHtml(spice.latinName)}
             </p>
           </div>
         </div>
@@ -213,11 +214,11 @@ function renderSpiceModal(spice) {
               <span>${isEn ? 'Culinary Role & Soul' : 'Peran Utama & Karakter Kuliner'}</span>
             </span>
             <p class="text-xs sm:text-sm text-[#120B07] leading-relaxed">
-              ${spice.role}
+              ${escapeHtml(spice.role)}
             </p>
             ${spice.flavorNote ? `
               <div class="pt-2 mt-2 border-t border-[#D49B42]/20 text-xs text-[#2E4D38] leading-relaxed">
-                <span class="font-bold text-[#C84C24]">${isEn ? 'Flavor Note:' : 'Catatan Rasa:'}</span> ${spice.flavorNote}
+                <span class="font-bold text-[#C84C24]">${isEn ? 'Flavor Note:' : 'Catatan Rasa:'}</span> ${escapeHtml(spice.flavorNote)}
               </div>
             ` : ''}
           </div>
@@ -229,7 +230,7 @@ function renderSpiceModal(spice) {
               <span>${t('spicesSection.aromaTitle') || 'Aroma & Karakter Rasa:'}</span>
             </span>
             <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
-              ${spice.aromaProfile}
+              ${escapeHtml(spice.aromaProfile)}
             </p>
           </div>
 
@@ -240,7 +241,7 @@ function renderSpiceModal(spice) {
               <span>${t('spicesSection.prepTitle') || 'Teknik Pengolahan di Dapur:'}</span>
             </span>
             <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed">
-              ${spice.preparationMethod}
+              ${escapeHtml(spice.preparationMethod)}
             </p>
           </div>
 
@@ -254,7 +255,7 @@ function renderSpiceModal(spice) {
               <span>${t('spicesSection.wisdomTitle') || 'Kearifan Budaya & Manfaat:'}</span>
             </div>
             <p class="text-xs sm:text-sm text-[#FAF7F2]/90 leading-relaxed italic">
-              "${spice.culturalWisdom}"
+              "${escapeHtml(spice.culturalWisdom)}"
             </p>
           </div>
 
@@ -267,7 +268,7 @@ function renderSpiceModal(spice) {
               <div class="flex flex-wrap gap-1.5">
                 ${spice.iconicDishes.map(dish => `
                   <span class="px-2.5 py-1 rounded-lg bg-white border border-[#D49B42]/35 text-xs font-semibold text-[#120B07] shadow-2xs select-none pointer-events-none cursor-default">
-                    🍲 ${dish}
+                    🍲 ${escapeHtml(dish)}
                   </span>
                 `).join('')}
               </div>
@@ -278,7 +279,7 @@ function renderSpiceModal(spice) {
           ${spice.substitutes ? `
             <div class="text-xs text-[#5C3622] bg-[#FAF7F2]/80 p-3.5 rounded-xl border border-[#E8DEC8]">
               <span class="font-bold text-[#120B07]">${t('spicesSection.substitutesTitle') || 'Alternatif Pengganti:'} </span>
-              ${spice.substitutes}
+              ${escapeHtml(spice.substitutes)}
             </div>
           ` : ''}
 

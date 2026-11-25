@@ -2,6 +2,7 @@ import { recipeService } from '../services/recipeService.js';
 import { scaleIngredientAmount } from '../utils/formatters.js';
 import { getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { i18n, t } from '../i18n/index.js';
+import { escapeHtml, safeUrl } from '../utils/dom.js';
 
 /**
  * Editorial Royal Heritage Cultural Culinary Detail View
@@ -51,7 +52,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           <span>/</span>
           <a href="${isEn ? '#/recipes' : '#/resep'}" class="hover:text-[#120B07] transition-colors font-medium">${t('nav.recipes')}</a>
           <span>/</span>
-          <span class="text-[#120B07] font-bold">${recipe.name}</span>
+          <span class="text-[#120B07] font-bold">${escapeHtml(recipe.name)}</span>
         </div>
         
         <div class="flex items-center gap-2">
@@ -81,42 +82,42 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
               <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
-            <span>${recipe.regionName}</span>
+            <span>${escapeHtml(recipe.regionName)}</span>
           </span>
           <span class="text-xs px-3 py-1 rounded-full bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/30 shadow-2xs">
-            ${recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
+            ${escapeHtml(recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional'))}
           </span>
           ${flavorText ? `
             <span class="text-xs px-3 py-1 rounded-full bg-[#FDF4EE] text-[#C84C24] font-bold border border-[#C84C24]/30 shadow-2xs">
-              ${flavorText}
+              ${escapeHtml(flavorText)}
             </span>
           ` : ''}
         </div>
 
         <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-[#120B07] leading-tight">
-          ${recipe.name}
+          ${escapeHtml(recipe.name)}
         </h1>
 
         ${recipe.javaneseName ? `
           <p class="font-editorial-serif italic text-lg sm:text-xl text-[#D49B42] font-semibold">
-            "${recipe.javaneseName}"
+            "${escapeHtml(recipe.javaneseName)}"
           </p>
         ` : ''}
 
         <!-- Introduction Narrative -->
         <p class="text-base sm:text-lg text-[#5C3622] leading-relaxed max-w-4xl pt-1">
-          ${recipe.intro}
+          ${escapeHtml(recipe.intro)}
         </p>
 
         <!-- Cultural & Culinary Summary Grid (No Cook Time, No Difficulty, No Price) -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 pt-5 border-y border-[#D49B42]/30 py-5 text-center">
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent">
             <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Origin Region' : 'Sentra Tradisi'}</span>
-            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${recipe.regionName}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5">${escapeHtml(recipe.regionName)}</span>
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
             <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Flavor Character' : 'Karakter Rasa'}</span>
-            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5 truncate">${flavorText || 'Autentik'}</span>
+            <span class="font-bold text-sm sm:text-base text-[#120B07] block mt-0.5 truncate">${escapeHtml(flavorText || 'Autentik')}</span>
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
             <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Standard Servings' : 'Takaran Porsi'}</span>
@@ -124,17 +125,17 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           </div>
           <div class="p-2 rounded-xl bg-white/60 sm:bg-transparent sm:border-l sm:border-[#D49B42]/25">
             <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold truncate">${isEn ? 'Culinary Tradition' : 'Ragam Pusaka'}</span>
-            <span class="font-bold text-sm sm:text-base text-[#C84C24] block mt-0.5 truncate">${recipe.mealType || 'Tradisional'}</span>
+            <span class="font-bold text-sm sm:text-base text-[#C84C24] block mt-0.5 truncate">${escapeHtml(recipe.mealType || 'Tradisional')}</span>
           </div>
         </div>
       </header>
 
       <!-- 2. HERO PHOTOGRAPH -->
       <div class="relative rounded-3xl overflow-hidden border-2 border-[#D49B42]/40 shadow-2xl aspect-16/9 bg-[#120B07]/10">
-        <img src="${recipe.image}" 
-             alt="${recipe.name} - ${isEn ? 'Culinary Specialty' : 'Kuliner Khas'}" 
+        <img src="${safeUrl(recipe.image, '/assets/images/hero/hero-culinary.jpg')}" 
+             alt="${escapeHtml(recipe.name)} - ${isEn ? 'Culinary Specialty' : 'Kuliner Khas'}" 
              class="w-full h-full object-cover"
-             onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg';"/>
+             data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
         <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
         <div class="absolute bottom-5 left-6 right-6 text-white text-xs flex items-center justify-between">
           <span class="bg-black/70 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-[#D49B42]/50 font-bold">

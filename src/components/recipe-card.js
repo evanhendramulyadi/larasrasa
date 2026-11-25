@@ -1,5 +1,6 @@
 import { getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { t, i18n } from '../i18n/index.js';
+import { escapeHtml, safeUrl } from '../utils/dom.js';
 
 /**
  * Editorial Royal Heritage Cultural Dish Card Component
@@ -23,32 +24,32 @@ export function renderRecipeCard(recipe) {
     if (f === 'manis') colorClass = 'bg-orange-50/90 text-orange-800 border-orange-200';
     if (f === 'gurih') colorClass = 'bg-[#F5EFEB] text-[#331F14] border-[#E8DEC8]';
     if (f === 'kaya-rempah') colorClass = 'bg-[#FDF4EE] text-[#C84C24] border-[#C84C24]/30';
-    const tagText = flavorMap[f] || f;
+    const tagText = escapeHtml(flavorMap[f] || f);
     return `<span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${colorClass} shadow-2xs">${tagText}</span>`;
   }).join(' ');
 
   return `
     <article 
-      data-recipe-slug="${recipe.slug}"
+      data-recipe-slug="${escapeHtml(recipe.slug)}"
       role="button"
       tabindex="0"
-      aria-label="${recipe.name} (${recipe.regionName})"
+      aria-label="${escapeHtml(recipe.name)} (${escapeHtml(recipe.regionName)})"
       class="recipe-card recipe-card-item group bg-white rounded-3xl overflow-hidden border border-[#D49B42]/30 shadow-xs hover:shadow-2xl hover:border-[#D49B42] transition-all duration-300 flex flex-col card-hover-lift cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#C84C24]"
     >
       <!-- Card Image Header with Zoom on Hover -->
-      <div class="recipe-card-link relative block overflow-hidden aspect-4/3 bg-[#120B07]/10" aria-label="${recipe.name}">
-        <img src="${recipe.image}" 
-             alt="${recipe.name} - ${isEn ? 'Traditional Recipe' : 'Resep Tradisional'}" 
+      <div class="recipe-card-link relative block overflow-hidden aspect-4/3 bg-[#120B07]/10" aria-label="${escapeHtml(recipe.name)}">
+        <img src="${safeUrl(recipe.image, '/assets/images/hero/hero-culinary.jpg')}" 
+             alt="${escapeHtml(recipe.name)} - ${isEn ? 'Traditional Recipe' : 'Resep Tradisional'}" 
              loading="lazy"
              class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out" 
-             onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg';"/>
+             data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
         
         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-75 group-hover:opacity-60 transition-opacity"></div>
         
         <!-- Meal Type Category Badge Overlay -->
         <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2 pointer-events-none">
           <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
-            <span>${recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}</span>
+            <span>${escapeHtml(recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional'))}</span>
           </span>
         </div>
       </div>
@@ -66,20 +67,20 @@ export function renderRecipeCard(recipe) {
           <!-- Recipe / Dish Title -->
           <h3 class="font-editorial-serif text-xl font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors leading-snug mb-1">
             <span class="hover:underline">
-              ${recipe.name}
+              ${escapeHtml(recipe.name)}
             </span>
           </h3>
 
           <!-- Authentic Javanese Name Subtitle -->
           ${recipe.javaneseName ? `
             <p class="font-editorial-serif italic text-xs text-[#D49B42] font-semibold mb-2">
-              "${recipe.javaneseName}"
+              "${escapeHtml(recipe.javaneseName)}"
             </p>
           ` : ''}
 
           <!-- Narrative Lore & Introduction Excerpt -->
           <p class="text-xs text-[#5C3622] line-clamp-2 leading-relaxed">
-            ${recipe.intro}
+            ${escapeHtml(recipe.intro)}
           </p>
         </div>
 
@@ -87,7 +88,7 @@ export function renderRecipeCard(recipe) {
         <div class="pt-3.5 border-t border-[#E8DEC8] flex items-center justify-between text-xs">
           <div class="flex items-center gap-1.5 text-[#5C3622] font-semibold text-[11px]">
             <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-            <span>${recipe.regionName}</span>
+            <span>${escapeHtml(recipe.regionName)}</span>
           </div>
 
           <span class="inline-flex items-center gap-1.5 font-bold text-[#120B07] group-hover:text-[#C84C24] transition-all">

@@ -2,6 +2,7 @@ import { recipeService, localizeRecipe } from '../services/recipeService.js';
 import { getLocalizedFlavorProfiles } from '../data/flavorProfiles.js';
 import { i18n, t } from '../i18n/index.js';
 import { setActiveNavbarLink } from './navbar.js';
+import { escapeHtml, safeUrl } from '../utils/dom.js';
 
 /**
  * Cultural Culinary Recipe Pop-up Modal Component
@@ -39,10 +40,10 @@ export function renderRecipeModal(rawRecipe) {
 
         <!-- Modal Header with Food Photograph (Shrink 0) -->
         <div class="relative w-full h-52 sm:h-64 shrink-0 overflow-hidden bg-[#120B07]">
-          <img src="${recipe.image}" 
-               alt="${recipe.name} - ${isEn ? 'Traditional Recipe' : 'Resep Tradisional'}" 
+          <img src="${safeUrl(recipe.image, '/assets/images/hero/hero-culinary.jpg')}" 
+               alt="${escapeHtml(recipe.name)} - ${isEn ? 'Traditional Recipe' : 'Resep Tradisional'}" 
                class="w-full h-full object-cover filter brightness-[0.96] contrast-[1.04]"
-               onerror="this.onerror=null; this.src='/assets/images/hero/hero-culinary.jpg'"/>
+               data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#120B07] via-black/45 to-transparent"></div>
           
           <div class="absolute bottom-3.5 left-5 right-14 text-white space-y-1.5">
@@ -52,21 +53,21 @@ export function renderRecipeModal(rawRecipe) {
                   <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
                   <circle cx="12" cy="10" r="3"/>
                 </svg>
-                <span>${recipe.regionName}</span>
+                <span>${escapeHtml(recipe.regionName)}</span>
               </span>
 
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-semibold bg-white/20 text-white backdrop-blur-md border border-white/20 shadow-xs">
-                <span>${recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}</span>
+                <span>${escapeHtml(recipe.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional'))}</span>
               </span>
             </div>
 
             <h2 id="modal-recipe-title" class="font-editorial-serif text-2xl sm:text-3xl font-bold tracking-tight text-white leading-tight">
-              ${recipe.name}
+              ${escapeHtml(recipe.name)}
             </h2>
 
             ${recipe.javaneseName ? `
               <p class="text-xs sm:text-sm text-[#D49B42] italic font-editorial-serif font-semibold">
-                "${recipe.javaneseName}"
+                "${escapeHtml(recipe.javaneseName)}"
               </p>
             ` : ''}
           </div>
@@ -79,11 +80,11 @@ export function renderRecipeModal(rawRecipe) {
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3 p-4 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/30 text-center">
             <div class="p-1">
               <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${isEn ? 'Region' : 'Sentra Wilayah'}</span>
-              <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 leading-snug">${recipe.regionName}</span>
+              <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 leading-snug">${escapeHtml(recipe.regionName)}</span>
             </div>
             <div class="p-1 sm:border-l sm:border-[#D49B42]/25">
               <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${isEn ? 'Flavor' : 'Karakter Rasa'}</span>
-              <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 leading-snug">${flavorText || 'Autentik'}</span>
+              <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 leading-snug">${escapeHtml(flavorText || 'Autentik')}</span>
             </div>
             <div class="p-1 sm:border-l sm:border-[#D49B42]/25">
               <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${isEn ? 'Servings' : 'Takaran Porsi'}</span>
@@ -91,7 +92,7 @@ export function renderRecipeModal(rawRecipe) {
             </div>
             <div class="p-1 sm:border-l sm:border-[#D49B42]/25">
               <span class="block text-[10px] sm:text-[11px] uppercase tracking-wider text-[#2E4D38] font-bold">${isEn ? 'Tradition' : 'Ragam Pusaka'}</span>
-              <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 leading-snug">${recipe.mealType || 'Tradisional'}</span>
+              <span class="font-bold text-xs sm:text-sm text-[#120B07] block mt-0.5 leading-snug">${escapeHtml(recipe.mealType || 'Tradisional')}</span>
             </div>
           </div>
 
@@ -102,11 +103,11 @@ export function renderRecipeModal(rawRecipe) {
               <span>${isEn ? 'Culinary Chronicle & Lore' : 'Catatan Sejarah & Warisan Budaya'}</span>
             </span>
             <p class="text-xs sm:text-sm text-[#120B07] leading-relaxed">
-              ${recipe.intro}
+              ${escapeHtml(recipe.intro)}
             </p>
             ${recipe.history ? `
               <div class="pt-2.5 mt-2.5 border-t border-[#D49B42]/25 text-xs text-[#5C3622] leading-relaxed italic">
-                "${recipe.history}"
+                "${escapeHtml(recipe.history)}"
               </div>
             ` : ''}
           </div>
@@ -137,7 +138,7 @@ export function renderRecipeModal(rawRecipe) {
                   ${recipe.equipment.map(eq => `
                     <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs bg-white text-[#120B07] border border-[#D49B42]/30 font-medium shadow-2xs">
                       <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24] shrink-0"></span>
-                      <span>${eq}</span>
+                      <span>${escapeHtml(eq)}</span>
                     </span>
                   `).join('')}
                 </div>
@@ -148,17 +149,17 @@ export function renderRecipeModal(rawRecipe) {
               ${(recipe.ingredientGroups || []).map(group => `
                 <div class="p-4 rounded-2xl bg-white border border-[#D49B42]/30 shadow-2xs space-y-2.5 h-fit">
                   <h4 class="text-xs font-bold uppercase tracking-wider text-[#C84C24] border-b border-[#D49B42]/20 pb-1.5">
-                    ${group.name}
+                    ${escapeHtml(group.name)}
                   </h4>
                   <ul class="space-y-2 text-xs">
                     ${(group.items || []).map(item => `
                       <li class="flex items-start justify-between gap-2 py-1 border-b border-[#E8DEC8]/50 last:border-0">
                         <span class="text-[#120B07] font-medium leading-tight">
-                          ${item.name}
-                          ${item.notes ? `<span class="block text-[10px] text-[#2E4D38] italic">${item.notes}</span>` : ''}
+                          ${escapeHtml(item.name)}
+                          ${item.notes ? `<span class="block text-[10px] text-[#2E4D38] italic">${escapeHtml(item.notes)}</span>` : ''}
                         </span>
                         <span class="shrink-0 font-bold text-[#120B07] bg-[#FAF7F2] px-2.5 py-0.5 rounded-lg border border-[#D49B42]/30 text-[11px]">
-                          ${item.amount} ${item.unit}
+                          ${escapeHtml(item.amount)} ${escapeHtml(item.unit)}
                         </span>
                       </li>
                     `).join('')}
@@ -181,7 +182,7 @@ export function renderRecipeModal(rawRecipe) {
                   <button type="button" 
                           data-modal-step-idx="${idx}"
                           class="modal-step-check shrink-0 mt-0.5 w-6 h-6 rounded-lg border-2 border-[#C84C24] flex items-center justify-center transition-all bg-white hover:bg-[#FAF7F2] cursor-pointer"
-                          aria-label="Tandai langkah ${step.stepNumber || idx + 1}">
+                          aria-label="Tandai langkah ${escapeHtml(step.stepNumber || idx + 1)}">
                     <svg class="modal-step-check-icon w-3.5 h-3.5 text-white hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                       <polyline points="20 6 9 17 4 12"/>
                     </svg>
@@ -189,14 +190,14 @@ export function renderRecipeModal(rawRecipe) {
 
                   <div class="flex-1 space-y-1">
                     <h4 class="font-editorial-serif text-sm font-bold text-[#120B07]">
-                      ${t('common.step')} ${step.stepNumber || idx + 1}: ${step.title || ''}
+                      ${t('common.step')} ${escapeHtml(step.stepNumber || idx + 1)}: ${escapeHtml(step.title || '')}
                     </h4>
                     <p class="text-xs text-[#5C3622] leading-relaxed modal-step-text">
-                      ${step.instruction || step.description || ''}
+                      ${escapeHtml(step.instruction || step.description || '')}
                     </p>
                     ${step.tip ? `
                       <p class="text-[11px] text-[#2E4D38] italic pt-1">
-                        <strong>Tips:</strong> ${step.tip}
+                        <strong>Tips:</strong> ${escapeHtml(step.tip)}
                       </p>
                     ` : ''}
                   </div>
@@ -216,7 +217,7 @@ export function renderRecipeModal(rawRecipe) {
                 ${(Array.isArray(recipe.cookingTips) ? recipe.cookingTips : [recipe.cookingTips]).map(tip => `
                   <li class="flex items-start gap-1.5">
                     <span class="text-amber-700 font-bold">&bull;</span>
-                    <span>${tip}</span>
+                    <span>${escapeHtml(tip)}</span>
                   </li>
                 `).join('')}
               </ul>
