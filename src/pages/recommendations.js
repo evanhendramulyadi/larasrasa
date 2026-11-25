@@ -24,8 +24,10 @@ let currentAnswers = {
 };
 let activeResult = null;
 let isProcessing = false;
+let wizardRunId = 0;
 
 export function resetRecommendationsWizard() {
+  wizardRunId++;
   wizardStep = 1;
   currentAnswers = {
     flavor: flavorProfiles[0]?.id || 'manis',
@@ -596,17 +598,21 @@ export function initRecommendationsInteractions(onRerender) {
         if (typeof onRerender === 'function') onRerender();
       } else {
         // Processing recommendation
+        const myRunId = ++wizardRunId;
         isProcessing = true;
         if (typeof onRerender === 'function') onRerender();
 
         try {
           const res = await recommendationService.getRecommendations(currentAnswers);
+          if (myRunId !== wizardRunId) return;
           activeResult = res;
         } catch (err) {
           console.warn('Recommendation failed:', err);
         } finally {
-          isProcessing = false;
-          if (typeof onRerender === 'function') onRerender();
+          if (myRunId === wizardRunId) {
+            isProcessing = false;
+            if (typeof onRerender === 'function') onRerender();
+          }
         }
       }
     });

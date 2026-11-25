@@ -24,6 +24,7 @@ let activeFilters = {
 
 let pendingFlavorFilter = null;
 let pendingRegionFilter = null;
+let searchDebounce = null;
 
 export function setPendingFlavorFilter(flavor) {
   pendingFlavorFilter = flavor;
@@ -34,6 +35,10 @@ export function setPendingRegionFilter(region) {
 }
 
 export function resetRecipesPageState() {
+  if (searchDebounce) {
+    clearTimeout(searchDebounce);
+    searchDebounce = null;
+  }
   activeFilters = {
     search: '',
     region: 'semua',
@@ -160,10 +165,9 @@ export function initRecipesPageInteractions() {
   }
 
   if (searchInput) {
-    let debounce;
     searchInput.addEventListener('input', (e) => {
-      clearTimeout(debounce);
-      debounce = setTimeout(() => {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(() => {
         activeFilters.search = e.target.value;
         applyFilters();
       }, 300);

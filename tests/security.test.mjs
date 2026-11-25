@@ -30,6 +30,7 @@ import { renderAiFoodCreatorPage } from '../src/pages/ai-food-creator.js';
 import { resolveNearestRoute } from '../src/utils/routes.js';
 import { aiFoodCreatorService } from '../src/services/aiFoodCreatorService.js';
 import { i18n } from '../src/i18n/index.js';
+import { resetLegendaryRestaurantsState } from '../src/pages/legendary-restaurants.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -686,7 +687,7 @@ test('Homepage translates Flavor Map city cards in EN and dead placeholder/liste
     i18n.setLanguage('id');
     const homeId = await renderHomePage();
     assert.ok(homeId.includes('Kota Semarang'));
-    assert.ok(homeId.includes('Solo (Surakarta)'));
+    assert.ok(homeId.includes('Kota Surakarta (Solo)'));
     assert.ok(homeId.includes('Kab. Kudus'));
 
     i18n.setLanguage('en');
@@ -704,6 +705,11 @@ test('Homepage translates Flavor Map city cards in EN and dead placeholder/liste
 
   const routerSrc = fs.readFileSync(path.join(rootDir, 'src/router.js'), 'utf8');
   assert.ok(!routerSrc.includes('recipe-detail.js'));
+  const flavorMapSrc = fs.readFileSync(path.join(rootDir, 'src/pages/flavor-map.js'), 'utf8');
+  assert.ok(flavorMapSrc.includes('export function resetFlavorMapState()'));
+  assert.ok(routerSrc.includes('resetLegendaryRestaurantsState()'));
+  assert.ok(routerSrc.includes('resetFlavorMapState()'));
+  assert.equal(typeof resetLegendaryRestaurantsState, 'function');
 
   const aiCreatorSrc = fs.readFileSync(path.join(rootDir, 'src/pages/ai-food-creator.js'), 'utf8');
   assert.ok(aiCreatorSrc.includes('id="ingredient-grid-container"'));

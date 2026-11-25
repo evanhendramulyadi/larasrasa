@@ -10,6 +10,19 @@ let currentFilter = {
   category: 'semua',
   search: ''
 };
+let searchDebounce = null;
+
+export function resetLegendaryRestaurantsState() {
+  if (searchDebounce) {
+    clearTimeout(searchDebounce);
+    searchDebounce = null;
+  }
+  currentFilter = {
+    city: 'semua',
+    category: 'semua',
+    search: ''
+  };
+}
 
 export async function renderLegendaryRestaurantsPage() {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
@@ -150,10 +163,9 @@ export function initLegendaryRestaurantsInteractions() {
   }
 
   if (searchInput) {
-    let debounce;
     searchInput.addEventListener('input', (e) => {
-      clearTimeout(debounce);
-      debounce = setTimeout(() => {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(() => {
         currentFilter.search = e.target.value;
         updateResults();
       }, 300);

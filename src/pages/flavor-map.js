@@ -13,6 +13,17 @@ let mapInstance = null;
 let regionMarkers = {};
 let activeRegionId = 'semarang';
 
+export function resetFlavorMapState() {
+  activeRegionId = 'semarang';
+  regionMarkers = {};
+  if (mapInstance) {
+    try {
+      mapInstance.remove();
+    } catch (_) {}
+    mapInstance = null;
+  }
+}
+
 export async function renderFlavorMapPage() {
   const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
   const regions = await regionService.getRegions();

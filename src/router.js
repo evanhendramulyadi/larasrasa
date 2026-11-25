@@ -2,9 +2,9 @@ import { renderNavbar, initNavbarInteractions, setActiveNavbarLink } from './com
 import { renderFooter } from './components/footer.js';
 import { renderHomePage, initHomePageInteractions } from './pages/home.js';
 import { renderRecipesPage, initRecipesPageInteractions, resetRecipesPageState, setPendingFlavorFilter, setPendingRegionFilter } from './pages/recipes.js';
-import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-map.js';
+import { renderFlavorMapPage, initFlavorMapInteractions, resetFlavorMapState } from './pages/flavor-map.js';
 import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, openSpiceModal, getActiveSpiceModalId, resetSpicesPageState } from './pages/spices.js';
-import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
+import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions, resetLegendaryRestaurantsState } from './pages/legendary-restaurants.js';
 import { renderRecommendationsPage, initRecommendationsInteractions, resetRecommendationsWizard } from './pages/recommendations.js';
 import { 
   renderAiFoodCreatorPage, 
@@ -236,6 +236,8 @@ export class Router {
       resetRecommendationsWizard();
       resetRecipesPageState();
       resetSpicesPageState();
+      resetFlavorMapState();
+      resetLegendaryRestaurantsState();
     }
 
     // 4. Parse current route & resolve nearest valid clean route

@@ -52,6 +52,7 @@ let toastMessage = null;
 let nameError = false;
 let ingredientError = false;
 let generationRunId = 0;
+let searchDebounce = null;
 
 function isOnAiFoodCreatorRoute() {
   if (typeof window === 'undefined') return true;
@@ -103,6 +104,10 @@ export function updateAiFoodCreatorGeneratingLanguage(targetLang) {
 
 export function resetAiFoodCreatorState() {
   generationRunId++;
+  if (searchDebounce) {
+    clearTimeout(searchDebounce);
+    searchDebounce = null;
+  }
   if (window.__larasRasaProgressTimer) {
     clearInterval(window.__larasRasaProgressTimer);
     window.__larasRasaProgressTimer = null;
@@ -1055,8 +1060,6 @@ export function initAiFoodCreatorInteractions() {
       };
     });
   }
-
-  let searchDebounce = null;
 
   function bindIngredientGridEvents() {
     document.querySelectorAll('[data-ingredient-id]').forEach(card => {

@@ -205,7 +205,7 @@ export async function renderHomePage() {
                   <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Lumpia & Tahu Gimbal</p>
                 </div>
                 <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
-                  <p class="font-bold text-[#D49B42]">${isEn ? 'Surakarta (Solo) City' : 'Solo (Surakarta)'}</p>
+                  <p class="font-bold text-[#D49B42]">${isEn ? 'Surakarta (Solo) City' : 'Kota Surakarta (Solo)'}</p>
                   <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Nasi Liwet & Selat Solo</p>
                 </div>
                 <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
