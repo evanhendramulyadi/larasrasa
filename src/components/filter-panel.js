@@ -24,6 +24,7 @@ export function renderFilterPanel(currentFilters = {}) {
       <div class="flex flex-col md:flex-row items-stretch md:items-center gap-4">
         <!-- Search Input -->
         <div class="relative flex-1">
+          <label for="recipe-search-input" class="sr-only">${escapeHtml(t('recipesSection.searchPlaceholder'))}</label>
           <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[#C84C24]">
             <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <circle cx="11" cy="11" r="8"/>
@@ -32,6 +33,8 @@ export function renderFilterPanel(currentFilters = {}) {
           </div>
           <input type="text" 
                  id="recipe-search-input" 
+                 name="recipeSearch"
+                 autocomplete="off"
                  value="${escapeHtml(searchQuery)}"
                  maxlength="100"
                  placeholder="${t('recipesSection.searchPlaceholder')}" 

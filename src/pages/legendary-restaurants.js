@@ -42,8 +42,11 @@ export async function renderLegendaryRestaurantsPage() {
         <div class="flex flex-col md:flex-row items-center gap-4">
           <!-- Instant Search -->
           <div class="relative flex-1 w-full">
+            <label for="restaurant-search-input" class="sr-only">${escapeHtml(t('restaurantsSection.searchPlaceholder'))}</label>
             <input type="text" 
                    id="restaurant-search-input" 
+                   name="restaurantSearch"
+                   autocomplete="off"
                    value="${escapeHtml(currentFilter.search)}"
                    maxlength="100"
                    placeholder="${t('restaurantsSection.searchPlaceholder')}" 
@@ -56,7 +59,7 @@ export async function renderLegendaryRestaurantsPage() {
 
           <!-- City Dropdown -->
           <div class="w-full md:w-auto flex items-center gap-2.5">
-            <label class="text-xs font-bold uppercase tracking-wider text-[#5C3622] shrink-0">${t('restaurantsSection.cityFilter')}</label>
+            <label for="restaurant-city-select" class="text-xs font-bold uppercase tracking-wider text-[#5C3622] shrink-0">${t('restaurantsSection.cityFilter')}</label>
             <select id="restaurant-city-select" class="w-full md:w-auto py-3 px-4 rounded-2xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-bold text-[#120B07] focus:ring-2 focus:ring-[#C84C24] cursor-pointer">
               <option value="semua">${t('restaurantsSection.allCities')}</option>
               ${regions.map(r => `

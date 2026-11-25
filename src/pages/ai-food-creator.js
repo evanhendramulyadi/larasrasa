@@ -239,16 +239,6 @@ function renderFormView(currentLang) {
         isWarning: false
       };
     }
-    if (sessionAlert.type === 'service_unavailable') {
-      return {
-        badge: isEn ? 'Service Busy' : 'Layanan AI Sibuk',
-        title: isEn ? 'AI Service Temporarily Busy' : 'Layanan AI Sedang Sibuk',
-        text: isEn
-          ? 'The AI recipe service is temporarily experiencing high demand. Please wait a few seconds and try again.'
-          : 'Layanan AI sedang mengalami antrean tinggi sementara. Silakan tunggu beberapa detik lalu coba lagi.',
-        isWarning: true
-      };
-    }
     if (sessionAlert.type === 'forbidden' || sessionAlert.type === 'backend_error' || sessionAlert.type === 'error') {
       return {
         badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
@@ -327,6 +317,7 @@ function renderFormView(currentLang) {
             type="text" 
             id="creator-name-input" 
             name="creatorName"
+            autocomplete="name"
             maxlength="60"
             value="${escapeHtml(formState.creatorName)}"
             placeholder="${isEn ? 'e.g., Evan Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
@@ -392,9 +383,12 @@ function renderFormView(currentLang) {
 
           <!-- Instant Search Input (Single Clean Search Bar) -->
           <div class="relative w-full">
+            <label for="ingredient-search-input" class="sr-only">${isEn ? 'Search ingredients or spices' : 'Cari nama bahan atau rempah dapur'}</label>
             <input 
               type="text" 
               id="ingredient-search-input" 
+              name="ingredientSearch"
+              autocomplete="off"
               placeholder="${isEn ? 'Search ingredients or spices (e.g. Ayam, Kemiri, Bawang, Lengkuas)...' : 'Cari nama bahan atau rempah dapur (contoh: Ayam, Kemiri, Bawang, Serai)...'}" 
               value="${escapeHtml(searchQuery)}"
               class="w-full pl-11 pr-4 py-3 rounded-2xl bg-white border border-[#E8DEC8] text-xs sm:text-sm text-[#120B07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] shadow-inner"
@@ -472,10 +466,10 @@ function renderFormView(currentLang) {
 
           <!-- Cooking Method -->
           <div class="space-y-2.5">
-            <label class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
+            <span id="cooking-method-group-label" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
               ${isEn ? 'Traditional Cooking Method' : 'Metode Olah Tradisional'}
-            </label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+            </span>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3" role="radiogroup" aria-labelledby="cooking-method-group-label">
               ${PREFERENCE_OPTIONS.cookingMethods.map(m => {
                 const isSelected = formState.cookingMethod === m.id;
                 return `
@@ -501,7 +495,7 @@ function renderFormView(currentLang) {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <!-- Taste Profile -->
             <div class="space-y-2">
-              <label class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
+              <label for="taste-profile-select" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
                 ${isEn ? 'Flavor Character Balance' : 'Harmoni Karakter Rasa'}
               </label>
               <select 
@@ -552,15 +546,15 @@ function renderFormView(currentLang) {
           <!-- Row 2: Tingkat Kehangatan Lombok (Baris Sendiri & Lapang) -->
           <div class="space-y-2.5 pt-2">
             <div class="flex items-center justify-between">
-              <label class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
+              <span id="spice-level-group-label" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
                 ${isEn ? 'Chili Warmth Level (Lombok)' : 'Tingkat Kehangatan Lombok'}
-              </label>
+              </span>
               <span class="text-[11px] text-[#5C3622]">
                 ${isEn ? '4 Warmth Scales' : '4 Skala Tingkat Pedas'}
               </span>
             </div>
             
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" role="radiogroup" aria-labelledby="spice-level-group-label">
               ${[
                 { id: 0, title: isEn ? 'No Spice' : 'Tanpa Pedas', desc: isEn ? 'Child friendly, no chili' : 'Ramah anak, tanpa cabai', badge: 'Level 0' },
                 { id: 1, title: isEn ? 'Mild Warmth' : 'Hangat Lembut', desc: isEn ? 'Red chili aroma, subtle' : 'Cabai merah besar beraroma', badge: 'Level 1' },
@@ -602,6 +596,7 @@ function renderFormView(currentLang) {
               type="text" 
               id="custom-notes-input" 
               name="customNotes"
+              autocomplete="off"
               maxlength="250"
               value="${escapeHtml(formState.customNotes)}"
               placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
@@ -1263,8 +1258,6 @@ export function initAiFoodCreatorInteractions() {
           };
         } else if (err.code === 'CREDIT_EXHAUSTED') {
           sessionAlert = { type: 'credit' };
-        } else if (err.code === 'SERVICE_UNAVAILABLE') {
-          sessionAlert = { type: 'service_unavailable' };
         } else {
           sessionAlert = { type: 'backend_error' };
         }

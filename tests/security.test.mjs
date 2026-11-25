@@ -589,7 +589,7 @@ test('Dynamic Model Discovery: caches paginated ListModels, skips 404 models via
   assert.equal(res3.headers.get('retry-after'), '15');
 });
 
-test('Frontend service handles HTTP 503 SERVICE_UNAVAILABLE cleanly without altering payload contract', async () => {
+test('Frontend service maps HTTP 503 to BACKEND_REQUEST_FAILED consistently with standard error alerts', async () => {
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async () =>
     new Response(JSON.stringify({ success: false, error: 'AI service is temporarily unavailable' }), {
@@ -614,7 +614,7 @@ test('Frontend service handles HTTP 503 SERVICE_UNAVAILABLE cleanly without alte
           customNotes: '',
           outputLanguage: 'id',
         }),
-      (err) => err && err.code === 'SERVICE_UNAVAILABLE',
+      (err) => err && err.message === 'BACKEND_REQUEST_FAILED',
     );
   } finally {
     globalThis.fetch = originalFetch;
