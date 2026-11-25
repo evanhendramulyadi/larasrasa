@@ -607,10 +607,17 @@ test('Dynamic Model Discovery: caches paginated ListModels, fails over fast on 4
   const selected = selectCandidateModels(manyModels, createModelDiscoveryState(), 1000);
   assert.equal(selected.length, 10);
   assert.equal(selected.slice(0, 4).every((m) => m.id.includes('flash-lite')), true);
-  assert.equal(selected.slice(4, 8).every((m) => !m.id.includes('lite') && m.id.includes('flash')), true);
-  assert.equal(selected.slice(8, 10).every((m) => m.id.includes('pro')), true);
+  assert.equal(selected.slice(4, 9).every((m) => !m.id.includes('lite') && m.id.includes('flash')), true);
+  assert.equal(selected.slice(9, 10).every((m) => m.id.includes('pro')), true);
 
-  // Request 3 where active remaining models return 503 -> returns 503 instead of 502
+  // Verify -latest alias outranks preview within the same tier
+  const aliasVsPreview = rankCompatibleModels([
+    { name: 'models/gemini-3.1-flash-lite-preview', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+    { name: 'models/gemini-flash-lite-latest', supportedGenerationMethods: ['generateContent'], outputTokenLimit: 65536 },
+  ]);
+  assert.deepEqual(aliasVsPreview.map((m) => m.id), ['gemini-flash-lite-latest', 'gemini-3.1-flash-lite-preview']);
+
+  // Request 3 where active remaining models return 503 or TimeoutError -> returns 503 instead of 502
   const overloadDeps = makeDeps({
     fetchFn: async (url) => {
       const target = String(url);
@@ -619,12 +626,18 @@ test('Dynamic Model Discovery: caches paginated ListModels, fails over fast on 4
           makeListModelsJson([
             { name: 'models/gemini-dead-lite', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
             { name: 'models/gemini-active-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+            { name: 'models/gemini-slow-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
           ]),
           { status: 200, headers: { 'Content-Type': 'application/json' } },
         );
       }
       if (target.includes('gemini-dead-lite')) {
         return new Response('Not found', { status: 404 });
+      }
+      if (target.includes('gemini-slow-flash')) {
+        const err = new Error('The operation timed out');
+        err.name = 'TimeoutError';
+        throw err;
       }
       return new Response('Service Unavailable', { status: 503 });
     },

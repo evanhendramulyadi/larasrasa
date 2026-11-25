@@ -164,13 +164,13 @@ export const LIST_MODELS_FAILURE_COOLDOWN_MS = 15 * 1000;
 export const UNAVAILABLE_MODEL_COOLDOWN_MS = 30 * 60 * 1000;
 export const TRANSIENT_MODEL_COOLDOWN_MS = 90 * 1000;
 export const LIST_MODELS_TIMEOUT_MS = 10_000;
-export const GENERATE_ATTEMPT_TIMEOUT_MS = 12_000;
-export const MAX_UPSTREAM_BUDGET_MS = 38_000;
+export const GENERATE_ATTEMPT_TIMEOUT_MS = 22_000;
+export const MAX_UPSTREAM_BUDGET_MS = 45_000;
 export const MAX_LIST_MODEL_PAGES = 5;
 export const MAX_MODEL_ATTEMPTS_PER_REQUEST = 10;
 export const MAX_LITE_CANDIDATES = 4;
-export const MAX_FLASH_CANDIDATES = 4;
-export const MAX_PRO_CANDIDATES = 2;
+export const MAX_FLASH_CANDIDATES = 5;
+export const MAX_PRO_CANDIDATES = 1;
 export const RETRY_503_BACKOFF_MS = 350;
 
 const VALID_MODEL_NAME_REGEX = /^models\/([a-z0-9][a-z0-9._-]{1,100})$/i;
@@ -769,13 +769,13 @@ export function scoreModelForRecipe(model: {
     score += 200;
   }
 
-  // 2. Lifecycle stability preference (avoid experimental builds when stable/latest exist)
+  // 2. Lifecycle stability preference (avoid preview/experimental builds when stable/latest exist)
   if (/(?:^|[^a-z0-9])(exp|experimental)(?:[^a-z0-9]|$)/.test(lowerId)) {
     score -= 50;
   } else if (/(?:^|[^a-z0-9])preview(?:[^a-z0-9]|$)/.test(lowerId)) {
-    score += 10;
+    score -= 10;
   } else if (lowerId.endsWith("-latest")) {
-    score += 40;
+    score += 55;
   } else {
     score += 60;
   }
@@ -1231,6 +1231,7 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
   let unavailableHits = 0;
   let rateLimitHits = 0;
   let serviceUnavailableHits = 0;
+  let timeoutHits = 0;
 
   for (const model of candidatesToTry) {
     const elapsedMs = nowFn() - upstreamStartedAt;
@@ -1327,11 +1328,15 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
         console.warn("Upstream AI status:", model.id, res.status);
       }
     } catch (callErr) {
+      const errName = callErr instanceof Error ? callErr.name : "unknown";
+      if (errName === "TimeoutError" || errName === "AbortError") {
+        timeoutHits++;
+      }
       discoveryState.blockedUntilByModel.set(model.id, {
         until: nowFn() + TRANSIENT_MODEL_COOLDOWN_MS,
         permanent: false,
       });
-      console.warn("Upstream AI call exception:", model.id, callErr instanceof Error ? callErr.name : "unknown");
+      console.warn("Upstream AI call exception:", model.id, errName);
     }
   }
 
@@ -1346,7 +1351,11 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
     );
   }
 
-  if (reachableAttempts > 0 && serviceUnavailableHits > 0 && (serviceUnavailableHits + rateLimitHits) === reachableAttempts) {
+  if (
+    reachableAttempts > 0 &&
+    (serviceUnavailableHits + timeoutHits) > 0 &&
+    (serviceUnavailableHits + rateLimitHits + timeoutHits) === reachableAttempts
+  ) {
     return jsonResponse(
       origin,
       allowedOrigins,

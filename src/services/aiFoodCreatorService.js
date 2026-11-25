@@ -37,7 +37,7 @@ export const SUPABASE_CONFIG = {
   publishableKey: RESOLVED_PUBLISHABLE_KEY
 };
 
-const AI_REQUEST_TIMEOUT_MS = 45000;
+const AI_REQUEST_TIMEOUT_MS = 55000;
 
 export const PREFERENCE_OPTIONS = {
   cookingMethods: [
