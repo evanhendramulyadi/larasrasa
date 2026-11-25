@@ -55,6 +55,13 @@ let sessionAlert = null; // { type: 'cooldown' | 'credit' | 'forbidden' | 'error
 let toastMessage = null;
 let nameError = false;
 let ingredientError = false;
+let generationRunId = 0;
+
+function isOnAiFoodCreatorRoute() {
+  if (typeof window === 'undefined') return true;
+  const hashPath = (window.location.hash || '#/').split('?')[0];
+  return hashPath === '#/ai-food-creator';
+}
 
 const GENERATING_STAGES_ID = [
   { pct: 28, text: 'Menyelaraskan rempah tradisi...' },
@@ -99,6 +106,7 @@ export function updateAiFoodCreatorGeneratingLanguage(targetLang) {
 }
 
 export function resetAiFoodCreatorState() {
+  generationRunId++;
   if (window.__larasRasaProgressTimer) {
     clearInterval(window.__larasRasaProgressTimer);
     window.__larasRasaProgressTimer = null;
@@ -1213,6 +1221,7 @@ export function initAiFoodCreatorInteractions() {
       nameError = false;
       ingredientError = false;
       sessionAlert = null;
+      const myRunId = ++generationRunId;
 
       const submitBtn = document.getElementById('generate-recipe-submit-btn');
       if (submitBtn) {
@@ -1238,6 +1247,10 @@ export function initAiFoodCreatorInteractions() {
           throw new Error('Empty recipe response');
         }
       } catch (err) {
+        // Ignore DOM updates if user navigated away so we never overwrite another page
+        if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
+          return;
+        }
         isGenerating = false;
         currentGeneratingPercent = 20;
         currentGeneratingStageIdx = 0;
@@ -1259,6 +1272,12 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
+      // Record client cooldown once backend succeeds, even if user switched pages mid-request
+      localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+      if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
+        return;
+      }
+
       // 6. Backend Succeeded: Transition smoothly through the formulating showcase and display recipe
       isGenerating = true;
       currentGeneratingPercent = 20;
@@ -1267,9 +1286,11 @@ export function initAiFoodCreatorInteractions() {
       window.scrollTo({ top: 150, behavior: 'smooth' });
 
       await new Promise(resolve => setTimeout(resolve, 2600));
+      if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
+        return;
+      }
 
       currentGeneratedRecipe = recipe;
-      localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
 
       if (window.__larasRasaProgressTimer) {
         clearInterval(window.__larasRasaProgressTimer);
@@ -1284,6 +1305,9 @@ export function initAiFoodCreatorInteractions() {
       if (stageEl) stageEl.textContent = isEn ? 'Heritage recipe formulated!' : 'Resep pusaka siap disajikan!';
 
       await new Promise(resolve => setTimeout(resolve, 400));
+      if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
+        return;
+      }
 
       isGenerating = false;
       currentGeneratingPercent = 20;
@@ -1397,6 +1421,9 @@ function setupRadioGroup(name, onChange) {
 }
 
 async function reRenderCurrentView(preserveScroll = true) {
+  if (!isOnAiFoodCreatorRoute()) {
+    return;
+  }
   const container = document.getElementById('page-main-content');
   if (container) {
     const savedY = preserveScroll ? window.scrollY : null;
