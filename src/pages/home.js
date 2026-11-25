@@ -8,6 +8,7 @@ import { renderRecipeCard } from '../components/recipe-card.js';
 import { renderRestaurantCard } from '../components/restaurant-card.js';
 import { HeroShowcase } from '../components/hero-showcase.js';
 import { i18n, t } from '../i18n/index.js';
+import { escapeHtml, safeUrl } from '../utils/dom.js';
 
 /**
  * World-Class Royal Javanese Heritage Homepage
@@ -120,11 +121,12 @@ export async function renderHomePage() {
             ${flavorProfiles.map(f => {
               const fName = isEn ? (f.nameEn || f.name) : f.name;
               const fTagline = isEn ? (f.taglineEn || f.tagline) : f.tagline;
+              const safeColor = /^#[0-9a-f]{3,8}$/i.test(f.color || '') ? f.color : '#C84C24';
               return `
               <a href="${isEn ? '#/recipes' : '#/resep'}" 
-                 data-flavor-spectrum="${f.id}"
+                 data-flavor-spectrum="${escapeHtml(f.id)}"
                  class="group p-5 rounded-2xl bg-[#FAF7F2] border border-[#D49B42]/35 hover:border-[#C84C24] text-center transition-all duration-300 card-hover-lift flex flex-col items-center justify-between shadow-2xs">
-                <div class="w-13 h-13 rounded-2xl flex items-center justify-center mb-3.5 transition-transform group-hover:scale-110 shadow-xs" style="background-color: ${f.color}15; color: ${f.color}; border: 1px solid ${f.color}35;">
+                <div class="w-13 h-13 rounded-2xl flex items-center justify-center mb-3.5 transition-transform group-hover:scale-110 shadow-xs" style="background-color: ${safeColor}15; color: ${safeColor}; border: 1px solid ${safeColor}35;">
                   <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Z" fill="currentColor" fill-opacity="0.2"/>
                     <circle cx="12" cy="9" r="2.5"/>
@@ -132,10 +134,10 @@ export async function renderHomePage() {
                 </div>
                 <div>
                   <h3 class="font-editorial-serif text-base font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors mb-1">
-                    ${fName}
+                    ${escapeHtml(fName)}
                   </h3>
                   <p class="text-[11px] text-[#5C3622] line-clamp-2 leading-snug">
-                    ${fTagline}
+                    ${escapeHtml(fTagline)}
                   </p>
                 </div>
                 <span class="mt-3.5 text-[10px] font-bold text-[#C84C24] uppercase tracking-wider group-hover:underline flex items-center gap-1.5">
@@ -259,36 +261,36 @@ export async function renderHomePage() {
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
             ${sampleSpices.map(s => `
               <div 
-                data-spice-id="${s.id}"
+                data-spice-id="${escapeHtml(s.id)}"
                 role="button"
                 tabindex="0"
-                aria-label="${s.name}"
+                aria-label="${escapeHtml(s.name)}"
                 class="spice-card group bg-[#FAF7F2] p-5 rounded-2xl border border-[#D49B42]/30 shadow-2xs hover:border-[#C84C24] transition-all card-hover-lift flex flex-col justify-between cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#C84C24]">
                 <div>
                   <div class="relative w-full h-40 rounded-xl overflow-hidden mb-3.5 bg-white border border-[#E8DEC8]">
-                    <img src="${s.image}" 
-                         alt="${s.name} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
+                    <img src="${safeUrl(s.image, '/assets/images/hero/hero-culinary.jpg')}" 
+                         alt="${escapeHtml(s.name)} - ${isEn ? 'Traditional Indonesian Spice' : 'Bumbu Tradisional Nusantara'}" 
                          class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500" 
                          loading="lazy"
                          data-fallback-src="/assets/images/hero/hero-culinary.jpg"/>
                     <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent"></div>
                     <span class="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-[#120B07]/90 text-[10px] font-bold text-[#FAF7F2] backdrop-blur-md border border-[#D49B42]/30">
-                      ${s.categoryName}
+                      ${escapeHtml(s.categoryName)}
                     </span>
                   </div>
                   <h3 class="font-editorial-serif text-lg font-bold text-[#120B07] group-hover:text-[#C84C24] transition-colors mb-0.5">
-                    ${s.name}
+                    ${escapeHtml(s.name)}
                   </h3>
                   <p class="text-[10.5px] italic text-[#2E4D38] mb-2 font-mono font-semibold">
-                    ${s.latinName}
+                    ${escapeHtml(s.latinName)}
                   </p>
                   <p class="text-xs text-[#5C3622] line-clamp-2 leading-relaxed">
-                    ${s.role}
+                    ${escapeHtml(s.role)}
                   </p>
                 </div>
                 <div class="pt-4 border-t border-[#E8DEC8] mt-4">
                   <button type="button" 
-                          data-spice-id="${s.id}"
+                          data-spice-id="${escapeHtml(s.id)}"
                           class="w-full text-xs font-bold text-[#C84C24] group-hover:text-[#AE3E1B] transition-colors flex items-center justify-between cursor-pointer">
                     <span>${t('spicesSection.inspectBtn')}</span>
                     <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

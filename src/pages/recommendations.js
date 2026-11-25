@@ -152,19 +152,20 @@ function renderStepContent(step) {
               const isChecked = currentAnswers.flavor === f.id;
               const fName = isEn ? (f.nameEn || f.name) : f.name;
               const fTagline = isEn ? (f.taglineEn || f.tagline) : f.tagline;
+              const safeColor = /^#[0-9a-f]{3,8}$/i.test(f.color || '') ? f.color : '#C84C24';
               return `
                 <label class="wizard-option-card flex items-start gap-3.5 p-4 rounded-2xl border cursor-pointer transition-all duration-200 card-hover-lift ${
                   isChecked 
                     ? 'border-[#C84C24] bg-[#FDF4EE] shadow-md ring-2 ring-[#C84C24]/30' 
                     : 'border-[#D49B42]/30 bg-white hover:bg-[#FAF7F2]'
                 }">
-                  <input type="radio" name="flavor" value="${f.id}" class="sr-only" ${isChecked ? 'checked' : ''}/>
-                  <div class="w-9 h-9 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 shadow-2xs font-bold" style="background-color: ${f.color}20; color: ${f.color}; border: 1px solid ${f.color}35;">
+                  <input type="radio" name="flavor" value="${escapeHtml(f.id)}" class="sr-only" ${isChecked ? 'checked' : ''}/>
+                  <div class="w-9 h-9 rounded-2xl flex items-center justify-center shrink-0 mt-0.5 shadow-2xs font-bold" style="background-color: ${safeColor}20; color: ${safeColor}; border: 1px solid ${safeColor}35;">
                     ●
                   </div>
                   <div>
-                    <strong class="block text-sm text-[#120B07] font-bold">${fName}</strong>
-                    <span class="text-xs text-[#5C3622] leading-snug">${fTagline}</span>
+                    <strong class="block text-sm text-[#120B07] font-bold">${escapeHtml(fName)}</strong>
+                    <span class="text-xs text-[#5C3622] leading-snug">${escapeHtml(fTagline)}</span>
                   </div>
                 </label>
               `;
@@ -398,7 +399,7 @@ function renderResultView(result) {
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             <span>${t('recommendations.resultBadge')}</span>
             <span class="text-white/40">|</span>
-            <span class="text-white font-mono">${result.matchScore || 96}% ${isEn ? 'Match' : 'Harmonis'}</span>
+            <span class="text-white font-mono">${escapeHtml(result.matchScore || 96)}% ${isEn ? 'Match' : 'Harmonis'}</span>
           </div>
 
           <h1 class="font-editorial-serif text-3xl sm:text-5xl font-bold text-white tracking-tight">
@@ -413,17 +414,17 @@ function renderResultView(result) {
           <div class="pt-3 flex flex-wrap items-center justify-center gap-2">
             ${chosenFlavorName ? `
               <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
-                <span>${chosenFlavorName}</span>
+                <span>${escapeHtml(chosenFlavorName)}</span>
               </span>
             ` : ''}
             ${chosenDishTypeName ? `
               <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
-                <span>${chosenDishTypeName}</span>
+                <span>${escapeHtml(chosenDishTypeName)}</span>
               </span>
             ` : ''}
             ${chosenRegionName ? `
               <span class="inline-flex items-center px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-white shadow-xs">
-                <span>${chosenRegionName}</span>
+                <span>${escapeHtml(chosenRegionName)}</span>
               </span>
             ` : ''}
           </div>
@@ -450,12 +451,12 @@ function renderResultView(result) {
                     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
                     <circle cx="12" cy="10" r="3"/>
                   </svg>
-                  <span>${primary.regionName}</span>
+                  <span>${escapeHtml(primary.regionName)}</span>
                 </span>
 
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-600/90 backdrop-blur-md text-[11px] font-bold text-white shadow-sm border border-emerald-400/40">
                   <span>★</span>
-                  <span>${result.matchScore || 96}% ${isEn ? 'Match' : 'Harmonis'}</span>
+                  <span>${escapeHtml(result.matchScore || 96)}% ${isEn ? 'Match' : 'Harmonis'}</span>
                 </span>
               </div>
 
@@ -463,16 +464,16 @@ function renderResultView(result) {
               <div class="absolute bottom-4 left-4 right-4 text-white space-y-1.5">
                 ${primary.javaneseName ? `
                   <p class="font-editorial-serif italic text-xs text-[#D49B42] font-semibold">
-                    "${primary.javaneseName}"
+                    "${escapeHtml(primary.javaneseName)}"
                   </p>
                 ` : ''}
                 <div class="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-semibold text-[#FAF7F2]">
                   <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
-                    ${primary.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional')}
+                    ${escapeHtml(primary.mealType || (isEn ? 'Traditional Cuisine' : 'Kuliner Tradisional'))}
                   </span>
                   ${primaryFlavorLabel ? `
                     <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
-                      ${primaryFlavorLabel}
+                      ${escapeHtml(primaryFlavorLabel)}
                     </span>
                   ` : ''}
                   <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-black/80 text-[#FAF7F2] backdrop-blur-md border border-white/15 shadow-xs shrink-0">
@@ -519,7 +520,7 @@ function renderResultView(result) {
             <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <button type="button" 
                       id="open-recommendation-recipe-btn" 
-                      data-recipe-slug="${primary.slug}"
+                      data-recipe-slug="${escapeHtml(primary.slug)}"
                       class="flex-1 inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#C84C24] hover:bg-[#AE3E1B] text-white text-xs sm:text-sm font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-0.5 border border-[#E05A30] text-center cursor-pointer">
                 <span>${t('recommendations.openRecipeBtn')}</span>
                 <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

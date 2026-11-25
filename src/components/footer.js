@@ -1,6 +1,7 @@
 import { t, i18n } from '../i18n/index.js';
 import { regions } from '../data/regions.js';
 import { localizeRegion } from '../services/regionService.js';
+import { escapeHtml } from '../utils/dom.js';
 
 /**
  * Harmonious & Balanced Royal Heritage Footer Component
@@ -110,10 +111,10 @@ export function renderFooter() {
             <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs text-[#FAF7F2]/80">
               ${regionsList.map(r => `
                 <a href="${isEn ? `#/recipes` : `#/resep`}" 
-                   data-region-filter="${r.id}"
+                   data-region-filter="${escapeHtml(r.id)}"
                    class="group flex items-center gap-1.5 hover:text-[#D49B42] transition-colors py-0.5">
                   <span class="text-[#D49B42]/70 group-hover:text-[#C84C24] transition-colors text-[10px]">&bull;</span>
-                  <span class="truncate">${r.name}</span>
+                  <span class="truncate">${escapeHtml(r.name)}</span>
                 </a>
               `).join('')}
             </div>

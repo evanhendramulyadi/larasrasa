@@ -588,3 +588,35 @@ test('Dynamic Model Discovery: caches paginated ListModels, skips 404 models via
   assert.equal(res3.status, 503);
   assert.equal(res3.headers.get('retry-after'), '15');
 });
+
+test('Frontend service handles HTTP 503 SERVICE_UNAVAILABLE cleanly without altering payload contract', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () =>
+    new Response(JSON.stringify({ success: false, error: 'AI service is temporarily unavailable' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  try {
+    await assert.rejects(
+      () =>
+        aiFoodCreatorService.generateRecipe({
+          creatorName: 'Evan',
+          selectedIngredientIds: VALID_INPUTS.selectedIngredientIds,
+          cookingMethod: 'ungkep',
+          dishCategory: 'lauk',
+          tasteProfile: 'manis-gurih',
+          spiceLevel: 1,
+          cookingDuration: 'standard',
+          servings: 4,
+          equipment: ['wajan', 'cobek'],
+          dietary: [],
+          customNotes: '',
+          outputLanguage: 'id',
+        }),
+      (err) => err && err.code === 'SERVICE_UNAVAILABLE',
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

@@ -184,6 +184,12 @@ export const aiFoodCreatorService = {
         throw forbiddenErr;
       }
 
+      if (response.status === 503) {
+        const busyErr = new Error('SERVICE_UNAVAILABLE');
+        busyErr.code = 'SERVICE_UNAVAILABLE';
+        throw busyErr;
+      }
+
       if (response.ok) {
         const resultData = await response.json().catch(() => null);
         if (!resultData) {
@@ -207,7 +213,12 @@ export const aiFoodCreatorService = {
         timeoutErr.code = 'TIMEOUT_ERROR';
         throw timeoutErr;
       }
-      if (err.code === 'CREDIT_EXHAUSTED' || err.code === 'EDGE_FORBIDDEN' || err.code === 'RATE_LIMITED') {
+      if (
+        err.code === 'CREDIT_EXHAUSTED' ||
+        err.code === 'EDGE_FORBIDDEN' ||
+        err.code === 'RATE_LIMITED' ||
+        err.code === 'SERVICE_UNAVAILABLE'
+      ) {
         throw err;
       }
       if (err.name === 'TypeError' || err.message?.includes('fetch')) {

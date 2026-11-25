@@ -43,16 +43,16 @@ export async function renderFlavorMapPage() {
           <div class="flex flex-wrap gap-2 max-w-md md:justify-end">
             ${regions.map(r => `
               <button type="button" 
-                      data-region-pill="${r.id}"
+                      data-region-pill="${escapeHtml(r.id)}"
                       class="region-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer ${
                         r.id === activeRegionId 
                           ? 'bg-[#C84C24] text-white shadow-md ring-2 ring-[#D49B42]/50' 
                           : 'bg-white/10 text-[#FAF7F2] border border-[#D49B42]/40 hover:bg-[#C84C24]/50 backdrop-blur-md'
                       }">
-                ${(r.name || '')
+                ${escapeHtml((r.name || '')
                   .replace(/\s*(City\s*&\s*Regency|City|Regency)\s*/gi, '')
                   .replace(/^(Kota\s*&\s*Kab|Kabupaten|Kota)\s+/gi, '')
-                  .trim()}
+                  .trim())}
               </button>
             `).join('')}
           </div>
@@ -158,7 +158,7 @@ function renderRegionDetailContent(region) {
         <div class="flex flex-wrap gap-1.5">
           ${region.culinaryTendencies.map(tend => `
             <span class="px-3 py-1 rounded-xl text-xs bg-[#FAF7F2] text-[#120B07] font-semibold border border-[#D49B42]/35 shadow-2xs">
-              ${tend}
+              ${escapeHtml(tend)}
             </span>
           `).join('')}
         </div>
@@ -171,7 +171,7 @@ function renderRegionDetailContent(region) {
           ${(region.signatureDishes || []).slice(0, 3).map(dish => `
             <span class="px-3 py-1.5 rounded-xl text-xs bg-[#FAF7F2] text-[#120B07] font-bold border border-[#D49B42]/35 shadow-2xs inline-flex items-center gap-1.5 select-none pointer-events-none">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24]"></span>
-              <span>${dish}</span>
+              <span>${escapeHtml(dish)}</span>
             </span>
           `).join('')}
         </div>
@@ -183,16 +183,16 @@ function renderRegionDetailContent(region) {
           ${t('map.keyIngredients')}
         </span>
         <p class="text-xs text-[#5C3622] leading-relaxed">
-          ${region.keyIngredients.join(', ')}
+          ${escapeHtml((region.keyIngredients || []).join(', '))}
         </p>
       </div>
 
       <!-- CTA Action -->
       <div class="pt-2">
         <a href="${isEn ? '#/recipes' : '#/resep'}" 
-           data-region-filter="${region.id}"
+           data-region-filter="${escapeHtml(region.id)}"
            class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-4 rounded-full text-xs font-bold bg-[#120B07] hover:bg-[#C84C24] text-[#FAF7F2] transition-all shadow-md border border-[#D49B42]/40">
-          <span>${t('map.viewAllRecipes', { region: region.name })}</span>
+          <span>${escapeHtml(t('map.viewAllRecipes', { region: region.name }))}</span>
           <svg class="w-4 h-4 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>

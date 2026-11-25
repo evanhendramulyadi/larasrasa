@@ -231,6 +231,16 @@ function renderFormView(currentLang) {
         isWarning: false
       };
     }
+    if (sessionAlert.type === 'service_unavailable') {
+      return {
+        badge: isEn ? 'Service Busy' : 'Layanan AI Sibuk',
+        title: isEn ? 'AI Service Temporarily Busy' : 'Layanan AI Sedang Sibuk',
+        text: isEn
+          ? 'The AI recipe service is temporarily experiencing high demand. Please wait a few seconds and try again.'
+          : 'Layanan AI sedang mengalami antrean tinggi sementara. Silakan tunggu beberapa detik lalu coba lagi.',
+        isWarning: true
+      };
+    }
     if (sessionAlert.type === 'forbidden' || sessionAlert.type === 'backend_error' || sessionAlert.type === 'error') {
       return {
         badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
@@ -1237,6 +1247,8 @@ export function initAiFoodCreatorInteractions() {
           };
         } else if (err.code === 'CREDIT_EXHAUSTED') {
           sessionAlert = { type: 'credit' };
+        } else if (err.code === 'SERVICE_UNAVAILABLE') {
+          sessionAlert = { type: 'service_unavailable' };
         } else {
           sessionAlert = { type: 'backend_error' };
         }

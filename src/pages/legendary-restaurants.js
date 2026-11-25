@@ -60,7 +60,7 @@ export async function renderLegendaryRestaurantsPage() {
             <select id="restaurant-city-select" class="w-full md:w-auto py-3 px-4 rounded-2xl border border-[#E8DEC8] bg-[#FAF7F2] text-xs font-bold text-[#120B07] focus:ring-2 focus:ring-[#C84C24] cursor-pointer">
               <option value="semua">${t('restaurantsSection.allCities')}</option>
               ${regions.map(r => `
-                <option value="${r.id}" ${currentFilter.city === r.id ? 'selected' : ''}>${localizeRegion(r).name}</option>
+                <option value="${escapeHtml(r.id)}" ${currentFilter.city === r.id ? 'selected' : ''}>${escapeHtml(localizeRegion(r).name)}</option>
               `).join('')}
             </select>
           </div>

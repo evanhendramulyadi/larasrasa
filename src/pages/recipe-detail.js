@@ -154,11 +154,11 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
               <span>${t('recipeDetail.historyTitle')}</span>
             </h2>
             <p class="text-sm text-[#5C3622] leading-relaxed">
-              ${recipe.history}
+              ${escapeHtml(recipe.history)}
             </p>
             ${recipe.culturalBackground ? `
               <div class="pt-3.5 border-t border-[#E8DEC8] text-xs text-[#5C3622] leading-relaxed italic bg-[#FAF7F2] p-4 rounded-2xl border border-[#D49B42]/25">
-                <strong class="text-[#120B07]">${t('recipeDetail.culturalValue')}:</strong> ${recipe.culturalBackground}
+                <strong class="text-[#120B07]">${t('recipeDetail.culturalValue')}:</strong> ${escapeHtml(recipe.culturalBackground)}
               </div>
             ` : ''}
           </div>
@@ -168,7 +168,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             <div class="bg-[#FAF7F2] p-6 rounded-3xl border border-[#D49B42]/30 space-y-2">
               <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">${t('recipeDetail.variationsTitle')}</h3>
               <p class="text-xs text-[#5C3622] leading-relaxed">
-                ${recipe.regionalVariations}
+                ${escapeHtml(recipe.regionalVariations)}
               </p>
             </div>
           ` : ''}
@@ -189,7 +189,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
               ${(recipe.interestingFacts || []).map(fact => `
                 <li class="flex items-start gap-2.5 leading-relaxed">
                   <span class="text-[#C84C24] font-bold text-sm mt-0.5">&bull;</span>
-                  <span>${fact}</span>
+                  <span>${escapeHtml(fact)}</span>
                 </li>
               `).join('')}
             </ul>
@@ -206,7 +206,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
                   <svg class="w-3.5 h-3.5 text-[#C84C24]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
-                  <span>${eq}</span>
+                  <span>${escapeHtml(eq)}</span>
                 </span>
               `).join('')}
             </div>
@@ -249,7 +249,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
               ${recipe.equipment.map(eq => `
                 <span class="inline-flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs bg-white text-[#120B07] border border-[#D49B42]/30 font-medium shadow-2xs">
                   <span class="w-1.5 h-1.5 rounded-full bg-[#C84C24] shrink-0"></span>
-                  <span>${eq}</span>
+                  <span>${escapeHtml(eq)}</span>
                 </span>
               `).join('')}
             </div>
@@ -285,7 +285,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
                 <button type="button" 
                         data-step-index="${idx}"
                         class="step-checkbox shrink-0 mt-1 w-7 h-7 rounded-xl border-2 border-[#C84C24] flex items-center justify-center transition-all bg-[#FAF7F2] hover:bg-[#EFE8DA] cursor-pointer"
-                        aria-label="Tandai langkah ${step.stepNumber} selesai">
+                        aria-label="Tandai langkah ${escapeHtml(step.stepNumber)} selesai">
                   <svg class="step-check-icon w-4 h-4 text-white hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                     <polyline points="20 6 9 17 4 12"/>
                   </svg>
@@ -293,11 +293,11 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
 
                 <div class="flex-1 space-y-2">
                   <h3 class="font-editorial-serif text-lg font-bold text-[#120B07]">
-                    ${t('common.step')} ${step.stepNumber}: ${step.title}
+                    ${t('common.step')} ${escapeHtml(step.stepNumber)}: ${escapeHtml(step.title)}
                   </h3>
 
                   <p class="text-sm text-[#120B07] leading-relaxed step-instruction">
-                    ${step.instruction}
+                    ${escapeHtml(step.instruction)}
                   </p>
 
                   ${step.tip ? `
@@ -306,7 +306,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
                         <path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6v2h8v-2c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7Z"/>
                         <path d="M9 22h6"/>
                       </svg>
-                      <span><strong>${t('recipeDetail.chefTip')}</strong> ${step.tip}</span>
+                      <span><strong>${t('recipeDetail.chefTip')}</strong> ${escapeHtml(step.tip)}</span>
                     </div>
                   ` : ''}
                 </div>
@@ -330,7 +330,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             ${(Array.isArray(recipe.cookingTips) ? recipe.cookingTips : [recipe.cookingTips]).filter(Boolean).map(tip => `
               <li class="flex items-start gap-2">
                 <span class="text-amber-700 font-bold">&check;</span>
-                <span>${tip}</span>
+                <span>${escapeHtml(tip)}</span>
               </li>
             `).join('')}
           </ul>
@@ -350,7 +350,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             ${(Array.isArray(recipe.commonMistakes) ? recipe.commonMistakes : []).map(m => `
               <li class="flex items-start gap-2">
                 <span class="text-rose-600 font-bold">&times;</span>
-                <span>${typeof m === 'object' ? `<strong>${m.mistake}:</strong> ${m.solution}` : m}</span>
+                <span>${typeof m === 'object' ? `<strong>${escapeHtml(m.mistake)}:</strong> ${escapeHtml(m.solution)}` : escapeHtml(m)}</span>
               </li>
             `).join('')}
           </ul>
@@ -368,8 +368,8 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           <div class="space-y-2 text-xs text-[#5C3622]">
             ${(recipe.substitutions || []).map(sub => `
               <div class="p-3.5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
-                <strong class="text-[#120B07] block font-bold">${sub.ingredient}</strong>
-                <span class="mt-0.5 block">${sub.substitute}</span>
+                <strong class="text-[#120B07] block font-bold">${escapeHtml(sub.ingredient)}</strong>
+                <span class="mt-0.5 block">${escapeHtml(sub.substitute)}</span>
               </div>
             `).join('')}
           </div>
@@ -382,7 +382,7 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
             <span>${t('recipeDetail.servingTitle')}</span>
           </h4>
           <p class="text-xs text-[#5C3622] leading-relaxed">
-            ${recipe.servingSuggestions}
+            ${escapeHtml(recipe.servingSuggestions)}
           </p>
         </div>
 
@@ -395,23 +395,23 @@ export async function renderRecipeDetailPage(slug, queryParams = {}) {
           <div class="grid grid-cols-2 gap-2 text-center text-xs">
             <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
               <span class="block text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Calories' : 'Kalori'}</span>
-              <span class="font-bold text-[#120B07] text-sm">${recipe.nutrition.calories}</span>
+              <span class="font-bold text-[#120B07] text-sm">${escapeHtml(recipe.nutrition?.calories)}</span>
             </div>
             <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
               <span class="block text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Protein' : 'Protein'}</span>
-              <span class="font-bold text-[#120B07] text-sm">${recipe.nutrition.protein}</span>
+              <span class="font-bold text-[#120B07] text-sm">${escapeHtml(recipe.nutrition?.protein)}</span>
             </div>
             <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
               <span class="block text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Carbs' : 'Karbohidrat'}</span>
-              <span class="font-bold text-[#120B07] text-sm">${recipe.nutrition.carbs}</span>
+              <span class="font-bold text-[#120B07] text-sm">${escapeHtml(recipe.nutrition?.carbs)}</span>
             </div>
             <div class="p-3 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8]">
               <span class="block text-[10px] text-[#2E4D38] font-bold">${isEn ? 'Fat' : 'Lemak'}</span>
-              <span class="font-bold text-[#120B07] text-sm">${recipe.nutrition.fat}</span>
+              <span class="font-bold text-[#120B07] text-sm">${escapeHtml(recipe.nutrition?.fat)}</span>
             </div>
           </div>
           <p class="text-[10px] text-[#5C3622] italic text-center pt-1">
-            ${recipe.nutrition.note}
+            ${escapeHtml(recipe.nutrition?.note)}
           </p>
         </div>
       </section>
@@ -435,7 +435,7 @@ function renderIngredientsTable(recipe, targetServings = 4) {
     <div class="bg-white p-6 sm:p-7 rounded-3xl border border-[#D49B42]/30 space-y-3.5 shadow-xs h-fit">
       <h3 class="font-editorial-serif text-base font-bold text-[#120B07] border-b border-[#D49B42]/25 pb-2.5 flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-[#C84C24]"></span>
-        <span>${group.name}</span>
+        <span>${escapeHtml(group.name)}</span>
       </h3>
       <ul class="space-y-2 text-xs">
         ${group.items.map(item => {
@@ -443,11 +443,11 @@ function renderIngredientsTable(recipe, targetServings = 4) {
           return `
             <li class="flex items-start justify-between gap-3 py-2 border-b border-[#E8DEC8]/60 last:border-0">
               <span class="text-[#120B07] font-semibold leading-relaxed">
-                ${item.name}
-                ${item.notes ? `<span class="block text-[11px] text-[#2E4D38] font-normal italic">${item.notes}</span>` : ''}
+                ${escapeHtml(item.name)}
+                ${item.notes ? `<span class="block text-[11px] text-[#2E4D38] font-normal italic">${escapeHtml(item.notes)}</span>` : ''}
               </span>
               <span class="shrink-0 font-bold text-[#120B07] bg-[#FAF7F2] px-3 py-1 rounded-xl border border-[#D49B42]/35 shadow-2xs">
-                ${scaledAmount} ${item.unit}
+                ${escapeHtml(scaledAmount)} ${escapeHtml(item.unit)}
               </span>
             </li>
           `;
