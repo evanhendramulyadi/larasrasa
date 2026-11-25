@@ -23,11 +23,9 @@ function getRandomFiveIngredients() {
   return [...ALL_INGREDIENTS].sort(() => 0.5 - Math.random()).slice(0, 5).map(i => i.id);
 }
 
-let activeTab = 'all'; // 'all', 'protein', 'spice', 'vegetable'
 let searchQuery = '';
 let formState = {
   creatorName: '',
-  creatorNickname: '',
   selectedIngredientIds: getRandomFiveIngredients(),
   cookingMethod: 'ungkep',
   dishCategory: 'lauk',
@@ -38,8 +36,6 @@ let formState = {
   equipment: ['wajan', 'cobek'],
   dietary: [],
   customNotes: '',
-  imageStyle: 'editorial',
-  aspectRatio: '1:1',
   outputLanguage: 'id'
 };
 
@@ -113,11 +109,9 @@ export function resetAiFoodCreatorState() {
   }
   currentGeneratingPercent = 20;
   currentGeneratingStageIdx = 0;
-  activeTab = 'all';
   searchQuery = '';
   formState = {
     creatorName: '',
-    creatorNickname: '',
     selectedIngredientIds: getRandomFiveIngredients(),
     cookingMethod: 'ungkep',
     dishCategory: 'lauk',
@@ -128,8 +122,6 @@ export function resetAiFoodCreatorState() {
     equipment: ['wajan', 'cobek'],
     dietary: [],
     customNotes: '',
-    imageStyle: 'editorial',
-    aspectRatio: '1:1',
     outputLanguage: 'id'
   };
   currentGeneratedRecipe = null;
@@ -208,6 +200,113 @@ function renderGeneratingState(currentLang) {
   `;
 }
 
+function getFilteredIngredients() {
+  if (searchQuery.trim().length === 0) {
+    return ALL_INGREDIENTS;
+  }
+  const q = searchQuery.toLowerCase().trim();
+  return ALL_INGREDIENTS.filter(i =>
+    (i.nameId && i.nameId.toLowerCase().includes(q)) ||
+    (i.nameEn && i.nameEn.toLowerCase().includes(q)) ||
+    (i.flavorNote && i.flavorNote.toLowerCase().includes(q)) ||
+    (i.description && i.description.toLowerCase().includes(q))
+  );
+}
+
+function renderIngredientChipsBox(isEn) {
+  const selectedCount = formState.selectedIngredientIds.length;
+  return `
+          <!-- Active Ingredients Chips Bar -->
+          <div id="ingredient-chips-box" class="p-4 rounded-2xl bg-[#FAF7F2] border ${ingredientError ? 'border-rose-400 bg-rose-50/25 ring-1 ring-rose-300' : 'border-[#D49B42]/30'} space-y-2 transition-all">
+            <div class="text-[11px] font-bold uppercase tracking-wider flex items-center justify-between">
+              <span class="${ingredientError ? 'text-rose-700' : 'text-[#5C3622]'}">
+                ${isEn ? 'Selected Ingredients (Min. 5):' : 'Bahan yang Siap Masuk ke Racikan (Min. 5):'}
+              </span>
+              <span class="font-bold ${ingredientError ? 'text-rose-600' : 'text-emerald-700'}">
+                ✓ ${selectedCount} ${isEn ? 'ingredients ready' : 'bahan siap diracik'}
+              </span>
+            </div>
+            ${ingredientError ? `
+              <p id="ingredient-min-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
+                <span>${isEn ? 'Minimum 5 ingredients must be selected.' : 'Minimal 5 bahan harus tetap dipilih.'}</span>
+              </p>
+            ` : ''}
+            <div class="flex flex-wrap gap-1.5">
+              ${selectedCount === 0 ? `
+                <span class="text-xs italic text-[#5C3622]">
+                  ${isEn ? 'No ingredients selected yet. Click ingredients below to select.': 'Belum ada bahan yang dipilih. Klik bahan-bahan di bawah untuk memilih.'}
+                </span>
+              ` : formState.selectedIngredientIds.map(id => {
+                const item = ALL_INGREDIENTS.find(i => i.id === id);
+                if (!item) return '';
+                return `
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#D49B42]/45 text-xs font-bold text-[#120B07] shadow-2xs">
+                    <span>${escapeHtml(isEn ? (item.nameEn || item.nameId) : item.nameId)}</span>
+                    <button type="button" data-remove-ingredient="${escapeHtml(item.id)}" class="text-[#C84C24] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
+                  </span>
+                `;
+              }).join('')}
+            </div>
+          </div>`;
+}
+
+function renderIngredientGridItems(filteredIngredients, isEn) {
+  if (filteredIngredients.length === 0) {
+    return `
+              <div class="col-span-full py-12 px-4 text-center space-y-3 bg-[#FAF7F2] rounded-3xl border border-dashed border-[#D49B42]/50">
+                <div class="w-12 h-12 rounded-full bg-[#120B07] text-[#D49B42] flex items-center justify-center mx-auto text-xl font-bold">
+                  <svg class="w-5 h-5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                </div>
+                <div class="space-y-1">
+                  <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07]">
+                    ${isEn ? 'Ingredient Not Found' : 'Bahan Tidak Ditemukan'}
+                  </h3>
+                  <p class="text-xs text-[#5C3622] max-w-sm mx-auto leading-relaxed">
+                    ${isEn 
+                      ? `No authentic ingredients match "${escapeHtml(searchQuery)}". Try searching for another keyword like Ayam, Bawang, or Cabai.` 
+                      : `Tidak ada bahan atau bumbu yang cocok dengan kata kunci "${escapeHtml(searchQuery)}". Silakan coba kata kunci lain seperti Ayam, Bawang, atau Cabai.`}
+                  </p>
+                </div>
+                <button 
+                  type="button" 
+                  id="clear-ingredient-search-btn" 
+                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] hover:bg-[#FAF7F2] shadow-2xs cursor-pointer transition-colors"
+                >
+                  <span>✕</span>
+                  <span>${isEn ? 'Clear Search Keyword' : 'Bersihkan Kata Kunci'}</span>
+                </button>
+              </div>
+    `;
+  }
+
+  return filteredIngredients.map(item => {
+    const isSelected = formState.selectedIngredientIds.includes(item.id);
+    return `
+                <button 
+                  type="button" 
+                  data-ingredient-id="${escapeHtml(item.id)}"
+                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 cursor-pointer card-hover-lift min-h-[3.75rem] ${
+                    isSelected 
+                      ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm' 
+                      : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8] hover:border-[#D49B42]'
+                  }"
+                >
+                  <strong class="text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight flex-1">
+                    ${escapeHtml(isEn ? (item.nameEn || item.nameId) : item.nameId)}
+                  </strong>
+                  <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${
+                    isSelected ? 'bg-[#C84C24] text-white' : 'bg-black/10 text-[#5C3622] group-hover:bg-[#C84C24]/20'
+                  }">
+                    ${isSelected ? '✓' : '+'}
+                  </span>
+                </button>
+    `;
+  }).join('');
+}
+
 /**
  * Form View: Interactive Studio Configuration
  */
@@ -260,18 +359,7 @@ function renderFormView(currentLang) {
   const alertContent = getSessionAlertContent();
 
   // Filter ingredients directly by search query (no category tabs)
-  let filteredIngredients = ALL_INGREDIENTS;
-  if (searchQuery.trim().length > 0) {
-    const q = searchQuery.toLowerCase().trim();
-    filteredIngredients = filteredIngredients.filter(i => 
-      (i.nameId && i.nameId.toLowerCase().includes(q)) ||
-      (i.nameEn && i.nameEn.toLowerCase().includes(q)) ||
-      (i.flavorNote && i.flavorNote.toLowerCase().includes(q)) ||
-      (i.description && i.description.toLowerCase().includes(q))
-    );
-  }
-
-  const selectedCount = formState.selectedIngredientIds.length;
+  const filteredIngredients = getFilteredIngredients();
 
   return `
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
@@ -348,38 +436,7 @@ function renderFormView(currentLang) {
             </p>
           </div>
 
-          <!-- Active Ingredients Chips Bar -->
-          <div id="ingredient-chips-box" class="p-4 rounded-2xl bg-[#FAF7F2] border ${ingredientError ? 'border-rose-400 bg-rose-50/25 ring-1 ring-rose-300' : 'border-[#D49B42]/30'} space-y-2 transition-all">
-            <div class="text-[11px] font-bold uppercase tracking-wider flex items-center justify-between">
-              <span class="${ingredientError ? 'text-rose-700' : 'text-[#5C3622]'}">
-                ${isEn ? 'Selected Ingredients (Min. 5):' : 'Bahan yang Siap Masuk ke Racikan (Min. 5):'}
-              </span>
-              <span class="font-bold ${ingredientError ? 'text-rose-600' : 'text-emerald-700'}">
-                ✓ ${selectedCount} ${isEn ? 'ingredients ready' : 'bahan siap diracik'}
-              </span>
-            </div>
-            ${ingredientError ? `
-              <p id="ingredient-min-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
-                <span>${isEn ? 'Minimum 5 ingredients must be selected.' : 'Minimal 5 bahan harus tetap dipilih.'}</span>
-              </p>
-            ` : ''}
-            <div class="flex flex-wrap gap-1.5">
-              ${selectedCount === 0 ? `
-                <span class="text-xs italic text-[#5C3622]">
-                  ${isEn ? 'No ingredients selected yet. Click ingredients below to select.': 'Belum ada bahan yang dipilih. Klik bahan-bahan di bawah untuk memilih.'}
-                </span>
-              ` : formState.selectedIngredientIds.map(id => {
-                const item = ALL_INGREDIENTS.find(i => i.id === id);
-                if (!item) return '';
-                return `
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#D49B42]/45 text-xs font-bold text-[#120B07] shadow-2xs">
-                    <span>${isEn ? (item.nameEn || item.nameId) : item.nameId}</span>
-                    <button type="button" data-remove-ingredient="${item.id}" class="text-[#C84C24] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
-                  </span>
-                `;
-              }).join('')}
-            </div>
-          </div>
+          ${renderIngredientChipsBox(isEn)}
 
           <!-- Instant Search Input (Single Clean Search Bar) -->
           <div class="relative w-full">
@@ -399,57 +456,8 @@ function renderFormView(currentLang) {
           </div>
 
           <!-- Ingredients Grid (Pure Text Names, Zero Photos/Emojis/Categories) -->
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 max-h-[32rem] overflow-y-auto pt-3 pb-4 px-2 custom-scrollbar">
-            ${filteredIngredients.length === 0 ? `
-              <div class="col-span-full py-12 px-4 text-center space-y-3 bg-[#FAF7F2] rounded-3xl border border-dashed border-[#D49B42]/50">
-                <div class="w-12 h-12 rounded-full bg-[#120B07] text-[#D49B42] flex items-center justify-center mx-auto text-xl font-bold">
-                  <svg class="w-5 h-5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <circle cx="11" cy="11" r="8"/>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                  </svg>
-                </div>
-                <div class="space-y-1">
-                  <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07]">
-                    ${isEn ? 'Ingredient Not Found' : 'Bahan Tidak Ditemukan'}
-                  </h3>
-                  <p class="text-xs text-[#5C3622] max-w-sm mx-auto leading-relaxed">
-                    ${isEn 
-                      ? `No authentic ingredients match "${escapeHtml(searchQuery)}". Try searching for another keyword like Ayam, Bawang, or Cabai.` 
-                      : `Tidak ada bahan atau bumbu yang cocok dengan kata kunci "${escapeHtml(searchQuery)}". Silakan coba kata kunci lain seperti Ayam, Bawang, atau Cabai.`}
-                  </p>
-                </div>
-                <button 
-                  type="button" 
-                  id="clear-ingredient-search-btn" 
-                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] hover:bg-[#FAF7F2] shadow-2xs cursor-pointer transition-colors"
-                >
-                  <span>✕</span>
-                  <span>${isEn ? 'Clear Search Keyword' : 'Bersihkan Kata Kunci'}</span>
-                </button>
-              </div>
-            ` : filteredIngredients.map(item => {
-              const isSelected = formState.selectedIngredientIds.includes(item.id);
-              return `
-                <button 
-                  type="button" 
-                  data-ingredient-id="${item.id}"
-                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 cursor-pointer card-hover-lift min-h-[3.75rem] ${
-                    isSelected 
-                      ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm' 
-                      : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8] hover:border-[#D49B42]'
-                  }"
-                >
-                  <strong class="text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight flex-1">
-                    ${isEn ? (item.nameEn || item.nameId) : item.nameId}
-                  </strong>
-                  <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${
-                    isSelected ? 'bg-[#C84C24] text-white' : 'bg-black/10 text-[#5C3622] group-hover:bg-[#C84C24]/20'
-                  }">
-                    ${isSelected ? '✓' : '+'}
-                  </span>
-                </button>
-              `;
-            }).join('')}
+          <div id="ingredient-grid-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 max-h-[32rem] overflow-y-auto pt-3 pb-4 px-2 custom-scrollbar">
+            ${renderIngredientGridItems(filteredIngredients, isEn)}
           </div>
         </section>
 
@@ -1031,74 +1039,98 @@ export function initAiFoodCreatorInteractions() {
     return;
   }
 
-  // Tabs for ingredients
-  const tabBtns = document.querySelectorAll('[data-tab]');
-  tabBtns.forEach(btn => {
-    btn.onclick = () => {
-      activeTab = btn.getAttribute('data-tab');
-      reRenderCurrentView();
-    };
-  });
-
-  // Search input for ingredients
-  const searchInput = document.getElementById('ingredient-search-input');
-  if (searchInput) {
-    let debounce;
-    searchInput.oninput = (e) => {
-      clearTimeout(debounce);
-      debounce = setTimeout(() => {
-        searchQuery = e.target.value;
-        reRenderCurrentView();
-      }, 250);
-    };
-  }
-
-  // Ingredient Card Selection Toggle
-  const ingCards = document.querySelectorAll('[data-ingredient-id]');
-  ingCards.forEach(card => {
-    card.onclick = () => {
-      const id = card.getAttribute('data-ingredient-id');
-      if (formState.selectedIngredientIds.includes(id)) {
+  function bindRemovePills() {
+    document.querySelectorAll('[data-remove-ingredient]').forEach(pill => {
+      pill.onclick = (e) => {
+        e.stopPropagation();
+        const id = pill.getAttribute('data-remove-ingredient');
         if (formState.selectedIngredientIds.length <= 5) {
           ingredientError = true;
-          reRenderCurrentView();
+          updateIngredientSection(true);
           return;
         }
         ingredientError = false;
         formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
-      } else {
-        ingredientError = false;
-        formState.selectedIngredientIds.push(id);
-      }
-      reRenderCurrentView();
-    };
-  });
+        updateIngredientSection(true);
+      };
+    });
+  }
 
-  // Remove Ingredient Pill
-  const removePills = document.querySelectorAll('[data-remove-ingredient]');
-  removePills.forEach(pill => {
-    pill.onclick = (e) => {
-      e.stopPropagation();
-      const id = pill.getAttribute('data-remove-ingredient');
-      if (formState.selectedIngredientIds.length <= 5) {
-        ingredientError = true;
-        reRenderCurrentView();
-        return;
-      }
-      ingredientError = false;
-      formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
-      reRenderCurrentView();
-    };
-  });
+  let searchDebounce = null;
 
-  // Clear Ingredient Search Keyword
-  const clearSearchBtn = document.getElementById('clear-ingredient-search-btn');
-  if (clearSearchBtn) {
-    clearSearchBtn.onclick = () => {
-      searchQuery = '';
-      reRenderCurrentView();
+  function bindIngredientGridEvents() {
+    document.querySelectorAll('[data-ingredient-id]').forEach(card => {
+      card.onclick = () => {
+        const id = card.getAttribute('data-ingredient-id');
+        if (formState.selectedIngredientIds.includes(id)) {
+          if (formState.selectedIngredientIds.length <= 5) {
+            ingredientError = true;
+            updateIngredientSection(true);
+            return;
+          }
+          ingredientError = false;
+          formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
+        } else {
+          ingredientError = false;
+          formState.selectedIngredientIds.push(id);
+        }
+        updateIngredientSection(true);
+      };
+    });
+
+    const clearSearchBtn = document.getElementById('clear-ingredient-search-btn');
+    if (clearSearchBtn) {
+      clearSearchBtn.onclick = () => {
+        clearTimeout(searchDebounce);
+        searchQuery = '';
+        const inputEl = document.getElementById('ingredient-search-input');
+        if (inputEl) {
+          inputEl.value = '';
+          inputEl.focus();
+        }
+        updateIngredientGrid(false);
+      };
+    }
+  }
+
+  function updateIngredientGrid(preserveGridScroll = false) {
+    const grid = document.getElementById('ingredient-grid-container');
+    if (!grid) return;
+    const activeIsEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+    const prevScroll = grid.scrollTop;
+    grid.innerHTML = renderIngredientGridItems(getFilteredIngredients(), activeIsEn);
+    if (preserveGridScroll) {
+      grid.scrollTop = prevScroll;
+    } else {
+      grid.scrollTop = 0;
+    }
+    bindIngredientGridEvents();
+  }
+
+  function updateIngredientSection(preserveGridScroll = true) {
+    const activeIsEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
+    const chipsBox = document.getElementById('ingredient-chips-box');
+    if (chipsBox) {
+      chipsBox.outerHTML = renderIngredientChipsBox(activeIsEn);
+      bindRemovePills();
+    }
+    updateIngredientGrid(preserveGridScroll);
+  }
+
+  // Search input for ingredients (updates grid only so focus/cursor stay uninterrupted)
+  const searchInput = document.getElementById('ingredient-search-input');
+  if (searchInput) {
+    searchInput.oninput = (e) => {
+      searchQuery = e.target.value;
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(() => {
+        updateIngredientGrid(false);
+      }, 250);
     };
   }
+
+  bindRemovePills();
+  bindIngredientGridEvents();
 
   // Creator inputs binding
   const nameInput = document.getElementById('creator-name-input');
@@ -1124,13 +1156,6 @@ export function initAiFoodCreatorInteractions() {
           box.classList.add('border-[#D49B42]/35');
         }
       }
-    };
-  }
-
-  const nickInput = document.getElementById('creator-nickname-input');
-  if (nickInput) {
-    nickInput.oninput = (e) => {
-      formState.creatorNickname = e.target.value;
     };
   }
 

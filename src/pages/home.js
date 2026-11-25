@@ -201,15 +201,15 @@ export async function renderHomePage() {
 
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 text-xs">
                 <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
-                  <p class="font-bold text-[#D49B42]">Kota Semarang</p>
+                  <p class="font-bold text-[#D49B42]">${isEn ? 'Semarang City' : 'Kota Semarang'}</p>
                   <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Lumpia & Tahu Gimbal</p>
                 </div>
                 <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
-                  <p class="font-bold text-[#D49B42]">Solo (Surakarta)</p>
+                  <p class="font-bold text-[#D49B42]">${isEn ? 'Surakarta (Solo) City' : 'Solo (Surakarta)'}</p>
                   <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Nasi Liwet & Selat Solo</p>
                 </div>
                 <div class="p-3.5 rounded-2xl bg-white/5 border border-[#D49B42]/30">
-                  <p class="font-bold text-[#D49B42]">Kab. Kudus</p>
+                  <p class="font-bold text-[#D49B42]">${isEn ? 'Kudus Regency' : 'Kab. Kudus'}</p>
                   <p class="text-[11px] text-[#FAF7F2]/75 mt-0.5">Soto Kudus & Garang Asem</p>
                 </div>
               </div>

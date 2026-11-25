@@ -29,6 +29,7 @@ import { renderRecommendationsPage } from '../src/pages/recommendations.js';
 import { renderAiFoodCreatorPage } from '../src/pages/ai-food-creator.js';
 import { resolveNearestRoute } from '../src/utils/routes.js';
 import { aiFoodCreatorService } from '../src/services/aiFoodCreatorService.js';
+import { i18n } from '../src/i18n/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -677,4 +678,35 @@ test('Frontend service maps HTTP 503 to BACKEND_REQUEST_FAILED consistently with
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test('Homepage translates Flavor Map city cards in EN and dead placeholder/listeners are removed', async () => {
+  const prevLang = i18n.getLanguage();
+  try {
+    i18n.setLanguage('id');
+    const homeId = await renderHomePage();
+    assert.ok(homeId.includes('Kota Semarang'));
+    assert.ok(homeId.includes('Solo (Surakarta)'));
+    assert.ok(homeId.includes('Kab. Kudus'));
+
+    i18n.setLanguage('en');
+    const homeEn = await renderHomePage();
+    assert.ok(homeEn.includes('Semarang City'));
+    assert.ok(homeEn.includes('Surakarta (Solo) City'));
+    assert.ok(homeEn.includes('Kudus Regency'));
+  } finally {
+    i18n.setLanguage(prevLang);
+  }
+
+  assert.equal(aiFoodCreatorService.composePosterCanvas, undefined);
+  assert.equal(aiFoodCreatorService.downloadPoster, undefined);
+  assert.equal(aiFoodCreatorService.downloadRecipeJson, undefined);
+
+  const routerSrc = fs.readFileSync(path.join(rootDir, 'src/router.js'), 'utf8');
+  assert.ok(!routerSrc.includes('recipe-detail.js'));
+
+  const aiCreatorSrc = fs.readFileSync(path.join(rootDir, 'src/pages/ai-food-creator.js'), 'utf8');
+  assert.ok(aiCreatorSrc.includes('id="ingredient-grid-container"'));
+  assert.ok(!aiCreatorSrc.includes('[data-tab]'));
+  assert.ok(!aiCreatorSrc.includes('creator-nickname-input'));
 });

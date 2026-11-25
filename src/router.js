@@ -2,7 +2,6 @@ import { renderNavbar, initNavbarInteractions, setActiveNavbarLink } from './com
 import { renderFooter } from './components/footer.js';
 import { renderHomePage, initHomePageInteractions } from './pages/home.js';
 import { renderRecipesPage, initRecipesPageInteractions, resetRecipesPageState, setPendingFlavorFilter, setPendingRegionFilter } from './pages/recipes.js';
-import { renderRecipeDetailPage, initRecipeDetailInteractions } from './pages/recipe-detail.js';
 import { renderFlavorMapPage, initFlavorMapInteractions } from './pages/flavor-map.js';
 import { renderSpicesPage, initSpicesPageInteractions, closeSpiceModal, openSpiceModal, getActiveSpiceModalId, resetSpicesPageState } from './pages/spices.js';
 import { renderLegendaryRestaurantsPage, initLegendaryRestaurantsInteractions } from './pages/legendary-restaurants.js';
