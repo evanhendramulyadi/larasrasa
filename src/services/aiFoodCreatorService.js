@@ -283,7 +283,13 @@ export const aiFoodCreatorService = {
 
   _normalizeRecipeObject(raw, payload, resolvedCreatorName) {
     const rawTitle = (raw.title || raw.dishName || 'Racikan Pusaka Jawa Tengah').trim();
-    const cleanTitle = rawTitle.split('/')[0].split(' atau ')[0].trim();
+    const baseTitle = rawTitle.split('/')[0].split(' atau ')[0].trim();
+    const withoutBrand = baseTitle
+      .replace(/\b(?:ala|racikan|kreasi|khas|versi)?\s*laras\s*rasa\b/gi, ' ')
+      .replace(/\s{2,}/g, ' ')
+      .replace(/^[\s\-–—:,/]+|[\s\-–—:,/]+$/g, '')
+      .trim();
+    const cleanTitle = withoutBrand.length >= 3 ? withoutBrand : baseTitle;
 
     const subtitleId = raw.subtitleId || 'Racikan Resep Dapur Tradisi';
     const subtitleEn = raw.subtitleEn || 'Authentic Heritage Recipe';

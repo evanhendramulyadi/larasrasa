@@ -869,6 +869,8 @@ test('AI Food Creator enforces 5-10 ingredients and prompt guarantees selected i
   assert.ok(gorengPrompt.includes('10 DARI 10 BAHAN HARUS ADA & DIPAKAI'));
   assert.ok(gorengPrompt.includes('BAHAN TAMBAHAN / PENYESUAIAN DIPERBOLEHKAN'));
   assert.ok(gorengPrompt.includes("sekadar 'Tempe Mendoan' biasa"));
+  assert.ok(gorengPrompt.includes('DILARANG KERAS menyertakan kata "LarasRasa"'));
+  assert.ok(gorengPrompt.includes('unsur nama orang'));
   assert.ok(gorengPrompt.includes('ASAM SEGAR'));
   assert.ok(gorengPrompt.includes('WAJIB TIDAK PEDAS (Level 0 - Ramah Anak)'));
   assert.ok(gorengPrompt.includes('Tanpa Santan'));
@@ -996,4 +998,45 @@ test('Edge Function adapts maxOutputTokens cleanly to model outputTokenLimit (16
   );
   assert.equal(res.status, 200);
   assert.deepEqual(seenMaxTokens, [8192, 16384]);
+});
+
+test('Dish title strips accidental LarasRasa brand leakage on both backend and frontend while keeping person/note nuances', async () => {
+  const deps = makeDeps({
+    fetchFn: async (url) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-brand-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      return new Response(makeValidRecipePayload('Gimbal Rampai Nusantara LarasRasa'), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    },
+  });
+
+  const res = await handleRequest(
+    makePostRequest(JSON.stringify({ action: 'generate', inputs: VALID_INPUTS }), {
+      'cf-connecting-ip': '203.0.113.99',
+    }),
+    deps,
+  );
+  assert.equal(res.status, 200);
+  const data = await res.json();
+  assert.equal(data.recipe.title, 'Gimbal Rampai Nusantara');
+
+  const normalized = aiFoodCreatorService._normalizeRecipeObject(
+    {
+      title: 'Gimbal Rampai Ala Evan LarasRasa',
+      ingredients: [{ nameId: 'Ayam Kampung', amount: 250, unitId: 'g' }],
+      stepsId: [{ stepNumber: 1, titleId: 'Masak', instructionId: 'Goreng renyah.' }],
+    },
+    VALID_INPUTS,
+    'Evan Hendra Mulyadi',
+  );
+  assert.equal(normalized.title, 'Gimbal Rampai Ala Evan');
 });
