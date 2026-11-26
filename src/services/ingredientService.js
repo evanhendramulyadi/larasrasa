@@ -56,11 +56,20 @@ export const LOCAL_INGREDIENT_CATALOG = {
   ]
 };
 
-export const ALL_LOCAL_INGREDIENTS = [
+function deduplicateById(items) {
+  const seenIds = new Set();
+  return items.filter(item => {
+    if (seenIds.has(item.id)) return false;
+    seenIds.add(item.id);
+    return true;
+  });
+}
+
+export const ALL_LOCAL_INGREDIENTS = deduplicateById([
   ...LOCAL_INGREDIENT_CATALOG.proteins,
   ...LOCAL_INGREDIENT_CATALOG.spices,
   ...LOCAL_INGREDIENT_CATALOG.vegetables
-];
+]);
 
 export const ingredientService = {
   /**
@@ -89,11 +98,13 @@ export const ingredientService = {
     if (category === 'protein') list = catalog.proteins || [];
     else if (category === 'spice') list = catalog.spices || [];
     else if (category === 'vegetable') list = catalog.vegetables || [];
-    else list = [
-      ...(catalog.proteins || []),
-      ...(catalog.spices || []),
-      ...(catalog.vegetables || [])
-    ];
+    else {
+      list = deduplicateById([
+        ...(catalog.proteins || []),
+        ...(catalog.spices || []),
+        ...(catalog.vegetables || [])
+      ]);
+    }
 
     const isEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
     return list.map(item => ({

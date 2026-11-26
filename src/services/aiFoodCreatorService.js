@@ -45,7 +45,7 @@ export const PREFERENCE_OPTIONS = {
     { id: 'ungkep', labelId: 'Ungkep & Rebus Kuah Kaldu', labelEn: 'Slow Braise & Savory Broth', descId: 'Api kecil, kuah meresap hingga ke serat terdalam.', descEn: 'Low flame, broth deeply infusing into every fiber.' },
     { id: 'kukus', labelId: 'Kukus Bungkus Daun Pisang', labelEn: 'Steam in Banana Leaf', descId: 'Aroma daun pisang layu menyatu dengan sari bumbu alami.', descEn: 'Aroma of wilted banana leaf melds with natural spice essences.' },
     { id: 'bakar', labelId: 'Panggang / Bakar Arang Batok', labelEn: 'Charcoal Grill & Glaze', descId: 'Karamelisasi kecap manis dan asap arang menggoda selera.', descEn: 'Sweet soy sauce caramelization and tantalizing coconut charcoal smoke.' },
-    { id: 'goreng', labelId: 'Goreng Krispi / Mendoan Lembut', labelEn: 'Crispy / Soft Pan-fry', descId: 'Lapisan tepung berempah gurih dengan sentuhan daun bawang.', descEn: 'Crisp spiced batter layer with fragrant scallion touches.' }
+    { id: 'goreng', labelId: 'Goreng Krispi / Mendoan Lembut', labelEn: 'Crispy / Soft Pan-fry', descId: 'Balutan tepung berempah gurih renyah atau lembut ala mendoan.', descEn: 'Crisp or soft mendoan-style spiced batter coating.' }
   ],
   dishCategories: [
     { id: 'lauk', labelId: 'Lauk Utama Dapur', labelEn: 'Main Dish' },
@@ -125,8 +125,11 @@ export const aiFoodCreatorService = {
       : (outputLanguage === 'en' ? 'LarasRasa Culinary Hearth' : 'Dapur Tradisi LarasRasa');
 
     const cleanNotes = typeof customNotes === 'string' ? customNotes.trim().slice(0, 250) : '';
+    const uniqueIngredientIds = Array.isArray(selectedIngredientIds)
+      ? Array.from(new Set(selectedIngredientIds.filter(id => typeof id === 'string' && id.trim().length > 0)))
+      : [];
 
-    if (!Array.isArray(selectedIngredientIds) || selectedIngredientIds.length < 5) {
+    if (uniqueIngredientIds.length < 5) {
       throw new Error(outputLanguage === 'en'
         ? 'Select at least 5 ingredients or spices to begin culinary synthesis.'
         : 'Pilih minimal 5 bahan atau rempah untuk memulai penciptaan resep kuliner.');
@@ -147,7 +150,7 @@ export const aiFoodCreatorService = {
           action: 'generate',
           inputs: {
             creatorName: cleanCreatorName,
-            selectedIngredientIds: selectedIngredientIds.slice(0, 25),
+            selectedIngredientIds: uniqueIngredientIds,
             cookingMethod,
             dishCategory,
             tasteProfile,
@@ -286,7 +289,7 @@ export const aiFoodCreatorService = {
     const normalizedIngs = rawIngs.map(i => ({
       nameId: i.nameId || i.name || 'Bahan Tradisi',
       nameEn: i.nameEn || i.nameId || i.name || 'Heritage Ingredient',
-      amount: i.amount || 1,
+      amount: (i.amount !== undefined && i.amount !== null && i.amount !== '') ? i.amount : 1,
       unitId: i.unitId || i.unit || 'secukupnya',
       unitEn: i.unitEn || i.unitId || i.unit || 'to taste',
       noteId: i.noteId || i.note || '',
@@ -350,7 +353,7 @@ export const aiFoodCreatorService = {
       totalTime: '50 Menit',
       difficulty: 'Sedang',
       calories: '320 kkal / porsi',
-      spiceLevel: payload.spiceLevel || 1,
+      spiceLevel: Number.isInteger(Number(payload.spiceLevel)) ? Number(payload.spiceLevel) : 1,
       cookingMethod: payload.cookingMethod || 'ungkep',
       dishCategory: payload.dishCategory || 'lauk',
       tasteProfile: payload.tasteProfile || 'manis-gurih',

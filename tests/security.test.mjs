@@ -13,6 +13,8 @@ import {
   isCompatibleTextRecipeModel,
   rankCompatibleModels,
   selectCandidateModels,
+  VALID_INGREDIENTS,
+  MAX_INGREDIENTS,
 } from '../supabase/functions/generate-recipe/index.ts';
 import { escapeHtml, safeUrl } from '../src/utils/dom.js';
 import { renderFilterPanel } from '../src/components/filter-panel.js';
@@ -28,7 +30,7 @@ import { renderLegendaryRestaurantsPage } from '../src/pages/legendary-restauran
 import { renderRecommendationsPage } from '../src/pages/recommendations.js';
 import { renderAiFoodCreatorPage } from '../src/pages/ai-food-creator.js';
 import { resolveNearestRoute, ROUTE_DEFINITIONS } from '../src/utils/routes.js';
-import { aiFoodCreatorService } from '../src/services/aiFoodCreatorService.js';
+import { aiFoodCreatorService, ALL_INGREDIENTS } from '../src/services/aiFoodCreatorService.js';
 import { i18n } from '../src/i18n/index.js';
 import { resetLegendaryRestaurantsState } from '../src/pages/legendary-restaurants.js';
 
@@ -808,4 +810,131 @@ test('AI Food Creator result page Back to Studio buttons match Download/Copy hov
   assert.ok(bottomBtnMatch, 'Bottom Back to Studio button must exist');
   assert.ok(bottomBtnMatch[1].includes('hover:-translate-y-0.5'));
   assert.ok(bottomBtnMatch[1].includes('hover:shadow-lg'));
+});
+
+test('AI Food Creator sends all unique ingredients (>25) and prompt enforces 100% ingredient usage & cooking method fidelity', async () => {
+  const allBackendIds = Object.keys(VALID_INGREDIENTS);
+  const allFrontendIds = ALL_INGREDIENTS.map((item) => item.id);
+
+  // 1. Frontend catalog has zero duplicate IDs and matches backend allowlist 1-to-1
+  assert.equal(new Set(allFrontendIds).size, allFrontendIds.length);
+  assert.deepEqual([...allFrontendIds].sort(), [...allBackendIds].sort());
+  assert.ok(MAX_INGREDIENTS >= allBackendIds.length);
+
+  // 2. Backend validator accepts all 43 ingredients at once without artificial 25-item cap
+  const fullValidation = validateGenerateRequest({
+    action: 'generate',
+    inputs: {
+      ...VALID_INPUTS,
+      selectedIngredientIds: allBackendIds,
+      cookingMethod: 'goreng',
+      spiceLevel: 0,
+      dietary: ['tanpa-santan'],
+    },
+  });
+  assert.equal(fullValidation.ok, true);
+  assert.equal(fullValidation.data.selectedIngredientIds.length, allBackendIds.length);
+
+  // 3. Prompt includes all 43 ingredients numbered, proportional adaptation rule, and strict method directives
+  const gorengPrompt = buildServerRecipePrompt(fullValidation.data);
+  assert.ok(gorengPrompt.includes(`${allBackendIds.length} bahan`));
+  allBackendIds.forEach((id, idx) => {
+    assert.ok(
+      gorengPrompt.includes(`${idx + 1}. ${VALID_INGREDIENTS[id]}`),
+      `Missing numbered ingredient ${VALID_INGREDIENTS[id]}`,
+    );
+  });
+  assert.ok(gorengPrompt.includes('100% BAHAN PILIHAN'));
+  assert.ok(gorengPrompt.includes("sekadar 'Tempe Mendoan' biasa"));
+  assert.ok(gorengPrompt.includes('Level Pedas 0 (Ramah Anak)'));
+  assert.ok(gorengPrompt.includes('Tanpa Santan'));
+
+  for (const [method, expectedFragment] of [
+    ['tumis', 'TUMIS CEPAT BERAROMA'],
+    ['ungkep', 'UNGKEP & REBUS KUAH KALDU'],
+    ['kukus', 'KUKUS BUNGKUS DAUN PISANG'],
+    ['bakar', 'PANGGANG / BAKAR ARANG BATOK'],
+  ]) {
+    const methodPrompt = buildServerRecipePrompt({ ...VALID_INPUTS, cookingMethod: method });
+    assert.ok(methodPrompt.includes(expectedFragment), `Prompt for ${method} must include directive`);
+  }
+
+  // 4. Frontend service forwards all 43 unique ingredients without slicing at 25 and preserves spiceLevel 0
+  const originalFetch = globalThis.fetch;
+  let forwardedPayload = null;
+  globalThis.fetch = async (_url, init) => {
+    forwardedPayload = JSON.parse(String(init.body));
+    return new Response(
+      JSON.stringify({
+        success: true,
+        recipe: {
+          title: 'Gimbal Krispi Rampai Nusantara',
+          ingredients: allBackendIds.map((id) => ({
+            nameId: VALID_INGREDIENTS[id],
+            amount: 50,
+            unitId: 'g',
+          })),
+          stepsId: [{ stepNumber: 1, titleId: 'Racik', instructionId: 'Olahan krispi.' }],
+        },
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    );
+  };
+
+  try {
+    const recipe = await aiFoodCreatorService.generateRecipe({
+      creatorName: 'Evan',
+      selectedIngredientIds: [...allFrontendIds, allFrontendIds[0]],
+      cookingMethod: 'goreng',
+      dishCategory: 'lauk',
+      tasteProfile: 'manis-gurih',
+      spiceLevel: 0,
+      cookingDuration: 'standard',
+      servings: 4,
+      equipment: ['wajan', 'cobek'],
+      dietary: [],
+      customNotes: '',
+      outputLanguage: 'id',
+    });
+    assert.equal(forwardedPayload.inputs.selectedIngredientIds.length, allFrontendIds.length);
+    assert.equal(recipe.ingredients.length, allBackendIds.length);
+    assert.equal(recipe.spiceLevel, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('Edge Function adapts maxOutputTokens cleanly to model outputTokenLimit (16384 vs 8192)', async () => {
+  const seenMaxTokens = [];
+  const deps = makeDeps({
+    fetchFn: async (url, init) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-8k-flash-lite', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 8192 },
+            { name: 'models/gemini-64k-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      seenMaxTokens.push(JSON.parse(String(init.body)).generationConfig.maxOutputTokens);
+      if (target.includes('gemini-8k-flash-lite')) {
+        return new Response('Overloaded', { status: 503 });
+      }
+      return new Response(makeValidRecipePayload('Tumis Rampai Komplit'), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    },
+  });
+
+  const res = await handleRequest(
+    makePostRequest(JSON.stringify({ action: 'generate', inputs: VALID_INPUTS }), {
+      'cf-connecting-ip': '203.0.113.88',
+    }),
+    deps,
+  );
+  assert.equal(res.status, 200);
+  assert.deepEqual(seenMaxTokens, [8192, 16384]);
 });
