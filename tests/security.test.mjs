@@ -812,41 +812,65 @@ test('AI Food Creator result page Back to Studio buttons match Download/Copy hov
   assert.ok(bottomBtnMatch[1].includes('hover:shadow-lg'));
 });
 
-test('AI Food Creator sends all unique ingredients (>25) and prompt enforces 100% ingredient usage & cooking method fidelity', async () => {
+test('AI Food Creator enforces 5-10 ingredients and prompt guarantees selected ingredients, cooking method, taste harmony, and spice level', async () => {
   const allBackendIds = Object.keys(VALID_INGREDIENTS);
   const allFrontendIds = ALL_INGREDIENTS.map((item) => item.id);
+  const tenIngredients = [
+    'ayam-kampung',
+    'udang-jerbung',
+    'tempe-kedelai',
+    'bawang-merah',
+    'bawang-putih',
+    'ketumbar',
+    'daun-bawang',
+    'belimbing-wuluh',
+    'kacang-tanah',
+    'tauco-kedelai',
+  ];
 
   // 1. Frontend catalog has zero duplicate IDs and matches backend allowlist 1-to-1
   assert.equal(new Set(allFrontendIds).size, allFrontendIds.length);
   assert.deepEqual([...allFrontendIds].sort(), [...allBackendIds].sort());
-  assert.ok(MAX_INGREDIENTS >= allBackendIds.length);
+  assert.equal(MAX_INGREDIENTS, 10);
 
-  // 2. Backend validator accepts all 43 ingredients at once without artificial 25-item cap
-  const fullValidation = validateGenerateRequest({
+  // 2. Backend validator accepts 10 ingredients and rejects 11 ingredients
+  const tenValidation = validateGenerateRequest({
     action: 'generate',
     inputs: {
       ...VALID_INPUTS,
-      selectedIngredientIds: allBackendIds,
+      selectedIngredientIds: tenIngredients,
       cookingMethod: 'goreng',
+      tasteProfile: 'asam-segar',
       spiceLevel: 0,
       dietary: ['tanpa-santan'],
     },
   });
-  assert.equal(fullValidation.ok, true);
-  assert.equal(fullValidation.data.selectedIngredientIds.length, allBackendIds.length);
+  assert.equal(tenValidation.ok, true);
+  assert.equal(tenValidation.data.selectedIngredientIds.length, 10);
 
-  // 3. Prompt includes all 43 ingredients numbered, proportional adaptation rule, and strict method directives
-  const gorengPrompt = buildServerRecipePrompt(fullValidation.data);
-  assert.ok(gorengPrompt.includes(`${allBackendIds.length} bahan`));
-  allBackendIds.forEach((id, idx) => {
+  const elevenValidation = validateGenerateRequest({
+    action: 'generate',
+    inputs: {
+      ...VALID_INPUTS,
+      selectedIngredientIds: [...tenIngredients, 'kemiri'],
+    },
+  });
+  assert.equal(elevenValidation.ok, false);
+
+  // 3. Prompt enforces all 10 ingredients, optional supporting adjustments, cooking method, taste harmony, and spice level
+  const gorengPrompt = buildServerRecipePrompt(tenValidation.data);
+  assert.ok(gorengPrompt.includes('10 bahan'));
+  tenIngredients.forEach((id, idx) => {
     assert.ok(
       gorengPrompt.includes(`${idx + 1}. ${VALID_INGREDIENTS[id]}`),
       `Missing numbered ingredient ${VALID_INGREDIENTS[id]}`,
     );
   });
-  assert.ok(gorengPrompt.includes('100% BAHAN PILIHAN'));
+  assert.ok(gorengPrompt.includes('10 DARI 10 BAHAN HARUS ADA & DIPAKAI'));
+  assert.ok(gorengPrompt.includes('BAHAN TAMBAHAN / PENYESUAIAN DIPERBOLEHKAN'));
   assert.ok(gorengPrompt.includes("sekadar 'Tempe Mendoan' biasa"));
-  assert.ok(gorengPrompt.includes('Level Pedas 0 (Ramah Anak)'));
+  assert.ok(gorengPrompt.includes('ASAM SEGAR'));
+  assert.ok(gorengPrompt.includes('WAJIB TIDAK PEDAS (Level 0 - Ramah Anak)'));
   assert.ok(gorengPrompt.includes('Tanpa Santan'));
 
   for (const [method, expectedFragment] of [
@@ -859,7 +883,42 @@ test('AI Food Creator sends all unique ingredients (>25) and prompt enforces 100
     assert.ok(methodPrompt.includes(expectedFragment), `Prompt for ${method} must include directive`);
   }
 
-  // 4. Frontend service forwards all 43 unique ingredients without slicing at 25 and preserves spiceLevel 0
+  for (const [taste, expectedFragment] of [
+    ['manis-gurih', 'MANIS GURIH HARMONIS'],
+    ['gurih-segar', 'GURIH SEGAR BERKALDU'],
+    ['pedas-gurih', 'PEDAS GURIH MANTAP'],
+    ['asam-segar', 'ASAM SEGAR'],
+    ['pekat-rempah', 'PEKAT KAYA REMPAH TRADISI'],
+  ]) {
+    const tastePrompt = buildServerRecipePrompt({ ...VALID_INPUTS, tasteProfile: taste });
+    assert.ok(tastePrompt.includes(expectedFragment), `Prompt for ${taste} must include directive`);
+  }
+
+  for (const [level, expectedFragment] of [
+    [0, 'WAJIB TIDAK PEDAS (Level 0'],
+    [1, 'WAJIB HANGAT LEMBUT (Level 1)'],
+    [2, 'WAJIB PEDAS MANTAP (Level 2)'],
+    [3, 'WAJIB PEDAS NENDANG MERCON (Level 3)'],
+  ]) {
+    const spicePrompt = buildServerRecipePrompt({ ...VALID_INPUTS, spiceLevel: level });
+    assert.ok(spicePrompt.includes(expectedFragment), `Prompt for spice level ${level} must include directive`);
+  }
+
+  // 4. UI clearly displays Min. 5, Maks. 10 bounds
+  const aiCreatorHtmlId = await renderAiFoodCreatorPage();
+  assert.ok(aiCreatorHtmlId.includes('Maks. 10'));
+  assert.ok(aiCreatorHtmlId.includes('/10'));
+
+  // 5. Frontend service forwards 10 unique ingredients, rejects > 10, and preserves spiceLevel 0
+  await assert.rejects(
+    () =>
+      aiFoodCreatorService.generateRecipe({
+        creatorName: 'Evan',
+        selectedIngredientIds: [...tenIngredients, 'kemiri'],
+      }),
+    /Maksimal 10 bahan/i,
+  );
+
   const originalFetch = globalThis.fetch;
   let forwardedPayload = null;
   globalThis.fetch = async (_url, init) => {
@@ -869,7 +928,7 @@ test('AI Food Creator sends all unique ingredients (>25) and prompt enforces 100
         success: true,
         recipe: {
           title: 'Gimbal Krispi Rampai Nusantara',
-          ingredients: allBackendIds.map((id) => ({
+          ingredients: tenIngredients.map((id) => ({
             nameId: VALID_INGREDIENTS[id],
             amount: 50,
             unitId: 'g',
@@ -884,10 +943,10 @@ test('AI Food Creator sends all unique ingredients (>25) and prompt enforces 100
   try {
     const recipe = await aiFoodCreatorService.generateRecipe({
       creatorName: 'Evan',
-      selectedIngredientIds: [...allFrontendIds, allFrontendIds[0]],
+      selectedIngredientIds: [...tenIngredients, tenIngredients[0]],
       cookingMethod: 'goreng',
       dishCategory: 'lauk',
-      tasteProfile: 'manis-gurih',
+      tasteProfile: 'asam-segar',
       spiceLevel: 0,
       cookingDuration: 'standard',
       servings: 4,
@@ -896,8 +955,8 @@ test('AI Food Creator sends all unique ingredients (>25) and prompt enforces 100
       customNotes: '',
       outputLanguage: 'id',
     });
-    assert.equal(forwardedPayload.inputs.selectedIngredientIds.length, allFrontendIds.length);
-    assert.equal(recipe.ingredients.length, allBackendIds.length);
+    assert.equal(forwardedPayload.inputs.selectedIngredientIds.length, 10);
+    assert.equal(recipe.ingredients.length, 10);
     assert.equal(recipe.spiceLevel, 0);
   } finally {
     globalThis.fetch = originalFetch;

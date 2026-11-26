@@ -135,6 +135,12 @@ export const aiFoodCreatorService = {
         : 'Pilih minimal 5 bahan atau rempah untuk memulai penciptaan resep kuliner.');
     }
 
+    if (uniqueIngredientIds.length > 10) {
+      throw new Error(outputLanguage === 'en'
+        ? 'Maximum 10 ingredients can be selected per recipe.'
+        : 'Maksimal 10 bahan dapat dipilih untuk satu racikan resep.');
+    }
+
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), AI_REQUEST_TIMEOUT_MS);
 

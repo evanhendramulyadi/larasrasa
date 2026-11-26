@@ -41,6 +41,8 @@ let formState = {
 
 const COOLDOWN_KEY = 'larasrasa_last_ai_recipe_timestamp';
 const COOLDOWN_MS = 10 * 60 * 1000; // 10 minutes limit per session
+const MIN_INGREDIENTS = 5;
+const MAX_INGREDIENTS = 10;
 
 let currentGeneratedRecipe = null;
 let isGenerating = false;
@@ -50,7 +52,7 @@ let validationMessage = null;
 let sessionAlert = null; // { type: 'cooldown' | 'credit' | 'forbidden' | 'error', minutes?: number }
 let toastMessage = null;
 let nameError = false;
-let ingredientError = false;
+let ingredientError = null; // null | 'min' | 'max'
 let generationRunId = 0;
 let searchDebounce = null;
 
@@ -135,14 +137,16 @@ export function resetAiFoodCreatorState() {
   sessionAlert = null;
   toastMessage = null;
   nameError = false;
-  ingredientError = false;
+  ingredientError = null;
 }
 
 export async function renderAiFoodCreatorPage() {
   const currentLang = i18n?.getLanguage ? i18n.getLanguage() : 'id';
 
-  if (!formState.selectedIngredientIds || formState.selectedIngredientIds.length < 5) {
+  if (!formState.selectedIngredientIds || formState.selectedIngredientIds.length < MIN_INGREDIENTS) {
     formState.selectedIngredientIds = getRandomFiveIngredients();
+  } else if (formState.selectedIngredientIds.length > MAX_INGREDIENTS) {
+    formState.selectedIngredientIds = formState.selectedIngredientIds.slice(0, MAX_INGREDIENTS);
   }
 
   if (isGenerating) {
@@ -220,20 +224,24 @@ function getFilteredIngredients() {
 
 function renderIngredientChipsBox(isEn) {
   const selectedCount = formState.selectedIngredientIds.length;
+  const errorMessage = ingredientError === 'max'
+    ? (isEn ? `Maximum ${MAX_INGREDIENTS} ingredients can be selected per recipe.` : `Maksimal ${MAX_INGREDIENTS} bahan dapat dipilih untuk satu racikan resep.`)
+    : (isEn ? `Minimum ${MIN_INGREDIENTS} ingredients must be selected.` : `Minimal ${MIN_INGREDIENTS} bahan harus tetap dipilih.`);
+
   return `
           <!-- Active Ingredients Chips Bar -->
           <div id="ingredient-chips-box" class="p-4 rounded-2xl bg-[#FAF7F2] border ${ingredientError ? 'border-rose-400 bg-rose-50/25 ring-1 ring-rose-300' : 'border-[#D49B42]/30'} space-y-2 transition-all">
-            <div class="text-[11px] font-bold uppercase tracking-wider flex items-center justify-between">
+            <div class="text-[11px] font-bold uppercase tracking-wider flex items-center justify-between gap-2 flex-wrap">
               <span class="${ingredientError ? 'text-rose-700' : 'text-[#5C3622]'}">
-                ${isEn ? 'Selected Ingredients (Min. 5):' : 'Bahan yang Siap Masuk ke Racikan (Min. 5):'}
+                ${isEn ? `Selected Ingredients (Min. ${MIN_INGREDIENTS}, Max. ${MAX_INGREDIENTS}):` : `Bahan yang Siap Masuk ke Racikan (Min. ${MIN_INGREDIENTS}, Maks. ${MAX_INGREDIENTS}):`}
               </span>
               <span class="font-bold ${ingredientError ? 'text-rose-600' : 'text-emerald-700'}">
-                ✓ ${selectedCount} ${isEn ? 'ingredients ready' : 'bahan siap diracik'}
+                ✓ ${selectedCount}/${MAX_INGREDIENTS} ${isEn ? 'ingredients ready' : 'bahan siap diracik'}
               </span>
             </div>
             ${ingredientError ? `
-              <p id="ingredient-min-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
-                <span>${isEn ? 'Minimum 5 ingredients must be selected.' : 'Minimal 5 bahan harus tetap dipilih.'}</span>
+              <p id="ingredient-limit-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
+                <span>${escapeHtml(errorMessage)}</span>
               </p>
             ` : ''}
             <div class="flex flex-wrap gap-1.5">
@@ -287,16 +295,18 @@ function renderIngredientGridItems(filteredIngredients, isEn) {
     `;
   }
 
+  const isMaxReached = formState.selectedIngredientIds.length >= MAX_INGREDIENTS;
+
   return filteredIngredients.map(item => {
     const isSelected = formState.selectedIngredientIds.includes(item.id);
     return `
                 <button 
                   type="button" 
                   data-ingredient-id="${escapeHtml(item.id)}"
-                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 cursor-pointer card-hover-lift min-h-[3.75rem] ${
+                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 card-hover-lift min-h-[3.75rem] ${
                     isSelected 
-                      ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm' 
-                      : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8] hover:border-[#D49B42]'
+                      ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm cursor-pointer' 
+                      : `${isMaxReached ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:bg-[#FAF7F2] hover:border-[#D49B42]'} bg-white text-[#120B07] border-[#E8DEC8]`
                   }"
                 >
                   <strong class="text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight flex-1">
@@ -1049,12 +1059,12 @@ export function initAiFoodCreatorInteractions() {
       pill.onclick = (e) => {
         e.stopPropagation();
         const id = pill.getAttribute('data-remove-ingredient');
-        if (formState.selectedIngredientIds.length <= 5) {
-          ingredientError = true;
+        if (formState.selectedIngredientIds.length <= MIN_INGREDIENTS) {
+          ingredientError = 'min';
           updateIngredientSection(true);
           return;
         }
-        ingredientError = false;
+        ingredientError = null;
         formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
         updateIngredientSection(true);
       };
@@ -1066,15 +1076,20 @@ export function initAiFoodCreatorInteractions() {
       card.onclick = () => {
         const id = card.getAttribute('data-ingredient-id');
         if (formState.selectedIngredientIds.includes(id)) {
-          if (formState.selectedIngredientIds.length <= 5) {
-            ingredientError = true;
+          if (formState.selectedIngredientIds.length <= MIN_INGREDIENTS) {
+            ingredientError = 'min';
             updateIngredientSection(true);
             return;
           }
-          ingredientError = false;
+          ingredientError = null;
           formState.selectedIngredientIds = formState.selectedIngredientIds.filter(i => i !== id);
         } else {
-          ingredientError = false;
+          if (formState.selectedIngredientIds.length >= MAX_INGREDIENTS) {
+            ingredientError = 'max';
+            updateIngredientSection(true);
+            return;
+          }
+          ingredientError = null;
           formState.selectedIngredientIds.push(id);
         }
         updateIngredientSection(true);
@@ -1208,9 +1223,9 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // 2. Minimum Ingredient Validation (at least 5 required)
-      if (formState.selectedIngredientIds.length < 5) {
-        ingredientError = true;
+      // 2. Ingredient Count Validation (5 to 10 required)
+      if (formState.selectedIngredientIds.length < MIN_INGREDIENTS || formState.selectedIngredientIds.length > MAX_INGREDIENTS) {
+        ingredientError = formState.selectedIngredientIds.length > MAX_INGREDIENTS ? 'max' : 'min';
         await reRenderCurrentView(false);
         const chipsBox = document.getElementById('ingredient-chips-box');
         if (chipsBox) {
@@ -1242,7 +1257,7 @@ export function initAiFoodCreatorInteractions() {
 
       // 4. Update submit button to verifying state (stay in place on form while awaiting backend)
       nameError = false;
-      ingredientError = false;
+      ingredientError = null;
       sessionAlert = null;
       const myRunId = ++generationRunId;
 
