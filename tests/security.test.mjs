@@ -27,7 +27,7 @@ import { renderSpicesPage } from '../src/pages/spices.js';
 import { renderLegendaryRestaurantsPage } from '../src/pages/legendary-restaurants.js';
 import { renderRecommendationsPage } from '../src/pages/recommendations.js';
 import { renderAiFoodCreatorPage } from '../src/pages/ai-food-creator.js';
-import { resolveNearestRoute } from '../src/utils/routes.js';
+import { resolveNearestRoute, ROUTE_DEFINITIONS } from '../src/utils/routes.js';
 import { aiFoodCreatorService } from '../src/services/aiFoodCreatorService.js';
 import { i18n } from '../src/i18n/index.js';
 import { resetLegendaryRestaurantsState } from '../src/pages/legendary-restaurants.js';
@@ -772,4 +772,40 @@ test('Homepage translates Flavor Map city cards in EN and dead placeholder/liste
   const spicesHtmlCheck = await renderSpicesPage();
   assert.ok(!restHtmlCheck.includes('loading="lazy"'));
   assert.ok(!spicesHtmlCheck.includes('loading="lazy"'));
+});
+
+test('Route prefix resolution allows trailing typos on all pages and redirects leading typos to home', () => {
+  assert.equal(resolveNearestRoute('/', false), '/');
+  assert.equal(resolveNearestRoute('', false), '/');
+
+  for (const def of ROUTE_DEFINITIONS) {
+    for (const pagePath of [def.idPath, def.enPath]) {
+      if (!pagePath || pagePath === '/') continue;
+
+      assert.equal(resolveNearestRoute(pagePath, false), pagePath);
+      assert.equal(resolveNearestRoute(`${pagePath}hh`, false), pagePath);
+      assert.equal(resolveNearestRoute(`${pagePath}hhkfojejowjojof`, false), pagePath);
+      assert.equal(resolveNearestRoute(`${pagePath.toUpperCase()}xyz/`, false), pagePath);
+      assert.equal(resolveNearestRoute(`${pagePath}<script>alert(1)</script>`, false), pagePath);
+      assert.equal(resolveNearestRoute(`/dddd${pagePath.slice(1)}hh`, false), '/');
+    }
+  }
+
+  assert.equal(resolveNearestRoute('/resep/soto-kudus', false), '/resep/soto-kudus');
+  assert.equal(resolveNearestRoute('/resep/soto-kudus', true), '/recipes/soto-kudus');
+  assert.equal(resolveNearestRoute('/resep/<script>alert(1)</script>', false), '/resep');
+});
+
+test('AI Food Creator result page Back to Studio buttons match Download/Copy hover lift effects', () => {
+  const aiCreatorSrc = fs.readFileSync(path.join(rootDir, 'src/pages/ai-food-creator.js'), 'utf8');
+
+  const topBtnMatch = aiCreatorSrc.match(/id="create-another-recipe-btn"[\s\S]*?class="([^"]+)"/);
+  assert.ok(topBtnMatch, 'Top Back to Studio button must exist');
+  assert.ok(topBtnMatch[1].includes('hover:-translate-y-0.5'));
+  assert.ok(topBtnMatch[1].includes('hover:shadow-md'));
+
+  const bottomBtnMatch = aiCreatorSrc.match(/id="bottom-create-another-btn"[\s\S]*?class="([^"]+)"/);
+  assert.ok(bottomBtnMatch, 'Bottom Back to Studio button must exist');
+  assert.ok(bottomBtnMatch[1].includes('hover:-translate-y-0.5'));
+  assert.ok(bottomBtnMatch[1].includes('hover:shadow-lg'));
 });

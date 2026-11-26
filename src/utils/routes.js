@@ -64,27 +64,27 @@ export function translateHashRoute(currentHash, targetLang) {
   return `#${path}${query}`;
 }
 
+const PAGE_PREFIX_ROUTES = Array.from(
+  new Set(
+    ROUTE_DEFINITIONS.flatMap((def) => [def.idPath, def.enPath]).filter(
+      (routePath) => routePath && routePath !== '/'
+    )
+  )
+).sort((a, b) => b.length - a.length);
+
 /**
  * Resolves a raw hash path to the nearest valid clean route, sanitizing dynamic recipe slugs.
+ * Matches non-home page routes by prefix so trailing characters/typos after a valid page route
+ * still resolve to that page, while prefixed typos (e.g. /ddddjelajah-rempahhh) redirect to '/'.
  */
 export function resolveNearestRoute(rawPath, isEn = false) {
-  let normalized = (rawPath || '').toLowerCase().replace(/\/+$/, '').trim();
+  let normalized = (rawPath || '').split('?')[0].trim().toLowerCase().replace(/\/+$/, '');
   if (!normalized.startsWith('/')) {
     normalized = `/${normalized}`;
   }
 
-  const validExactRoutes = [
-    '/',
-    '/resep', '/recipes',
-    '/peta-rasa', '/flavor-map',
-    '/jelajah-rempah', '/spices',
-    '/restoran-legendaris', '/restaurants',
-    '/rekomendasi', '/recommendations',
-    '/ai-food-creator'
-  ];
-
-  if (validExactRoutes.includes(normalized)) {
-    return normalized;
+  if (normalized === '/') {
+    return '/';
   }
 
   if (
@@ -98,6 +98,11 @@ export function resolveNearestRoute(rawPath, isEn = false) {
       return isEn ? `/recipes/${slug}` : `/resep/${slug}`;
     }
     return isEn ? '/recipes' : '/resep';
+  }
+
+  const matchedPrefix = PAGE_PREFIX_ROUTES.find((route) => normalized.startsWith(route));
+  if (matchedPrefix) {
+    return matchedPrefix;
   }
 
   return '/';
