@@ -56,6 +56,59 @@ let ingredientError = null; // null | 'min' | 'max'
 let generationRunId = 0;
 let searchDebounce = null;
 
+function safeGetStorage(key) {
+  if (typeof localStorage === 'undefined') return null;
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeSetStorage(key, value) {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage quota/privacy mode errors
+  }
+}
+
+function safeRemoveStorage(key) {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Ignore storage privacy mode errors
+  }
+}
+
+function getCooldownStorageState() {
+  const raw = safeGetStorage(COOLDOWN_KEY);
+  if (!raw) return null;
+  const parsedTs = Number.parseInt(raw, 10);
+  const now = Date.now();
+  if (Number.isFinite(parsedTs) && parsedTs > 0 && parsedTs <= now) {
+    const elapsed = now - parsedTs;
+    if (elapsed < COOLDOWN_MS) {
+      return {
+        timestamp: raw,
+        minutes: Math.max(1, Math.ceil((COOLDOWN_MS - elapsed) / 60000))
+      };
+    }
+  }
+  safeRemoveStorage(COOLDOWN_KEY);
+  return null;
+}
+
+function restoreCooldownStorage(previousTimestamp) {
+  if (previousTimestamp) {
+    safeSetStorage(COOLDOWN_KEY, previousTimestamp);
+  } else {
+    safeRemoveStorage(COOLDOWN_KEY);
+  }
+}
+
 function isOnAiFoodCreatorRoute() {
   if (typeof window === 'undefined') return true;
   const hashPath = (window.location.hash || '#/').split('?')[0];
@@ -330,9 +383,16 @@ function renderFormView(currentLang) {
 
   // Compute session alert content reactively based on active language (strictly zero emoji)
   function getSessionAlertContent() {
-    if (!sessionAlert) return null;
-    if (sessionAlert.type === 'cooldown') {
-      const minutes = sessionAlert.minutes || 10;
+    let activeAlert = sessionAlert;
+    if (!activeAlert) {
+      const activeCooldown = getCooldownStorageState();
+      if (activeCooldown) {
+        activeAlert = { type: 'cooldown', minutes: activeCooldown.minutes };
+      }
+    }
+    if (!activeAlert) return null;
+    if (activeAlert.type === 'cooldown') {
+      const minutes = activeAlert.minutes || 10;
       const minuteUnit = minutes === 1 ? 'minute' : 'minutes';
       return {
         badge: isEn ? 'Rate Limit Notice' : 'Peringatan Batas Waktu',
@@ -343,7 +403,7 @@ function renderFormView(currentLang) {
         isWarning: true
       };
     }
-    if (sessionAlert.type === 'credit') {
+    if (activeAlert.type === 'credit') {
       return {
         badge: isEn ? 'Credit Limit Notice' : 'Pemberitahuan Kuota Resep',
         title: isEn ? 'Global Credits Exhausted' : 'Kredit Global Habis',
@@ -353,7 +413,7 @@ function renderFormView(currentLang) {
         isWarning: false
       };
     }
-    if (sessionAlert.type === 'forbidden' || sessionAlert.type === 'backend_error' || sessionAlert.type === 'error') {
+    if (activeAlert.type === 'forbidden' || activeAlert.type === 'backend_error' || activeAlert.type === 'error') {
       return {
         badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
         title: isEn ? 'Backend Connection Notice' : 'Kendala Server Backend',
@@ -366,7 +426,7 @@ function renderFormView(currentLang) {
     return {
       badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
       title: isEn ? 'Backend Connection Notice' : 'Kendala Server Backend',
-      text: sessionAlert.text || (isEn ? 'Failed to load recipe from the service backend. Please check your connection or try again shortly.' : 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.'),
+      text: activeAlert.text || (isEn ? 'Failed to load recipe from the service backend. Please check your connection or try again shortly.' : 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.'),
       isWarning: false
     };
   }
@@ -1223,39 +1283,35 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // 2. Ingredient Count Validation (5 to 10 required)
-      if (formState.selectedIngredientIds.length < MIN_INGREDIENTS || formState.selectedIngredientIds.length > MAX_INGREDIENTS) {
-        ingredientError = formState.selectedIngredientIds.length > MAX_INGREDIENTS ? 'max' : 'min';
-        await reRenderCurrentView(false);
-        const chipsBox = document.getElementById('ingredient-chips-box');
-        if (chipsBox) {
-          chipsBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // 2. Tampered Ingredient Count Guard (< 5 or > 10 via Inspect/Console triggers backend error alert)
+      const uniqueSelectedIds = Array.isArray(formState.selectedIngredientIds)
+        ? Array.from(new Set(formState.selectedIngredientIds.filter(id => typeof id === 'string' && id.trim().length > 0)))
+        : [];
+      if (uniqueSelectedIds.length < MIN_INGREDIENTS || uniqueSelectedIds.length > MAX_INGREDIENTS) {
+        ingredientError = null;
+        sessionAlert = { type: 'backend_error' };
+        await reRenderCurrentView(true);
+        const alertBox = document.getElementById('ai-creator-session-alert');
+        if (alertBox) {
+          alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
         return;
       }
 
-      // 3. 10-Minute Client UX Cooldown Check (server-side rate limit remains authoritative)
-      const lastGenTimestamp = localStorage.getItem(COOLDOWN_KEY);
-      if (lastGenTimestamp) {
-        const parsedTs = Number.parseInt(lastGenTimestamp, 10);
-        const now = Date.now();
-        if (Number.isFinite(parsedTs) && parsedTs > 0 && parsedTs <= now) {
-          const elapsed = now - parsedTs;
-          if (elapsed < COOLDOWN_MS) {
-            const remainingMinutes = Math.max(1, Math.ceil((COOLDOWN_MS - elapsed) / 60000));
-            sessionAlert = {
-              type: 'cooldown',
-              minutes: remainingMinutes
-            };
-            await reRenderCurrentView(true);
-            return;
-          }
-        } else {
-          localStorage.removeItem(COOLDOWN_KEY);
-        }
+      // 3. 10-Minute Client UX Cooldown Check (persists across refresh/page switch)
+      const activeCooldown = getCooldownStorageState();
+      if (activeCooldown) {
+        sessionAlert = {
+          type: 'cooldown',
+          minutes: activeCooldown.minutes
+        };
+        await reRenderCurrentView(true);
+        return;
       }
 
-      // 4. Update submit button to verifying state (stay in place on form while awaiting backend)
+      // 4. Persist cooldown immediately when generation begins so refresh/navigation mid-request stays in cooldown
+      const prevCooldownTs = getCooldownStorageState()?.timestamp || null;
+      safeSetStorage(COOLDOWN_KEY, Date.now().toString());
       nameError = false;
       ingredientError = null;
       sessionAlert = null;
@@ -1279,13 +1335,14 @@ export function initAiFoodCreatorInteractions() {
       try {
         recipe = await aiFoodCreatorService.generateRecipe({
           ...formState,
+          selectedIngredientIds: uniqueSelectedIds,
           outputLanguage: isEn ? 'en' : 'id'
         });
         if (!recipe || !recipe.title) {
           throw new Error('Empty recipe response');
         }
       } catch (err) {
-        // Ignore DOM updates if user navigated away so we never overwrite another page
+        // Ignore DOM updates if user navigated away (keep cooldown timestamp active)
         if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
           return;
         }
@@ -1294,22 +1351,27 @@ export function initAiFoodCreatorInteractions() {
         currentGeneratingStageIdx = 0;
         currentGeneratedRecipe = null;
         if (err.code === 'RATE_LIMITED') {
-          const waitMinutes = Math.max(1, Math.ceil((err.retryAfterSeconds || 60) / 60));
+          const retryMs = Math.min(COOLDOWN_MS, Math.max(60_000, (Number(err.retryAfterSeconds) || 60) * 1000));
+          const syntheticStart = Date.now() - (COOLDOWN_MS - retryMs);
+          safeSetStorage(COOLDOWN_KEY, syntheticStart.toString());
+          const waitMinutes = Math.max(1, Math.ceil(retryMs / 60000));
           sessionAlert = {
             type: 'cooldown',
             minutes: waitMinutes
           };
         } else if (err.code === 'CREDIT_EXHAUSTED') {
+          restoreCooldownStorage(prevCooldownTs);
           sessionAlert = { type: 'credit' };
         } else {
+          restoreCooldownStorage(prevCooldownTs);
           sessionAlert = { type: 'backend_error' };
         }
         await reRenderCurrentView(true);
         return;
       }
 
-      // Record client cooldown once backend succeeds, even if user switched pages mid-request
-      localStorage.setItem(COOLDOWN_KEY, Date.now().toString());
+      // Refresh client cooldown timestamp once backend succeeds, even if user switched pages mid-request
+      safeSetStorage(COOLDOWN_KEY, Date.now().toString());
       if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
         return;
       }

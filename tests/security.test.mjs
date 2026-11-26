@@ -911,14 +911,22 @@ test('AI Food Creator enforces 5-10 ingredients and prompt guarantees selected i
   assert.ok(aiCreatorHtmlId.includes('Maks. 10'));
   assert.ok(aiCreatorHtmlId.includes('/10'));
 
-  // 5. Frontend service forwards 10 unique ingredients, rejects > 10, and preserves spiceLevel 0
+  // 5. Frontend service treats tampered <5 or >10 ingredients as BACKEND_REQUEST_FAILED and preserves spiceLevel 0
+  await assert.rejects(
+    () =>
+      aiFoodCreatorService.generateRecipe({
+        creatorName: 'Evan',
+        selectedIngredientIds: tenIngredients.slice(0, 4),
+      }),
+    (err) => err && err.message === 'BACKEND_REQUEST_FAILED',
+  );
   await assert.rejects(
     () =>
       aiFoodCreatorService.generateRecipe({
         creatorName: 'Evan',
         selectedIngredientIds: [...tenIngredients, 'kemiri'],
       }),
-    /Maksimal 10 bahan/i,
+    (err) => err && err.message === 'BACKEND_REQUEST_FAILED',
   );
 
   const originalFetch = globalThis.fetch;
@@ -1039,4 +1047,73 @@ test('Dish title strips accidental LarasRasa brand leakage on both backend and f
     'Evan Hendra Mulyadi',
   );
   assert.equal(normalized.title, 'Gimbal Rampai Ala Evan');
+});
+
+test('Global credit exhaustion (upstream 429/402) maps to CREDIT_EXHAUSTED while persistent cooldown survives refresh/route reset', async () => {
+  // 1. Upstream Gemini 429 across reachable models -> backend returns 402 CREDIT_EXHAUSTED
+  const creditDeps = makeDeps({
+    fetchFn: async (url) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-quota-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+      return new Response(JSON.stringify({ error: { code: 429, status: 'RESOURCE_EXHAUSTED' } }), {
+        status: 429,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    },
+  });
+
+  const creditRes = await handleRequest(
+    makePostRequest(JSON.stringify({ action: 'generate', inputs: VALID_INPUTS }), {
+      'cf-connecting-ip': '203.0.113.120',
+    }),
+    creditDeps,
+  );
+  assert.equal(creditRes.status, 402);
+  const creditBody = await creditRes.json();
+  assert.equal(creditBody.code, 'CREDIT_EXHAUSTED');
+
+  // 2. Frontend maps upstream CREDIT_EXHAUSTED cleanly to err.code === 'CREDIT_EXHAUSTED'
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () =>
+    new Response(JSON.stringify(creditBody), {
+      status: creditRes.status,
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  try {
+    await assert.rejects(
+      () => aiFoodCreatorService.generateRecipe({ ...VALID_INPUTS }),
+      (err) => err && err.code === 'CREDIT_EXHAUSTED',
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+
+  // 3. Active cooldown stored at generation start persists across page reload/reset and renders cooldown notice
+  const originalLocalStorage = globalThis.localStorage;
+  const mockStore = new Map([['larasrasa_last_ai_recipe_timestamp', String(Date.now() - 30_000)]]);
+  globalThis.localStorage = {
+    getItem: (k) => (mockStore.has(k) ? mockStore.get(k) : null),
+    setItem: (k, v) => mockStore.set(k, String(v)),
+    removeItem: (k) => mockStore.delete(k),
+  };
+
+  try {
+    const htmlWithCooldown = await renderAiFoodCreatorPage();
+    assert.ok(htmlWithCooldown.includes('ai-creator-session-alert'));
+    assert.ok(htmlWithCooldown.includes('Batas Waktu Peracikan Resep'));
+  } finally {
+    if (originalLocalStorage === undefined) {
+      delete globalThis.localStorage;
+    } else {
+      globalThis.localStorage = originalLocalStorage;
+    }
+  }
 });

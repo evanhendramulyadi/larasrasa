@@ -1042,7 +1042,7 @@ async function fetchAvailableModels(
     });
 
     if (!res.ok) {
-      if (res.status === 429) {
+      if (res.status === 429 || res.status === 402) {
         rateLimited = true;
       } else {
         console.warn("Upstream ListModels status:", res.status);
@@ -1361,9 +1361,8 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
       return jsonResponse(
         origin,
         allowedOrigins,
-        { success: false, error: "AI service is busy, please try again shortly", retryAfter: 60 },
-        429,
-        { "Retry-After": "60" },
+        { success: false, code: "CREDIT_EXHAUSTED", error: "Global AI credits exhausted, please try again later" },
+        402,
       );
     }
     return jsonResponse(origin, allowedOrigins, { success: false, error: "Recipe generation failed" }, 502);
@@ -1477,13 +1476,13 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
           permanent: true,
         });
         console.warn("Upstream AI model unavailable:", model.id, res.status);
-      } else if (res.status === 429) {
+      } else if (res.status === 429 || res.status === 402) {
         rateLimitHits++;
         discoveryState.blockedUntilByModel.set(model.id, {
           until: failNow + TRANSIENT_MODEL_COOLDOWN_MS,
           permanent: false,
         });
-        console.warn("Upstream AI rate limited:", model.id, res.status);
+        console.warn("Upstream AI credit/rate limit:", model.id, res.status);
       } else if (res.status === 503) {
         serviceUnavailableHits++;
         discoveryState.blockedUntilByModel.set(model.id, {
@@ -1516,9 +1515,8 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
     return jsonResponse(
       origin,
       allowedOrigins,
-      { success: false, error: "AI service is busy, please try again shortly", retryAfter: 60 },
-      429,
-      { "Retry-After": "60" },
+      { success: false, code: "CREDIT_EXHAUSTED", error: "Global AI credits exhausted, please try again later" },
+      402,
     );
   }
 

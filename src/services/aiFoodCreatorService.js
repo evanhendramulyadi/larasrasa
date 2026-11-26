@@ -129,16 +129,10 @@ export const aiFoodCreatorService = {
       ? Array.from(new Set(selectedIngredientIds.filter(id => typeof id === 'string' && id.trim().length > 0)))
       : [];
 
-    if (uniqueIngredientIds.length < 5) {
-      throw new Error(outputLanguage === 'en'
-        ? 'Select at least 5 ingredients or spices to begin culinary synthesis.'
-        : 'Pilih minimal 5 bahan atau rempah untuk memulai penciptaan resep kuliner.');
-    }
-
-    if (uniqueIngredientIds.length > 10) {
-      throw new Error(outputLanguage === 'en'
-        ? 'Maximum 10 ingredients can be selected per recipe.'
-        : 'Maksimal 10 bahan dapat dipilih untuk satu racikan resep.');
+    if (uniqueIngredientIds.length < 5 || uniqueIngredientIds.length > 10) {
+      const backendErr = new Error('BACKEND_REQUEST_FAILED');
+      backendErr.code = 'BACKEND_ERROR';
+      throw backendErr;
     }
 
     const controller = new AbortController();
@@ -176,6 +170,11 @@ export const aiFoodCreatorService = {
 
       if (response.status === 402 || response.status === 429) {
         const errBody = await response.json().catch(() => null);
+        if (response.status === 402 || errBody?.code === 'CREDIT_EXHAUSTED') {
+          const creditErr = new Error('CREDIT_EXHAUSTED');
+          creditErr.code = 'CREDIT_EXHAUSTED';
+          throw creditErr;
+        }
         if (response.status === 429 && errBody?.retryAfter) {
           const rateErr = new Error('RATE_LIMITED');
           rateErr.code = 'RATE_LIMITED';
