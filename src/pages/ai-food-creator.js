@@ -46,6 +46,7 @@ const MIN_INGREDIENTS = 5;
 const MAX_INGREDIENTS = 10;
 
 let currentGeneratedRecipe = null;
+let isVerifying = false;
 let isGenerating = false;
 let currentGeneratingPercent = 20;
 let currentGeneratingStageIdx = 0;
@@ -111,7 +112,7 @@ function restoreCooldownStorage(previousTimestamp) {
 }
 
 function isOnAiFoodCreatorRoute() {
-  if (typeof window === 'undefined') return true;
+  if (typeof window === 'undefined' || !window.location) return true;
   const hashPath = (window.location.hash || '#/').split('?')[0];
   return hashPath === '#/ai-food-creator';
 }
@@ -129,6 +130,10 @@ const GENERATING_STAGES_EN = [
   { pct: 79, text: 'Formulating step-by-step cooking guide...' },
   { pct: 93, text: 'Finalizing authentic recipe document...' }
 ];
+
+export function isAiFoodCreatorVerifying() {
+  return isVerifying;
+}
 
 export function isAiFoodCreatorGenerating() {
   return isGenerating;
@@ -164,7 +169,7 @@ export function resetAiFoodCreatorState() {
     clearTimeout(searchDebounce);
     searchDebounce = null;
   }
-  if (window.__larasRasaProgressTimer) {
+  if (typeof window !== 'undefined' && window.__larasRasaProgressTimer) {
     clearInterval(window.__larasRasaProgressTimer);
     window.__larasRasaProgressTimer = null;
   }
@@ -186,6 +191,7 @@ export function resetAiFoodCreatorState() {
     outputLanguage: 'id'
   };
   currentGeneratedRecipe = null;
+  isVerifying = false;
   isGenerating = false;
   validationMessage = null;
   sessionAlert = null;
@@ -282,40 +288,54 @@ function getFilteredIngredients() {
   );
 }
 
-function renderIngredientChipsBox(isEn) {
+function renderIngredientChipsBox(isEn, isLocked = isVerifying) {
   const selectedCount = formState.selectedIngredientIds.length;
   const errorMessage = ingredientError === 'max'
     ? (isEn ? `Maximum ${MAX_INGREDIENTS} ingredients can be selected per recipe.` : `Maksimal ${MAX_INGREDIENTS} bahan dapat dipilih untuk satu racikan resep.`)
     : (isEn ? `Minimum ${MIN_INGREDIENTS} ingredients must be selected.` : `Minimal ${MIN_INGREDIENTS} bahan harus tetap dipilih.`);
 
+  const boxClass = isLocked
+    ? 'bg-stone-200/70 border-stone-300'
+    : (ingredientError ? 'bg-rose-50/25 border-rose-400 ring-1 ring-rose-300' : 'bg-[#FAF7F2] border-[#D49B42]/30');
+  const titleClass = isLocked ? 'text-stone-500' : (ingredientError ? 'text-rose-700' : 'text-[#5C3622]');
+  const countClass = isLocked ? 'text-stone-500' : (ingredientError ? 'text-rose-600' : 'text-emerald-700');
+
   return `
           <!-- Active Ingredients Chips Bar -->
-          <div id="ingredient-chips-box" class="p-4 rounded-2xl bg-[#FAF7F2] border ${ingredientError ? 'border-rose-400 bg-rose-50/25 ring-1 ring-rose-300' : 'border-[#D49B42]/30'} space-y-2 transition-all">
+          <div id="ingredient-chips-box" class="p-4 rounded-2xl border ${boxClass} space-y-2 transition-all">
             <div class="text-[11px] font-bold uppercase tracking-wider flex items-center justify-between gap-2 flex-wrap">
-              <span class="${ingredientError ? 'text-rose-700' : 'text-[#5C3622]'}">
+              <span class="${titleClass}">
                 ${isEn ? `Selected Ingredients (Min. ${MIN_INGREDIENTS}, Max. ${MAX_INGREDIENTS}):` : `Bahan yang Siap Masuk ke Racikan (Min. ${MIN_INGREDIENTS}, Maks. ${MAX_INGREDIENTS}):`}
               </span>
-              <span class="font-bold ${ingredientError ? 'text-rose-600' : 'text-emerald-700'}">
+              <span class="font-bold ${countClass}">
                 ✓ ${selectedCount}/${MAX_INGREDIENTS} ${isEn ? 'ingredients ready' : 'bahan siap diracik'}
               </span>
             </div>
-            ${ingredientError ? `
+            ${!isLocked && ingredientError ? `
               <p id="ingredient-limit-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake">
                 <span>${escapeHtml(errorMessage)}</span>
               </p>
             ` : ''}
             <div class="flex flex-wrap gap-1.5">
               ${selectedCount === 0 ? `
-                <span class="text-xs italic text-[#5C3622]">
+                <span class="text-xs italic ${isLocked ? 'text-stone-500' : 'text-[#5C3622]'}">
                   ${isEn ? 'No ingredients selected yet. Click ingredients below to select.': 'Belum ada bahan yang dipilih. Klik bahan-bahan di bawah untuk memilih.'}
                 </span>
               ` : formState.selectedIngredientIds.map(id => {
                 const item = ALL_INGREDIENTS.find(i => i.id === id);
                 if (!item) return '';
                 return `
-                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-[#D49B42]/45 text-xs font-bold text-[#120B07] shadow-2xs">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold shadow-2xs ${
+                    isLocked
+                      ? 'bg-stone-100 border-stone-300 text-stone-500'
+                      : 'bg-white border-[#D49B42]/45 text-[#120B07]'
+                  }">
                     <span>${escapeHtml(isEn ? (item.nameEn || item.nameId) : item.nameId)}</span>
-                    <button type="button" data-remove-ingredient="${escapeHtml(item.id)}" class="text-[#C84C24] hover:text-rose-700 font-bold ml-1 text-sm cursor-pointer">&times;</button>
+                    <button type="button" ${isLocked ? 'disabled' : ''} data-remove-ingredient="${escapeHtml(item.id)}" class="font-bold ml-1 text-sm ${
+                      isLocked
+                        ? 'text-stone-400 cursor-not-allowed'
+                        : 'text-[#C84C24] hover:text-rose-700 cursor-pointer'
+                    }">&times;</button>
                   </span>
                 `;
               }).join('')}
@@ -323,21 +343,25 @@ function renderIngredientChipsBox(isEn) {
           </div>`;
 }
 
-function renderIngredientGridItems(filteredIngredients, isEn) {
+function renderIngredientGridItems(filteredIngredients, isEn, isLocked = isVerifying) {
   if (filteredIngredients.length === 0) {
     return `
-              <div class="col-span-full py-12 px-4 text-center space-y-3 bg-[#FAF7F2] rounded-3xl border border-dashed border-[#D49B42]/50">
-                <div class="w-12 h-12 rounded-full bg-[#120B07] text-[#D49B42] flex items-center justify-center mx-auto text-xl font-bold">
-                  <svg class="w-5 h-5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <div class="col-span-full py-12 px-4 text-center space-y-3 rounded-3xl border border-dashed ${
+                isLocked ? 'bg-stone-200/60 border-stone-300' : 'bg-[#FAF7F2] border-[#D49B42]/50'
+              }">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl font-bold ${
+                  isLocked ? 'bg-stone-400 text-stone-100' : 'bg-[#120B07] text-[#D49B42]'
+                }">
+                  <svg class="w-5 h-5 ${isLocked ? 'text-stone-100' : 'text-[#D49B42]'}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <circle cx="11" cy="11" r="8"/>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                   </svg>
                 </div>
                 <div class="space-y-1">
-                  <h3 class="font-editorial-serif text-base sm:text-lg font-bold text-[#120B07]">
+                  <h3 class="font-editorial-serif text-base sm:text-lg font-bold ${isLocked ? 'text-stone-500' : 'text-[#120B07]'}">
                     ${isEn ? 'Ingredient Not Found' : 'Bahan Tidak Ditemukan'}
                   </h3>
-                  <p class="text-xs text-[#5C3622] max-w-sm mx-auto leading-relaxed">
+                  <p class="text-xs max-w-sm mx-auto leading-relaxed ${isLocked ? 'text-stone-500' : 'text-[#5C3622]'}">
                     ${isEn 
                       ? `No authentic ingredients match "${escapeHtml(searchQuery)}". Try searching for another keyword like Ayam, Bawang, or Cabai.` 
                       : `Tidak ada bahan atau bumbu yang cocok dengan kata kunci "${escapeHtml(searchQuery)}". Silakan coba kata kunci lain seperti Ayam, Bawang, atau Cabai.`}
@@ -345,8 +369,13 @@ function renderIngredientGridItems(filteredIngredients, isEn) {
                 </div>
                 <button 
                   type="button" 
-                  id="clear-ingredient-search-btn" 
-                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-[#D49B42]/50 text-xs font-bold text-[#C84C24] hover:bg-[#FAF7F2] shadow-2xs cursor-pointer transition-colors"
+                  id="clear-ingredient-search-btn"
+                  ${isLocked ? 'disabled' : ''}
+                  class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border text-xs font-bold shadow-2xs transition-colors ${
+                    isLocked
+                      ? 'bg-stone-200 border-stone-300 text-stone-400 cursor-not-allowed'
+                      : 'bg-white border-[#D49B42]/50 text-[#C84C24] hover:bg-[#FAF7F2] cursor-pointer'
+                  }"
                 >
                   <span>✕</span>
                   <span>${isEn ? 'Clear Search Keyword' : 'Bersihkan Kata Kunci'}</span>
@@ -359,22 +388,28 @@ function renderIngredientGridItems(filteredIngredients, isEn) {
 
   return filteredIngredients.map(item => {
     const isSelected = formState.selectedIngredientIds.includes(item.id);
+    const cardStateClass = isLocked
+      ? (isSelected
+          ? 'bg-stone-500 text-stone-100 border-stone-500 ring-2 ring-stone-400 shadow-none cursor-not-allowed'
+          : 'bg-stone-100 text-stone-400 border-stone-200 opacity-65 cursor-not-allowed')
+      : (isSelected
+          ? 'card-hover-lift bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm cursor-pointer'
+          : `card-hover-lift ${isMaxReached ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:bg-[#FAF7F2] hover:border-[#D49B42]'} bg-white text-[#120B07] border-[#E8DEC8]`);
+    const badgeClass = isLocked
+      ? (isSelected ? 'bg-stone-600 text-stone-100' : 'bg-stone-200 text-stone-400')
+      : (isSelected ? 'bg-[#C84C24] text-white' : 'bg-black/10 text-[#5C3622] group-hover:bg-[#C84C24]/20');
+
     return `
                 <button 
                   type="button" 
                   data-ingredient-id="${escapeHtml(item.id)}"
-                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 card-hover-lift min-h-[3.75rem] ${
-                    isSelected 
-                      ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm cursor-pointer' 
-                      : `${isMaxReached ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer hover:bg-[#FAF7F2] hover:border-[#D49B42]'} bg-white text-[#120B07] border-[#E8DEC8]`
-                  }"
+                  ${isLocked ? 'disabled' : ''}
+                  class="group relative text-left p-3 rounded-2xl border transition-all flex items-center justify-between gap-2 min-h-[3.75rem] ${cardStateClass}"
                 >
                   <strong class="text-xs sm:text-sm font-bold block whitespace-normal break-words leading-tight flex-1">
                     ${escapeHtml(isEn ? (item.nameEn || item.nameId) : item.nameId)}
                   </strong>
-                  <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${
-                    isSelected ? 'bg-[#C84C24] text-white' : 'bg-black/10 text-[#5C3622] group-hover:bg-[#C84C24]/20'
-                  }">
+                  <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 transition-colors ${badgeClass}">
                     ${isSelected ? '✓' : '+'}
                   </span>
                 </button>
@@ -471,257 +506,345 @@ function renderFormView(currentLang) {
       </div>
 
       <!-- Interactive Studio Form -->
-      <form id="ai-creator-form" class="space-y-8 max-w-4xl mx-auto">
+      <form id="ai-creator-form" class="space-y-8 max-w-4xl mx-auto" aria-busy="${isVerifying ? 'true' : 'false'}">
         
-        <!-- Input Nama Lengkap User (Pencipta Resep) -->
-        <div id="creator-name-box" class="pawon-glass p-5 sm:p-6 rounded-3xl border ${nameError ? 'border-rose-400 bg-rose-50/20 ring-2 ring-rose-200' : 'border-[#D49B42]/35'} shadow-xs space-y-2 transition-all scroll-mt-24">
-          <div class="flex items-center justify-between">
-            <label for="creator-name-input" id="creator-name-label" class="block text-xs font-bold ${nameError ? 'text-rose-700' : 'text-[#120B07]'} uppercase tracking-wider transition-colors">
-              ${isEn ? 'Your Full Name' : 'Nama Lengkap Anda'} <span class="text-[#C84C24]">*</span>
-            </label>
-            <span class="text-[10px] font-bold text-[#C84C24] bg-[#FDF4EE] px-2.5 py-0.5 rounded-full border border-[#C84C24]/30">
-              ${isEn ? 'Recipe Author' : 'Pencipta Resep'}
-            </span>
-          </div>
-          <input 
-            type="text" 
-            id="creator-name-input" 
-            name="creatorName"
-            autocomplete="name"
-            maxlength="60"
-            value="${escapeHtml(formState.creatorName)}"
-            placeholder="${isEn ? 'e.g., Evan Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
-            class="w-full px-4 py-3 rounded-2xl bg-white border ${
-              nameError 
-                ? 'border-rose-500 ring-2 ring-rose-300 bg-rose-50/30' 
-                : 'border-[#E8DEC8] focus:ring-2 focus:ring-[#C84C24]'
-            } focus:outline-hidden text-sm text-[#120B07] transition-all shadow-inner"
-          />
-          <p id="creator-name-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake ${nameError ? '' : 'hidden'}">
-            <span>${isEn ? 'Full name is required. Please fill in your name.' : 'Nama lengkap harus diisi sebelum meracik resep.'}</span>
-          </p>
-          <p id="creator-name-help" class="text-[11px] text-[#5C3622]/80 ${nameError ? 'hidden' : ''}">
-            ${isEn 
-              ? 'Your name will be inscribed as the author of this original recipe in the document and downloadable PDF.' 
-              : 'Nama Anda akan dicantumkan sebagai peracik resep pada dokumen pusaka dan berkas unduhan PDF.'}
-          </p>
-        </div>
-        
-        <!-- SECTION 1: Ingredient Selection -->
-        <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6 border border-[#D49B42]/35 shadow-xs">
-          <div class="space-y-0.5 pb-4 border-b border-[#E8DEC8]">
-            <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-              ${isEn ? 'Step 1 • Select Authentic Central Javanese Ingredients' : 'Langkah 1 • Pilih Bahan & Rempah Otentik Jawa Tengah'}
-            </h2>
-            <p class="text-xs text-[#5C3622]">
-              ${isEn ? 'Select authentic Central Javanese ingredients and spices' : 'Pilih aneka bahan pokok dan bumbu dapur autentik khas Jawa Tengah'}
-            </p>
-          </div>
+        <fieldset id="ai-creator-fields" ${isVerifying ? 'disabled' : ''} class="space-y-8 min-w-0 border-0 p-0 m-0 ${isVerifying ? 'select-none' : ''}">
 
-          ${renderIngredientChipsBox(isEn)}
-
-          <!-- Instant Search Input (Single Clean Search Bar) -->
-          <div class="relative w-full">
-            <label for="ingredient-search-input" class="sr-only">${isEn ? 'Search ingredients or spices' : 'Cari nama bahan atau rempah dapur'}</label>
+          <!-- Input Nama Lengkap User (Pencipta Resep) -->
+          <div id="creator-name-box" class="${
+            isVerifying
+              ? 'bg-stone-100/90 border-stone-300 grayscale opacity-75 cursor-not-allowed'
+              : `pawon-glass ${nameError ? 'border-rose-400 bg-rose-50/20 ring-2 ring-rose-200' : 'border-[#D49B42]/35'}`
+          } p-5 sm:p-6 rounded-3xl border shadow-xs space-y-2 transition-all scroll-mt-24">
+            <div class="flex items-center justify-between">
+              <label for="creator-name-input" id="creator-name-label" class="block text-xs font-bold ${
+                isVerifying ? 'text-stone-500' : (nameError ? 'text-rose-700' : 'text-[#120B07]')
+              } uppercase tracking-wider transition-colors">
+                ${isEn ? 'Your Full Name' : 'Nama Lengkap Anda'} <span class="${isVerifying ? 'text-stone-400' : 'text-[#C84C24]'}">*</span>
+              </label>
+              <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                isVerifying
+                  ? 'text-stone-500 bg-stone-200/80 border-stone-300'
+                  : 'text-[#C84C24] bg-[#FDF4EE] border-[#C84C24]/30'
+              }">
+                ${isEn ? 'Recipe Author' : 'Pencipta Resep'}
+              </span>
+            </div>
             <input 
               type="text" 
-              id="ingredient-search-input" 
-              name="ingredientSearch"
-              autocomplete="off"
-              placeholder="${isEn ? 'Search ingredients or spices (e.g. Ayam, Kemiri, Bawang, Lengkuas)...' : 'Cari nama bahan atau rempah dapur (contoh: Ayam, Kemiri, Bawang, Serai)...'}" 
-              value="${escapeHtml(searchQuery)}"
-              class="w-full pl-11 pr-4 py-3 rounded-2xl bg-white border border-[#E8DEC8] text-xs sm:text-sm text-[#120B07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24] shadow-inner"
+              id="creator-name-input" 
+              name="creatorName"
+              autocomplete="name"
+              maxlength="60"
+              ${isVerifying ? 'disabled' : ''}
+              value="${escapeHtml(formState.creatorName)}"
+              placeholder="${isEn ? 'e.g., Evan Hendra Mulyadi' : 'Contoh: Evan Hendra Mulyadi'}"
+              class="w-full px-4 py-3 rounded-2xl border ${
+                isVerifying
+                  ? 'bg-stone-200/70 border-stone-300 text-stone-500 cursor-not-allowed placeholder:text-stone-400'
+                  : nameError 
+                    ? 'bg-white border-rose-500 ring-2 ring-rose-300 bg-rose-50/30 text-[#120B07]' 
+                    : 'bg-white border-[#E8DEC8] focus:ring-2 focus:ring-[#C84C24] text-[#120B07]'
+              } focus:outline-hidden text-sm transition-all shadow-inner"
             />
-            <svg class="w-4 h-4 text-[#C84C24] absolute left-4 top-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-            </svg>
-          </div>
-
-          <!-- Ingredients Grid (Pure Text Names, Zero Photos/Emojis/Categories) -->
-          <div id="ingredient-grid-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 max-h-[32rem] overflow-y-auto pt-3 pb-4 px-2 custom-scrollbar">
-            ${renderIngredientGridItems(filteredIngredients, isEn)}
-          </div>
-        </section>
-
-        <!-- SECTION 2: Culinary Calibration & Portions -->
-        <section class="pawon-glass p-6 sm:p-8 rounded-3xl space-y-6 border border-[#D49B42]/35 shadow-xs">
-          <div class="pb-4 border-b border-[#E8DEC8] space-y-0.5">
-            <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#120B07]">
-              ${isEn ? 'Step 2 • Culinary Calibration & Portions' : 'Langkah 2 • Kalibrasi Karakter Rasa & Teknik Dapur'}
-            </h2>
-            <p class="text-xs text-[#5C3622]">
-              ${isEn ? 'Calibrate cooking technique, flavor profile, and chili warmth level' : 'Tentukan metode olah bumbu, karakter rasa pusaka, dan tingkat kehangatan lombok'}
+            <p id="creator-name-error" class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 animate-shake ${!isVerifying && nameError ? '' : 'hidden'}">
+              <span>${isEn ? 'Full name is required. Please fill in your name.' : 'Nama lengkap harus diisi sebelum meracik resep.'}</span>
+            </p>
+            <p id="creator-name-help" class="text-[11px] ${isVerifying ? 'text-stone-500' : 'text-[#5C3622]/80'} ${!isVerifying && nameError ? 'hidden' : ''}">
+              ${isEn 
+                ? 'Your name will be inscribed as the author of this original recipe in the document and downloadable PDF.' 
+                : 'Nama Anda akan dicantumkan sebagai peracik resep pada dokumen pusaka dan berkas unduhan PDF.'}
             </p>
           </div>
-
-          <!-- Cooking Method -->
-          <div class="space-y-2.5">
-            <span id="cooking-method-group-label" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-              ${isEn ? 'Traditional Cooking Method' : 'Metode Olah Tradisional'}
-            </span>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3" role="radiogroup" aria-labelledby="cooking-method-group-label">
-              ${PREFERENCE_OPTIONS.cookingMethods.map(m => {
-                const isSelected = formState.cookingMethod === m.id;
-                return `
-                  <label class="p-4 rounded-2xl border cursor-pointer transition-all flex flex-col justify-between card-hover-lift ${
-                    isSelected 
-                      ? 'bg-[#120B07] text-[#FAF7F2] border-[#C84C24] ring-2 ring-[#C84C24]' 
-                      : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8]'
-                  }">
-                    <div class="flex items-center justify-between">
-                      <span class="text-xs font-bold">${isEn ? m.labelEn : m.labelId}</span>
-                      <input type="radio" name="cookingMethod" value="${m.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
-                    </div>
-                    <p class="text-[10px] ${isSelected ? 'text-[#D49B42]' : 'text-[#5C3622]'} mt-2 leading-relaxed">
-                      ${isEn ? (m.descEn || m.descId) : m.descId}
-                    </p>
-                  </label>
-                `;
-              }).join('')}
-            </div>
-          </div>
-
-          <!-- Row 1: Regional Flavor & Standard Portions (2 Columns) -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-            <!-- Taste Profile -->
-            <div class="space-y-2">
-              <label for="taste-profile-select" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-                ${isEn ? 'Flavor Character Balance' : 'Harmoni Karakter Rasa'}
-              </label>
-              <select 
-                id="taste-profile-select" 
-                class="w-full px-4 py-3.5 rounded-2xl bg-white border border-[#E8DEC8] text-xs font-bold text-[#120B07] focus:ring-2 focus:ring-[#C84C24]"
-              >
-                ${PREFERENCE_OPTIONS.tasteProfiles.map(tp => `
-                  <option value="${tp.id}" ${formState.tasteProfile === tp.id ? 'selected' : ''}>
-                    ${isEn ? tp.labelEn : tp.labelId}
-                  </option>
-                `).join('')}
-              </select>
-              <p class="text-[11px] text-[#5C3622]/80">
-                ${isEn ? 'Calibrates authentic flavor balance and spice harmony.' : 'Menyesuaikan racikan harmoni rasa dan rempah tradisi.'}
+          
+          <!-- SECTION 1: Ingredient Selection -->
+          <section class="${
+            isVerifying
+              ? 'bg-stone-100/90 border-stone-300 grayscale opacity-75 cursor-not-allowed'
+              : 'pawon-glass border-[#D49B42]/35'
+          } p-6 sm:p-8 rounded-3xl space-y-6 border shadow-xs transition-all">
+            <div class="space-y-0.5 pb-4 border-b ${isVerifying ? 'border-stone-300' : 'border-[#E8DEC8]'}">
+              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold ${isVerifying ? 'text-stone-600' : 'text-[#120B07]'}">
+                ${isEn ? 'Step 1 • Select Authentic Central Javanese Ingredients' : 'Langkah 1 • Pilih Bahan & Rempah Otentik Jawa Tengah'}
+              </h2>
+              <p class="text-xs ${isVerifying ? 'text-stone-500' : 'text-[#5C3622]'}">
+                ${isEn ? 'Select authentic Central Javanese ingredients and spices' : 'Pilih aneka bahan pokok dan bumbu dapur autentik khas Jawa Tengah'}
               </p>
             </div>
 
-            <!-- Fixed Standard 4 Portions Servings Info -->
-            <div class="space-y-2">
-              <div class="flex items-center justify-between">
-                <span class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-                  ${isEn ? 'Servings Scale (Fixed)' : 'Porsi Santapan (Standar Otomatis)'}
-                </span>
-                <span class="text-[10px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  ${isEn ? '✓ 4 Portions' : '✓ 4 Porsi'}
-                </span>
+            ${renderIngredientChipsBox(isEn, isVerifying)}
+
+            <!-- Instant Search Input (Single Clean Search Bar) -->
+            <div class="relative w-full">
+              <label for="ingredient-search-input" class="sr-only">${isEn ? 'Search ingredients or spices' : 'Cari nama bahan atau rempah dapur'}</label>
+              <input 
+                type="text" 
+                id="ingredient-search-input" 
+                name="ingredientSearch"
+                autocomplete="off"
+                ${isVerifying ? 'disabled' : ''}
+                placeholder="${isEn ? 'Search ingredients or spices (e.g. Ayam, Kemiri, Bawang, Lengkuas)...' : 'Cari nama bahan atau rempah dapur (contoh: Ayam, Kemiri, Bawang, Serai)...'}" 
+                value="${escapeHtml(searchQuery)}"
+                class="w-full pl-11 pr-4 py-3 rounded-2xl border text-xs sm:text-sm shadow-inner ${
+                  isVerifying
+                    ? 'bg-stone-200/70 border-stone-300 text-stone-500 placeholder:text-stone-400 cursor-not-allowed'
+                    : 'bg-white border-[#E8DEC8] text-[#120B07] focus:outline-hidden focus:ring-2 focus:ring-[#C84C24]'
+                }"
+              />
+              <svg class="w-4 h-4 ${isVerifying ? 'text-stone-400' : 'text-[#C84C24]'} absolute left-4 top-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+              </svg>
+            </div>
+
+            <!-- Ingredients Grid (Pure Text Names, Zero Photos/Emojis/Categories) -->
+            <div id="ingredient-grid-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 max-h-[32rem] overflow-y-auto pt-3 pb-4 px-2 custom-scrollbar">
+              ${renderIngredientGridItems(filteredIngredients, isEn, isVerifying)}
+            </div>
+          </section>
+
+          <!-- SECTION 2: Culinary Calibration & Portions -->
+          <section class="${
+            isVerifying
+              ? 'bg-stone-100/90 border-stone-300 grayscale opacity-75 cursor-not-allowed'
+              : 'pawon-glass border-[#D49B42]/35'
+          } p-6 sm:p-8 rounded-3xl space-y-6 border shadow-xs transition-all">
+            <div class="pb-4 border-b ${isVerifying ? 'border-stone-300' : 'border-[#E8DEC8]'} space-y-0.5">
+              <h2 class="font-editorial-serif text-xl sm:text-2xl font-bold ${isVerifying ? 'text-stone-600' : 'text-[#120B07]'}">
+                ${isEn ? 'Step 2 • Culinary Calibration & Portions' : 'Langkah 2 • Kalibrasi Karakter Rasa & Teknik Dapur'}
+              </h2>
+              <p class="text-xs ${isVerifying ? 'text-stone-500' : 'text-[#5C3622]'}">
+                ${isEn ? 'Calibrate cooking technique, flavor profile, and chili warmth level' : 'Tentukan metode olah bumbu, karakter rasa pusaka, dan tingkat kehangatan lombok'}
+              </p>
+            </div>
+
+            <!-- Cooking Method -->
+            <div class="space-y-2.5">
+              <span id="cooking-method-group-label" class="block text-xs font-bold ${isVerifying ? 'text-stone-500' : 'text-[#120B07]'} uppercase tracking-wider">
+                ${isEn ? 'Traditional Cooking Method' : 'Metode Olah Tradisional'}
+              </span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3" role="radiogroup" aria-labelledby="cooking-method-group-label">
+                ${PREFERENCE_OPTIONS.cookingMethods.map(m => {
+                  const isSelected = formState.cookingMethod === m.id;
+                  const labelClass = isVerifying
+                    ? (isSelected
+                        ? 'bg-stone-500 text-stone-100 border-stone-500 ring-2 ring-stone-400 cursor-not-allowed'
+                        : 'bg-stone-100 text-stone-400 border-stone-200 opacity-70 cursor-not-allowed')
+                    : (isSelected
+                        ? 'card-hover-lift cursor-pointer bg-[#120B07] text-[#FAF7F2] border-[#C84C24] ring-2 ring-[#C84C24]'
+                        : 'card-hover-lift cursor-pointer bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8]');
+                  const descClass = isVerifying
+                    ? (isSelected ? 'text-stone-200' : 'text-stone-400')
+                    : (isSelected ? 'text-[#D49B42]' : 'text-[#5C3622]');
+                  return `
+                    <label class="p-4 rounded-2xl border transition-all flex flex-col justify-between ${labelClass}">
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold">${isEn ? m.labelEn : m.labelId}</span>
+                        <input type="radio" name="cookingMethod" value="${m.id}" ${isSelected ? 'checked' : ''} ${isVerifying ? 'disabled' : ''} class="sr-only"/>
+                      </div>
+                      <p class="text-[10px] ${descClass} mt-2 leading-relaxed">
+                        ${isEn ? (m.descEn || m.descId) : m.descId}
+                      </p>
+                    </label>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            <!-- Row 1: Regional Flavor & Standard Portions (2 Columns) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+              <!-- Taste Profile -->
+              <div class="space-y-2">
+                <label for="taste-profile-select" class="block text-xs font-bold ${isVerifying ? 'text-stone-500' : 'text-[#120B07]'} uppercase tracking-wider">
+                  ${isEn ? 'Flavor Character Balance' : 'Harmoni Karakter Rasa'}
+                </label>
+                <select 
+                  id="taste-profile-select" 
+                  ${isVerifying ? 'disabled' : ''}
+                  class="w-full px-4 py-3.5 rounded-2xl border text-xs font-bold ${
+                    isVerifying
+                      ? 'bg-stone-200/70 border-stone-300 text-stone-500 cursor-not-allowed'
+                      : 'bg-white border-[#E8DEC8] text-[#120B07] focus:ring-2 focus:ring-[#C84C24]'
+                  }"
+                >
+                  ${PREFERENCE_OPTIONS.tasteProfiles.map(tp => `
+                    <option value="${tp.id}" ${formState.tasteProfile === tp.id ? 'selected' : ''}>
+                      ${isEn ? tp.labelEn : tp.labelId}
+                    </option>
+                  `).join('')}
+                </select>
+                <p class="text-[11px] ${isVerifying ? 'text-stone-500' : 'text-[#5C3622]/80'}">
+                  ${isEn ? 'Calibrates authentic flavor balance and spice harmony.' : 'Menyesuaikan racikan harmoni rasa dan rempah tradisi.'}
+                </p>
               </div>
 
-              <div class="p-3 rounded-2xl border border-[#D49B42]/35 bg-white flex items-center gap-3 shadow-2xs">
-                <div class="w-9 h-9 rounded-xl bg-[#1E120A] text-[#D49B42] flex items-center justify-center shrink-0">
-                  <svg class="w-5 h-5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="12" cy="12" r="9"/>
-                    <circle cx="12" cy="12" r="5" stroke-dasharray="2 2"/>
-                  </svg>
-                </div>
-                <div>
-                  <strong class="text-xs sm:text-sm text-[#120B07] font-bold block">${isEn ? '4 Portions (Standard Serving)' : '4 Porsi (Takaran Standar)'}</strong>
-                  <span class="text-[11px] text-[#5C3622] leading-tight block">
-                    ${isEn 
-                      ? 'Measurements and spice ratios are calibrated automatically for 4 portions.' 
-                      : 'Komposisi bumbu dan takaran bahan otomatis diselaraskan secara pas untuk 4 porsi.'}
+              <!-- Fixed Standard 4 Portions Servings Info -->
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="block text-xs font-bold ${isVerifying ? 'text-stone-500' : 'text-[#120B07]'} uppercase tracking-wider">
+                    ${isEn ? 'Servings Scale (Fixed)' : 'Porsi Santapan (Standar Otomatis)'}
+                  </span>
+                  <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                    isVerifying
+                      ? 'text-stone-500 bg-stone-200 border-stone-300'
+                      : 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                  }">
+                    ${isEn ? '✓ 4 Portions' : '✓ 4 Porsi'}
                   </span>
                 </div>
+
+                <div class="p-3 rounded-2xl border flex items-center gap-3 shadow-2xs ${
+                  isVerifying
+                    ? 'border-stone-300 bg-stone-200/60'
+                    : 'border-[#D49B42]/35 bg-white'
+                }">
+                  <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                    isVerifying ? 'bg-stone-400 text-stone-100' : 'bg-[#1E120A] text-[#D49B42]'
+                  }">
+                    <svg class="w-5 h-5 ${isVerifying ? 'text-stone-100' : 'text-[#D49B42]'}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="12" r="9"/>
+                      <circle cx="12" cy="12" r="5" stroke-dasharray="2 2"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <strong class="text-xs sm:text-sm font-bold block ${isVerifying ? 'text-stone-500' : 'text-[#120B07]'}">${isEn ? '4 Portions (Standard Serving)' : '4 Porsi (Takaran Standar)'}</strong>
+                    <span class="text-[11px] leading-tight block ${isVerifying ? 'text-stone-500' : 'text-[#5C3622]'}">
+                      ${isEn 
+                        ? 'Measurements and spice ratios are calibrated automatically for 4 portions.' 
+                        : 'Komposisi bumbu dan takaran bahan otomatis diselaraskan secara pas untuk 4 porsi.'}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Row 2: Tingkat Kehangatan Lombok (Baris Sendiri & Lapang) -->
-          <div class="space-y-2.5 pt-2">
-            <div class="flex items-center justify-between">
-              <span id="spice-level-group-label" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-                ${isEn ? 'Chili Warmth Level (Lombok)' : 'Tingkat Kehangatan Lombok'}
-              </span>
-              <span class="text-[11px] text-[#5C3622]">
-                ${isEn ? '4 Warmth Scales' : '4 Skala Tingkat Pedas'}
-              </span>
+            <!-- Row 2: Tingkat Kehangatan Lombok (Baris Sendiri & Lapang) -->
+            <div class="space-y-2.5 pt-2">
+              <div class="flex items-center justify-between">
+                <span id="spice-level-group-label" class="block text-xs font-bold ${isVerifying ? 'text-stone-500' : 'text-[#120B07]'} uppercase tracking-wider">
+                  ${isEn ? 'Chili Warmth Level (Lombok)' : 'Tingkat Kehangatan Lombok'}
+                </span>
+                <span class="text-[11px] ${isVerifying ? 'text-stone-500' : 'text-[#5C3622]'}">
+                  ${isEn ? '4 Warmth Scales' : '4 Skala Tingkat Pedas'}
+                </span>
+              </div>
+              
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" role="radiogroup" aria-labelledby="spice-level-group-label">
+                ${[
+                  { id: 0, title: isEn ? 'No Spice' : 'Tanpa Pedas', desc: isEn ? 'Child friendly, no chili' : 'Ramah anak, tanpa cabai', badge: 'Level 0' },
+                  { id: 1, title: isEn ? 'Mild Warmth' : 'Hangat Lembut', desc: isEn ? 'Red chili aroma, subtle' : 'Cabai merah besar beraroma', badge: 'Level 1' },
+                  { id: 2, title: isEn ? 'Medium Hot' : 'Pedas Sedang', desc: isEn ? 'Curly chili, balanced' : 'Cabai keriting lauk harian', badge: 'Level 2' },
+                  { id: 3, title: isEn ? 'Fiery Hot' : 'Pedas Mantap', desc: isEn ? 'Bird’s eye chili kick' : 'Cabai rawit ulek mantap', badge: 'Level 3' }
+                ].map(sl => {
+                  const isSelected = formState.spiceLevel === sl.id;
+                  const cardClass = isVerifying
+                    ? (isSelected
+                        ? 'bg-stone-500 text-stone-100 border-stone-500 ring-2 ring-stone-400 shadow-none cursor-not-allowed'
+                        : 'bg-stone-100 text-stone-400 border-stone-200 opacity-70 cursor-not-allowed')
+                    : (isSelected
+                        ? 'card-hover-lift cursor-pointer bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm'
+                        : 'card-hover-lift cursor-pointer bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8]');
+                  const badgeClass = isVerifying
+                    ? (isSelected ? 'bg-stone-600 text-stone-100' : 'bg-stone-200 text-stone-400')
+                    : (isSelected ? 'bg-[#C84C24] text-white' : 'bg-[#FAF7F2] text-[#C84C24]');
+                  const dotClass = isVerifying
+                    ? (isSelected ? 'text-stone-200' : 'text-stone-400')
+                    : (isSelected ? 'text-[#D49B42]' : 'text-emerald-700');
+                  const titleClass = isVerifying
+                    ? (isSelected ? 'text-stone-100' : 'text-stone-400')
+                    : (isSelected ? 'text-white' : 'text-[#120B07]');
+                  const descClass = isVerifying
+                    ? (isSelected ? 'text-stone-200' : 'text-stone-400')
+                    : (isSelected ? 'text-white/80' : 'text-[#5C3622]');
+                  return `
+                    <label class="p-4 rounded-2xl border text-left text-xs font-bold transition-all flex flex-col justify-between ${cardClass}">
+                      <input type="radio" name="spiceLevel" value="${sl.id}" ${isSelected ? 'checked' : ''} ${isVerifying ? 'disabled' : ''} class="sr-only"/>
+                      <div class="flex items-center justify-between">
+                        <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md ${badgeClass}">${sl.badge}</span>
+                        <span class="text-xs ${dotClass} font-bold">
+                          ${isSelected ? '●' : '○'}
+                        </span>
+                      </div>
+                      <div class="mt-3 space-y-0.5">
+                        <strong class="block text-xs font-bold ${titleClass}">${sl.title}</strong>
+                        <span class="block text-[10px] ${descClass} font-normal leading-tight">${sl.desc}</span>
+                      </div>
+                    </label>
+                  `;
+                }).join('')}
+              </div>
             </div>
-            
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" role="radiogroup" aria-labelledby="spice-level-group-label">
-              ${[
-                { id: 0, title: isEn ? 'No Spice' : 'Tanpa Pedas', desc: isEn ? 'Child friendly, no chili' : 'Ramah anak, tanpa cabai', badge: 'Level 0' },
-                { id: 1, title: isEn ? 'Mild Warmth' : 'Hangat Lembut', desc: isEn ? 'Red chili aroma, subtle' : 'Cabai merah besar beraroma', badge: 'Level 1' },
-                { id: 2, title: isEn ? 'Medium Hot' : 'Pedas Sedang', desc: isEn ? 'Curly chili, balanced' : 'Cabai keriting lauk harian', badge: 'Level 2' },
-                { id: 3, title: isEn ? 'Fiery Hot' : 'Pedas Mantap', desc: isEn ? 'Bird’s eye chili kick' : 'Cabai rawit ulek mantap', badge: 'Level 3' }
-              ].map(sl => {
-                const isSelected = formState.spiceLevel === sl.id;
-                return `
-                  <label class="p-4 rounded-2xl border text-left text-xs font-bold cursor-pointer transition-all card-hover-lift flex flex-col justify-between ${
-                    isSelected 
-                      ? 'bg-[#120B07] text-white border-[#C84C24] ring-2 ring-[#C84C24] shadow-sm' 
-                      : 'bg-white hover:bg-[#FAF7F2] text-[#120B07] border-[#E8DEC8]'
-                  }">
-                    <input type="radio" name="spiceLevel" value="${sl.id}" ${isSelected ? 'checked' : ''} class="sr-only"/>
-                    <div class="flex items-center justify-between">
-                      <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md ${
-                        isSelected ? 'bg-[#C84C24] text-white' : 'bg-[#FAF7F2] text-[#C84C24]'
-                      }">${sl.badge}</span>
-                      <span class="text-xs ${isSelected ? 'text-[#D49B42]' : 'text-emerald-700'} font-bold">
-                        ${isSelected ? '●' : '○'}
-                      </span>
-                    </div>
-                    <div class="mt-3 space-y-0.5">
-                      <strong class="block text-xs font-bold ${isSelected ? 'text-white' : 'text-[#120B07]'}">${sl.title}</strong>
-                      <span class="block text-[10px] ${isSelected ? 'text-white/80' : 'text-[#5C3622]'} font-normal leading-tight">${sl.desc}</span>
-                    </div>
-                  </label>
-                `;
-              }).join('')}
-            </div>
-          </div>
 
-          <!-- Row 3: Custom Culinary Notes -->
-          <div class="space-y-2 pt-2">
-            <label for="custom-notes-input" class="block text-xs font-bold text-[#120B07] uppercase tracking-wider">
-              ${isEn ? 'Culinary Vision / Special Notes (Optional)' : 'Catatan Selera Tambahan (Opsional)'}
-            </label>
-            <input 
-              type="text" 
-              id="custom-notes-input" 
-              name="customNotes"
-              autocomplete="off"
-              maxlength="250"
-              value="${escapeHtml(formState.customNotes)}"
-              placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
-              class="w-full px-4 py-3.5 rounded-2xl bg-white border border-[#E8DEC8] text-xs sm:text-sm text-[#120B07] focus:ring-2 focus:ring-[#C84C24] shadow-inner"
-            />
-            <p class="text-[11px] text-[#5C3622]/80 leading-relaxed">
-              ${isEn 
-                ? 'Personal preference or creative touch for the recipe formulation. If filled with gibberish, inappropriate text, or off-topic prompts, AI will automatically ignore them and focus on the authentic recipe.' 
-                : 'Sentuhan pribadi atau catatan khusus untuk menyempurnakan racikan rasa. Jika diisi teks asal, kata tidak pantas, atau di luar konteks masakan, AI akan mengabaikannya dan tetap fokus pada resep autentik.'}
-            </p>
-          </div>
-        </section>
+            <!-- Row 3: Custom Culinary Notes -->
+            <div class="space-y-2 pt-2">
+              <label for="custom-notes-input" class="block text-xs font-bold ${isVerifying ? 'text-stone-500' : 'text-[#120B07]'} uppercase tracking-wider">
+                ${isEn ? 'Culinary Vision / Special Notes (Optional)' : 'Catatan Selera Tambahan (Opsional)'}
+              </label>
+              <input 
+                type="text" 
+                id="custom-notes-input" 
+                name="customNotes"
+                autocomplete="off"
+                maxlength="250"
+                ${isVerifying ? 'disabled' : ''}
+                value="${escapeHtml(formState.customNotes)}"
+                placeholder="${isEn ? 'e.g., Rich coconut milk with subtle lime fragrance...' : 'Contoh: Kuah areh gurih lembut beraroma daun jeruk...'}"
+                class="w-full px-4 py-3.5 rounded-2xl border text-xs sm:text-sm shadow-inner ${
+                  isVerifying
+                    ? 'bg-stone-200/70 border-stone-300 text-stone-500 placeholder:text-stone-400 cursor-not-allowed'
+                    : 'bg-white border-[#E8DEC8] text-[#120B07] focus:ring-2 focus:ring-[#C84C24]'
+                }"
+              />
+              <p class="text-[11px] ${isVerifying ? 'text-stone-500' : 'text-[#5C3622]/80'} leading-relaxed">
+                ${isEn 
+                  ? 'Personal preference or creative touch for the recipe formulation. If filled with gibberish, inappropriate text, or off-topic prompts, AI will automatically ignore them and focus on the authentic recipe.' 
+                  : 'Sentuhan pribadi atau catatan khusus untuk menyempurnakan racikan rasa. Jika diisi teks asal, kata tidak pantas, atau di luar konteks masakan, AI akan mengabaikannya dan tetap fokus pada resep autentik.'}
+              </p>
+            </div>
+          </section>
+
+        </fieldset>
 
         <!-- CTA Action Bar -->
         <div class="p-6 sm:p-10 rounded-3xl bg-gradient-to-r from-[#120B07] via-[#1E120A] to-[#120B07] border-2 border-[#D49B42]/45 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-5">
           <div class="text-left space-y-1.5">
             <h3 class="font-editorial-serif text-xl sm:text-2xl font-bold text-[#FAF7F2]">
-              ${isEn ? 'Ready to craft your heritage recipe?' : 'Siap meracik kreasi resep pusaka Anda?'}
+              ${isVerifying
+                ? (isEn ? 'Verifying your recipe formulation...' : 'Memverifikasi racikan resep Anda...')
+                : (isEn ? 'Ready to craft your heritage recipe?' : 'Siap meracik kreasi resep pusaka Anda?')}
             </h3>
             <p class="text-xs text-[#FAF7F2]/80 max-w-lg">
-              ${isEn 
-                ? 'LarasRasa AI will formulate calibrated spice measurements, cooking techniques, and step-by-step instructions ready to download.' 
-                : 'Kecerdasan buatan LarasRasa akan meracik takaran bumbu presisi, teknik memasak, dan panduan olah lengkap yang siap diunduh.'}
+              ${isVerifying
+                ? (isEn
+                    ? 'Your selections above are locked while LarasRasa AI verifies and crafts your recipe.'
+                    : 'Seluruh pilihan di atas dikunci sementara selagi LarasRasa AI memverifikasi dan meracik resep Anda.')
+                : (isEn 
+                    ? 'LarasRasa AI will formulate calibrated spice measurements, cooking techniques, and step-by-step instructions ready to download.' 
+                    : 'Kecerdasan buatan LarasRasa akan meracik takaran bumbu presisi, teknik memasak, dan panduan olah lengkap yang siap diunduh.')}
             </p>
           </div>
 
           <button 
             type="submit" 
             id="generate-recipe-submit-btn"
-            class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C84C24] hover:bg-[#AE3E1B] text-[#FAF7F2] font-bold text-sm tracking-wide transition-all shadow-xl hover:shadow-2xl hover:-translate-y-0.5 flex items-center justify-center gap-2.5 shrink-0 cursor-pointer border border-[#E05A30]"
+            ${isVerifying ? 'disabled' : ''}
+            class="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2.5 shrink-0 border ${
+              isVerifying
+                ? 'bg-stone-600 text-stone-100 border-stone-500 opacity-90 cursor-wait shadow-md'
+                : 'bg-[#C84C24] hover:bg-[#AE3E1B] text-[#FAF7F2] shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border-[#E05A30]'
+            }"
           >
-            <span>${isEn ? 'Craft Heritage Recipe' : 'Racik Resep Pusaka'}</span>
-            <svg class="w-4 h-4 text-[#FAF7F2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            ${isVerifying ? `
+              <svg class="w-4 h-4 text-white animate-spin shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span>${isEn ? 'Verifying...' : 'Memverifikasi...'}</span>
+            ` : `
+              <span>${isEn ? 'Craft Heritage Recipe' : 'Racik Resep Pusaka'}</span>
+              <svg class="w-4 h-4 text-[#FAF7F2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            `}
           </button>
         </div>
 
@@ -1121,6 +1244,7 @@ export function initAiFoodCreatorInteractions() {
     document.querySelectorAll('[data-remove-ingredient]').forEach(pill => {
       pill.onclick = (e) => {
         e.stopPropagation();
+        if (isVerifying || isGenerating) return;
         const id = pill.getAttribute('data-remove-ingredient');
         if (formState.selectedIngredientIds.length <= MIN_INGREDIENTS) {
           ingredientError = 'min';
@@ -1137,6 +1261,7 @@ export function initAiFoodCreatorInteractions() {
   function bindIngredientGridEvents() {
     document.querySelectorAll('[data-ingredient-id]').forEach(card => {
       card.onclick = () => {
+        if (isVerifying || isGenerating) return;
         const id = card.getAttribute('data-ingredient-id');
         if (formState.selectedIngredientIds.includes(id)) {
           if (formState.selectedIngredientIds.length <= MIN_INGREDIENTS) {
@@ -1162,6 +1287,7 @@ export function initAiFoodCreatorInteractions() {
     const clearSearchBtn = document.getElementById('clear-ingredient-search-btn');
     if (clearSearchBtn) {
       clearSearchBtn.onclick = () => {
+        if (isVerifying || isGenerating) return;
         clearTimeout(searchDebounce);
         searchQuery = '';
         const inputEl = document.getElementById('ingredient-search-input');
@@ -1175,11 +1301,12 @@ export function initAiFoodCreatorInteractions() {
   }
 
   function updateIngredientGrid(preserveGridScroll = false) {
+    if (isVerifying || isGenerating) return;
     const grid = document.getElementById('ingredient-grid-container');
     if (!grid) return;
     const activeIsEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
     const prevScroll = grid.scrollTop;
-    grid.innerHTML = renderIngredientGridItems(getFilteredIngredients(), activeIsEn);
+    grid.innerHTML = renderIngredientGridItems(getFilteredIngredients(), activeIsEn, isVerifying);
     if (preserveGridScroll) {
       grid.scrollTop = prevScroll;
     } else {
@@ -1189,10 +1316,11 @@ export function initAiFoodCreatorInteractions() {
   }
 
   function updateIngredientSection(preserveGridScroll = true) {
+    if (isVerifying || isGenerating) return;
     const activeIsEn = i18n?.getLanguage && i18n.getLanguage() === 'en';
     const chipsBox = document.getElementById('ingredient-chips-box');
     if (chipsBox) {
-      chipsBox.outerHTML = renderIngredientChipsBox(activeIsEn);
+      chipsBox.outerHTML = renderIngredientChipsBox(activeIsEn, isVerifying);
       bindRemovePills();
     }
     updateIngredientGrid(preserveGridScroll);
@@ -1202,6 +1330,7 @@ export function initAiFoodCreatorInteractions() {
   const searchInput = document.getElementById('ingredient-search-input');
   if (searchInput) {
     searchInput.oninput = (e) => {
+      if (isVerifying || isGenerating) return;
       searchQuery = e.target.value;
       clearTimeout(searchDebounce);
       searchDebounce = setTimeout(() => {
@@ -1217,6 +1346,7 @@ export function initAiFoodCreatorInteractions() {
   const nameInput = document.getElementById('creator-name-input');
   if (nameInput) {
     nameInput.oninput = (e) => {
+      if (isVerifying || isGenerating) return;
       formState.creatorName = e.target.value;
       if (e.target.value.trim().length > 0) {
         if (nameError) nameError = false;
@@ -1243,6 +1373,7 @@ export function initAiFoodCreatorInteractions() {
   const notesInput = document.getElementById('custom-notes-input');
   if (notesInput) {
     notesInput.oninput = (e) => {
+      if (isVerifying || isGenerating) return;
       formState.customNotes = e.target.value;
     };
   }
@@ -1250,6 +1381,7 @@ export function initAiFoodCreatorInteractions() {
   const tasteSelect = document.getElementById('taste-profile-select');
   if (tasteSelect) {
     tasteSelect.onchange = (e) => {
+      if (isVerifying || isGenerating) return;
       formState.tasteProfile = e.target.value;
     };
   }
@@ -1265,6 +1397,9 @@ export function initAiFoodCreatorInteractions() {
   if (form) {
     form.onsubmit = async (e) => {
       e.preventDefault();
+      if (isVerifying || isGenerating) {
+        return;
+      }
       sessionAlert = null;
       const existingAlert = document.getElementById('ai-creator-session-alert');
       if (existingAlert) existingAlert.remove();
@@ -1312,28 +1447,28 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // 4. Persist cooldown immediately when generation begins so refresh/navigation mid-request stays in cooldown
+      // 4. Persist cooldown immediately when generation begins and lock all form controls during verification
       const prevCooldownTs = getCooldownStorageState()?.timestamp || null;
       safeSetStorage(COOLDOWN_KEY, Date.now().toString());
+      if (searchDebounce) {
+        clearTimeout(searchDebounce);
+        searchDebounce = null;
+      }
       nameError = false;
       ingredientError = null;
       sessionAlert = null;
+      isVerifying = true;
       const myRunId = ++generationRunId;
 
-      const submitBtn = document.getElementById('generate-recipe-submit-btn');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.classList.add('opacity-90', 'cursor-wait');
-        submitBtn.innerHTML = `
-          <svg class="w-4 h-4 text-white animate-spin shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" class="opacity-25"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <span>${isEn ? 'Verifying...' : 'Memverifikasi...'}</span>
-        `;
+      await reRenderCurrentView(true);
+      if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
+        if (myRunId === generationRunId) {
+          isVerifying = false;
+        }
+        return;
       }
 
-      // 5. Call secured backend generation directly (if rate-limited/rejected, stay in place on form)
+      // 5. Call secured backend generation directly (if rate-limited/rejected, unlock form and stay in place)
       let recipe = null;
       try {
         recipe = await aiFoodCreatorService.generateRecipe({
@@ -1346,13 +1481,17 @@ export function initAiFoodCreatorInteractions() {
         }
       } catch (err) {
         // Ignore DOM updates if user navigated away (keep cooldown timestamp active)
-        if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
+        if (myRunId !== generationRunId) {
           return;
         }
+        isVerifying = false;
         isGenerating = false;
         currentGeneratingPercent = 20;
         currentGeneratingStageIdx = 0;
         currentGeneratedRecipe = null;
+        if (!isOnAiFoodCreatorRoute()) {
+          return;
+        }
         if (err.code === 'RATE_LIMITED') {
           const retryMs = Math.min(COOLDOWN_MS, Math.max(60_000, (Number(err.retryAfterSeconds) || 60) * 1000));
           const syntheticStart = Date.now() - (COOLDOWN_MS - retryMs);
@@ -1375,11 +1514,16 @@ export function initAiFoodCreatorInteractions() {
 
       // Refresh client cooldown timestamp once backend succeeds, even if user switched pages mid-request
       safeSetStorage(COOLDOWN_KEY, Date.now().toString());
-      if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
+      if (myRunId !== generationRunId) {
+        return;
+      }
+      if (!isOnAiFoodCreatorRoute()) {
+        isVerifying = false;
         return;
       }
 
       // 6. Backend Succeeded: Transition smoothly through the formulating showcase and display recipe
+      isVerifying = false;
       isGenerating = true;
       currentGeneratingPercent = 20;
       currentGeneratingStageIdx = 0;
@@ -1393,7 +1537,7 @@ export function initAiFoodCreatorInteractions() {
 
       currentGeneratedRecipe = recipe;
 
-      if (window.__larasRasaProgressTimer) {
+      if (typeof window !== 'undefined' && window.__larasRasaProgressTimer) {
         clearInterval(window.__larasRasaProgressTimer);
         window.__larasRasaProgressTimer = null;
       }
@@ -1401,9 +1545,10 @@ export function initAiFoodCreatorInteractions() {
       const progressBar = document.getElementById('generating-progress-bar');
       const percentEl = document.getElementById('generating-progress-percent');
       const stageEl = document.getElementById('generating-progress-stage');
+      const latestIsEn = i18n?.getLanguage ? i18n.getLanguage() === 'en' : isEn;
       if (progressBar) progressBar.style.width = '100%';
       if (percentEl) percentEl.textContent = '100%';
-      if (stageEl) stageEl.textContent = isEn ? 'Heritage recipe formulated!' : 'Resep pusaka siap disajikan!';
+      if (stageEl) stageEl.textContent = latestIsEn ? 'Heritage recipe formulated!' : 'Resep pusaka siap disajikan!';
 
       await new Promise(resolve => setTimeout(resolve, 400));
       if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
@@ -1513,6 +1658,7 @@ function setupRadioGroup(name, onChange) {
   const radios = document.querySelectorAll(`input[name="${name}"]`);
   radios.forEach(r => {
     r.onchange = () => {
+      if (isVerifying || isGenerating) return;
       if (r.checked) {
         onChange(r.value);
         reRenderCurrentView();
@@ -1528,10 +1674,19 @@ async function reRenderCurrentView(preserveScroll = true) {
   const container = document.getElementById('page-main-content');
   if (container) {
     const savedY = preserveScroll ? window.scrollY : null;
+    const prevGridScroll = preserveScroll
+      ? (document.getElementById('ingredient-grid-container')?.scrollTop ?? null)
+      : null;
     container.innerHTML = await renderAiFoodCreatorPage();
     initAiFoodCreatorInteractions();
-    if (preserveScroll && savedY !== null) {
-      window.scrollTo({ top: savedY, behavior: 'instant' });
+    if (preserveScroll) {
+      const newGrid = document.getElementById('ingredient-grid-container');
+      if (newGrid && prevGridScroll !== null) {
+        newGrid.scrollTop = prevGridScroll;
+      }
+      if (savedY !== null) {
+        window.scrollTo({ top: savedY, behavior: 'instant' });
+      }
     }
   }
 }

@@ -28,7 +28,12 @@ import { renderRecipesPage } from '../src/pages/recipes.js';
 import { renderSpicesPage } from '../src/pages/spices.js';
 import { renderLegendaryRestaurantsPage } from '../src/pages/legendary-restaurants.js';
 import { renderRecommendationsPage } from '../src/pages/recommendations.js';
-import { renderAiFoodCreatorPage } from '../src/pages/ai-food-creator.js';
+import {
+  renderAiFoodCreatorPage,
+  initAiFoodCreatorInteractions,
+  resetAiFoodCreatorState,
+  isAiFoodCreatorVerifying,
+} from '../src/pages/ai-food-creator.js';
 import { resolveNearestRoute, ROUTE_DEFINITIONS } from '../src/utils/routes.js';
 import { aiFoodCreatorService, getLocalizedRecipeSteps, ALL_INGREDIENTS } from '../src/services/aiFoodCreatorService.js';
 import { i18n } from '../src/i18n/index.js';
@@ -1357,4 +1362,227 @@ test('Edge Function & frontend preserve embedded bilingual steps, retry untransl
   const enSteps = getLocalizedRecipeSteps(snakeNormalized, true);
   assert.equal(enSteps[0].title, 'Steam Chicken');
   assert.equal(enSteps[0].instruction, 'Steam the chicken wrapped in banana leaves.');
+});
+
+test('AI Food Creator locks and greys out all form options, name, ingredients, and notes while verifying', async () => {
+  const originalDocument = globalThis.document;
+  const originalWindow = globalThis.window;
+  const originalLocalStorage = globalThis.localStorage;
+  const originalFetch = globalThis.fetch;
+
+  const mockStore = new Map();
+  globalThis.localStorage = {
+    getItem: (k) => (mockStore.has(k) ? mockStore.get(k) : null),
+    setItem: (k, v) => mockStore.set(k, String(v)),
+    removeItem: (k) => mockStore.delete(k),
+  };
+
+  let elements = new Map();
+  let removePills = [];
+  let ingredientCards = [];
+  let cookingRadios = [];
+  let spiceRadios = [];
+
+  const makeStub = (extra = {}) => ({
+    classList: {
+      add() {},
+      remove() {},
+      contains() { return false; },
+    },
+    scrollIntoView() {},
+    focus() {},
+    remove() {},
+    ...extra,
+  });
+
+  let containerHtml = '';
+  const rebuildDomFromHtml = (html) => {
+    containerHtml = html;
+    elements = new Map();
+    const gridStub = makeStub({ scrollTop: 0 });
+    gridStub._setHtml = (nextGridHtml) => {
+      containerHtml = containerHtml.replace(
+        /(<div id="ingredient-grid-container"[^>]*>)[\s\S]*?(<\/div>\s*<\/section>)/,
+        `$1${nextGridHtml}$2`,
+      );
+      rebuildDomFromHtml(containerHtml);
+    };
+    Object.defineProperty(gridStub, 'innerHTML', {
+      get: () => containerHtml,
+      set: (val) => gridStub._setHtml(val),
+    });
+
+    for (const id of [
+      'ai-creator-form',
+      'creator-name-input',
+      'creator-name-label',
+      'creator-name-error',
+      'creator-name-help',
+      'creator-name-box',
+      'ingredient-search-input',
+      'clear-ingredient-search-btn',
+      'ingredient-chips-box',
+      'taste-profile-select',
+      'custom-notes-input',
+      'generate-recipe-submit-btn',
+      'ai-creator-session-alert',
+    ]) {
+      if (containerHtml.includes(`id="${id}"`)) {
+        elements.set(id, makeStub({ id }));
+      }
+    }
+    if (containerHtml.includes('id="ingredient-grid-container"')) {
+      elements.set('ingredient-grid-container', gridStub);
+    }
+
+    removePills = [...containerHtml.matchAll(/data-remove-ingredient="([^"]+)"/g)].map((m) =>
+      makeStub({ getAttribute: (attr) => (attr === 'data-remove-ingredient' ? m[1] : null) }),
+    );
+    ingredientCards = [...containerHtml.matchAll(/data-ingredient-id="([^"]+)"/g)].map((m) =>
+      makeStub({ getAttribute: (attr) => (attr === 'data-ingredient-id' ? m[1] : null) }),
+    );
+    cookingRadios = [...containerHtml.matchAll(/<input type="radio" name="cookingMethod" value="([^"]+)"/g)].map((m) =>
+      makeStub({ value: m[1], checked: true }),
+    );
+    spiceRadios = [...containerHtml.matchAll(/<input type="radio" name="spiceLevel" value="([^"]+)"/g)].map((m) =>
+      makeStub({ value: m[1], checked: true }),
+    );
+  };
+
+  const pageMainContent = {
+    get innerHTML() {
+      return containerHtml;
+    },
+    set innerHTML(val) {
+      rebuildDomFromHtml(String(val));
+    },
+  };
+
+  globalThis.document = {
+    documentElement: { lang: 'id', scrollTop: 0 },
+    body: { scrollTop: 0 },
+    title: '',
+    getElementById(id) {
+      if (id === 'page-main-content') return pageMainContent;
+      return elements.get(id) || null;
+    },
+    querySelectorAll(selector) {
+      if (selector === '[data-remove-ingredient]') return removePills;
+      if (selector === '[data-ingredient-id]') return ingredientCards;
+      if (selector === 'input[name="cookingMethod"]') return cookingRadios;
+      if (selector === 'input[name="spiceLevel"]') return spiceRadios;
+      return [];
+    },
+  };
+
+  globalThis.window = {
+    location: { hash: '#/ai-food-creator', search: '' },
+    scrollY: 0,
+    scrollTo() {},
+    dispatchEvent() {},
+  };
+
+  let resolveFetch;
+  let fetchCalls = 0;
+  globalThis.fetch = () => {
+    fetchCalls++;
+    return new Promise((resolve) => {
+      resolveFetch = resolve;
+    });
+  };
+
+  try {
+    i18n.setLanguage('id');
+    resetAiFoodCreatorState();
+    pageMainContent.innerHTML = await renderAiFoodCreatorPage();
+    initAiFoodCreatorInteractions();
+
+    assert.equal(isAiFoodCreatorVerifying(), false);
+    assert.ok(!containerHtml.includes('<fieldset id="ai-creator-fields" disabled'));
+    assert.match(containerHtml, /<input[\s\S]*?id="creator-name-input"(?![^>]*disabled)/);
+
+    // Fill creator name & custom notes before submitting
+    elements.get('creator-name-input').oninput({ target: { value: 'Evan Hendra Mulyadi' } });
+    elements.get('custom-notes-input').oninput({ target: { value: 'Kuah areh lembut' } });
+
+    // Submit form -> enters verifying state immediately while fetch is pending
+    const submitPromise = elements.get('ai-creator-form').onsubmit({ preventDefault() {} });
+    await new Promise((r) => setTimeout(r, 15));
+
+    assert.equal(fetchCalls, 1);
+    assert.equal(isAiFoodCreatorVerifying(), true);
+
+    // Assert every form control above the CTA button + button itself is disabled and greyed out
+    assert.ok(containerHtml.includes('<fieldset id="ai-creator-fields" disabled'));
+    assert.ok(containerHtml.includes('aria-busy="true"'));
+    assert.ok(containerHtml.includes('Memverifikasi...'));
+    assert.ok(containerHtml.includes('grayscale opacity-75 cursor-not-allowed'));
+    assert.ok(!containerHtml.includes('card-hover-lift'));
+
+    for (const controlPattern of [
+      /<input[\s\S]*?id="creator-name-input"[\s\S]*?disabled/,
+      /<input[\s\S]*?id="ingredient-search-input"[\s\S]*?disabled/,
+      /<select[\s\S]*?id="taste-profile-select"[\s\S]*?disabled/,
+      /<input[\s\S]*?id="custom-notes-input"[\s\S]*?disabled/,
+      /<button[\s\S]*?id="generate-recipe-submit-btn"[\s\S]*?disabled/,
+      /<button type="button" disabled data-remove-ingredient=/,
+      /<button[\s\S]*?data-ingredient-id=[\s\S]*?disabled/,
+      /<input type="radio" name="cookingMethod"[^>]*disabled/,
+      /<input type="radio" name="spiceLevel"[^>]*disabled/,
+    ]) {
+      assert.match(containerHtml, controlPattern);
+    }
+
+    // Switching language during verification preserves the locked/greyed-out state in EN
+    i18n.setLanguage('en');
+    const enVerifyingHtml = await renderAiFoodCreatorPage();
+    assert.ok(enVerifyingHtml.includes('<fieldset id="ai-creator-fields" disabled'));
+    assert.ok(enVerifyingHtml.includes('Verifying...'));
+    assert.ok(!enVerifyingHtml.includes('card-hover-lift'));
+    i18n.setLanguage('id');
+
+    // Attempted edits or duplicate submit while verifying must be completely ignored
+    elements.get('creator-name-input').oninput({ target: { value: 'Nama Diubah' } });
+    elements.get('custom-notes-input').oninput({ target: { value: 'Catatan Diubah' } });
+    elements.get('ingredient-search-input').oninput({ target: { value: 'cabai' } });
+    elements.get('taste-profile-select').onchange({ target: { value: 'asam-segar' } });
+    removePills[0].onclick({ stopPropagation() {} });
+    ingredientCards[0].onclick();
+    cookingRadios[1].onchange();
+    spiceRadios[3].onchange();
+    await elements.get('ai-creator-form').onsubmit({ preventDefault() {} });
+    await new Promise((r) => setTimeout(r, 275));
+
+    assert.equal(fetchCalls, 1);
+    assert.ok(containerHtml.includes('value="Evan Hendra Mulyadi"'));
+    assert.ok(containerHtml.includes('value="Kuah areh lembut"'));
+    assert.ok(!containerHtml.includes('Nama Diubah'));
+    assert.ok(!containerHtml.includes('Catatan Diubah'));
+
+    // Reject/fail backend call -> unlocks form and shows backend error alert
+    resolveFetch(
+      new Response(JSON.stringify({ error: 'Unavailable' }), {
+        status: 503,
+        headers: { 'Content-Type': 'application/json' },
+      }),
+    );
+    await submitPromise;
+
+    assert.equal(isAiFoodCreatorVerifying(), false);
+    assert.ok(!containerHtml.includes('<fieldset id="ai-creator-fields" disabled'));
+    assert.ok(containerHtml.includes('Racik Resep Pusaka'));
+    assert.ok(containerHtml.includes('ai-creator-session-alert'));
+    assert.ok(containerHtml.includes('value="Evan Hendra Mulyadi"'));
+  } finally {
+    resetAiFoodCreatorState();
+    i18n.setLanguage('id');
+    globalThis.document = originalDocument;
+    globalThis.window = originalWindow;
+    if (originalLocalStorage === undefined) {
+      delete globalThis.localStorage;
+    } else {
+      globalThis.localStorage = originalLocalStorage;
+    }
+    globalThis.fetch = originalFetch;
+  }
 });
