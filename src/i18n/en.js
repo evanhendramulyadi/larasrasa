@@ -42,8 +42,7 @@ export const en = {
     spices: 'Spices',
     restaurants: 'Restaurants',
     recommendations: 'Recommendations',
-    aiFoodCreator: 'AI Food Creator',
-    findMenuCTA: 'Find Menu'
+    aiFoodCreator: 'AI Food Creator'
   },
   hero: {
     badge: 'Treasures of Indonesian Culinary Heritage',

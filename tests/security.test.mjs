@@ -417,6 +417,8 @@ test('Full page & component rendering regression + XSS payload neutralization ch
     assert.ok(!/<script/i.test(html), `${name} contains inline <script>`);
   }
 
+  assert.ok(!nav.includes('Pilih Menu'));
+  assert.ok(!nav.includes('Find Menu'));
   assert.ok(home.includes('data-fallback-src='));
   assert.ok(!recipesHtml.includes('onfocus="alert(1)"'));
   assert.ok(recipesHtml.includes('&quot; autofocus onfocus=&quot;alert(1)'));

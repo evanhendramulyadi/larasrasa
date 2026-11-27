@@ -42,8 +42,7 @@ export const id = {
     spices: 'Rempah',
     restaurants: 'Restoran',
     recommendations: 'Rekomendasi',
-    aiFoodCreator: 'AI Food Creator',
-    findMenuCTA: 'Pilih Menu'
+    aiFoodCreator: 'AI Food Creator'
   },
   hero: {
     badge: 'Pusaka Kuliner Jawa Tengah • Pawon Nusantara',
