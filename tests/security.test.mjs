@@ -1107,45 +1107,26 @@ test('Global credit exhaustion (upstream 429/402) maps to CREDIT_EXHAUSTED while
     globalThis.fetch = originalFetch;
   }
 
-  // 3. Active cooldown stored in localStorage stays hidden on page render and opens a popup when trying to generate again
-  const domEnv = createAiCreatorDomEnv([['larasrasa_last_ai_recipe_timestamp', String(Date.now() - 30_000)]]);
-  let popupFetchCalled = false;
-  globalThis.fetch = async () => {
-    popupFetchCalled = true;
-    throw new Error('Fetch must not run while client cooldown is active');
+  // 3. Active cooldown stored at generation start stays hidden on initial render/reload until user tries to generate again
+  const originalLocalStorage = globalThis.localStorage;
+  const mockStore = new Map([['larasrasa_last_ai_recipe_timestamp', String(Date.now() - 30_000)]]);
+  globalThis.localStorage = {
+    getItem: (k) => (mockStore.has(k) ? mockStore.get(k) : null),
+    setItem: (k, v) => mockStore.set(k, String(v)),
+    removeItem: (k) => mockStore.delete(k),
   };
 
   try {
-    i18n.setLanguage('id');
     resetAiFoodCreatorState();
-    domEnv.setPageHtml(await renderAiFoodCreatorPage());
-    initAiFoodCreatorInteractions();
-
-    // No inline cooldown text on the studio form
-    assert.ok(!domEnv.getPageHtml().includes('ai-creator-session-alert'));
-    assert.ok(!domEnv.getPageHtml().includes('Batas Waktu Peracikan Resep'));
-    assert.ok(!domEnv.getPageHtml().includes('ai-creator-cooldown-backdrop'));
-
-    // Trying to generate again opens the cooldown popup modal without calling fetch
-    await domEnv.getElement('ai-creator-form').onsubmit({ preventDefault() {} });
-    assert.equal(popupFetchCalled, false);
-    assert.ok(domEnv.getPageHtml().includes('id="ai-creator-cooldown-backdrop"'));
-    assert.ok(domEnv.getPageHtml().includes('role="dialog"'));
-    assert.ok(domEnv.getPageHtml().includes('Batas Waktu Peracikan Resep'));
-
-    // Bilingual reactivity while popup is open
-    i18n.setLanguage('en');
-    const enPopupHtml = await renderAiFoodCreatorPage();
-    assert.ok(enPopupHtml.includes('id="ai-creator-cooldown-backdrop"'));
-    assert.ok(enPopupHtml.includes('Cooldown in Effect'));
-    i18n.setLanguage('id');
-
-    // Clicking confirm dismisses the popup
-    domEnv.getElement('confirm-cooldown-modal-btn').onclick();
-    assert.ok(!domEnv.getPageHtml().includes('id="ai-creator-cooldown-backdrop"'));
+    const htmlOnReload = await renderAiFoodCreatorPage();
+    assert.ok(!htmlOnReload.includes('ai-creator-session-alert'));
+    assert.ok(!htmlOnReload.includes('Batas Waktu Peracikan Resep'));
   } finally {
-    domEnv.restore();
-    globalThis.fetch = originalFetch;
+    if (originalLocalStorage === undefined) {
+      delete globalThis.localStorage;
+    } else {
+      globalThis.localStorage = originalLocalStorage;
+    }
   }
 });
 
@@ -1384,12 +1365,13 @@ test('Edge Function & frontend preserve embedded bilingual steps, retry untransl
   assert.equal(enSteps[0].instruction, 'Steam the chicken wrapped in banana leaves.');
 });
 
-function createAiCreatorDomEnv(initialStorageEntries = []) {
+test('AI Food Creator locks and greys out all form options, name, ingredients, and notes while verifying', async () => {
   const originalDocument = globalThis.document;
   const originalWindow = globalThis.window;
   const originalLocalStorage = globalThis.localStorage;
+  const originalFetch = globalThis.fetch;
 
-  const mockStore = new Map(initialStorageEntries);
+  const mockStore = new Map();
   globalThis.localStorage = {
     getItem: (k) => (mockStore.has(k) ? mockStore.get(k) : null),
     setItem: (k, v) => mockStore.set(k, String(v)),
@@ -1401,7 +1383,6 @@ function createAiCreatorDomEnv(initialStorageEntries = []) {
   let ingredientCards = [];
   let cookingRadios = [];
   let spiceRadios = [];
-  let containerHtml = '';
 
   const makeStub = (extra = {}) => ({
     classList: {
@@ -1415,6 +1396,7 @@ function createAiCreatorDomEnv(initialStorageEntries = []) {
     ...extra,
   });
 
+  let containerHtml = '';
   const rebuildDomFromHtml = (html) => {
     containerHtml = html;
     elements = new Map();
@@ -1445,21 +1427,9 @@ function createAiCreatorDomEnv(initialStorageEntries = []) {
       'custom-notes-input',
       'generate-recipe-submit-btn',
       'ai-creator-session-alert',
-      'ai-creator-cooldown-backdrop',
-      'close-cooldown-modal-btn',
-      'confirm-cooldown-modal-btn',
-      'create-another-recipe-btn',
-      'bottom-create-another-btn',
     ]) {
       if (containerHtml.includes(`id="${id}"`)) {
-        const extra = id === 'ai-creator-cooldown-backdrop'
-          ? {
-              remove() {
-                containerHtml = containerHtml.replace(/<div id="ai-creator-cooldown-backdrop"[\s\S]*$/, '');
-              },
-            }
-          : {};
-        elements.set(id, makeStub({ id, ...extra }));
+        elements.set(id, makeStub({ id }));
       }
     }
     if (containerHtml.includes('id="ingredient-grid-container"')) {
@@ -1491,10 +1461,8 @@ function createAiCreatorDomEnv(initialStorageEntries = []) {
 
   globalThis.document = {
     documentElement: { lang: 'id', scrollTop: 0 },
-    body: { scrollTop: 0, style: { overflow: '' } },
+    body: { scrollTop: 0 },
     title: '',
-    addEventListener() {},
-    removeEventListener() {},
     getElementById(id) {
       if (id === 'page-main-content') return pageMainContent;
       return elements.get(id) || null;
@@ -1515,34 +1483,6 @@ function createAiCreatorDomEnv(initialStorageEntries = []) {
     dispatchEvent() {},
   };
 
-  return {
-    getPageHtml: () => containerHtml,
-    setPageHtml: (html) => {
-      pageMainContent.innerHTML = html;
-    },
-    getElement: (id) => elements.get(id),
-    getRemovePills: () => removePills,
-    getIngredientCards: () => ingredientCards,
-    getCookingRadios: () => cookingRadios,
-    getSpiceRadios: () => spiceRadios,
-    restore() {
-      resetAiFoodCreatorState();
-      i18n.setLanguage('id');
-      globalThis.document = originalDocument;
-      globalThis.window = originalWindow;
-      if (originalLocalStorage === undefined) {
-        delete globalThis.localStorage;
-      } else {
-        globalThis.localStorage = originalLocalStorage;
-      }
-    },
-  };
-}
-
-test('AI Food Creator locks and greys out all form options, hides cooldown during verification/after generation, and opens cooldown popup on retry', async () => {
-  const originalFetch = globalThis.fetch;
-  const domEnv = createAiCreatorDomEnv();
-
   let resolveFetch;
   let fetchCalls = 0;
   globalThis.fetch = () => {
@@ -1555,34 +1495,32 @@ test('AI Food Creator locks and greys out all form options, hides cooldown durin
   try {
     i18n.setLanguage('id');
     resetAiFoodCreatorState();
-    domEnv.setPageHtml(await renderAiFoodCreatorPage());
+    pageMainContent.innerHTML = await renderAiFoodCreatorPage();
     initAiFoodCreatorInteractions();
 
     assert.equal(isAiFoodCreatorVerifying(), false);
-    assert.ok(!domEnv.getPageHtml().includes('<fieldset id="ai-creator-fields" disabled'));
-    assert.match(domEnv.getPageHtml(), /<input[\s\S]*?id="creator-name-input"(?![^>]*disabled)/);
+    assert.ok(!containerHtml.includes('<fieldset id="ai-creator-fields" disabled'));
+    assert.match(containerHtml, /<input[\s\S]*?id="creator-name-input"(?![^>]*disabled)/);
 
     // Fill creator name & custom notes before submitting
-    domEnv.getElement('creator-name-input').oninput({ target: { value: 'Evan Hendra Mulyadi' } });
-    domEnv.getElement('custom-notes-input').oninput({ target: { value: 'Kuah areh lembut' } });
+    elements.get('creator-name-input').oninput({ target: { value: 'Evan Hendra Mulyadi' } });
+    elements.get('custom-notes-input').oninput({ target: { value: 'Kuah areh lembut' } });
 
     // Submit form -> enters verifying state immediately while fetch is pending
-    const submitPromise = domEnv.getElement('ai-creator-form').onsubmit({ preventDefault() {} });
+    const submitPromise = elements.get('ai-creator-form').onsubmit({ preventDefault() {} });
     await new Promise((r) => setTimeout(r, 15));
 
     assert.equal(fetchCalls, 1);
     assert.equal(isAiFoodCreatorVerifying(), true);
+    assert.ok(!containerHtml.includes('ai-creator-session-alert'));
+    assert.ok(!containerHtml.includes('Batas Waktu Peracikan Resep'));
 
-    // Assert every form control above the CTA button + button itself is disabled and greyed out, and NO cooldown text appears while verifying
-    const verifyingHtml = domEnv.getPageHtml();
-    assert.ok(verifyingHtml.includes('<fieldset id="ai-creator-fields" disabled'));
-    assert.ok(verifyingHtml.includes('aria-busy="true"'));
-    assert.ok(verifyingHtml.includes('Memverifikasi...'));
-    assert.ok(verifyingHtml.includes('grayscale opacity-75 cursor-not-allowed'));
-    assert.ok(!verifyingHtml.includes('card-hover-lift'));
-    assert.ok(!verifyingHtml.includes('Batas Waktu Peracikan Resep'));
-    assert.ok(!verifyingHtml.includes('ai-creator-session-alert'));
-    assert.ok(!verifyingHtml.includes('ai-creator-cooldown-backdrop'));
+    // Assert every form control above the CTA button + button itself is disabled and greyed out
+    assert.ok(containerHtml.includes('<fieldset id="ai-creator-fields" disabled'));
+    assert.ok(containerHtml.includes('aria-busy="true"'));
+    assert.ok(containerHtml.includes('Memverifikasi...'));
+    assert.ok(containerHtml.includes('grayscale opacity-75 cursor-not-allowed'));
+    assert.ok(!containerHtml.includes('card-hover-lift'));
 
     for (const controlPattern of [
       /<input[\s\S]*?id="creator-name-input"[\s\S]*?disabled/,
@@ -1595,35 +1533,34 @@ test('AI Food Creator locks and greys out all form options, hides cooldown durin
       /<input type="radio" name="cookingMethod"[^>]*disabled/,
       /<input type="radio" name="spiceLevel"[^>]*disabled/,
     ]) {
-      assert.match(verifyingHtml, controlPattern);
+      assert.match(containerHtml, controlPattern);
     }
 
-    // Switching language during verification preserves the locked/greyed-out state in EN without cooldown text
+    // Switching language during verification preserves the locked/greyed-out state in EN
     i18n.setLanguage('en');
     const enVerifyingHtml = await renderAiFoodCreatorPage();
     assert.ok(enVerifyingHtml.includes('<fieldset id="ai-creator-fields" disabled'));
     assert.ok(enVerifyingHtml.includes('Verifying...'));
     assert.ok(!enVerifyingHtml.includes('card-hover-lift'));
-    assert.ok(!enVerifyingHtml.includes('Cooldown in Effect'));
     i18n.setLanguage('id');
 
     // Attempted edits or duplicate submit while verifying must be completely ignored
-    domEnv.getElement('creator-name-input').oninput({ target: { value: 'Nama Diubah' } });
-    domEnv.getElement('custom-notes-input').oninput({ target: { value: 'Catatan Diubah' } });
-    domEnv.getElement('ingredient-search-input').oninput({ target: { value: 'cabai' } });
-    domEnv.getElement('taste-profile-select').onchange({ target: { value: 'asam-segar' } });
-    domEnv.getRemovePills()[0].onclick({ stopPropagation() {} });
-    domEnv.getIngredientCards()[0].onclick();
-    domEnv.getCookingRadios()[1].onchange();
-    domEnv.getSpiceRadios()[3].onchange();
-    await domEnv.getElement('ai-creator-form').onsubmit({ preventDefault() {} });
+    elements.get('creator-name-input').oninput({ target: { value: 'Nama Diubah' } });
+    elements.get('custom-notes-input').oninput({ target: { value: 'Catatan Diubah' } });
+    elements.get('ingredient-search-input').oninput({ target: { value: 'cabai' } });
+    elements.get('taste-profile-select').onchange({ target: { value: 'asam-segar' } });
+    removePills[0].onclick({ stopPropagation() {} });
+    ingredientCards[0].onclick();
+    cookingRadios[1].onchange();
+    spiceRadios[3].onchange();
+    await elements.get('ai-creator-form').onsubmit({ preventDefault() {} });
     await new Promise((r) => setTimeout(r, 275));
 
     assert.equal(fetchCalls, 1);
-    assert.ok(domEnv.getPageHtml().includes('value="Evan Hendra Mulyadi"'));
-    assert.ok(domEnv.getPageHtml().includes('value="Kuah areh lembut"'));
-    assert.ok(!domEnv.getPageHtml().includes('Nama Diubah'));
-    assert.ok(!domEnv.getPageHtml().includes('Catatan Diubah'));
+    assert.ok(containerHtml.includes('value="Evan Hendra Mulyadi"'));
+    assert.ok(containerHtml.includes('value="Kuah areh lembut"'));
+    assert.ok(!containerHtml.includes('Nama Diubah'));
+    assert.ok(!containerHtml.includes('Catatan Diubah'));
 
     // Reject/fail backend call -> unlocks form and shows backend error alert
     resolveFetch(
@@ -1635,43 +1572,36 @@ test('AI Food Creator locks and greys out all form options, hides cooldown durin
     await submitPromise;
 
     assert.equal(isAiFoodCreatorVerifying(), false);
-    assert.ok(!domEnv.getPageHtml().includes('<fieldset id="ai-creator-fields" disabled'));
-    assert.ok(domEnv.getPageHtml().includes('Racik Resep Pusaka'));
-    assert.ok(domEnv.getPageHtml().includes('ai-creator-session-alert'));
-    assert.ok(domEnv.getPageHtml().includes('value="Evan Hendra Mulyadi"'));
+    assert.ok(!containerHtml.includes('<fieldset id="ai-creator-fields" disabled'));
+    assert.ok(containerHtml.includes('Racik Resep Pusaka'));
+    assert.ok(containerHtml.includes('ai-creator-session-alert'));
+    assert.ok(containerHtml.includes('value="Evan Hendra Mulyadi"'));
 
-    // Successful generation -> result view & returning to studio show NO cooldown text until user tries generating again (popup)
-    globalThis.fetch = async () =>
-      new Response(
-        JSON.stringify({
-          success: true,
-          recipe: {
-            title: 'Ungkep Ayam Rempah Evan',
-            ingredients: [{ nameId: 'Ayam Kampung', amount: 500, unitId: 'g' }],
-            stepsId: [{ stepNumber: 1, titleId: 'Ungkep', instructionId: 'Masak hingga bumbu meresap.' }],
-          },
-        }),
-        { status: 200, headers: { 'Content-Type': 'application/json' } },
-      );
+    // Active cooldown after successful generation stays hidden upon returning to studio until user attempts to generate again
+    mockStore.set('larasrasa_last_ai_recipe_timestamp', String(Date.now() - 30_000));
+    resetAiFoodCreatorState();
+    pageMainContent.innerHTML = await renderAiFoodCreatorPage();
+    initAiFoodCreatorInteractions();
+    assert.ok(!containerHtml.includes('ai-creator-session-alert'));
+    assert.ok(!containerHtml.includes('Batas Waktu Peracikan Resep'));
 
-    await domEnv.getElement('ai-creator-form').onsubmit({ preventDefault() {} });
+    // Only when user fills name and clicks generate again during active cooldown does the cooldown notice appear
+    elements.get('creator-name-input').oninput({ target: { value: 'Evan Hendra Mulyadi' } });
+    await elements.get('ai-creator-form').onsubmit({ preventDefault() {} });
+    assert.equal(fetchCalls, 1);
     assert.equal(isAiFoodCreatorVerifying(), false);
-    assert.ok(domEnv.getPageHtml().includes('Ungkep Ayam Rempah Evan'));
-    assert.ok(!domEnv.getPageHtml().includes('Batas Waktu Peracikan Resep'));
-    assert.ok(!domEnv.getPageHtml().includes('ai-creator-cooldown-backdrop'));
-
-    // Return to studio -> still no inline cooldown text
-    domEnv.getElement('create-another-recipe-btn').onclick();
-    await new Promise((r) => setTimeout(r, 10));
-    assert.ok(!domEnv.getPageHtml().includes('Batas Waktu Peracikan Resep'));
-    assert.ok(!domEnv.getPageHtml().includes('ai-creator-session-alert'));
-
-    // Trying to generate again opens cooldown popup
-    await domEnv.getElement('ai-creator-form').onsubmit({ preventDefault() {} });
-    assert.ok(domEnv.getPageHtml().includes('id="ai-creator-cooldown-backdrop"'));
-    assert.ok(domEnv.getPageHtml().includes('Batas Waktu Peracikan Resep'));
+    assert.ok(containerHtml.includes('ai-creator-session-alert'));
+    assert.ok(containerHtml.includes('Batas Waktu Peracikan Resep'));
   } finally {
-    domEnv.restore();
+    resetAiFoodCreatorState();
+    i18n.setLanguage('id');
+    globalThis.document = originalDocument;
+    globalThis.window = originalWindow;
+    if (originalLocalStorage === undefined) {
+      delete globalThis.localStorage;
+    } else {
+      globalThis.localStorage = originalLocalStorage;
+    }
     globalThis.fetch = originalFetch;
   }
 });
