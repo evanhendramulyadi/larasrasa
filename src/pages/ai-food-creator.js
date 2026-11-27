@@ -6,7 +6,7 @@ import {
   PREFERENCE_OPTIONS 
 } from '../services/aiFoodCreatorService.js';
 import { i18n, t } from '../i18n/index.js';
-import { escapeHtml } from '../utils/dom.js';
+import { escapeHtml, scrollToTop } from '../utils/dom.js';
 
 /**
  * LarasRasa AI Food Creator Studio
@@ -1384,7 +1384,7 @@ export function initAiFoodCreatorInteractions() {
       currentGeneratingPercent = 20;
       currentGeneratingStageIdx = 0;
       await reRenderCurrentView(false);
-      window.scrollTo({ top: 150, behavior: 'smooth' });
+      scrollToTop('smooth');
 
       await new Promise(resolve => setTimeout(resolve, 2600));
       if (myRunId !== generationRunId || !isOnAiFoodCreatorRoute()) {
@@ -1414,7 +1414,7 @@ export function initAiFoodCreatorInteractions() {
       currentGeneratingPercent = 20;
       currentGeneratingStageIdx = 0;
       await reRenderCurrentView(false);
-      window.scrollTo({ top: 100, behavior: 'smooth' });
+      scrollToTop('smooth');
     };
   }
 

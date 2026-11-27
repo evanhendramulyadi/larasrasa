@@ -771,6 +771,10 @@ test('Homepage translates Flavor Map city cards in EN and dead placeholder/liste
   assert.ok(aiCreatorSrc.includes('id="ingredient-grid-container"'));
   assert.ok(!aiCreatorSrc.includes('[data-tab]'));
   assert.ok(!aiCreatorSrc.includes('creator-nickname-input'));
+  assert.ok(aiCreatorSrc.includes("scrollToTop('smooth')"));
+
+  const recommendationsSrc = fs.readFileSync(path.join(rootDir, 'src/pages/recommendations.js'), 'utf8');
+  assert.ok(recommendationsSrc.includes("scrollToTop('smooth')"));
 
   const restHtmlCheck = await renderLegendaryRestaurantsPage();
   const spicesHtmlCheck = await renderSpicesPage();

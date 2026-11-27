@@ -3,7 +3,7 @@ import { flavorProfiles, getLocalizedFlavorProfiles } from '../data/flavorProfil
 import { openRecipeModal } from '../components/recipe-modal.js';
 import { localizeRecipe } from '../services/recipeService.js';
 import { t, i18n } from '../i18n/index.js';
-import { escapeHtml, safeUrl } from '../utils/dom.js';
+import { escapeHtml, safeUrl, scrollToTop } from '../utils/dom.js';
 
 /**
  * Central Javanese Cultural Culinary Taste Matcher
@@ -589,18 +589,25 @@ export function initRecommendationsInteractions(onRerender) {
     });
   });
 
+  const rerenderAndScrollTop = async () => {
+    if (typeof onRerender === 'function') {
+      await onRerender();
+    }
+    scrollToTop('smooth');
+  };
+
   // Next Button
   const nextBtn = document.getElementById('wizard-next-btn');
   if (nextBtn) {
     nextBtn.addEventListener('click', async () => {
       if (wizardStep < TOTAL_STEPS) {
         wizardStep++;
-        if (typeof onRerender === 'function') onRerender();
+        await rerenderAndScrollTop();
       } else {
         // Processing recommendation
         const myRunId = ++wizardRunId;
         isProcessing = true;
-        if (typeof onRerender === 'function') onRerender();
+        await rerenderAndScrollTop();
 
         try {
           const res = await recommendationService.getRecommendations(currentAnswers);
@@ -611,7 +618,7 @@ export function initRecommendationsInteractions(onRerender) {
         } finally {
           if (myRunId === wizardRunId) {
             isProcessing = false;
-            if (typeof onRerender === 'function') onRerender();
+            await rerenderAndScrollTop();
           }
         }
       }
@@ -621,10 +628,10 @@ export function initRecommendationsInteractions(onRerender) {
   // Prev Button
   const prevBtn = document.getElementById('wizard-prev-btn');
   if (prevBtn) {
-    prevBtn.addEventListener('click', () => {
+    prevBtn.addEventListener('click', async () => {
       if (wizardStep > 1) {
         wizardStep--;
-        if (typeof onRerender === 'function') onRerender();
+        await rerenderAndScrollTop();
       }
     });
   }
@@ -641,7 +648,7 @@ export function initRecommendationsInteractions(onRerender) {
   }
 
   // Close Result View Handlers
-  const handleCloseResult = () => {
+  const handleCloseResult = async () => {
     activeResult = null;
     wizardStep = 1;
     currentAnswers = {
@@ -650,7 +657,7 @@ export function initRecommendationsInteractions(onRerender) {
       regionPreference: 'keraton',
       servings: 4
     };
-    if (typeof onRerender === 'function') onRerender();
+    await rerenderAndScrollTop();
   };
 
   const closeTopBtn = document.getElementById('result-close-top-btn');
