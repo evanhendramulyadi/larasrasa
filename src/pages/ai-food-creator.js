@@ -1,5 +1,6 @@
 import { 
   aiFoodCreatorService, 
+  getLocalizedRecipeSteps,
   INGREDIENT_CATALOG, 
   ALL_INGREDIENTS, 
   PREFERENCE_OPTIONS 
@@ -206,7 +207,13 @@ export async function renderAiFoodCreatorPage() {
     return renderGeneratingState(currentLang);
   }
 
-  if (currentGeneratedRecipe && currentGeneratedRecipe.title && Array.isArray(currentGeneratedRecipe.ingredients) && currentGeneratedRecipe.ingredients.length > 0) {
+  if (
+    currentGeneratedRecipe &&
+    currentGeneratedRecipe.title &&
+    Array.isArray(currentGeneratedRecipe.ingredients) &&
+    currentGeneratedRecipe.ingredients.length > 0 &&
+    getLocalizedRecipeSteps(currentGeneratedRecipe, currentLang === 'en').length > 0
+  ) {
     return renderResultView(currentGeneratedRecipe, currentLang);
   }
 
@@ -811,20 +818,15 @@ ${creatorLine}`
   }
 
   // 5. Step-by-Step Cooking Guide
-  const stepsList = isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps);
-  if (stepsList && stepsList.length > 0) {
+  const stepsList = getLocalizedRecipeSteps(recipe, isEn);
+  if (stepsList.length > 0) {
     const stepsHeader = isEn 
       ? `Step-by-Step Cooking Guide (${stepsList.length} steps):` 
       : `Panduan Langkah Memasak (${stepsList.length} tahap):`;
 
-    const formattedSteps = stepsList.map((st, idx) => {
-      const stepNum = st.stepNumber || idx + 1;
-      const sTitle = isEn ? (st.titleEn || st.titleId || st.title) : (st.titleId || st.title);
-      const sDesc = isEn 
-        ? (st.instructionEn || st.instructionId || st.instruction || st.descriptionEn || st.description)
-        : (st.instructionId || st.instruction || st.descriptionId || st.description);
-      return `${stepNum}. ${sTitle}\n${sDesc}`;
-    }).join('\n\n');
+    const formattedSteps = stepsList.map((st) => (
+      st.instruction ? `${st.stepNumber}. ${st.title}\n${st.instruction}` : `${st.stepNumber}. ${st.title}`
+    )).join('\n\n');
 
     sections.push(`${stepsHeader}\n\n${formattedSteps}`);
   }
@@ -847,6 +849,7 @@ function renderResultView(recipe, currentLang) {
     return renderFormView(currentLang);
   }
   const isEn = currentLang === 'en';
+  const resolvedSteps = getLocalizedRecipeSteps(recipe, isEn);
   const creationDate = new Date(recipe.createdAt || Date.now()).toLocaleDateString(isEn ? 'en-US' : 'id-ID', {
     day: 'numeric',
     month: 'long',
@@ -1028,24 +1031,24 @@ function renderResultView(recipe, currentLang) {
                   </h3>
                 </div>
                 <span class="text-xs text-[#5C3622]">
-                  ${((isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps)) || []).length} ${isEn ? 'steps' : 'tahap'}
+                  ${resolvedSteps.length} ${isEn ? 'steps' : 'tahap'}
                 </span>
               </div>
 
               <!-- Steps List -->
               <div class="space-y-4 pt-1">
-                ${((isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps)) || []).map((step, idx) => `
+                ${resolvedSteps.map((step, idx) => `
                   <div class="p-5 rounded-2xl bg-[#FAF7F2] border border-[#E8DEC8] space-y-2 text-xs hover:border-[#D49B42]/50 transition-colors">
                     <div class="flex items-center gap-2.5">
                       <span class="w-6 h-6 rounded-full bg-[#120B07] text-[#D49B42] font-bold text-xs flex items-center justify-center font-mono shrink-0">
                         ${escapeHtml(step.stepNumber || idx + 1)}
                       </span>
                       <strong class="text-[#120B07] font-bold font-editorial-serif text-sm sm:text-base">
-                        ${escapeHtml(isEn ? (step.titleEn || step.titleId || step.title) : (step.titleId || step.title))}
+                        ${escapeHtml(step.title)}
                       </strong>
                     </div>
                     <p class="text-[#5C3622] leading-relaxed text-xs sm:text-sm pl-8.5">
-                      ${escapeHtml(isEn ? (step.instructionEn || step.instructionId || step.instruction || step.descriptionEn || step.description) : (step.instructionId || step.instruction || step.descriptionId || step.description))}
+                      ${escapeHtml(step.instruction)}
                     </p>
                   </div>
                 `).join('')}
@@ -1338,7 +1341,7 @@ export function initAiFoodCreatorInteractions() {
           selectedIngredientIds: uniqueSelectedIds,
           outputLanguage: isEn ? 'en' : 'id'
         });
-        if (!recipe || !recipe.title) {
+        if (!recipe || !recipe.title || getLocalizedRecipeSteps(recipe, isEn).length === 0) {
           throw new Error('Empty recipe response');
         }
       } catch (err) {

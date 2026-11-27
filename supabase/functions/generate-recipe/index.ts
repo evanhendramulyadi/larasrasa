@@ -1213,6 +1213,80 @@ function sanitizeDishTitle(rawTitle: string): string {
   return withoutBrand.length >= 3 ? withoutBrand : rawTitle.trim();
 }
 
+function cleanModelText(value: unknown): string {
+  if (typeof value !== "string") return "";
+  const trimmed = value.trim();
+  if (!trimmed || /^(?:undefined|null)$/i.test(trimmed)) return "";
+  return trimmed;
+}
+
+function normalizeModelSteps(
+  rawList: unknown,
+  lang: "id" | "en",
+): Array<Record<string, unknown>> {
+  if (!Array.isArray(rawList)) return [];
+  const normalized: Array<Record<string, unknown>> = [];
+
+  for (const entry of rawList) {
+    if (typeof entry === "string") {
+      const instruction = cleanModelText(entry);
+      if (!instruction) continue;
+      const stepNumber = normalized.length + 1;
+      normalized.push(
+        lang === "id"
+          ? { stepNumber, titleId: `Tahap ${stepNumber}`, instructionId: instruction }
+          : { stepNumber, titleEn: `Step ${stepNumber}`, instructionEn: instruction },
+      );
+      continue;
+    }
+
+    if (!isPlainObject(entry)) continue;
+
+    const instruction = lang === "id"
+      ? (cleanModelText(entry.instructionId) ||
+        cleanModelText(entry.instruction) ||
+        cleanModelText(entry.descriptionId) ||
+        cleanModelText(entry.description) ||
+        cleanModelText(entry.desc) ||
+        cleanModelText(entry.detail) ||
+        cleanModelText(entry.text) ||
+        cleanModelText(entry.langkah) ||
+        cleanModelText(entry.step))
+      : (cleanModelText(entry.instructionEn) ||
+        cleanModelText(entry.instruction) ||
+        cleanModelText(entry.descriptionEn) ||
+        cleanModelText(entry.description) ||
+        cleanModelText(entry.desc) ||
+        cleanModelText(entry.detail) ||
+        cleanModelText(entry.text) ||
+        cleanModelText(entry.step));
+
+    if (!instruction) continue;
+
+    const stepNumber = normalized.length + 1;
+
+    const title = lang === "id"
+      ? (cleanModelText(entry.titleId) ||
+        cleanModelText(entry.title) ||
+        cleanModelText(entry.heading) ||
+        cleanModelText(entry.name) ||
+        `Tahap ${stepNumber}`)
+      : (cleanModelText(entry.titleEn) ||
+        cleanModelText(entry.title) ||
+        cleanModelText(entry.heading) ||
+        cleanModelText(entry.name) ||
+        `Step ${stepNumber}`);
+
+    normalized.push(
+      lang === "id"
+        ? { stepNumber, titleId: title, instructionId: instruction }
+        : { stepNumber, titleEn: title, instructionEn: instruction },
+    );
+  }
+
+  return normalized;
+}
+
 function extractRecipeFromGeminiPayload(
   geminiPayload: Record<string, unknown>,
 ): { ok: true; recipe: Record<string, unknown> } | { ok: false; reason: string } {
@@ -1247,14 +1321,37 @@ function extractRecipeFromGeminiPayload(
 
   if (
     !isPlainObject(recipeObj) ||
-    typeof recipeObj.title !== "string" ||
+    !cleanModelText(recipeObj.title) ||
     !Array.isArray(recipeObj.ingredients) ||
     recipeObj.ingredients.length === 0
   ) {
     return { ok: false, reason: "incomplete_recipe" };
   }
 
-  recipeObj.title = sanitizeDishTitle(recipeObj.title);
+  const rawStepsId = Array.isArray(recipeObj.stepsId)
+    ? recipeObj.stepsId
+    : (Array.isArray(recipeObj.steps)
+      ? recipeObj.steps
+      : (Array.isArray(recipeObj.instructions) ? recipeObj.instructions : []));
+  const rawStepsEn = Array.isArray(recipeObj.stepsEn) ? recipeObj.stepsEn : [];
+
+  const normalizedStepsId = normalizeModelSteps(rawStepsId, "id");
+  const normalizedStepsEn = normalizeModelSteps(rawStepsEn, "en");
+  const resolvedStepsId = normalizedStepsId.length > 0
+    ? normalizedStepsId
+    : normalizeModelSteps(rawStepsEn, "id");
+
+  if (resolvedStepsId.length === 0) {
+    return { ok: false, reason: "incomplete_recipe" };
+  }
+
+  recipeObj.title = sanitizeDishTitle(cleanModelText(recipeObj.title));
+  recipeObj.stepsId = resolvedStepsId;
+  if (normalizedStepsEn.length > 0) {
+    recipeObj.stepsEn = normalizedStepsEn;
+  } else {
+    delete recipeObj.stepsEn;
+  }
 
   return { ok: true, recipe: recipeObj };
 }

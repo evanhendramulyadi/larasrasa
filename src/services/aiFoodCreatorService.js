@@ -39,6 +39,161 @@ export const SUPABASE_CONFIG = {
 
 const AI_REQUEST_TIMEOUT_MS = 55000;
 
+function cleanStepText(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) return String(value);
+  if (typeof value !== 'string') return '';
+  const trimmed = value.trim();
+  if (!trimmed || /^(?:undefined|null)$/i.test(trimmed)) return '';
+  return trimmed;
+}
+
+function normalizeRecipeStepList(rawList, lang, fallbackList = []) {
+  const source = Array.isArray(rawList) ? rawList : [];
+  const normalized = [];
+
+  for (let i = 0; i < source.length; i++) {
+    const st = source[i];
+    if (typeof st === 'string') {
+      const text = cleanStepText(st);
+      if (!text) continue;
+      const stepNumber = normalized.length + 1;
+      const defaultTitle = lang === 'en' ? `Step ${stepNumber}` : `Tahap ${stepNumber}`;
+      normalized.push(
+        lang === 'en'
+          ? {
+              stepNumber,
+              title: defaultTitle,
+              titleEn: defaultTitle,
+              instruction: text,
+              instructionEn: text,
+              techniqueEn: '',
+              tipEn: ''
+            }
+          : {
+              stepNumber,
+              title: defaultTitle,
+              titleId: defaultTitle,
+              instruction: text,
+              instructionId: text,
+              techniqueId: '',
+              tipId: ''
+            }
+      );
+      continue;
+    }
+
+    if (!st || typeof st !== 'object') continue;
+
+    const fallback = fallbackList[i] || fallbackList[normalized.length];
+    const stepNumber = normalized.length + 1;
+
+    const instruction = lang === 'en'
+      ? (cleanStepText(st.instructionEn) ||
+        cleanStepText(st.instruction) ||
+        cleanStepText(st.descriptionEn) ||
+        cleanStepText(st.description) ||
+        cleanStepText(st.desc) ||
+        cleanStepText(st.detail) ||
+        cleanStepText(st.text) ||
+        cleanStepText(st.instructionId) ||
+        cleanStepText(st.descriptionId) ||
+        cleanStepText(fallback?.instruction))
+      : (cleanStepText(st.instructionId) ||
+        cleanStepText(st.instruction) ||
+        cleanStepText(st.descriptionId) ||
+        cleanStepText(st.description) ||
+        cleanStepText(st.desc) ||
+        cleanStepText(st.detail) ||
+        cleanStepText(st.text) ||
+        cleanStepText(st.langkah) ||
+        cleanStepText(st.step) ||
+        cleanStepText(st.instructionEn) ||
+        cleanStepText(fallback?.instruction));
+
+    if (!instruction) continue;
+
+    const title = lang === 'en'
+      ? (cleanStepText(st.titleEn) ||
+        cleanStepText(st.title) ||
+        cleanStepText(st.heading) ||
+        cleanStepText(st.name) ||
+        cleanStepText(st.titleId) ||
+        cleanStepText(fallback?.title) ||
+        `Step ${stepNumber}`)
+      : (cleanStepText(st.titleId) ||
+        cleanStepText(st.title) ||
+        cleanStepText(st.heading) ||
+        cleanStepText(st.name) ||
+        cleanStepText(st.titleEn) ||
+        cleanStepText(fallback?.title) ||
+        `Tahap ${stepNumber}`);
+
+    normalized.push(
+      lang === 'en'
+        ? {
+            stepNumber,
+            title,
+            titleEn: title,
+            instruction,
+            instructionEn: instruction,
+            techniqueEn: cleanStepText(st.techniqueEn) || cleanStepText(st.technique) || '',
+            tipEn: cleanStepText(st.tipEn) || cleanStepText(st.tip) || ''
+          }
+        : {
+            stepNumber,
+            title,
+            titleId: title,
+            instruction,
+            instructionId: instruction,
+            techniqueId: cleanStepText(st.techniqueId) || cleanStepText(st.technique) || '',
+            tipId: cleanStepText(st.tipId) || cleanStepText(st.tip) || ''
+          }
+    );
+  }
+
+  return normalized;
+}
+
+/**
+ * Resolves recipe steps in the active language without ever leaking undefined/null strings.
+ */
+export function getLocalizedRecipeSteps(recipe, isEn = false) {
+  if (!recipe || typeof recipe !== 'object') return [];
+  const primary = isEn ? recipe.stepsEn : recipe.stepsId;
+  const fallback = isEn ? (recipe.stepsId || recipe.steps) : (recipe.steps || recipe.stepsEn);
+  const list = (Array.isArray(primary) && primary.length > 0)
+    ? primary
+    : (Array.isArray(fallback) ? fallback : []);
+
+  return list
+    .map((st, idx) => {
+      if (typeof st === 'string') {
+        const text = cleanStepText(st);
+        if (!text) return null;
+        const stepNumber = idx + 1;
+        return {
+          stepNumber,
+          title: isEn ? `Step ${stepNumber}` : `Tahap ${stepNumber}`,
+          instruction: text
+        };
+      }
+      if (!st || typeof st !== 'object') return null;
+      const stepNumber = st.stepNumber || idx + 1;
+      const title = isEn
+        ? (cleanStepText(st.titleEn) || cleanStepText(st.titleId) || cleanStepText(st.title) || `Step ${stepNumber}`)
+        : (cleanStepText(st.titleId) || cleanStepText(st.title) || cleanStepText(st.titleEn) || `Tahap ${stepNumber}`);
+      const instruction = isEn
+        ? (cleanStepText(st.instructionEn) || cleanStepText(st.instructionId) || cleanStepText(st.instruction) || cleanStepText(st.descriptionEn) || cleanStepText(st.descriptionId) || cleanStepText(st.description))
+        : (cleanStepText(st.instructionId) || cleanStepText(st.instruction) || cleanStepText(st.descriptionId) || cleanStepText(st.description) || cleanStepText(st.instructionEn) || cleanStepText(st.descriptionEn));
+      return {
+        stepNumber,
+        title,
+        instruction
+      };
+    })
+    .filter(Boolean);
+}
+
 export const PREFERENCE_OPTIONS = {
   cookingMethods: [
     { id: 'tumis', labelId: 'Tumis Cepat Beraroma', labelEn: 'Quick Aromatic Stir-fry', descId: 'Minyak panas, bumbu rajang halus, tekstur renyah segar.', descEn: 'Hot oil, finely sliced aromatic spices, crisp and fresh texture.' },
@@ -198,7 +353,14 @@ export const aiFoodCreatorService = {
           throw new Error('BACKEND_EMPTY_RESPONSE');
         }
         const parsed = this._parseGeminiRecipeResponse(resultData, payload, cleanCreatorName);
-        if (parsed && parsed.title && Array.isArray(parsed.ingredients) && parsed.ingredients.length > 0) {
+        if (
+          parsed &&
+          parsed.title &&
+          Array.isArray(parsed.ingredients) &&
+          parsed.ingredients.length > 0 &&
+          Array.isArray(parsed.steps) &&
+          parsed.steps.length > 0
+        ) {
           return parsed;
         }
         throw new Error('BACKEND_INVALID_RECIPE_FORMAT');
@@ -319,27 +481,30 @@ export const aiFoodCreatorService = {
       return { id: String(eq), labelId: String(eq), labelEn: String(eq) };
     });
 
-    const rawStepsId = Array.isArray(raw.stepsId) ? raw.stepsId : (Array.isArray(raw.steps) ? raw.steps : []);
-    const normalizedStepsId = rawStepsId.map((st, idx) => ({
-      stepNumber: st.stepNumber || idx + 1,
-      title: st.titleId || st.title || `Tahap ${idx + 1}`,
-      titleId: st.titleId || st.title || `Tahap ${idx + 1}`,
-      instruction: st.instructionId || st.instruction || st.desc || '',
-      instructionId: st.instructionId || st.instruction || st.desc || '',
-      techniqueId: st.techniqueId || st.technique || '',
-      tipId: st.tipId || st.tip || ''
-    }));
+    const rawStepsIdSource = Array.isArray(raw.stepsId) && raw.stepsId.length > 0
+      ? raw.stepsId
+      : (Array.isArray(raw.steps) && raw.steps.length > 0
+        ? raw.steps
+        : (Array.isArray(raw.instructions) && raw.instructions.length > 0
+          ? raw.instructions
+          : (Array.isArray(raw.stepsEn) ? raw.stepsEn : [])));
+    const normalizedStepsId = normalizeRecipeStepList(rawStepsIdSource, 'id');
 
-    const rawStepsEn = Array.isArray(raw.stepsEn) ? raw.stepsEn : rawStepsId;
-    const normalizedStepsEn = rawStepsEn.map((st, idx) => ({
-      stepNumber: st.stepNumber || idx + 1,
-      title: st.titleEn || st.title || `Step ${idx + 1}`,
-      titleEn: st.titleEn || st.title || `Step ${idx + 1}`,
-      instruction: st.instructionEn || st.instruction || st.desc || '',
-      instructionEn: st.instructionEn || st.instruction || st.desc || '',
-      techniqueEn: st.techniqueEn || st.technique || '',
-      tipEn: st.tipEn || st.tip || ''
-    }));
+    const rawStepsEnSource = Array.isArray(raw.stepsEn) && raw.stepsEn.length > 0
+      ? raw.stepsEn
+      : rawStepsIdSource;
+    const rawNormalizedStepsEn = normalizeRecipeStepList(rawStepsEnSource, 'en', normalizedStepsId);
+    const normalizedStepsEn = rawNormalizedStepsEn.length > 0
+      ? rawNormalizedStepsEn
+      : normalizedStepsId.map((st, idx) => ({
+          stepNumber: st.stepNumber || idx + 1,
+          title: st.titleId || st.title || `Step ${idx + 1}`,
+          titleEn: st.titleId || st.title || `Step ${idx + 1}`,
+          instruction: st.instructionId || st.instruction || '',
+          instructionEn: st.instructionId || st.instruction || '',
+          techniqueEn: st.techniqueId || '',
+          tipEn: st.tipId || ''
+        }));
 
     const slug = cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -568,7 +733,7 @@ export const aiFoodCreatorService = {
     }
 
     // 6. Step-by-Step Cooking Guide
-    const stepsList = isEn ? (recipe.stepsEn || recipe.steps) : (recipe.stepsId || recipe.steps) || [];
+    const stepsList = getLocalizedRecipeSteps(recipe, isEn);
     if (stepsList.length > 0) {
       checkPageBreak(25);
       doc.setDrawColor(230, 225, 215);
@@ -581,13 +746,8 @@ export const aiFoodCreatorService = {
       doc.text(`${isEn ? 'Step-by-Step Cooking Guide' : 'Panduan Langkah Memasak'} (${stepsList.length} ${isEn ? 'steps' : 'tahap'})`, margin, curY);
       curY += 7;
 
-      stepsList.forEach((st, idx) => {
-        const stepNum = st.stepNumber || idx + 1;
-        const sTitle = isEn ? (st.titleEn || st.titleId || st.title) : (st.titleId || st.title);
-        const sDesc = isEn 
-          ? (st.instructionEn || st.instructionId || st.instruction || st.descriptionEn || st.description)
-          : (st.instructionId || st.instruction || st.descriptionId || st.description);
-        const descLines = doc.splitTextToSize(sDesc, contentWidth - 6);
+      stepsList.forEach((st) => {
+        const descLines = st.instruction ? doc.splitTextToSize(st.instruction, contentWidth - 6) : [];
         const needed = 6 + (descLines.length * 4.2) + 3;
 
         checkPageBreak(needed);
@@ -596,15 +756,19 @@ export const aiFoodCreatorService = {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(9.5);
         doc.setTextColor(25, 25, 25);
-        doc.text(`${stepNum}. ${sTitle}`, margin, curY);
+        doc.text(`${st.stepNumber}. ${st.title}`, margin, curY);
         curY += 4.8;
 
         // Step Instruction
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(8.3);
-        doc.setTextColor(55, 45, 40);
-        doc.text(descLines, margin + 4, curY);
-        curY += (descLines.length * 4.2) + 2.5;
+        if (descLines.length > 0) {
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8.3);
+          doc.setTextColor(55, 45, 40);
+          doc.text(descLines, margin + 4, curY);
+          curY += (descLines.length * 4.2) + 2.5;
+        } else {
+          curY += 2.5;
+        }
       });
     }
 

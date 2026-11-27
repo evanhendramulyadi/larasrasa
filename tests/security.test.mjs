@@ -30,7 +30,7 @@ import { renderLegendaryRestaurantsPage } from '../src/pages/legendary-restauran
 import { renderRecommendationsPage } from '../src/pages/recommendations.js';
 import { renderAiFoodCreatorPage } from '../src/pages/ai-food-creator.js';
 import { resolveNearestRoute, ROUTE_DEFINITIONS } from '../src/utils/routes.js';
-import { aiFoodCreatorService, ALL_INGREDIENTS } from '../src/services/aiFoodCreatorService.js';
+import { aiFoodCreatorService, getLocalizedRecipeSteps, ALL_INGREDIENTS } from '../src/services/aiFoodCreatorService.js';
 import { i18n } from '../src/i18n/index.js';
 import { resetLegendaryRestaurantsState } from '../src/pages/legendary-restaurants.js';
 
@@ -1115,5 +1115,130 @@ test('Global credit exhaustion (upstream 429/402) maps to CREDIT_EXHAUSTED while
     } else {
       globalThis.localStorage = originalLocalStorage;
     }
+  }
+});
+
+test('Edge Function & frontend reject missing/undefined recipe steps, trigger model fallback, and normalize alternate formats safely', async () => {
+  const triedModels = [];
+  const deps = makeDeps({
+    fetchFn: async (url) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-flaky-lite', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+            { name: 'models/gemini-solid-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+
+      const match = target.match(/\/models\/([^:]+):generateContent/);
+      const modelId = match ? match[1] : 'unknown';
+      triedModels.push(modelId);
+
+      // First model returns title + ingredients but broken/undefined steps -> must fall back
+      if (modelId === 'gemini-flaky-lite') {
+        return new Response(
+          JSON.stringify({
+            candidates: [
+              {
+                content: {
+                  parts: [
+                    {
+                      text: JSON.stringify({
+                        title: 'Ungkep Ayam Flaky',
+                        ingredients: [{ nameId: 'Ayam Kampung', amount: 500, unitId: 'g' }],
+                        stepsId: [{ stepNumber: 1, titleId: 'undefined', instructionId: 'undefined' }],
+                      }),
+                    },
+                  ],
+                },
+              },
+            ],
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+
+      // Second model uses alternate key (`steps` + `descriptionId`) and poisoned `stepsEn`
+      return new Response(
+        JSON.stringify({
+          candidates: [
+            {
+              content: {
+                parts: [
+                  {
+                    text: JSON.stringify({
+                      title: 'Ungkep Ayam Kemiri Mantap',
+                      ingredients: [{ nameId: 'Ayam Kampung', amount: 500, unitId: 'g' }],
+                      steps: [
+                        { stepNumber: 1, titleId: 'Tumis Bumbu', descriptionId: 'Haluskan lalu tumis hingga harum.' },
+                        { stepNumber: 2, titleId: 'undefined', instructionId: 'undefined' },
+                        'Ungkep ayam dengan api kecil hingga bumbu meresap.',
+                      ],
+                      stepsEn: [{ stepNumber: 1, titleEn: 'Prep', instructionEn: 'undefined' }],
+                    }),
+                  },
+                ],
+              },
+            },
+          ],
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
+      );
+    },
+  });
+
+  const res = await handleRequest(
+    makePostRequest(JSON.stringify({ action: 'generate', inputs: VALID_INPUTS }), {
+      'cf-connecting-ip': '203.0.113.150',
+    }),
+    deps,
+  );
+  assert.equal(res.status, 200);
+  assert.deepEqual(triedModels, ['gemini-flaky-lite', 'gemini-solid-flash']);
+
+  const body = await res.json();
+  assert.equal(body.recipe.stepsId.length, 2);
+  assert.equal(body.recipe.stepsId[0].stepNumber, 1);
+  assert.equal(body.recipe.stepsId[0].titleId, 'Tumis Bumbu');
+  assert.equal(body.recipe.stepsId[0].instructionId, 'Haluskan lalu tumis hingga harum.');
+  assert.equal(body.recipe.stepsId[1].stepNumber, 2);
+  assert.equal(body.recipe.stepsId[1].titleId, 'Tahap 2');
+  assert.equal(body.recipe.stepsId[1].instructionId, 'Ungkep ayam dengan api kecil hingga bumbu meresap.');
+  assert.equal(body.recipe.stepsEn, undefined);
+
+  // Frontend normalization & English fallback never emit "undefined"
+  const normalized = aiFoodCreatorService._normalizeRecipeObject(body.recipe, VALID_INPUTS, 'Evan');
+  const idSteps = getLocalizedRecipeSteps(normalized, false);
+  const enSteps = getLocalizedRecipeSteps(normalized, true);
+  assert.equal(idSteps.length, 2);
+  assert.equal(enSteps.length, 2);
+  assert.equal(enSteps[0].title, 'Tumis Bumbu');
+  assert.equal(enSteps[0].instruction, 'Haluskan lalu tumis hingga harum.');
+  assert.ok(!JSON.stringify({ idSteps, enSteps }).includes('undefined'));
+
+  // Frontend rejects backend payload if all steps are missing/undefined
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () =>
+    new Response(
+      JSON.stringify({
+        success: true,
+        recipe: {
+          title: 'Resep Tanpa Step',
+          ingredients: [{ nameId: 'Ayam Kampung', amount: 500, unitId: 'g' }],
+          stepsId: [{ stepNumber: 1, titleId: 'undefined', instructionId: 'undefined' }],
+        },
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } },
+    );
+  try {
+    await assert.rejects(
+      () => aiFoodCreatorService.generateRecipe({ ...VALID_INPUTS }),
+      (err) => err && err.message === 'BACKEND_INVALID_RECIPE_FORMAT',
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
   }
 });
