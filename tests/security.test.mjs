@@ -1515,12 +1515,18 @@ test('AI Food Creator locks and greys out all form options, name, ingredients, a
     assert.ok(!containerHtml.includes('ai-creator-session-alert'));
     assert.ok(!containerHtml.includes('Batas Waktu Peracikan Resep'));
 
-    // Assert every form control above the CTA button + button itself is disabled and greyed out
+    // Assert every form control above the CTA button is disabled and greyed out, while the verifying button keeps its normal terracotta color
     assert.ok(containerHtml.includes('<fieldset id="ai-creator-fields" disabled'));
     assert.ok(containerHtml.includes('aria-busy="true"'));
     assert.ok(containerHtml.includes('Memverifikasi...'));
     assert.ok(containerHtml.includes('grayscale opacity-75 cursor-not-allowed'));
     assert.ok(!containerHtml.includes('card-hover-lift'));
+
+    const verifyingBtnMatch = containerHtml.match(/<button[\s\S]*?id="generate-recipe-submit-btn"[\s\S]*?class="([^"]+)"/);
+    assert.ok(verifyingBtnMatch);
+    assert.ok(verifyingBtnMatch[1].includes('bg-[#C84C24]'));
+    assert.ok(verifyingBtnMatch[1].includes('cursor-wait'));
+    assert.ok(!verifyingBtnMatch[1].includes('bg-stone-'));
 
     for (const controlPattern of [
       /<input[\s\S]*?id="creator-name-input"[\s\S]*?disabled/,

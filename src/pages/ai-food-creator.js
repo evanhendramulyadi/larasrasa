@@ -824,10 +824,10 @@ function renderFormView(currentLang) {
             type="submit" 
             id="generate-recipe-submit-btn"
             ${isVerifying ? 'disabled' : ''}
-            class="w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2.5 shrink-0 border ${
+            class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-[#C84C24] text-[#FAF7F2] font-bold text-sm tracking-wide transition-all flex items-center justify-center gap-2.5 shrink-0 border border-[#E05A30] ${
               isVerifying
-                ? 'bg-stone-600 text-stone-100 border-stone-500 opacity-90 cursor-wait shadow-md'
-                : 'bg-[#C84C24] hover:bg-[#AE3E1B] text-[#FAF7F2] shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer border-[#E05A30]'
+                ? 'opacity-90 cursor-wait shadow-xl'
+                : 'hover:bg-[#AE3E1B] shadow-xl hover:shadow-2xl hover:-translate-y-0.5 cursor-pointer'
             }"
           >
             ${isVerifying ? `
