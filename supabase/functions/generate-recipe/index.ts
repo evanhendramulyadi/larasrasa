@@ -833,9 +833,10 @@ PEDOMAN FORMAT & KUALITAS RESEP:
    - Sertakan peralatan pilihan pengguna (${eqLabels.join(", ")}) beserta alat tradisional Jawa Tengah lain yang sesuai metode memasak terpilih (tanpa emoji).
    - Setiap peralatan menyertakan labelId dan labelEn.
 
-7. PANDUAN LANGKAH MEMASAK (5 TAHAP):
-   - Terdiri dari tepat 5 tahapan berurutan. Setiap tahap HANYA memiliki stepNumber, titleId/titleEn, dan instructionId/instructionEn.
-   - Pastikan SELURUH ${ingredientNames.length} bahan pilihan pengguna (plus bahan tambahan/penyesuai bila ada) benar-benar disebut dan diolah secara nyata dalam tahapan langkah 1-5!
+7. PANDUAN LANGKAH MEMASAK (5 TAHAP — WAJIB DUA BAHASA ID & EN):
+   - "stepsId": array berisi tepat 5 tahapan berurutan dalam Bahasa Indonesia, setiap tahap memiliki stepNumber, titleId, dan instructionId.
+   - "stepsEn": array berisi tepat 5 tahapan yang SAMA dan WAJIB diterjemahkan penuh ke Bahasa Inggris yang fasih & natural (DILARANG keras menyalin teks Bahasa Indonesia ke dalam stepsEn atau menghilangkannya), setiap tahap memiliki stepNumber, titleEn, dan instructionEn.
+   - Pastikan SELURUH ${ingredientNames.length} bahan pilihan pengguna (plus bahan tambahan/penyesuai bila ada) benar-benar disebut dan diolah secara nyata dalam tahapan langkah 1-5 baik di "stepsId" maupun "stepsEn"!
    - DILARANG menyertakan kiat, tips olah, atau kartu tambahan di dalam langkah.
 
 8. KEBIJAKAN INTEGRITAS & KEAMANAN INPUT:
@@ -1223,12 +1224,14 @@ function cleanModelText(value: unknown): string {
 function normalizeModelSteps(
   rawList: unknown,
   lang: "id" | "en",
+  strictLangOnly = false,
 ): Array<Record<string, unknown>> {
   if (!Array.isArray(rawList)) return [];
   const normalized: Array<Record<string, unknown>> = [];
 
   for (const entry of rawList) {
     if (typeof entry === "string") {
+      if (strictLangOnly) continue;
       const instruction = cleanModelText(entry);
       if (!instruction) continue;
       const stepNumber = normalized.length + 1;
@@ -1244,22 +1247,30 @@ function normalizeModelSteps(
 
     const instruction = lang === "id"
       ? (cleanModelText(entry.instructionId) ||
-        cleanModelText(entry.instruction) ||
+        cleanModelText(entry.instruction_id) ||
         cleanModelText(entry.descriptionId) ||
-        cleanModelText(entry.description) ||
-        cleanModelText(entry.desc) ||
-        cleanModelText(entry.detail) ||
-        cleanModelText(entry.text) ||
+        cleanModelText(entry.description_id) ||
         cleanModelText(entry.langkah) ||
-        cleanModelText(entry.step))
+        (strictLangOnly
+          ? ""
+          : (cleanModelText(entry.instruction) ||
+            cleanModelText(entry.description) ||
+            cleanModelText(entry.desc) ||
+            cleanModelText(entry.detail) ||
+            cleanModelText(entry.text) ||
+            cleanModelText(entry.step))))
       : (cleanModelText(entry.instructionEn) ||
-        cleanModelText(entry.instruction) ||
+        cleanModelText(entry.instruction_en) ||
         cleanModelText(entry.descriptionEn) ||
-        cleanModelText(entry.description) ||
-        cleanModelText(entry.desc) ||
-        cleanModelText(entry.detail) ||
-        cleanModelText(entry.text) ||
-        cleanModelText(entry.step));
+        cleanModelText(entry.description_en) ||
+        (strictLangOnly
+          ? ""
+          : (cleanModelText(entry.instruction) ||
+            cleanModelText(entry.description) ||
+            cleanModelText(entry.desc) ||
+            cleanModelText(entry.detail) ||
+            cleanModelText(entry.text) ||
+            cleanModelText(entry.step))));
 
     if (!instruction) continue;
 
@@ -1267,14 +1278,20 @@ function normalizeModelSteps(
 
     const title = lang === "id"
       ? (cleanModelText(entry.titleId) ||
-        cleanModelText(entry.title) ||
-        cleanModelText(entry.heading) ||
-        cleanModelText(entry.name) ||
+        cleanModelText(entry.title_id) ||
+        (strictLangOnly
+          ? ""
+          : (cleanModelText(entry.title) ||
+            cleanModelText(entry.heading) ||
+            cleanModelText(entry.name))) ||
         `Tahap ${stepNumber}`)
       : (cleanModelText(entry.titleEn) ||
-        cleanModelText(entry.title) ||
-        cleanModelText(entry.heading) ||
-        cleanModelText(entry.name) ||
+        cleanModelText(entry.title_en) ||
+        (strictLangOnly
+          ? ""
+          : (cleanModelText(entry.title) ||
+            cleanModelText(entry.heading) ||
+            cleanModelText(entry.name))) ||
         `Step ${stepNumber}`);
 
     normalized.push(
@@ -1287,9 +1304,39 @@ function normalizeModelSteps(
   return normalized;
 }
 
+const ENGLISH_RECIPE_WORD_RE =
+  /\b(?:the|and|with|until|into|for|to|from|in|on|heat|add|stir|cook|mix|prepare|serve|simmer|fry|steam|grind|blend|place|remove|boil|saute|pour|slice|chop|marinate|drain|cover)\b/i;
+const INDONESIAN_RECIPE_WORD_RE =
+  /\b(?:yang|dan|atau|dengan|untuk|hingga|sampai|lalu|kemudian|agar|supaya|setelah|sebelum|secukupnya|menggunakan|masukkan|aduk\s+rata|api\s+kecil|api\s+sedang|siapkan|haluskan|tiriskan|sajikan\s+hangat|sampai\s+harum|hingga\s+matang)\b/gi;
+
+function isUntranslatedIndonesianSteps(
+  stepsId: Array<Record<string, unknown>>,
+  stepsEn: Array<Record<string, unknown>>,
+): boolean {
+  if (stepsEn.length === 0) return true;
+
+  // If every English instruction is literally identical to its Indonesian counterpart, it was not translated
+  if (stepsId.length > 0 && stepsEn.length === stepsId.length) {
+    const allIdentical = stepsEn.every((enStep, idx) => {
+      const enText = String(enStep.instructionEn || "").trim().toLowerCase();
+      const idText = String(stepsId[idx]?.instructionId || "").trim().toLowerCase();
+      return enText.length > 0 && enText === idText;
+    });
+    if (allIdentical) return true;
+  }
+
+  const combinedEnText = stepsEn
+    .map((st) => `${String(st.titleEn || "")} ${String(st.instructionEn || "")}`)
+    .join(" ");
+  const hasEnglishWords = ENGLISH_RECIPE_WORD_RE.test(combinedEnText);
+  const indonesianHits = combinedEnText.match(INDONESIAN_RECIPE_WORD_RE) || [];
+
+  return !hasEnglishWords && indonesianHits.length >= 2;
+}
+
 function extractRecipeFromGeminiPayload(
   geminiPayload: Record<string, unknown>,
-): { ok: true; recipe: Record<string, unknown> } | { ok: false; reason: string } {
+): { ok: true; recipe: Record<string, unknown>; hasEnglishSteps: boolean } | { ok: false; reason: string } {
   const candidates = (geminiPayload as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> }).candidates;
   const rawRecipeText = candidates?.[0]?.content?.parts
     ?.map((p) => p.text || "")
@@ -1330,30 +1377,52 @@ function extractRecipeFromGeminiPayload(
 
   const rawStepsId = Array.isArray(recipeObj.stepsId)
     ? recipeObj.stepsId
-    : (Array.isArray(recipeObj.steps)
-      ? recipeObj.steps
-      : (Array.isArray(recipeObj.instructions) ? recipeObj.instructions : []));
-  const rawStepsEn = Array.isArray(recipeObj.stepsEn) ? recipeObj.stepsEn : [];
+    : (Array.isArray(recipeObj.steps_id)
+      ? recipeObj.steps_id
+      : (Array.isArray(recipeObj.steps)
+        ? recipeObj.steps
+        : (Array.isArray(recipeObj.instructions) ? recipeObj.instructions : [])));
+  const explicitRawStepsEn = Array.isArray(recipeObj.stepsEn)
+    ? recipeObj.stepsEn
+    : (Array.isArray(recipeObj.steps_en)
+      ? recipeObj.steps_en
+      : (Array.isArray(recipeObj.stepsEN)
+        ? recipeObj.stepsEN
+        : (Array.isArray(recipeObj.englishSteps)
+          ? recipeObj.englishSteps
+          : (Array.isArray(recipeObj.steps_english) ? recipeObj.steps_english : []))));
 
   const normalizedStepsId = normalizeModelSteps(rawStepsId, "id");
-  const normalizedStepsEn = normalizeModelSteps(rawStepsEn, "en");
+  const normalizedExplicitEn = normalizeModelSteps(explicitRawStepsEn, "en");
+  // Recover bilingual fields when a model embeds titleEn/instructionEn directly inside stepsId/steps
+  const embeddedStepsEn = normalizedExplicitEn.length > 0
+    ? normalizedExplicitEn
+    : normalizeModelSteps(rawStepsId, "en", true);
+
   const resolvedStepsId = normalizedStepsId.length > 0
     ? normalizedStepsId
-    : normalizeModelSteps(rawStepsEn, "id");
+    : normalizeModelSteps(explicitRawStepsEn, "id");
 
   if (resolvedStepsId.length === 0) {
     return { ok: false, reason: "incomplete_recipe" };
   }
 
+  const validEnglishSteps =
+    embeddedStepsEn.length > 0 &&
+    !isUntranslatedIndonesianSteps(resolvedStepsId, embeddedStepsEn);
+  const hasCompleteEnglishSteps =
+    validEnglishSteps &&
+    embeddedStepsEn.length >= resolvedStepsId.length;
+
   recipeObj.title = sanitizeDishTitle(cleanModelText(recipeObj.title));
   recipeObj.stepsId = resolvedStepsId;
-  if (normalizedStepsEn.length > 0) {
-    recipeObj.stepsEn = normalizedStepsEn;
+  if (validEnglishSteps) {
+    recipeObj.stepsEn = embeddedStepsEn;
   } else {
     delete recipeObj.stepsEn;
   }
 
-  return { ok: true, recipe: recipeObj };
+  return { ok: true, recipe: recipeObj, hasEnglishSteps: hasCompleteEnglishSteps };
 }
 
 export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<Response> {
@@ -1482,6 +1551,8 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
   let serviceUnavailableHits = 0;
   let timeoutHits = 0;
   let invalidOutputHits = 0;
+  let partialRecipeFallback: Record<string, unknown> | null = null;
+  const missingEnglishModels: string[] = [];
 
   for (const model of candidatesToTry) {
     const elapsedMs = nowFn() - upstreamStartedAt;
@@ -1496,7 +1567,7 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
       systemInstruction: {
         parts: [
           {
-            text: "Kamu adalah AI peracik resep kuliner autentik Jawa Tengah. Aturan keras: (1) SEMUA bahan pilihan pengguna (100% dari daftar wajib) WAJIB ada di array ingredients dan WAJIB dipakai nyata di seluruh langkah memasak; (2) Metode olahan, harmoni rasa, dan tingkat kepedasan WAJIB sesuai permintaan; (3) Boleh menambah bahan pendukung atau penyesuaian yang wajar agar resep seimbang dan lezat tanpa menghapus satu pun bahan pilihan pengguna; (4) Jangan pernah mencantumkan kata 'LarasRasa' pada nama masakan — gunakan sentuhan nama orang pencipta atau catatan opsional hanya bila sopan dan layak; (5) Kembalikan hanya JSON valid.",
+            text: "Kamu adalah AI peracik resep kuliner autentik Jawa Tengah. Aturan keras: (1) SEMUA bahan pilihan pengguna (100% dari daftar wajib) WAJIB ada di array ingredients dan WAJIB dipakai nyata di seluruh langkah memasak; (2) Metode olahan, harmoni rasa, dan tingkat kepedasan WAJIB sesuai permintaan; (3) Boleh menambah bahan pendukung atau penyesuaian yang wajar agar resep seimbang dan lezat tanpa menghapus satu pun bahan pilihan pengguna; (4) Jangan pernah mencantumkan kata 'LarasRasa' pada nama masakan — gunakan sentuhan nama orang pencipta atau catatan opsional hanya bila sopan dan layak; (5) Kembalikan hanya JSON valid dengan DUA versi lengkap: Bahasa Indonesia (descriptionId, nameId, labelId, stepsId dengan titleId & instructionId) DAN terjemahan Bahasa Inggris natural (descriptionEn, nameEn, labelEn, stepsEn dengan titleEn & instructionEn dalam Bahasa Inggris).",
           },
         ],
       },
@@ -1547,10 +1618,26 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
         if (geminiPayload) {
           const extracted = extractRecipeFromGeminiPayload(geminiPayload);
           if (extracted.ok) {
-            return jsonResponse(origin, allowedOrigins, {
-              success: true,
-              recipe: extracted.recipe,
-            });
+            if (extracted.hasEnglishSteps) {
+              const cooldownUntil = nowFn() + TRANSIENT_MODEL_COOLDOWN_MS;
+              for (const skippedModelId of missingEnglishModels) {
+                discoveryState.blockedUntilByModel.set(skippedModelId, {
+                  until: cooldownUntil,
+                  permanent: false,
+                });
+              }
+              return jsonResponse(origin, allowedOrigins, {
+                success: true,
+                recipe: extracted.recipe,
+              });
+            }
+
+            console.warn("Upstream AI missing or untranslated stepsEn:", model.id);
+            if (!partialRecipeFallback) {
+              partialRecipeFallback = extracted.recipe;
+            }
+            missingEnglishModels.push(model.id);
+            continue;
           }
           console.warn("Upstream AI invalid output:", model.id, extracted.reason);
         } else {
@@ -1605,6 +1692,13 @@ export async function handleRequest(req: Request, deps?: RuntimeDeps): Promise<R
       });
       console.warn("Upstream AI call exception:", model.id, errName);
     }
+  }
+
+  if (partialRecipeFallback) {
+    return jsonResponse(origin, allowedOrigins, {
+      success: true,
+      recipe: partialRecipeFallback,
+    });
   }
 
   const reachableAttempts = attemptedCount - unavailableHits;

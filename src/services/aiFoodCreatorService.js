@@ -89,18 +89,23 @@ function normalizeRecipeStepList(rawList, lang, fallbackList = []) {
 
     const instruction = lang === 'en'
       ? (cleanStepText(st.instructionEn) ||
-        cleanStepText(st.instruction) ||
+        cleanStepText(st.instruction_en) ||
         cleanStepText(st.descriptionEn) ||
+        cleanStepText(st.description_en) ||
+        cleanStepText(st.instruction) ||
         cleanStepText(st.description) ||
         cleanStepText(st.desc) ||
         cleanStepText(st.detail) ||
         cleanStepText(st.text) ||
         cleanStepText(st.instructionId) ||
+        cleanStepText(st.instruction_id) ||
         cleanStepText(st.descriptionId) ||
         cleanStepText(fallback?.instruction))
       : (cleanStepText(st.instructionId) ||
-        cleanStepText(st.instruction) ||
+        cleanStepText(st.instruction_id) ||
         cleanStepText(st.descriptionId) ||
+        cleanStepText(st.description_id) ||
+        cleanStepText(st.instruction) ||
         cleanStepText(st.description) ||
         cleanStepText(st.desc) ||
         cleanStepText(st.detail) ||
@@ -108,23 +113,28 @@ function normalizeRecipeStepList(rawList, lang, fallbackList = []) {
         cleanStepText(st.langkah) ||
         cleanStepText(st.step) ||
         cleanStepText(st.instructionEn) ||
+        cleanStepText(st.instruction_en) ||
         cleanStepText(fallback?.instruction));
 
     if (!instruction) continue;
 
     const title = lang === 'en'
       ? (cleanStepText(st.titleEn) ||
+        cleanStepText(st.title_en) ||
         cleanStepText(st.title) ||
         cleanStepText(st.heading) ||
         cleanStepText(st.name) ||
         cleanStepText(st.titleId) ||
+        cleanStepText(st.title_id) ||
         cleanStepText(fallback?.title) ||
         `Step ${stepNumber}`)
       : (cleanStepText(st.titleId) ||
+        cleanStepText(st.title_id) ||
         cleanStepText(st.title) ||
         cleanStepText(st.heading) ||
         cleanStepText(st.name) ||
         cleanStepText(st.titleEn) ||
+        cleanStepText(st.title_en) ||
         cleanStepText(fallback?.title) ||
         `Tahap ${stepNumber}`);
 
@@ -180,11 +190,11 @@ export function getLocalizedRecipeSteps(recipe, isEn = false) {
       if (!st || typeof st !== 'object') return null;
       const stepNumber = st.stepNumber || idx + 1;
       const title = isEn
-        ? (cleanStepText(st.titleEn) || cleanStepText(st.titleId) || cleanStepText(st.title) || `Step ${stepNumber}`)
-        : (cleanStepText(st.titleId) || cleanStepText(st.title) || cleanStepText(st.titleEn) || `Tahap ${stepNumber}`);
+        ? (cleanStepText(st.titleEn) || cleanStepText(st.title_en) || cleanStepText(st.titleId) || cleanStepText(st.title) || `Step ${stepNumber}`)
+        : (cleanStepText(st.titleId) || cleanStepText(st.title_id) || cleanStepText(st.title) || cleanStepText(st.titleEn) || `Tahap ${stepNumber}`);
       const instruction = isEn
-        ? (cleanStepText(st.instructionEn) || cleanStepText(st.instructionId) || cleanStepText(st.instruction) || cleanStepText(st.descriptionEn) || cleanStepText(st.descriptionId) || cleanStepText(st.description))
-        : (cleanStepText(st.instructionId) || cleanStepText(st.instruction) || cleanStepText(st.descriptionId) || cleanStepText(st.description) || cleanStepText(st.instructionEn) || cleanStepText(st.descriptionEn));
+        ? (cleanStepText(st.instructionEn) || cleanStepText(st.instruction_en) || cleanStepText(st.instructionId) || cleanStepText(st.instruction) || cleanStepText(st.descriptionEn) || cleanStepText(st.description_en) || cleanStepText(st.descriptionId) || cleanStepText(st.description))
+        : (cleanStepText(st.instructionId) || cleanStepText(st.instruction_id) || cleanStepText(st.instruction) || cleanStepText(st.descriptionId) || cleanStepText(st.description_id) || cleanStepText(st.description) || cleanStepText(st.instructionEn) || cleanStepText(st.descriptionEn));
       return {
         stepNumber,
         title,
@@ -483,16 +493,18 @@ export const aiFoodCreatorService = {
 
     const rawStepsIdSource = Array.isArray(raw.stepsId) && raw.stepsId.length > 0
       ? raw.stepsId
-      : (Array.isArray(raw.steps) && raw.steps.length > 0
-        ? raw.steps
-        : (Array.isArray(raw.instructions) && raw.instructions.length > 0
-          ? raw.instructions
-          : (Array.isArray(raw.stepsEn) ? raw.stepsEn : [])));
+      : (Array.isArray(raw.steps_id) && raw.steps_id.length > 0
+        ? raw.steps_id
+        : (Array.isArray(raw.steps) && raw.steps.length > 0
+          ? raw.steps
+          : (Array.isArray(raw.instructions) && raw.instructions.length > 0
+            ? raw.instructions
+            : (Array.isArray(raw.stepsEn) ? raw.stepsEn : []))));
     const normalizedStepsId = normalizeRecipeStepList(rawStepsIdSource, 'id');
 
-    const rawStepsEnSource = Array.isArray(raw.stepsEn) && raw.stepsEn.length > 0
-      ? raw.stepsEn
-      : rawStepsIdSource;
+    const explicitRawStepsEn = [raw.stepsEn, raw.steps_en, raw.stepsEN, raw.englishSteps, raw.steps_english]
+      .find(arr => Array.isArray(arr) && arr.length > 0);
+    const rawStepsEnSource = explicitRawStepsEn || rawStepsIdSource;
     const rawNormalizedStepsEn = normalizeRecipeStepList(rawStepsEnSource, 'en', normalizedStepsId);
     const normalizedStepsEn = rawNormalizedStepsEn.length > 0
       ? rawNormalizedStepsEn
@@ -533,7 +545,7 @@ export const aiFoodCreatorService = {
       cookingMethod: payload.cookingMethod || 'ungkep',
       dishCategory: payload.dishCategory || 'lauk',
       tasteProfile: payload.tasteProfile || 'manis-gurih',
-      outputLanguage: 'id',
+      outputLanguage: payload.outputLanguage === 'en' ? 'en' : 'id',
       ingredients: normalizedIngs,
       equipment: normalizedEq,
       steps: normalizedStepsId,

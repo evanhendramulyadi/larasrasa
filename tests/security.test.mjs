@@ -1244,3 +1244,113 @@ test('Edge Function & frontend reject missing/undefined recipe steps, trigger mo
     globalThis.fetch = originalFetch;
   }
 });
+
+test('Edge Function & frontend preserve embedded bilingual steps, retry untranslated EN steps, and support snake_case steps_en', async () => {
+  const attempted = [];
+  const deps = makeDeps({
+    fetchFn: async (url) => {
+      const target = String(url);
+      if (target.includes('/v1beta/models?')) {
+        return new Response(
+          makeListModelsJson([
+            { name: 'models/gemini-id-copy-lite', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+            { name: 'models/gemini-bilingual-flash', supportedGenerationMethods: ['generateContent'], inputTokenLimit: 1048576, outputTokenLimit: 65536 },
+          ]),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+
+      const match = target.match(/\/models\/([^:]+):generateContent/);
+      const modelId = match ? match[1] : 'unknown';
+      attempted.push(modelId);
+
+      // First model copies Indonesian verbatim into stepsEn -> backend must reject EN translation & try next model
+      if (modelId === 'gemini-id-copy-lite') {
+        return new Response(
+          JSON.stringify({
+            candidates: [
+              {
+                content: {
+                  parts: [
+                    {
+                      text: JSON.stringify({
+                        title: 'Tumis Ayam Kemiri',
+                        ingredients: [{ nameId: 'Ayam Kampung', nameEn: 'Free-Range Chicken', amount: 500, unitId: 'g', unitEn: 'g' }],
+                        stepsId: [
+                          { stepNumber: 1, titleId: 'Siapkan Bumbu', instructionId: 'Haluskan bawang merah dan kemiri lalu tumis hingga harum.' },
+                        ],
+                        stepsEn: [
+                          { stepNumber: 1, titleEn: 'Siapkan Bumbu', instructionEn: 'Haluskan bawang merah dan kemiri lalu tumis hingga harum.' },
+                        ],
+                      }),
+                    },
+                  ],
+                },
+              },
+            ],
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        );
+      }
+
+      // Second model embeds titleEn/instructionEn inside `steps` without separate `stepsEn`
+      return new Response(
+        JSON.stringify({
+          candidates: [
+            {
+              content: {
+                parts: [
+                  {
+                    text: JSON.stringify({
+                      title: 'Tumis Ayam Kemiri',
+                      ingredients: [{ nameId: 'Ayam Kampung', nameEn: 'Free-Range Chicken', amount: 500, unitId: 'g', unitEn: 'g' }],
+                      steps: [
+                        {
+                          stepNumber: 1,
+                          titleId: 'Persiapan Bumbu',
+                          titleEn: 'Spice Paste Prep',
+                          instructionId: 'Haluskan bawang merah dan kemiri lalu tumis hingga harum.',
+                          instructionEn: 'Grind the shallots and candlenuts, then saute until fragrant.',
+                        },
+                      ],
+                    }),
+                  },
+                ],
+              },
+            },
+          ],
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } },
+      );
+    },
+  });
+
+  const res = await handleRequest(
+    makePostRequest(JSON.stringify({ action: 'generate', inputs: { ...VALID_INPUTS, outputLanguage: 'en' } }), {
+      'cf-connecting-ip': '203.0.113.175',
+    }),
+    deps,
+  );
+  assert.equal(res.status, 200);
+  assert.deepEqual(attempted, ['gemini-id-copy-lite', 'gemini-bilingual-flash']);
+
+  const data = await res.json();
+  assert.equal(data.recipe.stepsId[0].titleId, 'Persiapan Bumbu');
+  assert.equal(data.recipe.stepsEn[0].titleEn, 'Spice Paste Prep');
+  assert.equal(data.recipe.stepsEn[0].instructionEn, 'Grind the shallots and candlenuts, then saute until fragrant.');
+
+  // Also ensure snake_case steps_en works directly in frontend normalization
+  const snakeNormalized = aiFoodCreatorService._normalizeRecipeObject(
+    {
+      title: 'Garang Asem Kudus',
+      ingredients: [{ nameId: 'Ayam', nameEn: 'Chicken', amount: 500, unitId: 'g', unitEn: 'g' }],
+      steps_id: [{ stepNumber: 1, title_id: 'Kukus Ayam', instruction_id: 'Kukus ayam dalam daun pisang.' }],
+      steps_en: [{ stepNumber: 1, title_en: 'Steam Chicken', instruction_en: 'Steam the chicken wrapped in banana leaves.' }],
+    },
+    { ...VALID_INPUTS, outputLanguage: 'en' },
+    'Evan',
+  );
+  const enSteps = getLocalizedRecipeSteps(snakeNormalized, true);
+  assert.equal(enSteps[0].title, 'Steam Chicken');
+  assert.equal(enSteps[0].instruction, 'Steam the chicken wrapped in banana leaves.');
+});
