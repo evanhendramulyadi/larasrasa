@@ -51,7 +51,9 @@ let isGenerating = false;
 let currentGeneratingPercent = 20;
 let currentGeneratingStageIdx = 0;
 let validationMessage = null;
-let sessionAlert = null; // { type: 'cooldown' | 'credit' | 'forbidden' | 'error', minutes?: number }
+let sessionAlert = null; // { type: 'credit' | 'forbidden' | 'error' | 'backend_error', text?: string }
+let cooldownPopupMinutes = null;
+let cooldownModalKeyHandler = null;
 let toastMessage = null;
 let nameError = false;
 let ingredientError = null; // null | 'min' | 'max'
@@ -163,6 +165,27 @@ export function updateAiFoodCreatorGeneratingLanguage(targetLang) {
   }
 }
 
+function cleanupCooldownModalListener() {
+  if (typeof document !== 'undefined' && cooldownModalKeyHandler && typeof document.removeEventListener === 'function') {
+    document.removeEventListener('keydown', cooldownModalKeyHandler);
+  }
+  cooldownModalKeyHandler = null;
+}
+
+function closeCooldownModal() {
+  cooldownPopupMinutes = null;
+  cleanupCooldownModalListener();
+  if (typeof document !== 'undefined') {
+    const backdrop = document.getElementById('ai-creator-cooldown-backdrop');
+    if (backdrop) {
+      backdrop.remove();
+    }
+    if (document.body) {
+      document.body.style.overflow = '';
+    }
+  }
+}
+
 export function resetAiFoodCreatorState() {
   generationRunId++;
   if (searchDebounce) {
@@ -195,6 +218,7 @@ export function resetAiFoodCreatorState() {
   isGenerating = false;
   validationMessage = null;
   sessionAlert = null;
+  closeCooldownModal();
   toastMessage = null;
   nameError = false;
   ingredientError = null;
@@ -417,35 +441,68 @@ function renderIngredientGridItems(filteredIngredients, isEn, isLocked = isVerif
   }).join('');
 }
 
+function renderCooldownModal(minutes, isEn) {
+  const safeMinutes = Math.max(1, Number(minutes) || 10);
+  const minuteUnit = safeMinutes === 1 ? 'minute' : 'minutes';
+  const titleText = isEn ? 'Cooldown in Effect' : 'Batas Waktu Peracikan Resep';
+  const badgeText = isEn ? 'Rate Limit Notice' : 'Peringatan Batas Waktu';
+  const bodyText = isEn
+    ? `Recipe generation is limited to once every 10 minutes. Please wait ${safeMinutes} more ${minuteUnit} before crafting a new recipe.`
+    : `Batas peracikan resep adalah 10 menit sekali. Silakan tunggu ${safeMinutes} menit lagi sebelum meracik resep baru.`;
+
+  return `
+    <div id="ai-creator-cooldown-backdrop" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm spice-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="cooldown-modal-title">
+      <div id="ai-creator-cooldown-dialog" class="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border-2 border-[#D49B42]/45 overflow-hidden spice-modal-card">
+        <button type="button"
+                id="close-cooldown-modal-btn"
+                class="absolute top-3.5 right-3.5 z-20 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-[#FAF7F2] flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="${isEn ? 'Close' : 'Tutup'}">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <div class="bg-gradient-to-r from-[#120B07] via-[#1E120A] to-[#120B07] px-6 py-5 border-b border-[#D49B42]/35 text-center space-y-2">
+          <div class="w-11 h-11 rounded-2xl bg-amber-500/15 border border-[#D49B42]/50 text-[#D49B42] flex items-center justify-center mx-auto">
+            <svg class="w-5 h-5 text-[#D49B42]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3 2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span class="inline-block px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#D49B42]/20 text-[#D49B42] border border-[#D49B42]/40">
+            ${escapeHtml(badgeText)}
+          </span>
+          <h3 id="cooldown-modal-title" class="font-editorial-serif text-xl font-bold text-[#FAF7F2]">
+            ${escapeHtml(titleText)}
+          </h3>
+        </div>
+
+        <div class="p-6 text-center space-y-5 bg-[#FAF7F2]">
+          <p class="text-xs sm:text-sm text-[#5C3622] leading-relaxed font-medium">
+            ${escapeHtml(bodyText)}
+          </p>
+          <button type="button"
+                  id="confirm-cooldown-modal-btn"
+                  class="w-full px-6 py-3 rounded-2xl bg-[#C84C24] hover:bg-[#AE3E1B] text-white font-bold text-xs sm:text-sm transition-all shadow-md hover:shadow-lg cursor-pointer border border-[#E05A30]">
+            ${isEn ? 'Understood' : 'Mengerti'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 /**
  * Form View: Interactive Studio Configuration
  */
 function renderFormView(currentLang) {
   const isEn = currentLang === 'en';
 
-  // Compute session alert content reactively based on active language (strictly zero emoji)
+  // Compute session alert content reactively based on active language (strictly zero emoji).
+  // Cooldown notices are never shown inline on load or while verifying; they appear as a popup when attempting to generate again.
   function getSessionAlertContent() {
-    let activeAlert = sessionAlert;
-    if (!activeAlert) {
-      const activeCooldown = getCooldownStorageState();
-      if (activeCooldown) {
-        activeAlert = { type: 'cooldown', minutes: activeCooldown.minutes };
-      }
-    }
-    if (!activeAlert) return null;
-    if (activeAlert.type === 'cooldown') {
-      const minutes = activeAlert.minutes || 10;
-      const minuteUnit = minutes === 1 ? 'minute' : 'minutes';
-      return {
-        badge: isEn ? 'Rate Limit Notice' : 'Peringatan Batas Waktu',
-        title: isEn ? 'Cooldown in Effect' : 'Batas Waktu Peracikan Resep',
-        text: isEn 
-          ? `Recipe generation is limited to once every 10 minutes. Please wait ${minutes} more ${minuteUnit} before crafting a new recipe.`
-          : `Batas peracikan resep adalah 10 menit sekali. Silakan tunggu ${minutes} menit lagi sebelum meracik resep baru.`,
-        isWarning: true
-      };
-    }
-    if (activeAlert.type === 'credit') {
+    if (isVerifying || !sessionAlert) return null;
+    if (sessionAlert.type === 'credit') {
       return {
         badge: isEn ? 'Credit Limit Notice' : 'Pemberitahuan Kuota Resep',
         title: isEn ? 'Global Credits Exhausted' : 'Kredit Global Habis',
@@ -455,7 +512,7 @@ function renderFormView(currentLang) {
         isWarning: false
       };
     }
-    if (activeAlert.type === 'forbidden' || activeAlert.type === 'backend_error' || activeAlert.type === 'error') {
+    if (sessionAlert.type === 'forbidden' || sessionAlert.type === 'backend_error' || sessionAlert.type === 'error') {
       return {
         badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
         title: isEn ? 'Backend Connection Notice' : 'Kendala Server Backend',
@@ -468,7 +525,7 @@ function renderFormView(currentLang) {
     return {
       badge: isEn ? 'Service Notice' : 'Pemberitahuan Layanan',
       title: isEn ? 'Backend Connection Notice' : 'Kendala Server Backend',
-      text: activeAlert.text || (isEn ? 'Failed to load recipe from the service backend. Please check your connection or try again shortly.' : 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.'),
+      text: sessionAlert.text || (isEn ? 'Failed to load recipe from the service backend. Please check your connection or try again shortly.' : 'Gagal memuat resep dari server backend. Silakan periksa koneksi atau coba beberapa saat lagi.'),
       isWarning: false
     };
   }
@@ -872,6 +929,8 @@ function renderFormView(currentLang) {
         ` : ''}
 
       </form>
+
+      ${!isVerifying && cooldownPopupMinutes !== null ? renderCooldownModal(cooldownPopupMinutes, isEn) : ''}
 
     </div>
   `;
@@ -1401,10 +1460,34 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
       sessionAlert = null;
+      cooldownPopupMinutes = null;
       const existingAlert = document.getElementById('ai-creator-session-alert');
       if (existingAlert) existingAlert.remove();
 
-      // 1. Author Name Validation: Scroll up to creator name input
+      // 1. Tampered Ingredient Count Guard (< 5 or > 10 via Inspect/Console triggers backend error alert)
+      const uniqueSelectedIds = Array.isArray(formState.selectedIngredientIds)
+        ? Array.from(new Set(formState.selectedIngredientIds.filter(id => typeof id === 'string' && id.trim().length > 0)))
+        : [];
+      if (uniqueSelectedIds.length < MIN_INGREDIENTS || uniqueSelectedIds.length > MAX_INGREDIENTS) {
+        ingredientError = null;
+        sessionAlert = { type: 'backend_error' };
+        await reRenderCurrentView(true);
+        const alertBox = document.getElementById('ai-creator-session-alert');
+        if (alertBox) {
+          alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
+      // 2. 10-Minute Client UX Cooldown Check: only notify via popup when user tries to generate again
+      const activeCooldown = getCooldownStorageState();
+      if (activeCooldown) {
+        cooldownPopupMinutes = activeCooldown.minutes;
+        await reRenderCurrentView(true);
+        return;
+      }
+
+      // 3. Author Name Validation: Scroll up to creator name input
       if (!formState.creatorName.trim()) {
         nameError = true;
         await reRenderCurrentView(false);
@@ -1421,32 +1504,6 @@ export function initAiFoodCreatorInteractions() {
         return;
       }
 
-      // 2. Tampered Ingredient Count Guard (< 5 or > 10 via Inspect/Console triggers backend error alert)
-      const uniqueSelectedIds = Array.isArray(formState.selectedIngredientIds)
-        ? Array.from(new Set(formState.selectedIngredientIds.filter(id => typeof id === 'string' && id.trim().length > 0)))
-        : [];
-      if (uniqueSelectedIds.length < MIN_INGREDIENTS || uniqueSelectedIds.length > MAX_INGREDIENTS) {
-        ingredientError = null;
-        sessionAlert = { type: 'backend_error' };
-        await reRenderCurrentView(true);
-        const alertBox = document.getElementById('ai-creator-session-alert');
-        if (alertBox) {
-          alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        return;
-      }
-
-      // 3. 10-Minute Client UX Cooldown Check (persists across refresh/page switch)
-      const activeCooldown = getCooldownStorageState();
-      if (activeCooldown) {
-        sessionAlert = {
-          type: 'cooldown',
-          minutes: activeCooldown.minutes
-        };
-        await reRenderCurrentView(true);
-        return;
-      }
-
       // 4. Persist cooldown immediately when generation begins and lock all form controls during verification
       const prevCooldownTs = getCooldownStorageState()?.timestamp || null;
       safeSetStorage(COOLDOWN_KEY, Date.now().toString());
@@ -1457,6 +1514,7 @@ export function initAiFoodCreatorInteractions() {
       nameError = false;
       ingredientError = null;
       sessionAlert = null;
+      cooldownPopupMinutes = null;
       isVerifying = true;
       const myRunId = ++generationRunId;
 
@@ -1497,10 +1555,7 @@ export function initAiFoodCreatorInteractions() {
           const syntheticStart = Date.now() - (COOLDOWN_MS - retryMs);
           safeSetStorage(COOLDOWN_KEY, syntheticStart.toString());
           const waitMinutes = Math.max(1, Math.ceil(retryMs / 60000));
-          sessionAlert = {
-            type: 'cooldown',
-            minutes: waitMinutes
-          };
+          cooldownPopupMinutes = waitMinutes;
         } else if (err.code === 'CREDIT_EXHAUSTED') {
           restoreCooldownStorage(prevCooldownTs);
           sessionAlert = { type: 'credit' };
@@ -1652,6 +1707,32 @@ export function initAiFoodCreatorInteractions() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
   });
+
+  // Cooldown Popup Modal Interactions
+  cleanupCooldownModalListener();
+  const cooldownBackdrop = document.getElementById('ai-creator-cooldown-backdrop');
+  if (cooldownBackdrop && cooldownPopupMinutes !== null) {
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.style.overflow = 'hidden';
+    }
+    const closeModalBtn = document.getElementById('close-cooldown-modal-btn');
+    const confirmModalBtn = document.getElementById('confirm-cooldown-modal-btn');
+    if (closeModalBtn) closeModalBtn.onclick = closeCooldownModal;
+    if (confirmModalBtn) confirmModalBtn.onclick = closeCooldownModal;
+    cooldownBackdrop.onclick = (e) => {
+      if (e.target === cooldownBackdrop) {
+        closeCooldownModal();
+      }
+    };
+    if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+      cooldownModalKeyHandler = (e) => {
+        if (e.key === 'Escape') {
+          closeCooldownModal();
+        }
+      };
+      document.addEventListener('keydown', cooldownModalKeyHandler);
+    }
+  }
 }
 
 function setupRadioGroup(name, onChange) {
