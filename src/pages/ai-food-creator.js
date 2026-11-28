@@ -505,7 +505,7 @@ function renderFormView(currentLang) {
       <!-- Interactive Studio Form -->
       <form id="ai-creator-form" class="space-y-8 max-w-4xl mx-auto" aria-busy="${isVerifying ? 'true' : 'false'}">
         
-        <fieldset id="ai-creator-fields" ${isVerifying ? 'disabled' : ''} class="space-y-8 min-w-0 border-0 p-0 m-0 ${isVerifying ? 'select-none' : ''}">
+        <fieldset id="ai-creator-fields" ${isVerifying ? 'disabled' : ''} class="space-y-8 min-w-0 border-0 p-0 mx-0 mt-0 ${isVerifying ? 'select-none' : ''}">
 
           <!-- Input Nama Lengkap User (Pencipta Resep) -->
           <div id="creator-name-box" class="${

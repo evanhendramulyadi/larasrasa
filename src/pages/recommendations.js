@@ -115,7 +115,7 @@ function renderWizardView(step) {
         <!-- Navigation Buttons -->
         <div class="pt-6 border-t border-[#E8DEC8] flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 ${step > 1 ? 'sm:justify-between' : 'sm:justify-end'}">
           ${step > 1 ? `
-            <button id="wizard-prev-btn" type="button" class="w-full sm:w-64 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-colors cursor-pointer shadow-xs whitespace-nowrap">
+            <button id="wizard-prev-btn" type="button" class="w-full sm:w-64 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-xs sm:text-sm font-bold text-[#120B07] bg-white border border-[#D49B42]/40 hover:bg-[#FAF7F2] transition-all shadow-xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer whitespace-nowrap">
               <svg class="w-4 h-4 text-[#120B07] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
               </svg>
@@ -532,7 +532,7 @@ function renderResultView(result) {
 
               <button type="button" 
                       id="result-close-action-btn" 
-                      class="sm:w-36 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#FAF7F2] text-[#120B07] text-xs sm:text-sm font-bold border border-[#D49B42]/40 transition-all shadow-xs cursor-pointer text-center">
+                      class="sm:w-36 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white hover:bg-[#FAF7F2] text-[#120B07] text-xs sm:text-sm font-bold border border-[#D49B42]/40 transition-all shadow-xs hover:shadow-md hover:-translate-y-0.5 cursor-pointer text-center">
                 <svg class="w-4 h-4 text-[#C84C24]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>

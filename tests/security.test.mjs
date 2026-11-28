@@ -821,6 +821,27 @@ test('AI Food Creator result page Back to Studio buttons match Download/Copy hov
   assert.ok(bottomBtnMatch, 'Bottom Back to Studio button must exist');
   assert.ok(bottomBtnMatch[1].includes('hover:-translate-y-0.5'));
   assert.ok(bottomBtnMatch[1].includes('hover:shadow-lg'));
+
+  // Recommendations Back & Close buttons share the same hover lift pop-up effect
+  const recommendationsSrc = fs.readFileSync(path.join(rootDir, 'src/pages/recommendations.js'), 'utf8');
+  const prevBtnMatch = recommendationsSrc.match(/id="wizard-prev-btn"[\s\S]*?class="([^"]+)"/);
+  assert.ok(prevBtnMatch, 'Recommendations Back button must exist');
+  assert.ok(prevBtnMatch[1].includes('transition-all'));
+  assert.ok(prevBtnMatch[1].includes('hover:-translate-y-0.5'));
+  assert.ok(prevBtnMatch[1].includes('hover:shadow-md'));
+
+  const resultCloseBtnMatch = recommendationsSrc.match(/id="result-close-action-btn"[\s\S]*?class="([^"]+)"/);
+  assert.ok(resultCloseBtnMatch, 'Recommendations Result Close button must exist');
+  assert.ok(resultCloseBtnMatch[1].includes('transition-all'));
+  assert.ok(resultCloseBtnMatch[1].includes('hover:-translate-y-0.5'));
+  assert.ok(resultCloseBtnMatch[1].includes('hover:shadow-md'));
+
+  // AI Food Creator fieldset must not use m-0 which cancels form space-y-8 gap above CTA bar
+  const formMatch = aiCreatorSrc.match(/id="ai-creator-form"[\s\S]*?class="([^"]+)"/);
+  assert.ok(formMatch && formMatch[1].includes('space-y-8'));
+  const fieldsetMatch = aiCreatorSrc.match(/id="ai-creator-fields"[\s\S]*?class="([^"]+)"/);
+  assert.ok(fieldsetMatch);
+  assert.ok(!fieldsetMatch[1].split(/\s+/).includes('m-0'));
 });
 
 test('AI Food Creator enforces 5-10 ingredients and prompt guarantees selected ingredients, cooking method, taste harmony, and spice level', async () => {
